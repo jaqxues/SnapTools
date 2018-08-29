@@ -13,8 +13,10 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ConstantConditions")
 public class RemoteConfigDefaults {
-    public static Map<String, Object> get() {
-        return ImmutableMap.<String, Object>builder()
+    private static final Map<String, Object> defaultConfig;
+
+    static {
+        defaultConfig = ImmutableMap.<String, Object>builder()
                 // Constants Defaults ========================================================
                 .put("shop_check_cooldown_hours",
                         STApplication.DEBUG ? 30000 : TimeUnit.HOURS.toMillis(1))
@@ -39,19 +41,19 @@ public class RemoteConfigDefaults {
 
                 .put("support_discord_text", "For the fastest response to your questions, please join our Discord server where there is usually 24/7 support."
                         + "\nOnce joined check out the <b><font color='#efde86'><u>FAQ</u></font></b> channel to check if your question has already been answered. Otherwise try out the <b><font color='#efde86'><u>@Support</u></font></b> tag to notify the support team of your question."
-                        + "\nSpecial thanks to the Support team (TupaC, Liz, Freekystar, Jaqxues, Mozzilac, Zack4200, and Badgermole) for helping out with testing and their community assistance")
+                        + "\n\nSpecial thanks to the Support team (TupaC, Liz, Freekystar, Jaqxues, Mozzilac, Zack4200, Badgermole, Kevin T and Fullonrager) for helping out with testing and their community assistance")
                 .put("support_discord_link", "http://snaptools.org/discord")
 
-                .put("support_website_text", "Want more information about SnapTools? View our official Website hosted by the lovely <b><font color='#efde86'><u>ElectronicWizard</u></font></b> to get an idea of what we have to offer as well as some FAQs")
+                .put("support_website_text", "Want more information about SnapTools? View our official Website hosted by the lovely <b><font color='#efde86'><u>ElectronicWizard</u></font></b> to get an idea of what we have to offer as well as some FAQs\n(No longer maintained)")
                 .put("support_website_link", "http://snaptools.org")
 
                 .put("support_reddit_text", "We also have a Sub-Reddit that is under construction but is still completely usable if you want to post anything relating to SnapTools. Subscribing to us can help to build our community to let new users know that we're a trusted application.\nThe Reddit will contain announcements and an up to date FAQ list.")
                 .put("support_reddit_link", "http://snaptools.org/reddit")
 
-                .put("support_xda_text", "Our XDA page hasn't been created yet. We're currently waiting for a full public release before we create the page.")
+                .put("support_xda_text", "Our XDA page hasn't been created yet. We're currently waiting for a full public release before we create the page.\n(Maybe at some point just to advertise for Andre's ModulePack System)")
                 .put("support_xda_link", "http://snaptools.org/xda")
 
-                .put("support_twitter_text", "#Placeholder#")
+                .put("support_twitter_text", "(No longer maintained)")
                 .put("support_twitter_link", "http://snaptools.org/twitter")
 
                 .put("check_sc_beta", true)
@@ -74,5 +76,9 @@ public class RemoteConfigDefaults {
                 // ===========================================================================
 
                 .build();
+    }
+
+    public static Map<String, Object> get() {
+        return defaultConfig;
     }
 }

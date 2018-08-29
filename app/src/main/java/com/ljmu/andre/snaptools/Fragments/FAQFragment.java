@@ -150,7 +150,8 @@ public class FAQFragment extends FragmentHelper {
 
                     @Override
                     public void error(String message, Throwable t, int errorCode) {
-                        swipeRefreshLayout.setRefreshing(false);
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
 
                         SafeToast.show(
                                 getActivity(),

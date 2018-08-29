@@ -17,7 +17,12 @@ import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
 import com.ljmu.andre.snaptools.R;
+import com.ljmu.andre.snaptools.Utils.RemoteConfigDefaults;
 import timber.log.Timber;
+
+import java.util.Map;
+
+import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -47,12 +52,12 @@ public class SupportFragment extends FragmentHelper {
         EventBus.soleRegister(this);
         Timber.d("CreateView");
 
-        //TODO: Write out the hardcoded values for these UI elements
-//		txtDiscord.setText(getSpannedHtml(remoteConfig.getString("support_discord_text")));
-//		txtServer.setText(getSpannedHtml(remoteConfig.getString("support_website_text")));
-//		txtReddit.setText(getSpannedHtml(remoteConfig.getString("support_reddit_text")));
-//		txtXda.setText(getSpannedHtml(remoteConfig.getString("support_xda_text")));
-//		txtTwitter.setText(getSpannedHtml(remoteConfig.getString("support_twitter_text")));
+        Map<String, Object> defaultConfig = RemoteConfigDefaults.get();
+        txtDiscord.setText(getSpannedHtml((String) defaultConfig.get("support_discord_text")));
+        txtServer.setText(getSpannedHtml((String) defaultConfig.get("support_website_text")));
+        txtReddit.setText(getSpannedHtml((String) defaultConfig.get("support_reddit_text")));
+        txtXda.setText(getSpannedHtml((String) defaultConfig.get("support_xda_text")));
+        txtTwitter.setText(getSpannedHtml((String) defaultConfig.get("support_twitter_text")));
 
         return layoutContainer;
     }
@@ -101,13 +106,12 @@ public class SupportFragment extends FragmentHelper {
             case R.id.layout_reddit:
                 linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.reddit.com/r/SnapTools/"));
                 break;
-            //TODO: Hard code the links
-//			case R.id.layout_xda:
-//				linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(remoteConfig.getString("support_xda_link")));
-//				break;
-//			case R.id.layout_twitter:
-//				linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(remoteConfig.getString("support_twitter_link")));
-//				break;
+            case R.id.layout_xda:
+                linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse((String) RemoteConfigDefaults.get().get("support_xda_link")));
+                break;
+            case R.id.layout_twitter:
+                linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse((String) RemoteConfigDefaults.get().get("support_twitter_link")));
+                break;
             default:
                 throw new IllegalArgumentException("Unknown click event");
         }

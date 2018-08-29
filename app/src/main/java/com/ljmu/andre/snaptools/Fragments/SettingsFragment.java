@@ -16,6 +16,7 @@ import butterknife.Unbinder;
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.BuildConfig;
+import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInput;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
@@ -30,12 +31,14 @@ import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
+import com.ljmu.andre.snaptools.Repackaging.RepackageManager;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.CenteredArrayAdapter;
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
 import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import java.io.File;
@@ -73,6 +76,8 @@ public class SettingsFragment extends FragmentHelper {
     TextView lblWatchdogTimeout;
     @BindView(R.id.seek_watchdog_timeout)
     SeekBar seekWatchdogTimeout;
+    @BindView(R.id.btn_force_repkg)
+    Button btnRepackage;
     @BindView(R.id.spin_theme)
     Spinner spinTheme;
     @BindView(R.id.spin_translations)
@@ -113,6 +118,7 @@ public class SettingsFragment extends FragmentHelper {
         initTheming();
         initTranslations();
         initBackupRestore();
+        initRepackaging();
         txtAppVersion.setText(BuildConfig.VERSION_NAME);
 
         return layoutContainer;
@@ -549,6 +555,60 @@ public class SettingsFragment extends FragmentHelper {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void initRepackaging() {
+        if (getPref(REPACKAGE_NAME) == null) {
+            btnRepackage.setOnClickListener(v -> DialogFactory.createConfirmation(
+                    getActivity(),
+                    "Repackage SnapTools?",
+                    "Do you want to repackage SnapTools to circumvent Snapchat's malicious app detection?",
+                    new ThemedClickListener() {
+                        @Override
+                        public void clicked(ThemedDialog themedDialog) {
+                            themedDialog.dismiss();
+                            repackage();
+                        }
+                    }).show());
+        } else
+            btnRepackage.setVisibility(View.GONE);
+    }
+
+    private void repackage() {
+        ThemedDialog progressDialog = DialogFactory.createProgressDialog(
+                getActivity(),
+                "Repackaging SnapTools",
+                "Repackaging is required to circumvent Snapchat malicious app discovery",
+                false
+        );
+
+        progressDialog.show();
+
+        // ===========================================================================
+        Observable.<String>create(e ->
+                RepackageManager.repackageApplication(SettingsFragment.this.getActivity(), e))
+                // ===========================================================================
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        progressDialog.<Progress>getExtension()
+                                .setMessage(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        progressDialog.dismiss();
+
+                        DialogFactory.createErrorDialog(
+                                SettingsFragment.this.getActivity(),
+                                "Error Repackaging Application",
+                                e.getMessage()
+                        ).show();
+                    }
+                });
     }
 
     @Override

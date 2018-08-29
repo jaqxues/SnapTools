@@ -133,7 +133,7 @@ public class PackDownloaderFragment
 
     public void generateMetaData(boolean invalidateCache) {
         if (swipeRefreshLayout != null)
-            swipeRefreshLayout.setRefreshing(true);
+            swipeRefreshLayout.setRefreshing(false);
         setPacks(Collections.singletonList((ServerPackMetaData)
                 (new ServerPackMetaData()
                         .setPurchased(false)

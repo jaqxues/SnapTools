@@ -17,7 +17,9 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_PREF;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -34,12 +36,16 @@ public class SplashActivity extends AppCompatActivity {
 
         initPreferences();
 
-//		if (checkAndRepackage()) {
-//			Timber.d("Repackage required... Not opening main activity immediately");
-//			return;
-//		}
-        // TODO Enable Repackaging, include a dialog to let the user chose
+        // For re-installations, avoiding conflicts
+        String pkgName = getPackageName();
+        boolean equals = pkgName.equals(SplashActivity.class.getPackage().getName());
+        if (getPref(REPACKAGE_NAME) != null == equals)
+            putPref(REPACKAGE_NAME, (equals ? null : pkgName));
 
+        if (checkAndRepackage()) {
+            Timber.d("Repackaging is recommended... Asking User");
+            return;
+        }
         openMainActivity();
     }
 
@@ -85,6 +91,32 @@ public class SplashActivity extends AppCompatActivity {
             return false;
         }
 
+        // Check if user has already been asked to repackage
+        if (getPref(REPACKAGE_PREF)) {
+            DialogFactory.createConfirmation(
+                    this,
+                    "Repackage SnapTools?",
+                    "Do you want to repackage SnapTools to circumvent Snapchat's malicious app detection?",
+                    new ThemedClickListener() {
+                        @Override
+                        public void clicked(ThemedDialog themedDialog) {
+                            themedDialog.dismiss();
+                            repackage();
+                        }
+                    }, new ThemedClickListener() {
+                        @Override
+                        public void clicked(ThemedDialog themedDialog) {
+                            themedDialog.dismiss();
+                            putPref(REPACKAGE_PREF, false);
+                            openMainActivity();
+                        }
+                    }).show();
+            return true;
+        }
+        return false;
+    }
+
+    private void repackage() {
         ThemedDialog progressDialog = DialogFactory.createProgressDialog(
                 this,
                 "Repackaging SnapTools",
@@ -119,8 +151,6 @@ public class SplashActivity extends AppCompatActivity {
                         ).show();
                     }
                 });
-
-        return true;
     }
 
     private void openMainActivity() {

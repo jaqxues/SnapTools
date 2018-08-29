@@ -31,6 +31,9 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "SHOW_TUTORIAL",
             true, Boolean.class
     );
+    public static final Preference REPACKAGE_PREF = new Preference(
+            "REPACKAGE_PREF",
+            true, Boolean.class);
     public static final Preference SYSTEM_ENABLED = new Preference(
             "SYSTEM_ENABLED",
             true, Boolean.class

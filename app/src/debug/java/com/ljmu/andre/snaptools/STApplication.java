@@ -15,8 +15,7 @@ import timber.log.Timber;
 public class STApplication extends Application {
     public static final boolean DEBUG = true;
     public static final String MODULE_TAG = "SnapTools";
-    //    @Deprecated --> Apk Repackaging, changes PackageName
-    public static final String PACKAGE = STApplication.class.getPackage().getName();
+    public static String PACKAGE = STApplication.class.getPackage().getName();
 
     private static STApplication mInstance;
 

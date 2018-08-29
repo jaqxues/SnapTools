@@ -86,19 +86,9 @@ public class TimberUtils {
     }
 
     private static class ReleaseTree extends DebugTree {
-        private static final HashSet<Integer> priorityWhitelist;
-
-        static {
-            priorityWhitelist = new HashSet<>();
-            priorityWhitelist.add(Log.ERROR);
-            priorityWhitelist.add(Log.ASSERT);
-            priorityWhitelist.add(Log.WARN);
-            priorityWhitelist.add(Log.INFO);
-        }
 
         @Override
         protected boolean isLoggable(String tag, int priority) {
-//			return priorityWhitelist.contains(priority);
             return priority >= Log.INFO;
         }
 
@@ -121,14 +111,6 @@ public class TimberUtils {
     }
 
     private static class XposedReleaseTree extends ReleaseTree {
-        static final HashSet<Integer> priorityWhitelist;
-
-        static {
-            priorityWhitelist = new HashSet<>();
-            priorityWhitelist.add(Log.ERROR);
-            priorityWhitelist.add(Log.ASSERT);
-            priorityWhitelist.add(Log.WARN);
-        }
 
         @Override
         protected void log(int priority, String tag, String message, Throwable t) {

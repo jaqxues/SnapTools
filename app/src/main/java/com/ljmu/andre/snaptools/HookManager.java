@@ -62,7 +62,7 @@ public class HookManager implements IXposedHookLoadPackage {
          * Self Hook -> forces isModuleActive() to return true
          * ===========================================================================
          */
-        if (lpparam.packageName.contains(STApplication.PACKAGE)) {
+        if (lpparam.appInfo != null && lpparam.appInfo.className != null && lpparam.appInfo.className.equals(STApplication.class.getName())) {
             try {
                 findAndHookMethod(
                         ModuleChecker.class.getName(),
@@ -116,6 +116,9 @@ public class HookManager implements IXposedHookLoadPackage {
             Timber.w("System Disabled... Aborting initialisation");
             return;
         }
+
+        String pkgName = getPref(REPACKAGE_NAME);
+        STApplication.PACKAGE = (pkgName == null ? "com.ljmu.andre.snaptools" : pkgName);
 
         Timber.d("Snapchat Is Loading!");
 

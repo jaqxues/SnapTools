@@ -6,9 +6,9 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class MediaExistsException extends Exception {
-	private static final long serialVersionUID = 1538091173126604871L;
+    private static final long serialVersionUID = 1538091173126604871L;
 
-	public MediaExistsException(String message) {
-		super(message);
-	}
+    public MediaExistsException(String message) {
+        super(message);
+    }
 }

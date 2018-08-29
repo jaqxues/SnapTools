@@ -5,13 +5,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
-import com.ljmu.andre.snaptools.R;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import com.ljmu.andre.snaptools.R;
+import com.ljmu.andre.snaptools.RedactedClasses.Answers;
+import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 
 
 /**
@@ -19,30 +17,36 @@ import butterknife.Unbinder;
  */
 
 public class LegalFragment extends FragmentHelper {
-	private Unbinder unbinder;
-	@Override public String getName() {
-		return "Legal";
-	}
+    private Unbinder unbinder;
 
-	@Override public Integer getMenuId() {
-		return R.id.nav_legal;
-	}
+    @Override
+    public String getName() {
+        return "Legal";
+    }
 
-	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		View layoutContainer = inflater.inflate(R.layout.frag_legal, container, false);
-		unbinder = ButterKnife.bind(this, layoutContainer);
+    @Override
+    public Integer getMenuId() {
+        return R.id.nav_legal;
+    }
 
-		Answers.safeLogEvent(
-				new CustomEvent("Viewed Legal")
-		);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View layoutContainer = inflater.inflate(R.layout.frag_legal, container, false);
+        unbinder = ButterKnife.bind(this, layoutContainer);
 
-		return layoutContainer;
-	}
+        Answers.safeLogEvent(
+                new CustomEvent("Viewed Legal")
+        );
 
-	@Override public void onDestroy() {
-		super.onDestroy();
-		unbinder.unbind();
-	}
+        return layoutContainer;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 
 	/*	@OnClick(R.id.testNotify) public void onViewClicked() {
 		NotificationLEDUtil.flashLED(getActivity(), NotificationColor.RED);

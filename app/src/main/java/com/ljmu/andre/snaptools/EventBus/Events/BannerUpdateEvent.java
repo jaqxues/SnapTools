@@ -6,13 +6,13 @@ package com.ljmu.andre.snaptools.EventBus.Events;
  */
 
 public class BannerUpdateEvent {
-	public static final int MASTER_SWITCH = 0;
-	public static final int APK_UPDATE = 1;
-	public static final int PACK_UPDATE = 2;
+    public static final int MASTER_SWITCH = 0;
+    public static final int APK_UPDATE = 1;
+    public static final int PACK_UPDATE = 2;
 
-	public final int eventType;
+    public final int eventType;
 
-	public BannerUpdateEvent(int eventType) {
-		this.eventType = eventType;
-	}
+    public BannerUpdateEvent(int eventType) {
+        this.eventType = eventType;
+    }
 }

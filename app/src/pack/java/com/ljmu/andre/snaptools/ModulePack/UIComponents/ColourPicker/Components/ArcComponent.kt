@@ -51,7 +51,7 @@ internal abstract class ArcComponent(metrics: Metrics, paints: Paints) : ColorCo
         if (borderWidth > 0) {
             shaderPaint.shader = null
             shaderPaint.color = if (strokeColor == 0) Color.WHITE else strokeColor
-            shaderPaint.strokeWidth = strokeWidth + borderWidth*2
+            shaderPaint.strokeWidth = strokeWidth + borderWidth * 2
             canvas.drawArc(innerCircleArcReference, arcStartAngle, arcLength, false, shaderPaint)
         }
 

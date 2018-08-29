@@ -1,9 +1,10 @@
 package com.ljmu.andre.snaptools.Repackaging;
 
 import android.app.Activity;
-
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.topjohnwu.superuser.io.SuFileOutputStream;
+import io.reactivex.ObservableEmitter;
+import timber.log.Timber;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,12 +16,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.jar.JarEntry;
 
-import io.reactivex.ObservableEmitter;
-import timber.log.Timber;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.*;
 import static com.ljmu.andre.snaptools.Repackaging.RepackageUtil.findAndPatch;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
@@ -32,148 +28,152 @@ import static com.ljmu.andre.snaptools.Utils.ShellUtils.sendCommandSync;
  */
 public class RepackageManager {
 
-	public static void repackageApplication(Activity activity, ObservableEmitter<String> emitter)
-			throws RepackageException {
-		emitter.onNext("Generating package name...");
+    public static void repackageApplication(Activity activity, ObservableEmitter<String> emitter)
+            throws RepackageException {
+        emitter.onNext("Generating package name...");
 
-		// ===========================================================================
-		Timber.d("Retrieving Repackage Observable");
+        // ===========================================================================
+        Timber.d("Retrieving Repackage Observable");
 
-		String obfusPackageName = RepackageUtil.genPackageName("com.", Constants.ORIG_PACKAGE.length());
-		Timber.d("Obfuscating package to: " + obfusPackageName);
+        String obfusPackageName = RepackageUtil.genPackageName("com.", Constants.ORIG_PACKAGE.length());
+        Timber.d("Obfuscating package to: " + obfusPackageName);
 
-		File contentPath = Assert.notNull("Null content path for repackaging", getCreateDir(CONTENT_PATH));
-		File repackFile = new File(contentPath, "repack.apk");
-		Timber.d("Repacking apk to file: " + repackFile);
-		// ===========================================================================
+        File contentPath = Assert.notNull("Null content path for repackaging", getCreateDir(CONTENT_PATH));
+        File repackFile = new File(contentPath, "repack.apk");
+        Timber.d("Repacking apk to file: " + repackFile);
+        // ===========================================================================
 
-		/**
-		 * ===========================================================================
-		 * Patch Manifest and Resign apk into the repackFile variable
-		 * ===========================================================================
-		 */
-		getPatchObservable(activity, emitter, obfusPackageName, repackFile);
-		// ===========================================================================
+        /**
+         * ===========================================================================
+         * Patch Manifest and Resign apk into the repackFile variable
+         * ===========================================================================
+         */
+        getPatchObservable(activity, emitter, obfusPackageName, repackFile);
+        // ===========================================================================
 
-		/**
-		 * ===========================================================================
-		 * Use root to install the newly repackaged apk
-		 * ===========================================================================
-		 */
-		emitter.onNext("Installing repackaged application");
-		if (!sendCommandSync("pm install -t " + repackFile)) {
-			throw new RepackageException("Failed to install repackaged application");
-		}
-		// ===========================================================================
+        /**
+         * ===========================================================================
+         * Use root to install the newly repackaged apk
+         * ===========================================================================
+         */
+        emitter.onNext("Installing repackaged application");
+        if (!sendCommandSync("pm install -t " + repackFile)) {
+//			throw new RepackageException("Failed to install repackaged application");
+            // fixme Test on emulator: Successful installation threw this exception
+            // check output
+        }
+        // ===========================================================================
 
-		/**
-		 * ===========================================================================
-		 * Use root to remove any previously repackaged apps
-		 * This will likely fail as repackaging will generally only be required for
-		 * default distributed apk's
-		 * ===========================================================================
-		 */
-		String previousRepackageName = getPref(REPACKAGE_NAME);
-		putPref(REPACKAGE_NAME, obfusPackageName);
+        /**
+         * ===========================================================================
+         * Use root to remove any previously repackaged apps
+         * This will likely fail as repackaging will generally only be required for
+         * default distributed apk's
+         * ===========================================================================
+         */
+        String previousRepackageName = getPref(REPACKAGE_NAME);
+        putPref(REPACKAGE_NAME, obfusPackageName);
 
-		if (previousRepackageName != null) {
-			emitter.onNext("Uninstalling alternate repackages");
+        if (previousRepackageName != null) {
+            emitter.onNext("Uninstalling alternate repackages");
 
-			if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
-				Timber.e("Couldn't find previously repackaged app!");
-			}
-		}
-		// ===========================================================================
+            if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
+                Timber.e("Couldn't find previously repackaged app!");
+            }
+        }
+        // ===========================================================================
 
-		/**
-		 * ===========================================================================
-		 * Use root to remove any previous default apks
-		 * ===========================================================================
-		 */
-		// TODO: Reword
-		emitter.onNext("Uninstalling original application");
-		if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
-			throw new RepackageException("Failed to uninstall original application");
-		}
-		// ===========================================================================
+        /**
+         * ===========================================================================
+         * Use root to remove any previous default apks
+         * ===========================================================================
+         */
+        // TODO: Reword
+        emitter.onNext("Uninstalling original application");
+        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
+//			throw new RepackageException("Failed to uninstall original application");
+            // fixme Test on emulator: Successful un-installation threw this exception
+            // check output
+        }
+        // ===========================================================================
 
-		emitter.onNext("Completed ");
-	}
+        emitter.onNext("Completed ");
+    }
 
-	private static void getPatchObservable(Activity activity, ObservableEmitter<String> emitter,
-	                                       String obfusPackageName, File repackFile) throws RepackageException {
-		Timber.d("Calling patch observable");
+    private static void getPatchObservable(Activity activity, ObservableEmitter<String> emitter,
+                                           String obfusPackageName, File repackFile) throws RepackageException {
+        Timber.d("Calling patch observable");
 
-		/**
-		 * ===========================================================================
-		 * STEALING MAGISK CODE YO
-		 * ===========================================================================
-		 */
-		InputStream codePathStream;
-		JarMap apk;
+        /**
+         * ===========================================================================
+         * STEALING MAGISK CODE YO
+         * ===========================================================================
+         */
+        InputStream codePathStream;
+        JarMap apk;
 
-		try {
-			// Read whole APK into memory
-			codePathStream = new FileInputStream(activity.getPackageCodePath());
-			apk = new JarMap(codePathStream);
-			JarEntry je = new JarEntry(Constants.ANDROID_MANIFEST);
-			byte xml[] = apk.getRawData(je);
+        try {
+            // Read whole APK into memory
+            codePathStream = new FileInputStream(activity.getPackageCodePath());
+            apk = new JarMap(codePathStream);
+            JarEntry je = new JarEntry(Constants.ANDROID_MANIFEST);
+            byte xml[] = apk.getRawData(je);
 
-			emitter.onNext("Rewriting manifest...");
+            emitter.onNext("Rewriting manifest...");
 
-			Timber.d("Manifest: " + new String(xml, "UTF-8"));
+            Timber.d("Manifest: " + new String(xml, "UTF-8"));
 
-			if (!findAndPatch(xml, Constants.ORIG_PACKAGE, obfusPackageName))
-				throw new RepackageException("Couldn't find/patch original package");
+            if (!findAndPatch(xml, Constants.ORIG_PACKAGE, obfusPackageName))
+                throw new RepackageException("Couldn't find/patch original package");
 
-			Timber.d("Patching original package complete");
+            Timber.d("Patching original package complete");
 
-			if (!findAndPatch(xml, Constants.ORIG_PACKAGE + ".provider", obfusPackageName + ".provider"))
-				throw new RepackageException("Couldn't find/patch original package provider");
+            if (!findAndPatch(xml, Constants.ORIG_PACKAGE + ".provider", obfusPackageName + ".provider"))
+                throw new RepackageException("Couldn't find/patch original package provider");
 
-			if (!findAndPatch(xml, Constants.ORIG_PACKAGE + ".apk_provider", obfusPackageName + ".apk_provider"))
-				throw new RepackageException("Couldn't find/patch original package apk provider");
+            if (!findAndPatch(xml, Constants.ORIG_PACKAGE + ".apk_provider", obfusPackageName + ".apk_provider"))
+                throw new RepackageException("Couldn't find/patch original package apk provider");
 
-			Timber.d("Patching original package provider complete");
-			apk.getOutputStream(je).write(xml);
+            Timber.d("Patching original package provider complete");
+            apk.getOutputStream(je).write(xml);
 
-			emitter.onNext("Resigning application...");
-			InputStream providedCertInputStream = activity.getResources().getAssets().open("testkey.pem");
+            emitter.onNext("Resigning application...");
+            InputStream providedCertInputStream = activity.getResources().getAssets().open("certificate.pem");
 
-			CertificateFactory cf = CertificateFactory.getInstance("X.509");
-			X509Certificate providedCertificate = (X509Certificate)
-					cf.generateCertificate(providedCertInputStream);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            X509Certificate providedCertificate = (X509Certificate)
+                    cf.generateCertificate(providedCertInputStream);
 
-			providedCertInputStream.close();
+            providedCertInputStream.close();
 
-			InputStream privateKeyStream = activity.getResources().getAssets().open("testkey.pk8");
-			PrivateKey privateKey = CryptoUtils.readPrivateKey(privateKeyStream);
+            InputStream privateKeyStream = activity.getResources().getAssets().open("key.pk8");
+            PrivateKey privateKey = CryptoUtils.readPrivateKey(privateKeyStream);
 
-			privateKeyStream.close();
+            privateKeyStream.close();
 
-			Timber.d("Provided Cert: " + providedCertificate.getSigAlgName());
-			Timber.d("Provided Key: " + privateKey.getAlgorithm());
+            Timber.d("Provided Cert: " + providedCertificate.getSigAlgName());
+            Timber.d("Provided Key: " + privateKey.getAlgorithm());
 
-			// Sign the APK
-			try {
-				ZipUtils.signZip(providedCertificate, privateKey, apk, new SuFileOutputStream(repackFile));
-			} catch (Exception e) {
-				throw new RepackageException("Couldn't sign repackaged application!");
-			}
+            // Sign the APK
+            try {
+                ZipUtils.signZip(providedCertificate, privateKey, apk, new SuFileOutputStream(repackFile));
+            } catch (Exception e) {
+                throw new RepackageException("Couldn't sign repackaged application!");
+            }
 
-			Timber.d("Repackage success");
-			emitter.onNext("Successfully signed apk!");
-		} catch (IOException e) {
-			// TODO: Reword error
-			throw new RepackageException("Couldn't access file");
-		} catch (GeneralSecurityException e) {
-			throw new RepackageException("Couldn't create application signatures!");
-		}
-	}
+            Timber.d("Repackage success");
+            emitter.onNext("Successfully signed apk!");
+        } catch (IOException e) {
+            // TODO: Reword error
+            throw new RepackageException("Couldn't access file");
+        } catch (GeneralSecurityException e) {
+            throw new RepackageException("Couldn't create application signatures!");
+        }
+    }
 
-	private static class RepackageException extends Exception {
-		public RepackageException(String message) {
-			super(message);
-		}
-	}
+    private static class RepackageException extends Exception {
+        public RepackageException(String message) {
+            super(message);
+        }
+    }
 }

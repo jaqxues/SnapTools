@@ -27,7 +27,7 @@ class ModularDialogContainer : DialogComponent {
 
                     frameLayout {
                         backgroundResource = R.drawable.border
-                    }.lparams (width = matchParent){
+                    }.lparams(width = matchParent) {
                         sameTop(container)
                         sameBottom(container)
                     }

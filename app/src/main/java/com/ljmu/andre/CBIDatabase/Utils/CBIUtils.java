@@ -12,20 +12,20 @@ import java.util.Map;
  */
 
 public class CBIUtils {
-	public static Map<String, Object> getTableHeaders(Class<? extends CBIObject> cbiClass) {
-		TableName tableNameAnnotation = cbiClass.getAnnotation(TableName.class);
-		if(tableNameAnnotation == null)
-			throw new IllegalArgumentException("A database table REQUIRES a TableName annotation");
+    public static Map<String, Object> getTableHeaders(Class<? extends CBIObject> cbiClass) {
+        TableName tableNameAnnotation = cbiClass.getAnnotation(TableName.class);
+        if (tableNameAnnotation == null)
+            throw new IllegalArgumentException("A database table REQUIRES a TableName annotation");
 
-		String name = tableNameAnnotation.value();
-		int version = tableNameAnnotation.VERSION();
+        String name = tableNameAnnotation.value();
+        int version = tableNameAnnotation.VERSION();
 
-		if (name.equals("{NUL}"))
-			throw new IllegalArgumentException("Table " + cbiClass.getCanonicalName() + " must be given a name");
+        if (name.equals("{NUL}"))
+            throw new IllegalArgumentException("Table " + cbiClass.getCanonicalName() + " must be given a name");
 
-		return ImmutableMap.<String, Object>builder()
-				.put("name", name)
-				.put("version", version)
-				.build();
-	}
+        return ImmutableMap.<String, Object>builder()
+                .put("name", name)
+                .put("version", version)
+                .build();
+    }
 }

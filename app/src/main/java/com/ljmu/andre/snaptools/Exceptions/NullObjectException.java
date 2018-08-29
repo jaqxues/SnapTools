@@ -6,17 +6,17 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class NullObjectException extends Exception {
-	@SuppressWarnings("unused")
-	public static final String TAG = NullObjectException.class.getSimpleName();
-	private static final long serialVersionUID = -4221668985038919489L;
-	private final String objectName;
+    @SuppressWarnings("unused")
+    public static final String TAG = NullObjectException.class.getSimpleName();
+    private static final long serialVersionUID = -4221668985038919489L;
+    private final String objectName;
 
-	public NullObjectException(String message, String objectName) {
-		super(message);
-		this.objectName = objectName;
-	}
+    public NullObjectException(String message, String objectName) {
+        super(message);
+        this.objectName = objectName;
+    }
 
-	public String getNullName() {
-		return objectName;
-	}
+    public String getNullName() {
+        return objectName;
+    }
 }

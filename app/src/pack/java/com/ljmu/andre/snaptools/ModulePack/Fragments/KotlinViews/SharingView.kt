@@ -2,9 +2,7 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.support.v4.content.ContextCompat
 import android.view.Gravity
-import android.widget.CompoundButton
 import android.widget.LinearLayout
 import com.ljmu.andre.GsonPreferences.Preferences.getPref
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
@@ -56,7 +54,7 @@ class SharingView {
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_show_compression_dialog")
 
-                        if(Constants.getApkVersionCode() >= 65) {
+                        if (Constants.getApkVersionCode() >= 65) {
                             isChecked = getPref(SHOW_VIDEO_COMPRESSION_DIALOG)
                             setOnCheckedChangeListener({ _, isChecked -> putAndKill(SHOW_VIDEO_COMPRESSION_DIALOG, isChecked, activity) })
                         } else {

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.StoryBlockerViewProvider;
 
@@ -17,15 +16,19 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
  */
 
 public class StoryBlockingSettingsFragment extends FragmentHelper {
-	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return new StoryBlockerViewProvider().getContainer(getActivity());
-	}
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return new StoryBlockerViewProvider().getContainer(getActivity());
+    }
 
-	@Override public String getName() {
-		return "Story Blocker";
-	}
+    @Override
+    public String getName() {
+        return "Story Blocker";
+    }
 
-	@Override public Integer getMenuId() {
-		return getIdFromString(getName());
-	}
+    @Override
+    public Integer getMenuId() {
+        return getIdFromString(getName());
+    }
 }

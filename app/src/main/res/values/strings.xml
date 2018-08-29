@@ -11,6 +11,7 @@
     <string name="permission_request_msg">This application requires External Storage Read/Write access. Without these permissions the application will terminate</string>
     <string name="permission_request_title">Permissions Request</string>
     <string name="module_inactive">Module Inactive: Activate module and reboot</string>
+    <string name="virtual_xposed">Detected Virtual Xposed. Bugs are to be expected</string>
     <string name="banner_apk_update">App Update Available</string>
     <string name="banner_pack_update">Pack Update Available</string>
     <string name="master_switch_disabled">Master Switch Is Off: All functions are disabled</string>

@@ -3,8 +3,8 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <corners android:radius="10dp"/>
-                <solid android:color="@color/primaryLight"/>
+                <corners android:radius="10dp" />
+                <solid android:color="@color/primaryLight" />
             </shape>
         </clip>
     </item>
@@ -13,8 +13,8 @@
         <shape>
             <stroke
                 android:width="2dp"
-                android:color="#222222"/>
-            <corners android:radius="5dp"/>
+                android:color="#222222" />
+            <corners android:radius="5dp" />
         </shape>
     </item>
 </layer-list>

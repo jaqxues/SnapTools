@@ -11,12 +11,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * ===========================================================================
  */
 class PreferenceMap extends ConcurrentHashMap<String, Preference> {
-	private static final long serialVersionUID = 2162788535918724249L;
+    private static final long serialVersionUID = 2162788535918724249L;
 
-	PreferenceMap() {
-	}
+    PreferenceMap() {
+    }
 
-	PreferenceMap(Map<? extends String, ? extends Preference> m) {
-		super(m);
-	}
+    PreferenceMap(Map<? extends String, ? extends Preference> m) {
+        super(m);
+    }
 }

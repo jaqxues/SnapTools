@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.ljmu.andre.GsonPreferences.Preferences.getPref
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInput
-import com.ljmu.andre.snaptools.Dialogs.Content.TextInputBasic
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter

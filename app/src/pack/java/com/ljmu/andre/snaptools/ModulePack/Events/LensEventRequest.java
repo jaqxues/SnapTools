@@ -1,6 +1,5 @@
 package com.ljmu.andre.snaptools.ModulePack.Events;
 
-import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest.EventRequest;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.LensObject;
 
 /**
@@ -9,23 +8,23 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.LensObject;
  */
 
 public class LensEventRequest {
-	private LensEvent lensEvent;
-	private LensObject lens;
+    private LensEvent lensEvent;
+    private LensObject lens;
 
-	public LensEventRequest(LensEvent lensEvent, LensObject lens) {
-		this.lensEvent = lensEvent;
-		this.lens = lens;
-	}
+    public LensEventRequest(LensEvent lensEvent, LensObject lens) {
+        this.lensEvent = lensEvent;
+        this.lens = lens;
+    }
 
-	public LensEvent getLensEvent() {
-		return lensEvent;
-	}
+    public LensEvent getLensEvent() {
+        return lensEvent;
+    }
 
-	public LensObject getLens() {
-		return lens;
-	}
+    public LensObject getLens() {
+        return lens;
+    }
 
-	public enum LensEvent {
-		LOAD, UNLOAD, DELETE, ACTION_MENU
-	}
+    public enum LensEvent {
+        LOAD, UNLOAD, DELETE, ACTION_MENU
+    }
 }

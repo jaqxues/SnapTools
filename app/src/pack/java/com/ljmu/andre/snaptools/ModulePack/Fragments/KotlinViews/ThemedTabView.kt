@@ -2,10 +2,11 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
-import android.view.View
 import com.kekstudio.dachshundtablayout.DachshundTabLayout
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
-import org.jetbrains.anko.*
+import org.jetbrains.anko.AnkoComponent
+import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.backgroundResource
 import org.jetbrains.anko.custom.ankoView
 
 /**
@@ -13,7 +14,7 @@ import org.jetbrains.anko.custom.ankoView
  * It and its contents are free to use by all
  */
 
-class ThemedTabView: AnkoComponent<Context> {
+class ThemedTabView : AnkoComponent<Context> {
     override fun createView(ui: AnkoContext<Context>): DachshundTabLayout = with(ui) {
         ankoView(::DachshundTabLayout, 0) {
             id = ResourceUtils.getIdFromString("tab_layout")

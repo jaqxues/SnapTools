@@ -10,10 +10,10 @@ import java.util.List;
  */
 
 public class PackHistoryListPacket extends AuthResultPacket {
-	@SerializedName("packs")
-	private List<PackHistoryObject> packHistories;
+    @SerializedName("packs")
+    private List<PackHistoryObject> packHistories;
 
-	public List<PackHistoryObject> getPackHistories() {
-		return packHistories;
-	}
+    public List<PackHistoryObject> getPackHistories() {
+        return packHistories;
+    }
 }

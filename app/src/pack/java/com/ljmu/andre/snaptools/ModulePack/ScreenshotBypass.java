@@ -1,9 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
-
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
-
 import de.robv.android.xposed.XC_MethodReplacement;
 
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SCREENSHOT_BYPASS;
@@ -14,22 +12,24 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SCREEN
  */
 
 public class ScreenshotBypass extends ModuleHelper {
-	public ScreenshotBypass(String name, boolean canBeDisabled) {
-		super(name, canBeDisabled);
-	}
+    public ScreenshotBypass(String name, boolean canBeDisabled) {
+        super(name, canBeDisabled);
+    }
 
-	// ===========================================================================
+    // ===========================================================================
 
-	@Override public FragmentHelper[] getUIFragments() {
-		return null;
-	}
+    @Override
+    public FragmentHelper[] getUIFragments() {
+        return null;
+    }
 
-	// ===========================================================================
+    // ===========================================================================
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
-		hookMethod(
-				SCREENSHOT_BYPASS,
-				XC_MethodReplacement.DO_NOTHING);
+    @Override
+    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+        hookMethod(
+                SCREENSHOT_BYPASS,
+                XC_MethodReplacement.DO_NOTHING);
 
 		/*hookMethod(
 				SET_SCREENSHOT_COUNT,
@@ -52,5 +52,5 @@ public class ScreenshotBypass extends ModuleHelper {
 						param.args[0] = 0L;
 					}
 				});*/
-	}
+    }
 }

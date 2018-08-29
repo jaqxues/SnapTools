@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/container"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?android:attr/selectableItemBackground"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
-
-<LinearLayout
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
-    <ImageView
-        android:id="@+id/img_arrow"
-        style="@style/DropdownButton"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:tint="@color/textPrimary"
-        android:layout_gravity="center_vertical"
-        android:padding="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/img_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:layout_gravity="center"
-        android:tint="@color/primaryLight"/>
+        <ImageView
+            android:id="@+id/img_arrow"
+            style="@style/DropdownButton"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:tint="@color/textPrimary"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp" />
 
-    <TextView
-        android:id="@+id/txt_listable"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:text="@string/placeholder"
-        android:textColor="@color/textPrimary"
-        android:textSize="14sp"
-        android:layout_weight="1"
-        android:textStyle="bold"
-        android:theme="@style/AppTheme"/>
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="center"
+            android:tint="@color/primaryLight" />
 
-    <TextView
-        android:id="@+id/lbl_price"
-        style="@style/HeaderText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_gravity="center"
-        android:text="@string/placeholder"
-        android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txt_listable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/placeholder"
+            android:textColor="@color/textPrimary"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:theme="@style/AppTheme" />
 
-    <ImageView
-        android:id="@+id/img_state"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:layout_gravity="center"
-        android:text="@string/placeholder"/>
+        <TextView
+            android:id="@+id/lbl_price"
+            style="@style/HeaderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="center"
+            android:text="@string/placeholder"
+            android:textSize="14sp" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/img_state"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="center"
+            android:text="@string/placeholder" />
 
-<View
-    android:id="@+id/splitter"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/textPrimaryWashed"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/splitter"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textPrimaryWashed" />
 </LinearLayout>

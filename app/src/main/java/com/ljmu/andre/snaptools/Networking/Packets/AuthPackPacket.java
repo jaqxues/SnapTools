@@ -9,14 +9,15 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class AuthPackPacket extends AuthResultPacket {
-	@SerializedName("token")
-	public String token;
+    @SerializedName("token")
+    public String token;
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("token", token)
-				.add("", super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("token", token)
+                .add("", super.toString())
+                .toString();
+    }
 }

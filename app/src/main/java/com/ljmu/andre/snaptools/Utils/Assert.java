@@ -8,53 +8,55 @@ import timber.log.Timber;
  */
 
 public class Assert {
-	public static String stringExists(String errorMsg, String string) throws IllegalArgumentException {
-		if (string == null || string.isEmpty())
-			throw new IllegalArgumentException(errorMsg);
+    public static String stringExists(String errorMsg, String string) throws IllegalArgumentException {
+        if (string == null || string.isEmpty())
+            throw new IllegalArgumentException(errorMsg);
 
-		return string;
-	}
+        return string;
+    }
 
-	public static void notNull(String errorMsg, Object... params) throws IllegalArgumentException {
-		for (Object obj : params) {
-			if (obj == null)
-				throw new IllegalArgumentException(errorMsg);
-		}
-	}
+    public static void notNull(String errorMsg, Object... params) throws IllegalArgumentException {
+        for (Object obj : params) {
+            if (obj == null)
+                throw new IllegalArgumentException(errorMsg);
+        }
+    }
 
-	@SuppressWarnings("unchecked") public static <T> T notNull(String errorMsg, T param) throws IllegalArgumentException {
-		if (param == null)
-			throw new IllegalArgumentException(errorMsg);
+    @SuppressWarnings("unchecked")
+    public static <T> T notNull(String errorMsg, T param) throws IllegalArgumentException {
+        if (param == null)
+            throw new IllegalArgumentException(errorMsg);
 
-		return param;
-	}
+        return param;
+    }
 
-	@SuppressWarnings("unchecked") public static <T extends Throwable, T2> T2 notNull(T throwable, T2 param) throws T {
-		if (param == null)
-			throw throwable;
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable, T2> T2 notNull(T throwable, T2 param) throws T {
+        if (param == null)
+            throw throwable;
 
-		return param;
-	}
+        return param;
+    }
 
-	@RequiresFramework(73)
-	public static boolean nonFatalAssert(String errorMsgTemplate, Object... params) {
-		boolean hasNull = false;
+    @RequiresFramework(73)
+    public static boolean nonFatalAssert(String errorMsgTemplate, Object... params) {
+        boolean hasNull = false;
 
-		int index = -1;
-		for (Object obj : params) {
-			index++;
+        int index = -1;
+        for (Object obj : params) {
+            index++;
 
-			if (obj == null) {
-				params[index] = "null";
-				hasNull = true;
-			}
-		}
+            if (obj == null) {
+                params[index] = "null";
+                hasNull = true;
+            }
+        }
 
-		if(hasNull) {
-			String errorMessage = String.format(errorMsgTemplate, params);
-			Timber.e(new Exception(errorMessage));
-		}
+        if (hasNull) {
+            String errorMessage = String.format(errorMsgTemplate, params);
+            Timber.e(new Exception(errorMessage));
+        }
 
-		return hasNull;
-	}
+        return hasNull;
+    }
 }

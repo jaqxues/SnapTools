@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <View
@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/message_container"
         android:layout_alignParentTop="true"
-        android:background="@color/primary"/>
+        android:background="@color/primary" />
 
     <LinearLayout
         android:id="@+id/message_container"
@@ -28,7 +28,7 @@
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
-            android:text="@string/placeholder"/>
+            android:text="@string/placeholder" />
 
         <TextView
             android:id="@+id/txt_time"
@@ -38,13 +38,13 @@
             android:paddingEnd="15dp"
             android:paddingStart="15dp"
             android:text="@string/placeholder"
-            android:textColor="@color/textTertiary"/>
+            android:textColor="@color/textTertiary" />
 
         <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/backgroundPrimaryFaint"/>
+            android:background="@color/backgroundPrimaryFaint" />
     </LinearLayout>
 
 </RelativeLayout>

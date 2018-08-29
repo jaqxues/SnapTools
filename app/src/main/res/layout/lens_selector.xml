@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/dialog_background"
-                android:orientation="vertical"
-                android:padding="3dp"
-                android:theme="@style/ActivityDialog">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    android:padding="3dp"
+    android:theme="@style/ActivityDialog">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lens_list_holder"
@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/lens_toolbar_container"
-        android:scrollbars="vertical">
-    </android.support.v7.widget.RecyclerView>
+        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/lens_toolbar_container"
@@ -35,7 +34,7 @@
                 android:id="@+id/splitter2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primary"/>
+                android:background="@color/primary" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_show_names"
@@ -44,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:text="Show Lens Names"/>
+                android:text="Show Lens Names" />
 
             <FrameLayout
                 android:id="@+id/lens_span_count"
@@ -59,7 +58,7 @@
                     android:max="10"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:progress="1"/>
+                    android:progress="1" />
             </FrameLayout>
 
             <LinearLayout
@@ -78,7 +77,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="Name Filter"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/lens_filter"
@@ -93,8 +92,7 @@
                     android:inputType="textPersonName"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    />
+                    android:paddingRight="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -114,7 +112,7 @@
                     android:layout_weight="1"
                     android:paddingBottom="0dp"
                     android:paddingTop="0dp"
-                    android:text="Select All"/>
+                    android:text="Select All" />
 
                 <Button
                     android:id="@+id/btn_deselect_all_lenses"
@@ -124,7 +122,7 @@
                     android:layout_weight="1"
                     android:paddingBottom="0dp"
                     android:paddingTop="0dp"
-                    android:text="Deselect All"/>
+                    android:text="Deselect All" />
             </LinearLayout>
         </LinearLayout>
 
@@ -142,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:padding="10dp"
-                android:rotation="180"/>
+                android:rotation="180" />
 
             <TextView
                 android:id="@+id/txt_listable"
@@ -156,7 +154,7 @@
                 android:textColor="@color/primaryLight"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:theme="@style/AppTheme"/>
+                android:theme="@style/AppTheme" />
 
             <ImageButton
                 android:id="@+id/img_done"
@@ -172,14 +170,14 @@
                 android:scaleX="0.75"
                 android:scaleY="0.75"
                 android:text="@string/placeholder"
-                app:srcCompat="@drawable/ok_icon"/>
+                app:srcCompat="@drawable/ok_icon" />
 
             <View
                 android:id="@+id/splitter"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentTop="true"
-                android:background="@color/primary"/>
+                android:background="@color/primary" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

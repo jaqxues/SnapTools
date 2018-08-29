@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.util.SparseIntArray;
-
 import com.ljmu.andre.snaptools.BuildConfig;
-
-
 import timber.log.Timber;
 
 /**
@@ -16,49 +13,49 @@ import timber.log.Timber;
  */
 
 public class ResourceMapper {
-	private static SparseIntArray resourceMap = new SparseIntArray();
+    private static SparseIntArray resourceMap = new SparseIntArray();
 
-	public static SparseIntArray getMap() {
-		return resourceMap;
-	}
+    public static SparseIntArray getMap() {
+        return resourceMap;
+    }
 
-	public static Integer getFakeRes(Integer res) {
-		Integer fakeId = resourceMap.get(res);
+    public static Integer getFakeRes(Integer res) {
+        Integer fakeId = resourceMap.get(res);
 
-		if (fakeId == 0) {
-			Timber.d("Fake Resource not found [Id: %s]", res);
-			return res;
-		}
+        if (fakeId == 0) {
+            Timber.d("Fake Resource not found [Id: %s]", res);
+            return res;
+        }
 
-		return fakeId;
-	}
+        return fakeId;
+    }
 
-	public static void mapAllColors(XModuleResources moduleResources, Integer... ids) {
-		for (Integer id : ids)
-			mapColor(moduleResources, id);
-	}
+    public static void mapAllColors(XModuleResources moduleResources, Integer... ids) {
+        for (Integer id : ids)
+            mapColor(moduleResources, id);
+    }
 
-	public static void mapColor(XModuleResources moduleResources, Integer res) {
-		if (resourceMap.get(res) != 0)
-			resourceMap.put(res, moduleResources.getColor(res, null));
-	}
+    public static void mapColor(XModuleResources moduleResources, Integer res) {
+        if (resourceMap.get(res) != 0)
+            resourceMap.put(res, moduleResources.getColor(res, null));
+    }
 
-	public static void mapAll(XResources xResources, XModuleResources target, Integer... ids) {
-		for (Integer id : ids)
-			mapResource(xResources, target, id);
-	}
+    public static void mapAll(XResources xResources, XModuleResources target, Integer... ids) {
+        for (Integer id : ids)
+            mapResource(xResources, target, id);
+    }
 
-	public static void mapResource(XResources xResources, XModuleResources target, Integer res) {
-		addFakeRes(res, xResources.addResource(target, res));
-	}
+    public static void mapResource(XResources xResources, XModuleResources target, Integer res) {
+        addFakeRes(res, xResources.addResource(target, res));
+    }
 
-	public static void addFakeRes(Integer originalRes, Integer fakeRes) {
-		Timber.d("Putting Res [Original: %s][Fake: %s]", originalRes, fakeRes);
+    public static void addFakeRes(Integer originalRes, Integer fakeRes) {
+        Timber.d("Putting Res [Original: %s][Fake: %s]", originalRes, fakeRes);
 
-		resourceMap.put(originalRes, fakeRes);
-	}
+        resourceMap.put(originalRes, fakeRes);
+    }
 
-	public static int getResId(Context context, String tag, String type) {
-		return context.getResources().getIdentifier(tag, type, BuildConfig.APPLICATION_ID);
-	}
+    public static int getResId(Context context, String tag, String type) {
+        return context.getResources().getIdentifier(tag, type, BuildConfig.APPLICATION_ID);
+    }
 }

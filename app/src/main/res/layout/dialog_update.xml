@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
         </LinearLayout>
     </ScrollView>
 
@@ -39,7 +39,7 @@
             android:gravity="center"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
-            android:text="Ignore\nVersion"/>
+            android:text="Ignore\nVersion" />
 
         <Button
             android:id="@+id/btn_dismiss"
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
-            android:text="Dismiss"/>
+            android:text="Dismiss" />
 
         <Button
             android:id="@+id/btn_update"
@@ -65,7 +65,7 @@
             android:gravity="center"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
-            android:text="Update"/>
+            android:text="Update" />
     </TableRow>
 
 </LinearLayout>

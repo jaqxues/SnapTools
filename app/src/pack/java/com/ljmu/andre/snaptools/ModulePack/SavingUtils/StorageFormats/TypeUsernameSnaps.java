@@ -17,55 +17,58 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDI
 
 public class TypeUsernameSnaps extends StorageFormat {
 
-	@Override public List<File> getSnapTypeFolders(SnapType snapType) {
-		List<File> typeFolderList = new ArrayList<>();
-		typeFolderList.add(
-				new File(
-						getPref(MEDIA_PATH)
-								+ File.separator
-								+ snapType.getFolderName()
-				)
-		);
+    @Override
+    public List<File> getSnapTypeFolders(SnapType snapType) {
+        List<File> typeFolderList = new ArrayList<>();
+        typeFolderList.add(
+                new File(
+                        getPref(MEDIA_PATH)
+                                + File.separator
+                                + snapType.getFolderName()
+                )
+        );
 
-		return typeFolderList;
-	}
+        return typeFolderList;
+    }
 
-	/**
-	 * ===========================================================================
-	 * Build an appropriate outputfile based on this StorageFormat
-	 * ===========================================================================
-	 */
-	@Override public File getOutputFile(SnapType snapType, String username, String filename) {
-		File parentDir = new File(
-				getPref(MEDIA_PATH)
-						+ File.separator
-						+ snapType.getFolderName()
-						+ File.separator
-						+ username
-		);
+    /**
+     * ===========================================================================
+     * Build an appropriate outputfile based on this StorageFormat
+     * ===========================================================================
+     */
+    @Override
+    public File getOutputFile(SnapType snapType, String username, String filename) {
+        File parentDir = new File(
+                getPref(MEDIA_PATH)
+                        + File.separator
+                        + snapType.getFolderName()
+                        + File.separator
+                        + username
+        );
 
-		//noinspection ResultOfMethodCallIgnored
-		parentDir.mkdirs();
+        //noinspection ResultOfMethodCallIgnored
+        parentDir.mkdirs();
 
-		return new File(
-				parentDir,
-				filename
-		);
-	}
+        return new File(
+                parentDir,
+                filename
+        );
+    }
 
-	/**
-	 * ===========================================================================
-	 * Attempt to determine if a file was using the
-	 * {@link #getOutputFile(SnapType, String, String)} from this StorageFormat
-	 * <p>
-	 * The method used isn't efficient or elegant however it works for now
-	 * ===========================================================================
-	 */
-	@Override public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
-		// If getSnapTypeFromFile returns a SnapType, we can be sure it's the right format
-		File usernameDir = snapFile.getParentFile();
-		File snapTypeDir = usernameDir.getParentFile();
+    /**
+     * ===========================================================================
+     * Attempt to determine if a file was using the
+     * {@link #getOutputFile(SnapType, String, String)} from this StorageFormat
+     * <p>
+     * The method used isn't efficient or elegant however it works for now
+     * ===========================================================================
+     */
+    @Override
+    public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
+        // If getSnapTypeFromFile returns a SnapType, we can be sure it's the right format
+        File usernameDir = snapFile.getParentFile();
+        File snapTypeDir = usernameDir.getParentFile();
 
-		return snapTypeDir.getName().equals(snapType.getFolderName());
-	}
+        return snapTypeDir.getName().equals(snapType.getFolderName());
+    }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_shared_image"
@@ -11,8 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ljmu.andre.snaptools.SharedImageActivity">
 
-    <com.isseiaoki.simplecropview.CropImageView
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
+    <com.isseiaoki.simplecropview.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +31,7 @@
         custom:scv_handle_size="10dp"
         custom:scv_min_frame_size="0dp"
         custom:scv_overlay_color="#BB000000"
-        custom:scv_touch_padding="8dp"/>
+        custom:scv_touch_padding="8dp" />
 
     <View
         android:id="@+id/splitter"
@@ -42,14 +40,13 @@
         android:layout_above="@id/crop_toolbar"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/primaryLight"/>
+        android:background="@color/primaryLight" />
 
     <TableRow
         android:id="@+id/crop_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
 
 
         <FrameLayout
@@ -67,7 +64,7 @@
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 android:tint="@color/textPrimary"
-                app:srcCompat="@drawable/delete_96"/>
+                app:srcCompat="@drawable/delete_96" />
         </FrameLayout>
 
 
@@ -86,7 +83,7 @@
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 android:tint="@color/textPrimary"
-                app:srcCompat="@drawable/rotate_left_96"/>
+                app:srcCompat="@drawable/rotate_left_96" />
         </FrameLayout>
 
 
@@ -106,8 +103,7 @@
                 android:scaleX="0.5"
                 android:layout_gravity="center"
                 android:scaleY="0.5"
-                android:tint="@color/textPrimary">
-            </ImageView>
+                android:tint="@color/textPrimary"></ImageView>
         </FrameLayout>
 
 
@@ -127,8 +123,7 @@
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 android:layout_gravity="center"
-                android:tint="@color/textPrimary">
-            </ImageView>
+                android:tint="@color/textPrimary"></ImageView>
         </FrameLayout>
 
 
@@ -147,7 +142,7 @@
                 android:layout_gravity="center"
                 android:scaleY="0.5"
                 android:tint="@color/textPrimary"
-                app:srcCompat="@drawable/rotate_right_96"/>
+                app:srcCompat="@drawable/rotate_right_96" />
         </FrameLayout>
 
         <FrameLayout
@@ -163,7 +158,7 @@
                 android:scaleY="0.5"
                 android:layout_gravity="center"
                 android:tint="@color/textPrimary"
-                app:srcCompat="@drawable/checkmark_96"/>
+                app:srcCompat="@drawable/checkmark_96" />
         </FrameLayout>
     </TableRow>
 </RelativeLayout>

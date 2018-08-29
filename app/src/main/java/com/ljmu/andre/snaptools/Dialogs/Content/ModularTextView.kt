@@ -31,7 +31,7 @@ class ModularTextView(private var message: String) : DialogComponent {
 
                         textSize = 18f
 
-                        if(message.startsWith("<center>"))
+                        if (message.startsWith("<center>"))
                             gravity = Gravity.CENTER_HORIZONTAL
 
                         try {

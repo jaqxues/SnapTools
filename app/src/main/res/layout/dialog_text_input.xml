@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:text="@string/placeholder"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme" />
 
     <EditText
         android:id="@+id/txt_input"
@@ -23,8 +23,7 @@
         android:textColor="@color/textPrimary"
         android:textColorHint="@color/textPrimaryWashed"
         android:ems="10"
-        android:inputType="text"
-        />
+        android:inputType="text" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +39,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:text="No"/>
+            android:text="No" />
 
         <Button
             android:id="@+id/btn_yes"
@@ -50,7 +49,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:text="Yes"/>
+            android:text="Yes" />
     </LinearLayout>
 
 </LinearLayout>

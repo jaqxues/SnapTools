@@ -12,8 +12,9 @@ import java.util.jar.Manifest;
  * It and its contents are free to use by all
  */
 public class JarUtils {
-	@NonNull public static Attributes getMainAttributes(JarFile jarFile) throws IOException {
-		Manifest manifest = Assert.notNull("No manifest found in jar!", jarFile.getManifest());
-		return Assert.notNull("No main attributes found in manifest!", manifest.getMainAttributes());
-	}
+    @NonNull
+    public static Attributes getMainAttributes(JarFile jarFile) throws IOException {
+        Manifest manifest = Assert.notNull("No manifest found in jar!", jarFile.getManifest());
+        return Assert.notNull("No main attributes found in manifest!", manifest.getMainAttributes());
+    }
 }

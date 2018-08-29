@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/container"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?android:attr/selectableItemBackground"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:layout_gravity="center_vertical"
-            android:padding="10dp"/>
+            android:padding="10dp" />
 
         <TextView
             android:id="@+id/txt_listable"
@@ -32,7 +32,7 @@
             android:textSize="14sp"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <ImageView
             android:id="@+id/img_state"
@@ -43,7 +43,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="3dp"
             android:layout_gravity="center"
-            android:text="@string/placeholder"/>
+            android:text="@string/placeholder" />
 
     </LinearLayout>
 
@@ -51,5 +51,5 @@
         android:id="@+id/splitter"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primaryWashed"/>
+        android:background="@color/primaryWashed" />
 </LinearLayout>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/container"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?android:attr/selectableItemBackground"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:padding="10dp"/>
+            android:padding="10dp" />
 
         <TextView
             android:id="@+id/txt_listable"
@@ -35,7 +35,7 @@
             android:textColor="@color/primaryLight"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <TextView
             android:id="@+id/txt_state"
@@ -49,12 +49,12 @@
             android:gravity="center"
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
-            android:text="@string/placeholder"/>
+            android:text="@string/placeholder" />
     </LinearLayout>
 
     <View
         android:id="@+id/splitter"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primaryWashed"/>
+        android:background="@color/primaryWashed" />
 </LinearLayout>

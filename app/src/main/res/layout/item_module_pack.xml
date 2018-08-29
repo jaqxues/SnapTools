@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:elevation="4dp"
-              android:orientation="horizontal"
-              android:theme="@style/AppTheme"
-              tools:targetApi="lollipop">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:orientation="horizontal"
+    android:theme="@style/AppTheme"
+    tools:targetApi="lollipop">
 
     <TextView
         android:id="@+id/txt_listable_header"
@@ -15,7 +15,7 @@
         android:layout_weight="2"
         android:padding="5dp"
         android:text="@string/placeholder"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/txt_pack_type"
@@ -24,5 +24,5 @@
         android:layout_weight="1"
         android:gravity="end"
         android:padding="5dp"
-        android:text="@string/placeholder"/>
+        android:text="@string/placeholder" />
 </LinearLayout>

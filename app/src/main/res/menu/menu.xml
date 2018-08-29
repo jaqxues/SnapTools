@@ -4,37 +4,37 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/home_96"
-        android:title="Home"/>
+        android:title="Home" />
     <item
         android:id="@+id/nav_pack_manager"
         android:icon="@drawable/module_96"
-        android:title="Pack Manager"/>
+        android:title="Pack Manager" />
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/settings_96"
-        android:title="Settings"/>
+        android:title="Settings" />
     <item
         android:id="@+id/nav_support"
         android:icon="@drawable/customer_support_96"
-        android:title="Support"/>
+        android:title="Support" />
     <item
         android:id="@+id/nav_faq"
         android:icon="@drawable/info_96"
-        android:title="FAQs"/>
+        android:title="FAQs" />
     <item
         android:id="@+id/nav_about"
         android:icon="@drawable/about_96"
-        android:title="About Us"/>
+        android:title="About Us" />
     <item
         android:id="@+id/nav_shop"
         android:icon="@drawable/donation_96"
-        android:title="Shop/Donations"/>
+        android:title="Shop/Donations" />
     <item
         android:id="@+id/nav_features"
         android:icon="@drawable/features_list_filled_96"
-        android:title="Features"/>
+        android:title="Features" />
     <item
         android:id="@+id/nav_legal"
         android:icon="@drawable/law_filled_96"
-        android:title="Legal"/>
+        android:title="Legal" />
 </menu>

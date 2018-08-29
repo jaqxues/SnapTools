@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_marginLeft="@dimen/activity_horizontal_margin"
-              android:layout_marginRight="@dimen/activity_horizontal_margin"
-              android:layout_marginTop="@dimen/activity_vertical_margin"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:singleLine="true"
             android:text="Frequently Asked Questions"
             android:textAppearance="@style/HeaderText"
-            android:textColor="@color/primaryLight"/>
+            android:textColor="@color/primaryLight" />
 
         <LinearLayout
             android:id="@+id/search_container"
@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Search"
-                android:inputType="text"/>
+                android:inputType="text" />
         </LinearLayout>
 
         <ImageView
@@ -54,14 +54,14 @@
             android:foregroundGravity="center"
             android:padding="5dp"
             android:tint="@color/primaryLight"
-            app:srcCompat="@drawable/search_96"/>
+            app:srcCompat="@drawable/search_96" />
     </LinearLayout>
 
     <View
         android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primaryLight"/>
+        android:background="@color/primaryLight" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
@@ -92,7 +92,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:textSize="12sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/toolbar_main_container"
@@ -112,7 +112,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <LinearLayout
                 android:id="@+id/toolbar_viewholder"
@@ -127,7 +127,7 @@
             android:id="@+id/toolbar_splitter"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/primary"/>
+            android:background="@color/primary" />
 
         <LinearLayout
             android:id="@+id/toolbar"
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:padding="10dp"
-                android:rotation="180"/>
+                android:rotation="180" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -154,7 +154,7 @@
                 android:textColor="@color/primaryLight"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:theme="@style/AppTheme"/>
+                android:theme="@style/AppTheme" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

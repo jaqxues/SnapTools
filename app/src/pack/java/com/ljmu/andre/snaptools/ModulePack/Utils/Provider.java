@@ -6,5 +6,5 @@ package com.ljmu.andre.snaptools.ModulePack.Utils;
  */
 
 public interface Provider<I, O> {
-	O call(I i);
+    O call(I i);
 }

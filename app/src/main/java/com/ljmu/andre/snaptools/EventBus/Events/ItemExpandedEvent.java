@@ -8,13 +8,13 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.Expa
  */
 
 public class ItemExpandedEvent {
-	ExpandableItemEntity expandedItem;
+    ExpandableItemEntity expandedItem;
 
-	public ItemExpandedEvent(ExpandableItemEntity expandedItem) {
-		this.expandedItem = expandedItem;
-	}
+    public ItemExpandedEvent(ExpandableItemEntity expandedItem) {
+        this.expandedItem = expandedItem;
+    }
 
-	public ExpandableItemEntity getExpandedItem() {
-		return expandedItem;
-	}
+    public ExpandableItemEntity getExpandedItem() {
+        return expandedItem;
+    }
 }

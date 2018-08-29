@@ -3,13 +3,9 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.ViewGroup
-import com.ljmu.andre.GsonPreferences.Preferences
 import com.ljmu.andre.GsonPreferences.Preferences.getPref
-import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
-import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
-import com.ljmu.andre.snaptools.ModulePack.Fragments.LensSettingsFragment
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef
+import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill
 import com.ljmu.andre.snaptools.Utils.ResourceUtils

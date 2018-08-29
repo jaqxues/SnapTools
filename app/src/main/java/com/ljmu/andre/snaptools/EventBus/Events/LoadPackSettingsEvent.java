@@ -6,13 +6,13 @@ package com.ljmu.andre.snaptools.EventBus.Events;
  */
 
 public class LoadPackSettingsEvent {
-	private String packName;
+    private String packName;
 
-	public LoadPackSettingsEvent(String packName) {
-		this.packName = packName;
-	}
+    public LoadPackSettingsEvent(String packName) {
+        this.packName = packName;
+    }
 
-	public String getPackName() {
-		return packName;
-	}
+    public String getPackName() {
+        return packName;
+    }
 }

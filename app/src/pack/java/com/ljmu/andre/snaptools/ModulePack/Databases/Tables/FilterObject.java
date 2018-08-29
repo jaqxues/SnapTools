@@ -14,38 +14,39 @@ import com.ljmu.andre.CBIDatabase.CBITable;
 
 @TableName("ActiveFilters")
 public class FilterObject implements CBIObject {
-	@PrimaryKey
-	@TableField("file_name")
-	private String fileName;
+    @PrimaryKey
+    @TableField("file_name")
+    private String fileName;
 
-	@TableField("is_active")
-	private boolean isActive;
+    @TableField("is_active")
+    private boolean isActive;
 
-	@Override public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
+    @Override
+    public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
 
-	}
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public FilterObject setFileName(String fileName) {
-		this.fileName = fileName;
-		return this;
-	}
+    public FilterObject setFileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
 
-	public boolean isActive() {
-		return isActive;
-	}
+    public boolean isActive() {
+        return isActive;
+    }
 
-	public FilterObject setActive(boolean active) {
-		isActive = active;
-		return this;
-	}
+    public FilterObject setActive(boolean active) {
+        isActive = active;
+        return this;
+    }
 
-	public FilterObject toggleActive() {
-		isActive = !isActive;
-		return this;
-	}
+    public FilterObject toggleActive() {
+        isActive = !isActive;
+        return this;
+    }
 
 }

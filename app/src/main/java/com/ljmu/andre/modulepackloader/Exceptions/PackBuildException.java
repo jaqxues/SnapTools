@@ -5,18 +5,18 @@ package com.ljmu.andre.modulepackloader.Exceptions;
  * It and its contents are free to use by all
  */
 public class PackBuildException extends Exception {
-	public PackBuildException() {
-	}
+    public PackBuildException() {
+    }
 
-	public PackBuildException(String message) {
-		super(message);
-	}
+    public PackBuildException(String message) {
+        super(message);
+    }
 
-	public PackBuildException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public PackBuildException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public PackBuildException(Throwable cause) {
-		super(cause);
-	}
+    public PackBuildException(Throwable cause) {
+        super(cause);
+    }
 }

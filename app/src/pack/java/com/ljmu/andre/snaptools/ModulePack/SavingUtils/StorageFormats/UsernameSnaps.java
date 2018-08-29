@@ -16,38 +16,41 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDI
  */
 
 public class UsernameSnaps extends StorageFormat {
-	@Override public List<File> getSnapTypeFolders(SnapType snapType) {
-		List<File> typeFolderList = new ArrayList<>();
-		typeFolderList.add(
-				new File(
-						(String) getPref(MEDIA_PATH)
-				)
-		);
+    @Override
+    public List<File> getSnapTypeFolders(SnapType snapType) {
+        List<File> typeFolderList = new ArrayList<>();
+        typeFolderList.add(
+                new File(
+                        (String) getPref(MEDIA_PATH)
+                )
+        );
 
-		return typeFolderList;
-	}
+        return typeFolderList;
+    }
 
-	@Override public File getOutputFile(SnapType snapType, String username, String filename) {
-		File parentDir = new File(
-				getPref(MEDIA_PATH)
-						+ File.separator
-						+ username
-		);
+    @Override
+    public File getOutputFile(SnapType snapType, String username, String filename) {
+        File parentDir = new File(
+                getPref(MEDIA_PATH)
+                        + File.separator
+                        + username
+        );
 
-		//noinspection ResultOfMethodCallIgnored
-		parentDir.mkdirs();
+        //noinspection ResultOfMethodCallIgnored
+        parentDir.mkdirs();
 
-		return new File(
-				parentDir,
-				filename
-		);
-	}
+        return new File(
+                parentDir,
+                filename
+        );
+    }
 
-	@Override public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
-		File snapTypeDir = snapFile.getParentFile();
-		boolean namesMatch = snapTypeDir.getName().equals(snapType.getFolderName());
-		boolean hierarchyMatch = snapFile.getParentFile().getParentFile().getName().contains("Media");
+    @Override
+    public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
+        File snapTypeDir = snapFile.getParentFile();
+        boolean namesMatch = snapTypeDir.getName().equals(snapType.getFolderName());
+        boolean hierarchyMatch = snapFile.getParentFile().getParentFile().getName().contains("Media");
 
-		return !namesMatch && hierarchyMatch;
-	}
+        return !namesMatch && hierarchyMatch;
+    }
 }

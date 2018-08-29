@@ -1,7 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers;
 
 import android.support.annotation.Nullable;
-
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SaveState;
 
@@ -11,15 +10,18 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SaveState;
  */
 
 public class EmptyTrigger extends SavingTrigger {
-	public EmptyTrigger() {
-		super();
-	}
+    public EmptyTrigger() {
+        super();
+    }
 
-	@Nullable @Override public SaveState setReadySnap(Snap readySnap) {
-		return SaveState.NOT_READY;
-	}
+    @Nullable
+    @Override
+    public SaveState setReadySnap(Snap readySnap) {
+        return SaveState.NOT_READY;
+    }
 
-	@Override public SaveState triggerSave() {
-		return SaveState.NOT_READY;
-	}
+    @Override
+    public SaveState triggerSave() {
+        return SaveState.NOT_READY;
+    }
 }

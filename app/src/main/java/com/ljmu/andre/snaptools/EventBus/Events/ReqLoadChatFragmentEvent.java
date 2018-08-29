@@ -8,13 +8,13 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
  */
 
 public class ReqLoadChatFragmentEvent {
-	private FragmentHelper chatFragment;
+    private FragmentHelper chatFragment;
 
-	public ReqLoadChatFragmentEvent(FragmentHelper chatFragment) {
-		this.chatFragment = chatFragment;
-	}
+    public ReqLoadChatFragmentEvent(FragmentHelper chatFragment) {
+        this.chatFragment = chatFragment;
+    }
 
-	public FragmentHelper getChatFragment() {
-		return chatFragment;
-	}
+    public FragmentHelper getChatFragment() {
+        return chatFragment;
+    }
 }

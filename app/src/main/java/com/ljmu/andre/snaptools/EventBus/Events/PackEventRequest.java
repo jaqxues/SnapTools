@@ -8,41 +8,42 @@ import com.google.common.base.MoreObjects;
  */
 
 public class PackEventRequest {
-	private EventRequest request;
-	private String packName;
+    private EventRequest request;
+    private String packName;
 
-	public PackEventRequest(EventRequest request, String packname) {
-		this.request = request;
-		this.packName = packname;
-	}
+    public PackEventRequest(EventRequest request, String packname) {
+        this.request = request;
+        this.packName = packname;
+    }
 
-	public EventRequest getRequest() {
-		return request;
-	}
+    public EventRequest getRequest() {
+        return request;
+    }
 
-	public PackEventRequest setRequest(EventRequest request) {
-		this.request = request;
-		return this;
-	}
+    public PackEventRequest setRequest(EventRequest request) {
+        this.request = request;
+        return this;
+    }
 
-	public String getPackName() {
-		return packName;
-	}
+    public String getPackName() {
+        return packName;
+    }
 
-	public PackEventRequest setPackName(String packName) {
-		this.packName = packName;
-		return this;
-	}
+    public PackEventRequest setPackName(String packName) {
+        this.packName = packName;
+        return this;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("request", request)
-				.add("packName", packName)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("request", request)
+                .add("packName", packName)
+                .toString();
+    }
 
-	public enum EventRequest {
-		UNLOAD, LOAD, DELETE, DOWNLOAD, DOWNLOAD_TUTORIAL, SHOW_ROLLBACK, SHOW_CHANGELOG
-	}
+    public enum EventRequest {
+        UNLOAD, LOAD, DELETE, DOWNLOAD, DOWNLOAD_TUTORIAL, SHOW_ROLLBACK, SHOW_CHANGELOG
+    }
 }

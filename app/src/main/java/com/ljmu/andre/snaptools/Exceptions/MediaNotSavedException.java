@@ -7,13 +7,13 @@ package com.ljmu.andre.snaptools.Exceptions;
 
 public class MediaNotSavedException extends Exception {
 
-	private static final long serialVersionUID = 1788823538611033911L;
+    private static final long serialVersionUID = 1788823538611033911L;
 
-	public MediaNotSavedException(String message) {
-		super(message);
-	}
+    public MediaNotSavedException(String message) {
+        super(message);
+    }
 
-	public MediaNotSavedException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public MediaNotSavedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD) //on field level
 public @interface Adapter {
-	Class<? extends TypeAdapter> TYPE();
+    Class<? extends TypeAdapter> TYPE();
 }

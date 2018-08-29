@@ -11,10 +11,10 @@ import java.util.List;
  */
 
 public class ServerPacksPacket extends AuthResultPacket {
-	@SerializedName("packs")
-	private List<ServerPackMetaData> packs;
+    @SerializedName("packs")
+    private List<ServerPackMetaData> packs;
 
-	public List<ServerPackMetaData> getPacks() {
-		return packs;
-	}
+    public List<ServerPackMetaData> getPacks() {
+        return packs;
+    }
 }

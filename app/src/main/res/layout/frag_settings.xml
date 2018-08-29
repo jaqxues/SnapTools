@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_marginBottom="@dimen/activity_vertical_margin"
-              android:layout_marginLeft="@dimen/activity_horizontal_margin"
-              android:layout_marginRight="@dimen/activity_horizontal_margin"
-              android:layout_marginTop="@dimen/activity_vertical_margin"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,13 +26,13 @@
                 android:layout_marginStart="5dp"
                 android:text="Master Switch"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/master_switch"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="@string/master_switch_text"/>
+                android:text="@string/master_switch_text" />
 
             <TextView
                 android:id="@+id/title_update_settings"
@@ -51,13 +51,13 @@
                 android:layout_marginTop="10dp"
                 android:text="Update Settings"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_check_apk_updates"
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Check for APK updates"/>
+                android:text="Check for APK updates" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_check_pack_updates"
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Check for active pack updates"/>
+                android:text="Check for active pack updates" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_check_pack_updates_sc"
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Check for active pack updates in Snapchat"/>
+                android:text="Check for active pack updates in Snapchat" />
 
             <LinearLayout
                 android:id="@+id/update_channel_container"
@@ -99,15 +99,14 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="Update Channel: "
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <Spinner
                     android:id="@+id/spinner_update_channel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:entries="@array/update_channels">
-                </Spinner>
+                    android:entries="@array/update_channels"></Spinner>
             </LinearLayout>
 
             <Button
@@ -118,7 +117,7 @@
                 android:layout_marginRight="20dp"
                 android:paddingBottom="7dp"
                 android:paddingTop="7dp"
-                android:text="Force APK Update Check"/>
+                android:text="Force APK Update Check" />
 
             <TextView
                 android:id="@+id/title_misc_settings"
@@ -129,13 +128,13 @@
                 android:layout_marginTop="10dp"
                 android:text="Misc Settings"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_kill_sc"
@@ -143,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Kill Snapchat On Setting Change"/>
+                android:text="Kill Snapchat On Setting Change" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_enable_auto_reporting"
@@ -151,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Automatic Error Reporting"/>
+                android:text="Automatic Error Reporting" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_enable_load_notify"
@@ -159,7 +158,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Show Icon on successful launch"/>
+                android:text="Show Icon on successful launch" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_back_opens_menu"
@@ -167,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Back button opens menu"/>
+                android:text="Back button opens menu" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_anr_watchdog"
@@ -175,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Enable app hang watchdog"/>
+                android:text="Enable app hang watchdog" />
 
             <LinearLayout
                 android:id="@+id/watchdog_container"
@@ -194,7 +193,7 @@
                         android:id="@+id/label_watchdog_timeout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hang watchdog timeout: "/>
+                        android:text="Hang watchdog timeout: " />
 
                     <TextView
                         android:id="@+id/lbl_watchdog_timeout"
@@ -202,13 +201,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="0"/>
+                        android:text="0" />
 
                     <TextView
                         android:id="@+id/label_watchdog_time_unit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Seconds"/>
+                        android:text="Seconds" />
                 </LinearLayout>
 
                 <SeekBar
@@ -217,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingBottom="5dp"
-                    android:paddingTop="5dp"/>
+                    android:paddingTop="5dp" />
             </LinearLayout>
 
             <Button
@@ -228,7 +227,7 @@
                 android:layout_marginRight="20dp"
                 android:paddingBottom="7dp"
                 android:paddingTop="7dp"
-                android:text="Clear Snapchat Cache"/>
+                android:text="Clear Snapchat Cache" />
 
             <TextView
                 android:id="@+id/title_ui_settings"
@@ -239,13 +238,13 @@
                 android:layout_marginTop="10dp"
                 android:text="UI Settings"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view69"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <LinearLayout
                 android:id="@+id/app_theme_container"
@@ -262,7 +261,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="App Theme: "
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <Spinner
                     android:id="@+id/spin_theme"
@@ -270,7 +269,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:dropDownWidth="match_parent"
-                    android:entries="@array/themes"/>
+                    android:entries="@array/themes" />
 
             </LinearLayout>
 
@@ -289,14 +288,14 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="Translations: "
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <Spinner
                     android:id="@+id/spin_translations"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:dropDownWidth="match_parent"/>
+                    android:dropDownWidth="match_parent" />
 
             </LinearLayout>
 
@@ -306,7 +305,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Show Transition Animations"/>
+                android:text="Show Transition Animations" />
 
 
             <LinearLayout
@@ -325,13 +324,13 @@
                     android:layout_marginTop="10dp"
                     android:text="Setting Backup/Restore"
                     android:textAppearance="@style/HeaderText"
-                    android:textColor="@color/primaryLight"/>
+                    android:textColor="@color/primaryLight" />
 
                 <View
                     android:id="@+id/view70"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/primaryLight"/>
+                    android:background="@color/primaryLight" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -347,14 +346,14 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="Restore Profile: "
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                     <Spinner
                         android:id="@+id/spinner_restore"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:dropDownWidth="match_parent"/>
+                        android:dropDownWidth="match_parent" />
 
                 </LinearLayout>
 
@@ -368,7 +367,7 @@
                     android:layout_marginTop="5dp"
                     android:paddingBottom="7dp"
                     android:paddingTop="7dp"
-                    android:text="Backup Settings Profile"/>
+                    android:text="Backup Settings Profile" />
 
                 <Button
                     android:id="@+id/btn_reset_prefs"
@@ -381,7 +380,7 @@
                     android:layout_marginTop="5dp"
                     android:paddingBottom="7dp"
                     android:paddingTop="7dp"
-                    android:text="Reset Settings"/>
+                    android:text="Reset Settings" />
 
             </LinearLayout>
         </LinearLayout>
@@ -400,7 +399,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="App Version: "
-            android:textSize="@dimen/version_text_size"/>
+            android:textSize="@dimen/version_text_size" />
 
         <TextView
             android:id="@+id/txt_app_version"
@@ -408,7 +407,7 @@
             android:layout_height="wrap_content"
             android:text="@string/placeholder"
             android:textColor="@color/primaryLight"
-            android:textSize="@dimen/version_text_size"/>
+            android:textSize="@dimen/version_text_size" />
     </LinearLayout>
 
 </LinearLayout>

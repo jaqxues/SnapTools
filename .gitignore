@@ -33,3 +33,5 @@ app/release/SnapTools-Beta\.jobf
 app/release/SnapTools-Alpha\.apk
 /app/beta/
 /app/prod/
+
+/KeysCertificates/

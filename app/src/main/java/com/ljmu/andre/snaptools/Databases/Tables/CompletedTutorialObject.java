@@ -15,20 +15,21 @@ import com.ljmu.andre.CBIDatabase.CBITable;
 @TableName("CompletedTutorials")
 public class CompletedTutorialObject implements CBIObject {
 
-	@PrimaryKey
-	@TableField("fragment_name")
-	public String fragmentName;
+    @PrimaryKey
+    @TableField("fragment_name")
+    public String fragmentName;
 
-	@Override public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
+    @Override
+    public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
 
-	}
+    }
 
-	public String getFragmentName() {
-		return fragmentName;
-	}
+    public String getFragmentName() {
+        return fragmentName;
+    }
 
-	public CompletedTutorialObject setFragmentName(String fragmentName) {
-		this.fragmentName = fragmentName;
-		return this;
-	}
+    public CompletedTutorialObject setFragmentName(String fragmentName) {
+        this.fragmentName = fragmentName;
+        return this;
+    }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <View
@@ -15,7 +15,7 @@
         android:layout_below="@+id/btn_retry"
         android:layout_marginLeft="-20dp"
         android:layout_marginRight="-20dp"
-        android:background="@color/errorWashed"/>
+        android:background="@color/errorWashed" />
 
     <ImageButton
         android:id="@+id/btn_retry"
@@ -27,7 +27,7 @@
         android:scaleX="0.75"
         android:scaleY="0.75"
         android:tint="@color/textPrimary"
-        app:srcCompat="@drawable/rotate_right_96"/>
+        app:srcCompat="@drawable/rotate_right_96" />
 
     <TextView
         android:id="@+id/lbl_retry"
@@ -38,6 +38,6 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="Retry"
-        android:textColor="@color/error"/>
+        android:textColor="@color/error" />
 
 </RelativeLayout>

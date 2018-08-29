@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="5dp"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <Button
         android:id="@+id/btn_option"
@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/invisible_button"
         android:text="@string/placeholder"
-        android:textColor="@color/textPrimary"/>
+        android:textColor="@color/textPrimary" />
 
     <View
         android:id="@+id/splitter"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primaryWashed"/>
+        android:background="@color/primaryWashed" />
 </LinearLayout>

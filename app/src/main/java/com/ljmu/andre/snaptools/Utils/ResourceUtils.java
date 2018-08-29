@@ -2,14 +2,7 @@ package com.ljmu.andre.snaptools.Utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
+import android.support.annotation.*;
 import android.view.View;
 
 import static com.ljmu.andre.snaptools.Utils.ResourceMapper.getResId;
@@ -33,86 +26,94 @@ import static com.ljmu.andre.snaptools.Utils.ResourceMapper.getResId;
  * ===========================================================================
  */
 public class ResourceUtils {
-	@SuppressWarnings("unchecked")
-	public static <T extends View> T getView(View root, String id) {
-		return (T) getView(root, getId(root.getContext(), id));
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T getView(View root, String id) {
+        return (T) getView(root, getId(root.getContext(), id));
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends View> T getView(View root, int id) {
-		return (T) root.findViewById(id);
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T getView(View root, int id) {
+        return (T) root.findViewById(id);
+    }
 
-	@IdRes public static int getId(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @IdRes
+    public static int getId(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "id");
-	}
+        return getResId(context, id, "id");
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends View> T getView(Activity activity, String id) {
-		return (T) getView(activity, getId(activity, id));
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T getView(Activity activity, String id) {
+        return (T) getView(activity, getId(activity, id));
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends View> T getView(Activity activity, int id) {
-		return (T) activity.findViewById(id);
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T getView(Activity activity, int id) {
+        return (T) activity.findViewById(id);
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends View> T getDSLView(View root, String id) {
-		return (T) root.findViewById(getIdFromString(id));
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T getDSLView(View root, String id) {
+        return (T) root.findViewById(getIdFromString(id));
+    }
 
-	@IdRes public static int getIdFromString(String name) {
-		return Math.abs(name.hashCode());
-	}
+    @IdRes
+    public static int getIdFromString(String name) {
+        return Math.abs(name.hashCode());
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends View> T getDSLView(Activity root, String id) {
-		return (T) root.findViewById(getIdFromString(id));
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T getDSLView(Activity root, String id) {
+        return (T) root.findViewById(getIdFromString(id));
+    }
 
-	@DrawableRes public static int getDrawable(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @DrawableRes
+    public static int getDrawable(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "drawable");
-	}
+        return getResId(context, id, "drawable");
+    }
 
-	@StyleRes public static int getStyle(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @StyleRes
+    public static int getStyle(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "style");
-	}
+        return getResId(context, id, "style");
+    }
 
-	@LayoutRes public static int getLayout(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @LayoutRes
+    public static int getLayout(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "layout");
-	}
+        return getResId(context, id, "layout");
+    }
 
-	@StringRes public static int getString(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @StringRes
+    public static int getString(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "string");
-	}
+        return getResId(context, id, "string");
+    }
 
-	@ColorRes public static int getColor(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @ColorRes
+    public static int getColor(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "color");
-	}
+        return getResId(context, id, "color");
+    }
 
-	@DimenRes public static int getDimen(Context context, @Nullable String id) {
-		if (id == null)
-			return 0;
+    @DimenRes
+    public static int getDimen(Context context, @Nullable String id) {
+        if (id == null)
+            return 0;
 
-		return getResId(context, id, "dimen");
-	}
+        return getResId(context, id, "dimen");
+    }
 }

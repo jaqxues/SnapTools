@@ -7,13 +7,13 @@ import android.view.View;
  * Created by Andre on 07/09/2016.
  */
 public interface GestureEvent {
-	ReturnType onTouch(View v, MotionEvent event);
+    ReturnType onTouch(View v, MotionEvent event);
 
-	void reset();
+    void reset();
 
-	enum ReturnType {
-		COMPLETED, FAILED, SAVE, PROCESSING, TAP
-	}
+    enum ReturnType {
+        COMPLETED, FAILED, SAVE, PROCESSING, TAP
+    }
 }
 
 

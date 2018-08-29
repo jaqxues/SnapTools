@@ -6,15 +6,15 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class HookNotFoundException extends Exception {
-	@SuppressWarnings("unused")
-	public static final String TAG = HookNotFoundException.class.getSimpleName();
-	private static final long serialVersionUID = 2731618241718278132L;
+    @SuppressWarnings("unused")
+    public static final String TAG = HookNotFoundException.class.getSimpleName();
+    private static final long serialVersionUID = 2731618241718278132L;
 
-	public HookNotFoundException(String message) {
-		super(message);
-	}
+    public HookNotFoundException(String message) {
+        super(message);
+    }
 
-	public HookNotFoundException(Throwable e) {
-		super(e);
-	}
+    public HookNotFoundException(Throwable e) {
+        super(e);
+    }
 }

@@ -2,7 +2,6 @@ package com.ljmu.andre.snaptools.ModulePack.Notifications;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
-
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 
 /**
@@ -11,7 +10,8 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
  */
 
 public class EmptyNotification extends SaveNotification {
-	@Override protected void showNotification(Activity activity, ToastType type, int duration, @Nullable Snap snap) {
-		// Do Nothing
-	}
+    @Override
+    protected void showNotification(Activity activity, ToastType type, int duration, @Nullable Snap snap) {
+        // Do Nothing
+    }
 }

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE) //on class level
 public @interface TableName {
-	String value();
+    String value();
 
-	int VERSION() default 1;
+    int VERSION() default 1;
 }

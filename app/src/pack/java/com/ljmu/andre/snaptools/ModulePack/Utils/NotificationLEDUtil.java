@@ -1,10 +1,8 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
 import android.os.Build;
-
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.ShellUtils;
+import timber.log.Timber;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,12 +10,9 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+//import com.crashlytics.android.answers.Answers;
+//import com.crashlytics.android.answers.CustomEvent;
 //import io.fabric.sdk.android.Fabric;
-import timber.log.Timber;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LED_INFO_ALREADY_SENT;
 
 /**
  * Created by ethan on 10/5/2017.
@@ -25,83 +20,83 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LED_
 
 
 public class NotificationLEDUtil {
-	private static ArrayList<NotificationColor> queue = new ArrayList<>();
-	private static Boolean currentlyLit = false;
+    private static ArrayList<NotificationColor> queue = new ArrayList<>();
+    private static Boolean currentlyLit = false;
 
-	public synchronized static void flashLED(NotificationColor color) {
-		if (currentlyLit) {
-			queue.add(color);
-			return;
-		}
-		currentlyLit = true;
-		Boolean red = false;
-		Boolean green = false;
-		Boolean blue = false;
-		ManufacturerLEDPath ledPath = getStringFromManufacturer();
+    public synchronized static void flashLED(NotificationColor color) {
+        if (currentlyLit) {
+            queue.add(color);
+            return;
+        }
+        currentlyLit = true;
+        Boolean red = false;
+        Boolean green = false;
+        Boolean blue = false;
+        ManufacturerLEDPath ledPath = getStringFromManufacturer();
 
-		if (ledPath.hasInitialCommand) {
-			ShellUtils.sendCommand(ledPath.initialCommand).subscribe();
-		}
+        if (ledPath.hasInitialCommand) {
+            ShellUtils.sendCommand(ledPath.initialCommand).subscribe();
+        }
 
-		int a = 0;
-		for (int i : color.getBrightness()) {
-			switch (a) {
-				case 0:
-					ShellUtils.sendCommand("echo " + i + " > " + ledPath.redPath).subscribe();
-					red = true;
-					break;
-				case 1:
-					ShellUtils.sendCommand("echo " + i + " > " + ledPath.greenPath).subscribe();
-					green = true;
-					break;
-				case 2:
-					ShellUtils.sendCommand("echo " + i + " > " + ledPath.bluePath).subscribe();
-					blue = true;
-					break;
-			}
-			a++;
-		}
+        int a = 0;
+        for (int i : color.getBrightness()) {
+            switch (a) {
+                case 0:
+                    ShellUtils.sendCommand("echo " + i + " > " + ledPath.redPath).subscribe();
+                    red = true;
+                    break;
+                case 1:
+                    ShellUtils.sendCommand("echo " + i + " > " + ledPath.greenPath).subscribe();
+                    green = true;
+                    break;
+                case 2:
+                    ShellUtils.sendCommand("echo " + i + " > " + ledPath.bluePath).subscribe();
+                    blue = true;
+                    break;
+            }
+            a++;
+        }
 
-		Timer t = new Timer();
-		Boolean finalBlue = blue;
-		Boolean finalGreen = green;
-		Boolean finalRed = red;
-		t.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				if (finalRed) {
-					ShellUtils.sendCommand("echo 0 > " + ledPath.redPath).subscribe();
-				}
-				if (finalGreen) {
-					ShellUtils.sendCommand("echo 0 > " + ledPath.greenPath).subscribe();
-				}
-				if (finalBlue) {
-					ShellUtils.sendCommand("echo 0 > " + ledPath.bluePath).subscribe();
-				}
-				currentlyLit = false;
-				if (queue.isEmpty()) {
-					if (ledPath.hasExitCommand) {
-						ShellUtils.sendCommand(ledPath.exitCommand).subscribe();
-					}
-				} else {
-					NotificationColor n = queue.get(0);
-					queue.remove(0);
-					flashLED(n);
-				}
-				t.cancel();
-			}
-		}, 1000);
-	}
+        Timer t = new Timer();
+        Boolean finalBlue = blue;
+        Boolean finalGreen = green;
+        Boolean finalRed = red;
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (finalRed) {
+                    ShellUtils.sendCommand("echo 0 > " + ledPath.redPath).subscribe();
+                }
+                if (finalGreen) {
+                    ShellUtils.sendCommand("echo 0 > " + ledPath.greenPath).subscribe();
+                }
+                if (finalBlue) {
+                    ShellUtils.sendCommand("echo 0 > " + ledPath.bluePath).subscribe();
+                }
+                currentlyLit = false;
+                if (queue.isEmpty()) {
+                    if (ledPath.hasExitCommand) {
+                        ShellUtils.sendCommand(ledPath.exitCommand).subscribe();
+                    }
+                } else {
+                    NotificationColor n = queue.get(0);
+                    queue.remove(0);
+                    flashLED(n);
+                }
+                t.cancel();
+            }
+        }, 1000);
+    }
 
-	private static ManufacturerLEDPath getStringFromManufacturer() {
-		String m = Build.MANUFACTURER;
-		Timber.d("LED_MANUFACTURER:" + m);
+    private static ManufacturerLEDPath getStringFromManufacturer() {
+        String m = Build.MANUFACTURER;
+        Timber.d("LED_MANUFACTURER:" + m);
 
-		if (m.equalsIgnoreCase("samsung")) {
-			return ManufacturerLEDPath.SAMSUNG;
-		} else if (m.equalsIgnoreCase("OnePlus")) {
-			return ManufacturerLEDPath.GENERIC;
-		} else {
+        if (m.equalsIgnoreCase("samsung")) {
+            return ManufacturerLEDPath.SAMSUNG;
+        } else if (m.equalsIgnoreCase("OnePlus")) {
+            return ManufacturerLEDPath.GENERIC;
+        } else {
 //			if (!(Boolean) getPref(LED_INFO_ALREADY_SENT)) {
 //				try {
 //					if (Fabric.isInitialized()) {
@@ -117,70 +112,70 @@ public class NotificationLEDUtil {
 //				}
 //			}
 
-			return ManufacturerLEDPath.GENERIC;
-		}
-	}
+            return ManufacturerLEDPath.GENERIC;
+        }
+    }
 
-	private static String getLEDDirectoryContents(String path) {
+    private static String getLEDDirectoryContents(String path) {
 
-		try {
-			Process process = Runtime.getRuntime().exec("ls " + path);
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(process.getInputStream()));
-			int read;
-			char[] buffer = new char[4096];
-			StringBuilder output = new StringBuilder();
-			while ((read = reader.read(buffer)) > 0) {
-				output.append(buffer, 0, read);
-			}
-			reader.close();
-			process.waitFor();
+        try {
+            Process process = Runtime.getRuntime().exec("ls " + path);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+            int read;
+            char[] buffer = new char[4096];
+            StringBuilder output = new StringBuilder();
+            while ((read = reader.read(buffer)) > 0) {
+                output.append(buffer, 0, read);
+            }
+            reader.close();
+            process.waitFor();
 
-			return output.toString();
-		} catch (Throwable t) {
-			Timber.w(t, "Unable to get LED Directory Contents");
-		}
+            return output.toString();
+        } catch (Throwable t) {
+            Timber.w(t, "Unable to get LED Directory Contents");
+        }
 
-		return "ERROR: UNABLE TO DETERMINE LEDS LIST`";
-	}
+        return "ERROR: UNABLE TO DETERMINE LEDS LIST`";
+    }
 
-	public enum NotificationColor {
-		RED(new int[]{255, 0, 0}), GREEN(new int[]{0, 255, 0}), YELLOW(new int[]{150, 50, 0}), BLUE(new int[]{0, 0, 255});
+    public enum NotificationColor {
+        RED(new int[]{255, 0, 0}), GREEN(new int[]{0, 255, 0}), YELLOW(new int[]{150, 50, 0}), BLUE(new int[]{0, 0, 255});
 
-		int[] brightness;
+        int[] brightness;
 
-		NotificationColor(int[] brightness_rgb) {
-			this.brightness = brightness_rgb;
-		}
+        NotificationColor(int[] brightness_rgb) {
+            this.brightness = brightness_rgb;
+        }
 
-		int[] getBrightness() {
-			return brightness;
-		}
-	}
+        int[] getBrightness() {
+            return brightness;
+        }
+    }
 
-	public enum ManufacturerLEDPath {
-		SAMSUNG("samsung", "/sys/devices/virtual/sec/led/led_r", "/sys/devices/virtual/sec/led/led_g", "/sys/devices/virtual/sec/led/led_b", false, "", false, ""),
-		GENERIC("generic", "/sys/class/leds/red/brightness", "/sys/class/leds/green/brightness", "/sys/class/leds/blue/brightness", false, "", false, "");
+    public enum ManufacturerLEDPath {
+        SAMSUNG("samsung", "/sys/devices/virtual/sec/led/led_r", "/sys/devices/virtual/sec/led/led_g", "/sys/devices/virtual/sec/led/led_b", false, "", false, ""),
+        GENERIC("generic", "/sys/class/leds/red/brightness", "/sys/class/leds/green/brightness", "/sys/class/leds/blue/brightness", false, "", false, "");
 
-		String name;
-		String redPath;
-		String greenPath;
-		String bluePath;
-		Boolean hasInitialCommand;
-		String initialCommand;
-		Boolean hasExitCommand;
-		String exitCommand;
+        String name;
+        String redPath;
+        String greenPath;
+        String bluePath;
+        Boolean hasInitialCommand;
+        String initialCommand;
+        Boolean hasExitCommand;
+        String exitCommand;
 
-		ManufacturerLEDPath(String name, String pathToRed, String pathToGreen, String pathToBlue, Boolean hasInitialCommand, String initialCommand, Boolean hasExitCommand, String exitCommand) {
-			this.name = name;
-			this.redPath = pathToRed;
-			this.bluePath = pathToBlue;
-			this.greenPath = pathToGreen;
-			this.hasInitialCommand = hasInitialCommand;
-			this.initialCommand = initialCommand;
-			this.hasExitCommand = hasExitCommand;
-			this.exitCommand = exitCommand;
-		}
-	}
+        ManufacturerLEDPath(String name, String pathToRed, String pathToGreen, String pathToBlue, Boolean hasInitialCommand, String initialCommand, Boolean hasExitCommand, String exitCommand) {
+            this.name = name;
+            this.redPath = pathToRed;
+            this.bluePath = pathToBlue;
+            this.greenPath = pathToGreen;
+            this.hasInitialCommand = hasInitialCommand;
+            this.initialCommand = initialCommand;
+            this.hasExitCommand = hasExitCommand;
+            this.exitCommand = exitCommand;
+        }
+    }
 
 }

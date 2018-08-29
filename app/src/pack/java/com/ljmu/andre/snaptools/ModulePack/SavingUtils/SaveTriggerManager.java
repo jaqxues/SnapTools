@@ -17,42 +17,42 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class SaveTriggerManager {
-	private static Map<String, SavingTrigger> snapTypeTriggerMap = new ConcurrentHashMap<>();
+    private static Map<String, SavingTrigger> snapTypeTriggerMap = new ConcurrentHashMap<>();
 
-	public static void init() {
-		for (SnapType snapType : SnapTypeDef.INST.values()) {
-			String snapTypeName = snapType.getName();
-			SavingMode savingMode = SavingModeHelper.getSavingModeForType(snapType);
+    public static void init() {
+        for (SnapType snapType : SnapTypeDef.INST.values()) {
+            String snapTypeName = snapType.getName();
+            SavingMode savingMode = SavingModeHelper.getSavingModeForType(snapType);
 
 
-			String savingType;
+            String savingType;
 
-			if (savingMode == null)
-				savingType = "Auto";
-			else
-				savingType = savingMode.getSavingType();
+            if (savingMode == null)
+                savingType = "Auto";
+            else
+                savingType = savingMode.getSavingType();
 
-			SavingTrigger trigger;
+            SavingTrigger trigger;
 
-			switch (savingType) {
-				case "None":
-					trigger = new EmptyTrigger();
-					break;
-				case "Auto":
-					trigger = new AutoSave();
-					break;
-				case "Manual":
-					trigger = new ManualSave();
-					break;
-				default:
-					throw new RuntimeException("Unknown saving type: " + savingMode);
-			}
+            switch (savingType) {
+                case "None":
+                    trigger = new EmptyTrigger();
+                    break;
+                case "Auto":
+                    trigger = new AutoSave();
+                    break;
+                case "Manual":
+                    trigger = new ManualSave();
+                    break;
+                default:
+                    throw new RuntimeException("Unknown saving type: " + savingMode);
+            }
 
-			snapTypeTriggerMap.put(snapTypeName, trigger);
-		}
-	}
+            snapTypeTriggerMap.put(snapTypeName, trigger);
+        }
+    }
 
-	public static SavingTrigger getTrigger(SnapType snapType) {
-		return snapTypeTriggerMap.get(snapType.getName());
-	}
+    public static SavingTrigger getTrigger(SnapType snapType) {
+        return snapTypeTriggerMap.get(snapType.getName());
+    }
 }

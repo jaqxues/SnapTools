@@ -8,13 +8,13 @@ import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
  */
 
 public class PackUnloadEvent {
-	private LocalPackMetaData packMetaData;
+    private LocalPackMetaData packMetaData;
 
-	public PackUnloadEvent(LocalPackMetaData packMetaData) {
-		this.packMetaData = packMetaData;
-	}
+    public PackUnloadEvent(LocalPackMetaData packMetaData) {
+        this.packMetaData = packMetaData;
+    }
 
-	public LocalPackMetaData getPackMetaData() {
-		return packMetaData;
-	}
+    public LocalPackMetaData getPackMetaData() {
+        return packMetaData;
+    }
 }

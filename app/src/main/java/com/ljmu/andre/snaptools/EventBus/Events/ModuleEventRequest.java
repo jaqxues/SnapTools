@@ -8,30 +8,30 @@ import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest.EventRequest;
  */
 
 public class ModuleEventRequest {
-	private EventRequest eventRequest;
-	private String packName;
-	private String moduleName;
+    private EventRequest eventRequest;
+    private String packName;
+    private String moduleName;
 
-	public ModuleEventRequest(EventRequest eventRequest, String packName, String moduleName) {
-		this.eventRequest = eventRequest;
-		this.packName = packName;
-		this.moduleName = moduleName;
-	}
+    public ModuleEventRequest(EventRequest eventRequest, String packName, String moduleName) {
+        this.eventRequest = eventRequest;
+        this.packName = packName;
+        this.moduleName = moduleName;
+    }
 
-	public ModuleEventRequest(EventRequest eventRequest, String moduleName) {
-		this.eventRequest = eventRequest;
-		this.moduleName = moduleName;
-	}
+    public ModuleEventRequest(EventRequest eventRequest, String moduleName) {
+        this.eventRequest = eventRequest;
+        this.moduleName = moduleName;
+    }
 
-	public EventRequest getEventRequest() {
-		return eventRequest;
-	}
+    public EventRequest getEventRequest() {
+        return eventRequest;
+    }
 
-	public String getModuleName() {
-		return moduleName;
-	}
+    public String getModuleName() {
+        return moduleName;
+    }
 
-	public String getPackName() {
-		return packName;
-	}
+    public String getPackName() {
+        return packName;
+    }
 }

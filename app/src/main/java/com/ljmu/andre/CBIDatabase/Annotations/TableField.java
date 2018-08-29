@@ -13,15 +13,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD) //on field level
 public @interface TableField {
-	String value();
+    String value();
 
-	String SQL_TYPE() default "{NUL}";
+    String SQL_TYPE() default "{NUL}";
 
-	String SQL_DEFAULT() default "{NUL}";
+    String SQL_DEFAULT() default "{NUL}";
 
-	boolean NOT_NULL() default false;
+    boolean NOT_NULL() default false;
 
-	boolean IS_SETTER() default false;
+    boolean IS_SETTER() default false;
 
-	boolean IS_GETTER() default false;
+    boolean IS_GETTER() default false;
 }

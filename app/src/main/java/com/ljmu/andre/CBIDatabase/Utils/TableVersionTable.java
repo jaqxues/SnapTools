@@ -6,8 +6,6 @@ import com.ljmu.andre.CBIDatabase.Annotations.TableName;
 import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;
 import com.ljmu.andre.CBIDatabase.CBITable;
-
-
 import timber.log.Timber;
 
 /**
@@ -17,22 +15,23 @@ import timber.log.Timber;
 
 @TableName(value = "TableVersionTable")
 public class TableVersionTable implements CBIObject {
-	@PrimaryKey
-	@TableField(value = "TableName")
-	public String tableName;
+    @PrimaryKey
+    @TableField(value = "TableName")
+    public String tableName;
 
-	@TableField(value = "TableVersion", SQL_DEFAULT = "'1'")
-	public int tableVersion;
+    @TableField(value = "TableVersion", SQL_DEFAULT = "'1'")
+    public int tableVersion;
 
-	public TableVersionTable() {
-	}
+    public TableVersionTable() {
+    }
 
-	public TableVersionTable(String tableName, int tableVersion) {
-		this.tableName = tableName;
-		this.tableVersion = tableVersion;
-	}
+    public TableVersionTable(String tableName, int tableVersion) {
+        this.tableName = tableName;
+        this.tableVersion = tableVersion;
+    }
 
-	@Override public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
-		Timber.d("Table Upgrade");
-	}
+    @Override
+    public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
+        Timber.d("Table Upgrade");
+    }
 }

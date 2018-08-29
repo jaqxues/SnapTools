@@ -8,6 +8,6 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class LogoutPacket extends AuthResultPacket {
-	@SerializedName("logout_state")
-	public boolean logoutState;
+    @SerializedName("logout_state")
+    public boolean logoutState;
 }

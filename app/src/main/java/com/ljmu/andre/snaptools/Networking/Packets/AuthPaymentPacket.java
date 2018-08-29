@@ -10,22 +10,23 @@ import com.google.gson.annotations.SerializedName;
 
 @SuppressWarnings("WeakerAccess")
 public class AuthPaymentPacket extends AuthResultPacket {
-	@SerializedName("payment_state")
-	public boolean paymentState;
+    @SerializedName("payment_state")
+    public boolean paymentState;
 
-	@SerializedName("payment_message")
-	public String paymentMessage;
+    @SerializedName("payment_message")
+    public String paymentMessage;
 
-	@SerializedName("token")
-	public String paymentToken;
+    @SerializedName("token")
+    public String paymentToken;
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("token", paymentToken)
-				.add("paymentMessage", paymentMessage)
-				.add("paymentState", paymentState)
-				.add("", super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("token", paymentToken)
+                .add("paymentMessage", paymentMessage)
+                .add("paymentState", paymentState)
+                .add("", super.toString())
+                .toString();
+    }
 }

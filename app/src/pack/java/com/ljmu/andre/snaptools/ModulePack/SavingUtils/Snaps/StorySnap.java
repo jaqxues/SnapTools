@@ -3,11 +3,10 @@ package com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps;
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.snaptools.ModulePack.Caching.SnapDiskCache;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SaveTriggerManager;
+import timber.log.Timber;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -15,56 +14,60 @@ import timber.log.Timber;
  */
 
 public class StorySnap extends Snap {
-	private boolean hasStreamSaved;
-	private boolean hasSnapDisplayed;
+    private boolean hasStreamSaved;
+    private boolean hasSnapDisplayed;
 
-	StorySnap() {
-	}
+    StorySnap() {
+    }
 
-	@Override public SaveState providingAlgorithm() {
-		synchronized (PROCESSING_LOCK) {
-			return null;
-		}
-	}
-
-
-	@Override public SaveState copyStream(ByteArrayOutputStream outputStream) {
-		synchronized (PROCESSING_LOCK) {
-			try {
-				SnapDiskCache.getInstance().writeToCache(this, outputStream);
-
-				hasStreamSaved = true;
-
-				if (!hasSnapDisplayed)
-					return SaveState.NOT_READY;
+    @Override
+    public SaveState providingAlgorithm() {
+        synchronized (PROCESSING_LOCK) {
+            return null;
+        }
+    }
 
 
-				return SaveTriggerManager.getTrigger(getSnapType()).setReadySnap(this);
-			} catch (IOException e) {
-				Timber.e(e);
-			}
+    @Override
+    public SaveState copyStream(ByteArrayOutputStream outputStream) {
+        synchronized (PROCESSING_LOCK) {
+            try {
+                SnapDiskCache.getInstance().writeToCache(this, outputStream);
 
-			return SaveState.FAILED;
-		}
-	}
+                hasStreamSaved = true;
 
-	@Override public SaveState finalDisplayEvent() {
-		synchronized (PROCESSING_LOCK) {
-			hasSnapDisplayed = true;
+                if (!hasSnapDisplayed)
+                    return SaveState.NOT_READY;
 
-			if(!hasStreamSaved)
-				return SaveState.NOT_READY;
 
-			return SaveTriggerManager.getTrigger(getSnapType()).setReadySnap(this);
-		}
-	}
+                return SaveTriggerManager.getTrigger(getSnapType()).setReadySnap(this);
+            } catch (IOException e) {
+                Timber.e(e);
+            }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("hasStreamSaved", hasStreamSaved)
-				.add("hasSnapDisplayed", hasSnapDisplayed)
-				.add("super", super.toString())
-				.toString();
-	}
+            return SaveState.FAILED;
+        }
+    }
+
+    @Override
+    public SaveState finalDisplayEvent() {
+        synchronized (PROCESSING_LOCK) {
+            hasSnapDisplayed = true;
+
+            if (!hasStreamSaved)
+                return SaveState.NOT_READY;
+
+            return SaveTriggerManager.getTrigger(getSnapType()).setReadySnap(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("hasStreamSaved", hasStreamSaved)
+                .add("hasSnapDisplayed", hasSnapDisplayed)
+                .add("super", super.toString())
+                .toString();
+    }
 }

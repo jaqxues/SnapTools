@@ -7,15 +7,16 @@ import com.ljmu.andre.modulepackloader.ModulePack;
  * It and its contents are free to use by all
  */
 public class ModulePackBase extends ModulePack {
-	private String baseTest;
+    private String baseTest;
 
-	public ModulePackBase(String baseTest) {
-		this.baseTest = baseTest;
-	}
+    public ModulePackBase(String baseTest) {
+        this.baseTest = baseTest;
+    }
 
-	@Override public String toString() {
-		return "ModulePackBase{" +
-				"baseTest='" + baseTest + '\'' +
-				"} " + super.toString();
-	}
+    @Override
+    public String toString() {
+        return "ModulePackBase{" +
+                "baseTest='" + baseTest + '\'' +
+                "} " + super.toString();
+    }
 }

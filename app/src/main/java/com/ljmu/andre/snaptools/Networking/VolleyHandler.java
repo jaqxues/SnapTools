@@ -3,12 +3,10 @@ package com.ljmu.andre.snaptools.Networking;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.ljmu.andre.snaptools.STApplication;
-
 
 
 /**
@@ -17,45 +15,45 @@ import com.ljmu.andre.snaptools.STApplication;
  */
 
 public class VolleyHandler {
-	private static VolleyHandler mInstance;
-	private Context context;
-	private RequestQueue httpRequestQueue;
+    private static VolleyHandler mInstance;
+    private Context context;
+    private RequestQueue httpRequestQueue;
 
-	private VolleyHandler(Context context) {
-		this.context = context;
-		httpRequestQueue = Volley.newRequestQueue(context);
-	}
+    private VolleyHandler(Context context) {
+        this.context = context;
+        httpRequestQueue = Volley.newRequestQueue(context);
+    }
 
-	@SuppressWarnings("unused")
-	public <T> void addToRequestQueue(@NonNull Request<T> req) {
-		addToRequestQueue(req, null);
-	}
+    @SuppressWarnings("unused")
+    public <T> void addToRequestQueue(@NonNull Request<T> req) {
+        addToRequestQueue(req, null);
+    }
 
-	public <T> void addToRequestQueue(@NonNull Request<T> req, String tag) {
-		req.setTag(TextUtils.isEmpty(tag) ? STApplication.MODULE_TAG : tag);
-		getHttpRequestQueue().add(req);
-	}
+    public <T> void addToRequestQueue(@NonNull Request<T> req, String tag) {
+        req.setTag(TextUtils.isEmpty(tag) ? STApplication.MODULE_TAG : tag);
+        getHttpRequestQueue().add(req);
+    }
 
-	public RequestQueue getHttpRequestQueue() {
-		if (httpRequestQueue == null)
-			httpRequestQueue = Volley.newRequestQueue(context);
+    public RequestQueue getHttpRequestQueue() {
+        if (httpRequestQueue == null)
+            httpRequestQueue = Volley.newRequestQueue(context);
 
-		return httpRequestQueue;
-	}
+        return httpRequestQueue;
+    }
 
-	public void cancelPendingRequests(@NonNull Object tag) {
-		if (httpRequestQueue != null)
-			httpRequestQueue.cancelAll(tag);
-	}
+    public void cancelPendingRequests(@NonNull Object tag) {
+        if (httpRequestQueue != null)
+            httpRequestQueue.cancelAll(tag);
+    }
 
-	public static void init(Context context) {
-		mInstance = new VolleyHandler(context);
-	}
+    public static void init(Context context) {
+        mInstance = new VolleyHandler(context);
+    }
 
-	public static synchronized VolleyHandler getInstance() {
-		if (mInstance == null)
-			throw new IllegalStateException("VolleyHandler not Initialised!");
+    public static synchronized VolleyHandler getInstance() {
+        if (mInstance == null)
+            throw new IllegalStateException("VolleyHandler not Initialised!");
 
-		return mInstance;
-	}
+        return mInstance;
+    }
 }

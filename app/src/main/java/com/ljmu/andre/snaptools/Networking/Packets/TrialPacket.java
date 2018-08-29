@@ -8,13 +8,13 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class TrialPacket extends AuthResultPacket {
-	@SerializedName("trial_mode")
-	public int trialMode;
+    @SerializedName("trial_mode")
+    public int trialMode;
 
-	@SerializedName("trial_active_time")
-	private long trialActiveTime;
+    @SerializedName("trial_active_time")
+    private long trialActiveTime;
 
-	public Long getActiveTimestamp() {
-		return trialActiveTime * 1000L;
-	}
+    public Long getActiveTimestamp() {
+        return trialActiveTime * 1000L;
+    }
 }

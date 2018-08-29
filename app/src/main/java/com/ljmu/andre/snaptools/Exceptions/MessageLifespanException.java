@@ -6,9 +6,9 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class MessageLifespanException extends Exception {
-	private static final long serialVersionUID = -6390549789436256506L;
+    private static final long serialVersionUID = -6390549789436256506L;
 
-	public MessageLifespanException() {
-		super("Message lifespan expired");
-	}
+    public MessageLifespanException() {
+        super("Message lifespan expired");
+    }
 }

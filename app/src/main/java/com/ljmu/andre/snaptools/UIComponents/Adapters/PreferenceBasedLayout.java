@@ -1,11 +1,8 @@
 package com.ljmu.andre.snaptools.UIComponents.Adapters;
 
 import android.app.Activity;
-
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.UIComponents.SettingBasedLayout;
-
-
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 
@@ -16,14 +13,15 @@ import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 
 @Deprecated
 public class PreferenceBasedLayout<T> extends SettingBasedLayout<T> {
-	private Preference preference;
+    private Preference preference;
 
-	public PreferenceBasedLayout(Activity activity,  Preference preference) {
-		super(activity, null);
-		this.preference = preference;
-	}
+    public PreferenceBasedLayout(Activity activity, Preference preference) {
+        super(activity, null);
+        this.preference = preference;
+    }
 
-	@Override public T getSettingKey() {
-		return getPref(preference);
-	}
+    @Override
+    public T getSettingKey() {
+        return getPref(preference);
+    }
 }

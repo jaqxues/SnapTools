@@ -6,19 +6,19 @@ package com.ljmu.andre.snaptools.ModulePack.Utils;
  */
 
 public class InterruptFlag {
-	private boolean shouldInterrupt;
+    private boolean shouldInterrupt;
 
-	public boolean shouldInterrupt() {
-		return shouldInterrupt;
-	}
+    public boolean shouldInterrupt() {
+        return shouldInterrupt;
+    }
 
-	public InterruptFlag setShouldInterrupt(boolean shouldInterrupt) {
-		this.shouldInterrupt = shouldInterrupt;
-		return this;
-	}
+    public InterruptFlag setShouldInterrupt(boolean shouldInterrupt) {
+        this.shouldInterrupt = shouldInterrupt;
+        return this;
+    }
 
-	public InterruptFlag interrupt() {
-		this.shouldInterrupt = true;
-		return this;
-	}
+    public InterruptFlag interrupt() {
+        this.shouldInterrupt = true;
+        return this;
+    }
 }

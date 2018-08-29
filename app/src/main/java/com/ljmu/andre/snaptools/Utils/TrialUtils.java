@@ -1,7 +1,6 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.app.Activity;
-
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.PurchaseTable;
@@ -11,11 +10,10 @@ import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckTrialMode;
 import com.ljmu.andre.snaptools.Networking.Packets.TrialPacket;
 import com.ljmu.andre.snaptools.Networking.WebResponse.PacketResultListener;
+import timber.log.Timber;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
@@ -28,76 +26,78 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TRIAL_MODE;
  */
 
 public class TrialUtils {
-	public static final int TRIAL_UNKNOWN = -1;
-	public static final int TRIAL_AVAILABLE = 0;
-	public static final int TRIAL_ACTIVE = 1;
-	public static final int TRIAL_EXPIRED = 2;
+    public static final int TRIAL_UNKNOWN = -1;
+    public static final int TRIAL_AVAILABLE = 0;
+    public static final int TRIAL_ACTIVE = 1;
+    public static final int TRIAL_EXPIRED = 2;
 
-	public static void confirmTrialMode(Activity activity, Callable<Integer> callable) {
-		int trialMode = getPref(TRIAL_MODE);
-		Long trialActiveTime = getPref(TRIAL_ACTIVE_TIME);
+    public static void confirmTrialMode(Activity activity, Callable<Integer> callable) {
+        int trialMode = getPref(TRIAL_MODE);
+        Long trialActiveTime = getPref(TRIAL_ACTIVE_TIME);
 
-		if (trialMode == TRIAL_UNKNOWN || trialActiveTime == null) {
-			CheckTrialMode.checkTrialMode(
-					activity,
-					new PacketResultListener<TrialPacket>() {
-						@Override public void success(String message, TrialPacket packet) {
-							putPref(TRIAL_MODE, packet.trialMode);
-							putPref(TRIAL_ACTIVE_TIME, packet.getActiveTimestamp());
+        if (trialMode == TRIAL_UNKNOWN || trialActiveTime == null) {
+            CheckTrialMode.checkTrialMode(
+                    activity,
+                    new PacketResultListener<TrialPacket>() {
+                        @Override
+                        public void success(String message, TrialPacket packet) {
+                            putPref(TRIAL_MODE, packet.trialMode);
+                            putPref(TRIAL_ACTIVE_TIME, packet.getActiveTimestamp());
 
-							callable.call(packet.trialMode);
-						}
+                            callable.call(packet.trialMode);
+                        }
 
-						@Override public void error(String message, Throwable t, int errorCode) {
-							callable.call(
-									trialMode
-							);
-							Timber.w("Error fetching trial mode: " + errorCode);
-						}
-					}
-			);
-		} else {
-			callable.call(
-					trialMode
-			);
-		}
-	}
+                        @Override
+                        public void error(String message, Throwable t, int errorCode) {
+                            callable.call(
+                                    trialMode
+                            );
+                            Timber.w("Error fetching trial mode: " + errorCode);
+                        }
+                    }
+            );
+        } else {
+            callable.call(
+                    trialMode
+            );
+        }
+    }
 
-	public static void endTrialIfExpired(Activity activity) {
-		int trialMode = getPref(TRIAL_MODE);
-		Long trialActiveTime = getPref(TRIAL_ACTIVE_TIME);
+    public static void endTrialIfExpired(Activity activity) {
+        int trialMode = getPref(TRIAL_MODE);
+        Long trialActiveTime = getPref(TRIAL_ACTIVE_TIME);
 
-		if (trialMode == TRIAL_ACTIVE && trialActiveTime != null) {
-			if (trialActiveTime + TimeUnit.HOURS.toMillis(1) < System.currentTimeMillis()) {
-				putPref(TRIAL_MODE, TRIAL_EXPIRED);
+        if (trialMode == TRIAL_ACTIVE && trialActiveTime != null) {
+            if (trialActiveTime + TimeUnit.HOURS.toMillis(1) < System.currentTimeMillis()) {
+                putPref(TRIAL_MODE, TRIAL_EXPIRED);
 
-				DialogFactory.createBasicMessage(
-						activity,
-						"Trial Expired",
-						"Your 1 hour trial has expired, premium packs will no longer be able to be used."
-				).show();
+                DialogFactory.createBasicMessage(
+                        activity,
+                        "Trial Expired",
+                        "Your 1 hour trial has expired, premium packs will no longer be able to be used."
+                ).show();
 
-				CBITable<PurchaseTable> purchaseTable = CacheDatabase.getTable(PurchaseTable.class);
+                CBITable<PurchaseTable> purchaseTable = CacheDatabase.getTable(PurchaseTable.class);
 
-				Map<String, LocalPackMetaData> installedPacks = PackUtils.getInstalledMetaData();
+                Map<String, LocalPackMetaData> installedPacks = PackUtils.getInstalledMetaData();
 
-				if (installedPacks != null) {
-					String basicText = "Basic";
-					String trialText = "TRIAL";
+                if (installedPacks != null) {
+                    String basicText = "Basic";
+                    String trialText = "TRIAL";
 
-					for (LocalPackMetaData packMetaData : installedPacks.values()) {
-						if (!packMetaData.getType().equals(basicText)) {
-							PurchaseTable purchaseData = purchaseTable.getFirst(packMetaData.getScVersion());
+                    for (LocalPackMetaData packMetaData : installedPacks.values()) {
+                        if (!packMetaData.getType().equals(basicText)) {
+                            PurchaseTable purchaseData = purchaseTable.getFirst(packMetaData.getScVersion());
 
-							if (purchaseData != null && purchaseData.purchaseToken != null &&
-									!purchaseData.purchaseToken.contains(trialText))
-								continue;
+                            if (purchaseData != null && purchaseData.purchaseToken != null &&
+                                    !purchaseData.purchaseToken.contains(trialText))
+                                continue;
 
-							FrameworkManager.deleteModPack(packMetaData.getName(), null);
-						}
-					}
-				}
-			}
-		}
-	}
+                            FrameworkManager.deleteModPack(packMetaData.getName(), null);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

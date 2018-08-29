@@ -1,16 +1,11 @@
 package com.ljmu.andre.snaptools.ModulePack.Fragments.Tutorials;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-
 import com.google.common.collect.ImmutableList;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail.MessagePosition;
-import com.ljmu.andre.snaptools.Utils.TutorialDetail.ViewProcessor;
 
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 
 /**
@@ -20,36 +15,36 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 
 public class GeneralSettingsTutorial {
 
-	public static ImmutableList<TutorialDetail> getTutorials(ExpandableItemAdapter expandableItemAdapter, RecyclerView recyclerView) {
-		return new ImmutableList.Builder<TutorialDetail>()
+    public static ImmutableList<TutorialDetail> getTutorials(ExpandableItemAdapter expandableItemAdapter, RecyclerView recyclerView) {
+        return new ImmutableList.Builder<TutorialDetail>()
 
-				.add(
-						new TutorialDetail()
-								.setTitle("General Settings")
-								.setMessage(
-										"The General Settings page is used as a master switch for individual modules"
-												+ "\nIt is used to disable an entire module without having to change the individual controls within"
-								)
-								.setMessagePosition(MessagePosition.MIDDLE)
-				)
+                .add(
+                        new TutorialDetail()
+                                .setTitle("General Settings")
+                                .setMessage(
+                                        "The General Settings page is used as a master switch for individual modules"
+                                                + "\nIt is used to disable an entire module without having to change the individual controls within"
+                                )
+                                .setMessagePosition(MessagePosition.MIDDLE)
+                )
 
-				.add(
-						new TutorialDetail()
-						.setTitle("Module Tile")
-						.setMessage("This is a Module Tile, you can tap it to toggle the entire module On/Off (As shown by the Red/Green icon on the right)")
-						.setViewId(getIdFromString("Saving"))
-				)
+                .add(
+                        new TutorialDetail()
+                                .setTitle("Module Tile")
+                                .setMessage("This is a Module Tile, you can tap it to toggle the entire module On/Off (As shown by the Red/Green icon on the right)")
+                                .setViewId(getIdFromString("Saving"))
+                )
 
-				.add(
-						new TutorialDetail()
-						.setTitle("Module Description")
-						.setMessage("You can long press a module to display a description of what the modules purpose is")
-						.setViewProcessor(activity -> {
-							expandableItemAdapter.expand(0, false);
+                .add(
+                        new TutorialDetail()
+                                .setTitle("Module Description")
+                                .setMessage("You can long press a module to display a description of what the modules purpose is")
+                                .setViewProcessor(activity -> {
+                                    expandableItemAdapter.expand(0, false);
 
-							return recyclerView.getChildAt(1);
-						})
-				)
-				.build();
-	}
+                                    return recyclerView.getChildAt(1);
+                                })
+                )
+                .build();
+    }
 }

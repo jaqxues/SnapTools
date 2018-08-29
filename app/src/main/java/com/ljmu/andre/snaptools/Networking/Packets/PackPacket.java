@@ -8,6 +8,6 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class PackPacket extends Packet {
-	@SerializedName("data")
-	public String[] data;
+    @SerializedName("data")
+    public String[] data;
 }

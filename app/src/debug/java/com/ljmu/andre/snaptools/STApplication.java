@@ -1,13 +1,10 @@
 package com.ljmu.andre.snaptools;
 
 import android.app.Application;
-
 import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.snaptools.Networking.VolleyHandler;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.TimberUtils;
-
-
 import timber.log.Timber;
 
 /**
@@ -16,28 +13,30 @@ import timber.log.Timber;
  */
 
 public class STApplication extends Application {
-	public static final boolean DEBUG = true;
-	public static final String MODULE_TAG = "SnapTools";
-	public static final String PACKAGE = STApplication.class.getPackage().getName();
+    public static final boolean DEBUG = true;
+    public static final String MODULE_TAG = "SnapTools";
+    //    @Deprecated --> Apk Repackaging, changes PackageName
+    public static final String PACKAGE = STApplication.class.getPackage().getName();
 
-	private static STApplication mInstance;
+    private static STApplication mInstance;
 
-	@Override public void onCreate() {
-		TimberUtils.plantAppropriateTree();
+    @Override
+    public void onCreate() {
+        TimberUtils.plantAppropriateTree();
 
-		Timber.d("Starting Application [BuildVariant: DEBUG]");
-		ContextHelper.set(getApplicationContext());
+        Timber.d("Starting Application [BuildVariant: DEBUG]");
+        ContextHelper.set(getApplicationContext());
 
-		VolleyHandler.init(getApplicationContext());
-		ErrorLogger.init();
+        VolleyHandler.init(getApplicationContext());
+        ErrorLogger.init();
 
-		Timber.d("Initialising Activities");
-		super.onCreate();
-		mInstance = this;
-	}
+        Timber.d("Initialising Activities");
+        super.onCreate();
+        mInstance = this;
+    }
 
-	public static synchronized STApplication getInstance() {
-		Timber.d("Instance: " + mInstance);
-		return mInstance;
-	}
+    public static synchronized STApplication getInstance() {
+        Timber.d("Instance: " + mInstance);
+        return mInstance;
+    }
 }

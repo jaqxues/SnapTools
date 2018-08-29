@@ -6,15 +6,15 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class ModulePackFatalError extends Exception {
-	@SuppressWarnings("unused")
-	public static final String TAG = ModulePackFatalError.class.getSimpleName();
-	private static final long serialVersionUID = -3282028503225055485L;
+    @SuppressWarnings("unused")
+    public static final String TAG = ModulePackFatalError.class.getSimpleName();
+    private static final long serialVersionUID = -3282028503225055485L;
 
-	public ModulePackFatalError(String message) {
-		super(message);
-	}
+    public ModulePackFatalError(String message) {
+        super(message);
+    }
 
-	public ModulePackFatalError(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public ModulePackFatalError(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

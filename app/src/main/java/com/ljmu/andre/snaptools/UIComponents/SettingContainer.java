@@ -10,24 +10,24 @@ import android.widget.LinearLayout;
 
 @Deprecated
 public class SettingContainer<T> extends LinearLayout {
-	private T key;
+    private T key;
 
-	public SettingContainer(Context context, T key) {
-		super(context);
+    public SettingContainer(Context context, T key) {
+        super(context);
 
-		setOrientation(VERTICAL);
-		setLayoutParams(
-				new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-		);
+        setOrientation(VERTICAL);
+        setLayoutParams(
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        );
 
-		this.key = key;
-	}
+        this.key = key;
+    }
 
-	public void activatedBy(Object parentKey) {
+    public void activatedBy(Object parentKey) {
 
-	}
+    }
 
-	public T getKey() {
-		return key;
-	}
+    public T getKey() {
+        return key;
+    }
 }

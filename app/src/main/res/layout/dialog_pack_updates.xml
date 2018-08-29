@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <ExpandableListView
         android:id="@+id/list"
@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:padding="2dp"/>
+        android:padding="2dp" />
 
     <TextView
         android:id="@+id/loading_text"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="...Still Loading..."
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_okay"
@@ -31,5 +31,5 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/neutral_button"
         android:gravity="center"
-        android:text="Okay"/>
+        android:text="Okay" />
 </LinearLayout>

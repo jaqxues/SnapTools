@@ -38,7 +38,7 @@ class ColorPickerDialogExtension(activity: Activity, initColorRes: String, priva
 
                     hslColorPicker {
                         setColor(currentColor)
-                        
+
                         setColorSelectionListener(object : SimpleColorSelectionListener() {
                             override fun onColorSelected(color: Int) {
                                 currentColor = color

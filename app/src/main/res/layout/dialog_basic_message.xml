@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
 
     <ScrollView
@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:gravity="center"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
 
             <LinearLayout
                 android:id="@+id/error_code_container"
@@ -41,14 +41,14 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="ErrorCode"
-                    android:textColor="@color/backgroundSecondary"/>
+                    android:textColor="@color/backgroundSecondary" />
 
                 <TextView
                     android:id="@+id/txt_error_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/error"/>
+                    android:textColor="@color/error" />
 
             </LinearLayout>
         </LinearLayout>
@@ -61,6 +61,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="Okay"/>
+        android:text="Okay" />
 
 </LinearLayout>

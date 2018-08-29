@@ -18,7 +18,7 @@ import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 public class STApplication extends Application {
     public static final boolean DEBUG = false;
     public static final String MODULE_TAG = "SnapTools";
-    public static final String PACKAGE = STApplication.class.getPackage().getName();
+    public static String PACKAGE = STApplication.class.getPackage().getName();
 
     private static STApplication mInstance;
 

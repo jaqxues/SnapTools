@@ -229,6 +229,19 @@
                 android:paddingTop="7dp"
                 android:text="Clear Snapchat Cache" />
 
+            <Button
+                android:id="@+id/btn_force_repkg"
+                style="@style/ErrorButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:text="Repackage App" />
+
             <TextView
                 android:id="@+id/title_ui_settings"
                 android:layout_width="match_parent"

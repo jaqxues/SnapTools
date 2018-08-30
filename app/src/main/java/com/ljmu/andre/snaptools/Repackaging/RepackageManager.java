@@ -59,8 +59,8 @@ public class RepackageManager {
         emitter.onNext("Installing repackaged application");
         if (!sendCommandSync("pm install -t " + repackFile)) {
 //			throw new RepackageException("Failed to install repackaged application");
-            // fixme Test on emulator: Successful installation threw this exception
-            // check output
+            // Test on emulator: Successful installation threw this exception
+            // Probably because the first line of output is "pkg...". Magisk not performing checks either
         }
         // ===========================================================================
 
@@ -92,12 +92,12 @@ public class RepackageManager {
         emitter.onNext("Uninstalling original application");
         if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
 //			throw new RepackageException("Failed to uninstall original application");
-            // fixme Test on emulator: Successful un-installation threw this exception
-            // check output
+            // Test on emulator: Successful un-installation threw this exception
+            // Probably because the first line of output is "pkg...". Magisk not performing checks either
         }
         // ===========================================================================
 
-        emitter.onNext("Completed ");
+        emitter.onNext("Completing");
     }
 
     private static void getPatchObservable(Activity activity, ObservableEmitter<String> emitter,

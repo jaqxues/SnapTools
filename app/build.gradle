@@ -65,11 +65,11 @@ android {
                 }
             } else if (variant.flavorName == "beta") {
                 variant.outputs.all { output ->
-                    outputFileName = "SnopTells-Beta-Unlocked.apk"
+                    outputFileName = "SnapTools-Beta.apk"
                 }
             } else if (variant.flavorName == "prod") {
                 variant.outputs.all { output ->
-                    outputFileName = "SnopTells-Release-Unlocked.apk"
+                    outputFileName = "SnapTools-Release.apk"
                 }
             }
         }

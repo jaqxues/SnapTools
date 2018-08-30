@@ -83,49 +83,49 @@ public class KnownBugsFragment extends FragmentHelper {
     }
 
     private void initBugs() {
-        GetKnownBugs.getBugs(
-                getActivity(),
-                scVersion,
-                packVersion,
-                new ObjectResultListener<List<KnownBugObject>>() {
-                    @Override
-                    public void success(String message, List<KnownBugObject> bugObjects) {
-                        if (getActivity() == null || getActivity().isFinishing())
-                            return;
-
-                        if (bugObjects == null || bugObjects.isEmpty()) {
-                            SafeToastAdapter.showErrorToast(
-                                    getActivity(),
-                                    "No KnownBugs Found"
-                            );
-                            return;
-                        }
-
-                        for (KnownBugObject bugObject : bugObjects) {
-                            createAndAttachBug(bugObject);
-                        }
-
-                        if (Constants.getApkVersionCode() >= 66)
-                            AnimationUtils.sequentGroup(bugsContainer);
-
-                        updateLastChecked();
-                    }
-
-                    @Override
-                    public void error(String message, Throwable t, int errorCode) {
-                        if (getActivity() == null || getActivity().isFinishing())
-                            return;
-
-                        DialogFactory.createErrorDialog(
-                                getActivity(),
-                                "Known Bug Fetching Failed",
-                                message,
-                                errorCode
-                        ).show();
-                    }
-                }
-
-        );
+//        GetKnownBugs.getBugs(
+//                getActivity(),
+//                scVersion,
+//                packVersion,
+//                new ObjectResultListener<List<KnownBugObject>>() {
+//                    @Override
+//                    public void success(String message, List<KnownBugObject> bugObjects) {
+//                        if (getActivity() == null || getActivity().isFinishing())
+//                            return;
+//
+//                        if (bugObjects == null || bugObjects.isEmpty()) {
+//                            SafeToastAdapter.showErrorToast(
+//                                    getActivity(),
+//                                    "No KnownBugs Found"
+//                            );
+//                            return;
+//                        }
+//
+//                        for (KnownBugObject bugObject : bugObjects) {
+//                            createAndAttachBug(bugObject);
+//                        }
+//
+//                        if (Constants.getApkVersionCode() >= 66)
+//                            AnimationUtils.sequentGroup(bugsContainer);
+//
+//                        updateLastChecked();
+//                    }
+//
+//                    @Override
+//                    public void error(String message, Throwable t, int errorCode) {
+//                        if (getActivity() == null || getActivity().isFinishing())
+//                            return;
+//
+//                        DialogFactory.createErrorDialog(
+//                                getActivity(),
+//                                "Known Bug Fetching Failed",
+//                                message,
+//                                errorCode
+//                        ).show();
+//                    }
+//                }
+//
+//        );
     }
 
     private void createAndAttachBug(KnownBugObject bugObject) {

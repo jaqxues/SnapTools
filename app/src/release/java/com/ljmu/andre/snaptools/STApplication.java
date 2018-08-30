@@ -1,14 +1,12 @@
 package com.ljmu.andre.snaptools;
 
 import android.app.Application;
-import com.github.anrwatchdog.ANRWatchDog;
 import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.snaptools.Networking.VolleyHandler;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.TimberUtils;
 import timber.log.Timber;
 
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**
  * This class was created by Andre R M (SID: 701439)

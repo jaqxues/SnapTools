@@ -162,24 +162,6 @@ public class TranslationDef extends ConstantDefiner<Translation> {
             SettingsFragment.class,
             R.id.switch_back_opens_menu
     );
-    public static final Translation ENABLE_WATCHDOG_SWITCH = new Translation(
-            "enable_watchdog_switch",
-            "Enable app hang watchdog",
-            SettingsFragment.class,
-            R.id.switch_anr_watchdog
-    );
-    public static final Translation WATCHDOG_TIMEOUT_LABEL = new Translation(
-            "watchdog_timeout_label",
-            "Hang watchdog timeout:",
-            SettingsFragment.class,
-            R.id.label_watchdog_timeout
-    );
-    public static final Translation WATCHDOG_TIME_UNIT_LABEL = new Translation(
-            "watchdog_time_unit_label",
-            "Seconds",
-            SettingsFragment.class,
-            R.id.label_watchdog_time_unit
-    );
     public static final Translation CLEAR_SNAPCHAT_CACHE_BUTTON = new Translation(
             "clear_snapchat_cache_button",
             "Clear Snapchat Cache",

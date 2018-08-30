@@ -70,12 +70,6 @@ public class SettingsFragment extends FragmentHelper {
     SwitchCompat switchBackOpensMenu;
     @BindView(R.id.switch_transition_animations)
     SwitchCompat switchTransitionAnimations;
-    @BindView(R.id.switch_anr_watchdog)
-    SwitchCompat switchAnrWatchdog;
-    @BindView(R.id.lbl_watchdog_timeout)
-    TextView lblWatchdogTimeout;
-    @BindView(R.id.seek_watchdog_timeout)
-    SeekBar seekWatchdogTimeout;
     @BindView(R.id.btn_force_repkg)
     Button btnRepackage;
     @BindView(R.id.spin_theme)

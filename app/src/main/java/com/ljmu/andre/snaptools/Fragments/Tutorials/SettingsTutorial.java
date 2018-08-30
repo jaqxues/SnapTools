@@ -105,22 +105,6 @@ public class SettingsTutorial {
                 )
                 .add(
                         new TutorialDetail()
-                                .setViewId(R.id.switch_anr_watchdog)
-                                .setTitle("Enable app hang watchdog")
-                                .setMessage(
-                                        "The app hang watchdog is responsible for detecting when Snapchat is no longer responding."
-                                )
-                )
-                .add(
-                        new TutorialDetail()
-                                .setViewId(R.id.watchdog_container)
-                                .setTitle("Hang watchdog timeout")
-                                .setMessage(
-                                        "Set how long the watchdog should wait before checking for a hanging app."
-                                )
-                )
-                .add(
-                        new TutorialDetail()
                                 .setViewId(R.id.btn_delete_cache)
                                 .setTitle("Clear Snapchat Cache")
                                 .setMessage(

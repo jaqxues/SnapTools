@@ -35,17 +35,6 @@ public class STApplication extends Application {
         Timber.d("Initialising Activities");
         super.onCreate();
         mInstance = this;
-
-        try {
-            ANRWatchDog.setDefaultUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler());
-            new ANRWatchDog(10000)
-                    .setANRListener(
-                            error -> Timber.e(error, /*Application Not Responding*/ decryptMsg(new byte[]{34, 88, -109, -83, -45, -77, 82, -43, -96, -105, 55, 55, 56, -32, -107, 8, 91, -118, -25, -73, -5, -99, -83, 126, 116, -9, -125, 104, 103, 81, -29, -17}))
-                    )
-                    .start();
-        } catch (Throwable t) {
-            Timber.e(t, /*Error initialising ANRWatchdog*/ decryptMsg(new byte[]{-115, -14, 106, -44, -4, -6, -31, -74, 127, 14, -25, -105, -44, -95, -1, -31, 27, 119, 2, 43, 31, 65, -26, -114, -109, -16, 30, 44, -124, -90, 27, -75}));
-        }
     }
 
     public static synchronized STApplication getInstance() {

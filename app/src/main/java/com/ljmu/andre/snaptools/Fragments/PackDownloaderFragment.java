@@ -134,20 +134,7 @@ public class PackDownloaderFragment
     public void generateMetaData(boolean invalidateCache) {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(false);
-        setPacks(Collections.singletonList((ServerPackMetaData)
-                (new ServerPackMetaData()
-                        .setPurchased(false)
-                        .setDescription(htmlHighlight("PackDownloader is currently not available"))
-                        .setHasUpdate(false)
-                        .setInstalled(true)
-                        .setScVersion("1.0.0.0")
-                        .setPackVersion("1.0.0.0")
-                        .setDevelopment(false)
-                        .setType("Unavailable")
-                        .setName("Unavailable")
-                        .setFlavour("prod")
-                        .setTutorial(true)
-                        .completedBinding())));
+        adapter.setEmptyView(R.layout.layout_empty_packs);
 		/*
 		GetServerPacks.getServerPacks(
 				getActivity(),

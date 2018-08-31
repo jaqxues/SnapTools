@@ -499,7 +499,7 @@ public class WebRequest {
         public WebRequest performRequest() {
             Assert.notNull("No URL, CALLBACK, or CONTEXT provided! " +
                             "[Url: " + url + "] [Callback: " + callback + "] [Context: " + context + "]",
-                    url, callback);
+                    url, callback, context);
 
             addParam("code", String.valueOf(BuildConfig.VERSION_CODE));
             addParam("flavour", BuildConfig.FLAVOR);

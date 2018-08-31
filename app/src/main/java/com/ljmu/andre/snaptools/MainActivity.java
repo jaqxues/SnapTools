@@ -16,24 +16,39 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.*;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
+import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
-import com.ljmu.andre.snaptools.EventBus.Events.*;
+import com.ljmu.andre.snaptools.EventBus.Events.BannerUpdateEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.LoadPackSettingsEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.MasterSwitchEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.ModuleEventRequest;
+import com.ljmu.andre.snaptools.EventBus.Events.PackLoadEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.PackUnloadEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.ReqCheckApkUpdateEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.ReqLoadFragmentEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.ShopPurchaseEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.TutorialFinishedEvent;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Fragments.HomeFragment;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
@@ -44,34 +59,69 @@ import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckAPKUpdate;
 import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
+import com.ljmu.andre.snaptools.Repackaging.RepackageManager;
 import com.ljmu.andre.snaptools.UIComponents.CustomNavigation;
 import com.ljmu.andre.snaptools.UIComponents.CustomNavigation.NavigationFragmentListener;
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
-import com.ljmu.andre.snaptools.Utils.*;
+import com.ljmu.andre.snaptools.Utils.Constants;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
+import com.ljmu.andre.snaptools.Utils.CustomObservers;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
+import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
+import com.ljmu.andre.snaptools.Utils.MiscUtils;
+import com.ljmu.andre.snaptools.Utils.ModuleChecker;
+import com.ljmu.andre.snaptools.Utils.SafeToast;
+import com.ljmu.andre.snaptools.Utils.ShowcaseFactory;
+import com.ljmu.andre.snaptools.Utils.ThemeUtils;
+import com.ljmu.andre.snaptools.Utils.TranslationDef;
+
+import java.util.List;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 import timber.log.Timber;
 
-import java.util.List;
-import java.util.Locale;
-
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.ljmu.andre.GsonPreferences.Preferences.*;
+import static com.ljmu.andre.GsonPreferences.Preferences.getExternalPath;
+import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.Translation.Translator.translate;
 import static com.ljmu.andre.snaptools.Utils.Constants.APK_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.Constants.REMIND_TUTORIAL_COOLDOWN;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.*;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_MENU;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CURRENT_THEME;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_APK_UPDATE_CHECK;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_SHOP;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_OPEN_APP;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LATEST_APK_VERSION_CODE;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_PREF;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_TUTORIAL;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SYSTEM_ENABLED;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TRANSLATION_LOCALE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.addRelativeParamRule;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
-import static com.ljmu.andre.snaptools.Utils.TranslationDef.*;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.AUTOMATIC_INITIALISATION_SUCCESS;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.DEFAULT_TRANSLATION_FOUND_MESSAGE;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.DEFAULT_TRANSLATION_FOUND_TITLE;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.FRAMEWORK_LOAD_ERROR_TITLE;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.PACK_LOAD_FATAL_ERROR_MSG;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.PACK_LOAD_FATAL_ERROR_TITLE;
 
 public class MainActivity
         extends AppCompatActivity
@@ -246,6 +296,28 @@ public class MainActivity
             ).setDismissable(false).show();
 
 
+            return;
+        }
+
+        /**
+         * ==========================================================================
+         * Related to Repackaging
+         * ==========================================================================
+         */
+
+        // For re-installations, avoiding conflicts
+        String pkgName = getPackageName();
+        boolean equals = pkgName.equals(SplashActivity.class.getPackage().getName());
+        if (getPref(REPACKAGE_NAME) != null == equals)
+            putPref(REPACKAGE_NAME, (equals ? null : pkgName));
+
+        /**
+         * ==========================================================================
+         * App Repackaging
+         * ==========================================================================
+         */
+        if (shouldRepackage()) {
+            Timber.d("Repackaging is recommended... Asking User");
             return;
         }
 
@@ -463,6 +535,86 @@ public class MainActivity
         checkForSnapchatBeta();
         initReminders();
         Translator.translateActivity(this);
+    }
+
+    /**
+     * ===========================================================================
+     * Checks if repackaging is needed -> Asks user -> Repackages ST
+     * ===========================================================================
+     */
+    private boolean shouldRepackage() {
+
+        String storedRepackageName = getPref(REPACKAGE_NAME);
+
+        if (storedRepackageName != null && storedRepackageName.equals(getPackageName())) {
+            Timber.d("Application already repackaged... Allowing progress to MainActivity");
+            return false;
+        }
+
+        // Check if user has already been asked to repackage
+        if (getPref(REPACKAGE_PREF)) {
+            DialogFactory.createConfirmation(
+                    this,
+                    "Repackage SnapTools?",
+                    "Do you want to repackage SnapTools to circumvent Snapchat's malicious app detection?",
+                    new ThemedClickListener() {
+                        @Override
+                        public void clicked(ThemedDialog themedDialog) {
+                            themedDialog.dismiss();
+                            repackage();
+                        }
+                    }, new ThemedClickListener() {
+                        @Override
+                        public void clicked(ThemedDialog themedDialog) {
+                            themedDialog.dismiss();
+                            putPref(REPACKAGE_PREF, false);
+                        }
+                    }).show();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * ===========================================================================
+     * Repackages SnapTools after the user's confirmation
+     * ===========================================================================
+     */
+    private void repackage() {
+        ThemedDialog progressDialog = DialogFactory.createProgressDialog(
+                this,
+                "Repackaging SnapTools",
+                "Repackaging is required to circumvent Snapchat malicious app discovery",
+                false
+        );
+
+        progressDialog.show();
+
+        // ===========================================================================
+        Observable.<String>create(e ->
+                RepackageManager.repackageApplication(MainActivity.this, e))
+                // ===========================================================================
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObservers.SimpleObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        progressDialog.<Progress>getExtension()
+                                .setMessage(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        progressDialog.dismiss();
+
+                        DialogFactory.createErrorDialog(
+                                MainActivity.this,
+                                "Error Repackaging Application",
+                                e.getMessage()
+                        ).show();
+                    }
+                });
     }
 
     /**

@@ -1,13 +1,16 @@
 package com.ljmu.andre.snaptools.Repackaging;
 
 import android.app.Activity;
+import android.content.pm.PackageInfo;
 
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
+import com.ljmu.andre.snaptools.MainActivity;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.CustomObservers;
+import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.topjohnwu.superuser.io.SuFileOutputStream;
 
 import java.io.File;
@@ -30,9 +33,11 @@ import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Repackaging.RepackageUtil.findAndPatch;
+import static com.ljmu.andre.snaptools.Utils.Constants.getApkVersionName;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
 import static com.ljmu.andre.snaptools.Utils.ShellUtils.sendCommandSync;
+import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -44,21 +49,27 @@ public class RepackageManager {
         return DialogFactory.createConfirmation(
                 activity,
                 "Application repackaging?",
-                "Do you want to repackage " + STApplication.MODULE_TAG + " to circumvent Snapchat's malicious app detection?",
+                "Do you want to repackage " + STApplication.MODULE_TAG + " to circumvent Snapchat's malicious app detection?" +
+                        "\n\nThis should uninstall this Application and only the repackaged App will remain." +
+                        "\n\nDo " + htmlHighlight("NOT") + " rely on App Repackaging if you are scared to be banned." +
+                        "\n\n" + htmlHighlight("IMPORTANT: ") + "\nAfter the Repackaging Process completed, do the following:" +
+                        "\n\t- Open " + STApplication.MODULE_TAG + " once" +
+                        "\n\t- Activate repackaged " + STApplication.MODULE_TAG + " in Xposed" +
+                        "\n\t- Reboot",
                 new ThemedDialog.ThemedClickListener() {
                     @Override
                     public void clicked(ThemedDialog themedDialog) {
                         themedDialog.dismiss();
-                        initRepackaging(activity);
+                        initRepackaging(activity, false);
                     }
                 });
     }
 
-    public static void initRepackaging(Activity activity) {
+    public static void initRepackaging(Activity activity, boolean autoRpkg) {
         ThemedDialog progressDialog = DialogFactory.createProgressDialog(
                 activity,
-                "Repackaging SnapTools",
-                "Repackaging is required to circumvent Snapchat malicious app discovery",
+                (autoRpkg ? "Auto-" : "") + "Repackaging SnapTools",
+                "Initialising App Repackaging",
                 false
         );
 
@@ -237,6 +248,73 @@ public class RepackageManager {
 
     public static void uninstallPrevious(String pkg) {
         sendCommandSync("pm uninstall " + pkg);
+    }
+
+    public static ThemedDialog getUninstallDuplicates(Activity activity, PackageInfo info, int comparedVersions) {
+        String message;
+        boolean targetDuplicate;
+        ThemedDialog.ThemedClickListener listener;
+        if (comparedVersions < 0) {
+            message = "Another (less up-to-date) " + STApplication.MODULE_TAG + " Application has been found.";
+            targetDuplicate = true;
+        } else if (comparedVersions == 0) {
+            message = "Both Duplicates are the same version. ";
+            boolean otherObfus = !info.packageName.equals(MainActivity.class.getPackage().getName());
+            boolean thisObfus = !activity.getPackageName().equals(MainActivity.class.getPackage().getName());
+            if (thisObfus) {
+                message += "This App is already repackaged.";
+                targetDuplicate = true;
+            } else if (otherObfus) {
+                message += "The duplicate is already repackaged.";
+                targetDuplicate = false;
+            } else {
+                message += "None of these Apps are repackaged.";
+                targetDuplicate = true;
+            }
+        } else {
+            message = "This App is outdated. A more up-to-date App Version has been found on this phone.";
+            targetDuplicate = false;
+        }
+        if (targetDuplicate) {
+            message += " Do you want to uninstall the duplicate?";
+            listener = new ThemedDialog.ThemedClickListener() {
+                @Override
+                public void clicked(ThemedDialog themedDialog) {
+                    themedDialog.dismiss();
+                    Timber.w("Uninstalling the duplicate %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
+                    RepackageManager.uninstallPrevious(info.packageName);
+                    SafeToast.show(
+                            activity,
+                            "Successfully sent uninstall Command",
+                            false);
+                }
+            };
+        } else {
+            message += " Do you want to uninstall this App?";
+            listener = new ThemedDialog.ThemedClickListener() {
+                @Override
+                public void clicked(ThemedDialog themedDialog) {
+                    themedDialog.dismiss();
+                    Timber.w("Uninstalling this %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
+                    RepackageManager.uninstallPrevious(activity.getPackageName());
+                    DialogFactory.createProgressDialog(
+                            activity,
+                            "Uninstall Application",
+                            "Sent uninstall command. It might take some time to execute the Command",
+                            false
+                    ).show();
+                }
+            };
+        }
+        message += "\n\nThis App (Version: \"" + getApkVersionName() + "\", PackageName : \"" + activity.getPackageName() + "\")" +
+                "\nDuplicate (Version: \"" + info.versionName + "\", PackageName : \"" + info.packageName + "\")" +
+                "\n\nThis can happen when you try to update, re-install or repackage " + STApplication.MODULE_TAG + ".";
+        return DialogFactory.createConfirmation(
+                activity,
+                "Found Duplicates",
+                message,
+                listener
+        );
     }
 
     private static class RepackageException extends Exception {

@@ -45,7 +45,7 @@ public class StringUtils {
     }
 
     public static String htmlHighlight(String value) {
-        return "<b><font color='#efde86'><u>" + value + "</b></font></u>";
+        return "<b><font color='#efde86'><u>" + value + "</u></font></b>";
     }
 
     public static String humanReadableByteCount(long bytes, boolean si) {

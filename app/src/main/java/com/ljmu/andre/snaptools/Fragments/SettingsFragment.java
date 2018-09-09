@@ -582,8 +582,13 @@ public class SettingsFragment extends FragmentHelper {
     }
 
     private void initRepackaging() {
-        switchCompatAutoAppRepackaging.setOnCheckedChangeListener((buttonView, isChecked) ->
-                putAndKill(AUTO_APP_REPACKAGING, isChecked, getActivity()));
+        switchCompatAutoAppRepackaging.setChecked(getPref(AUTO_APP_REPACKAGING));
+        switchCompatAutoAppRepackaging.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            putPref(AUTO_APP_REPACKAGING, isChecked);
+            if (isChecked && getPref(REPACKAGE_NAME) == null) {
+                RepackageManager.askUserDialog(getActivity());
+            }
+        });
 
         if (getPref(REPACKAGE_NAME) == null) {
             btnRepackage.setOnClickListener(v ->

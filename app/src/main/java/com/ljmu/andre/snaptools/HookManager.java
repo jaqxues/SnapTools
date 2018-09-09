@@ -1,8 +1,10 @@
 package com.ljmu.andre.snaptools;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Process;
 
@@ -96,15 +98,13 @@ public class HookManager implements IXposedHookLoadPackage {
          * ===========================================================================
          */
         if (!lpparam.packageName.contains("com.snapchat.android")
-                || hasHooked.get()) {
+                || hasHooked.getAndSet(true)) {
             // Stops multiple hooks from being applied
             if (hasHooked.get())
                 Timber.d("Tried to reapply hooks!");
 
             return;
         }
-
-        hasHooked.set(true);
 
         TimberUtils.plantAppropriateTree();
 
@@ -124,7 +124,7 @@ public class HookManager implements IXposedHookLoadPackage {
         }
 
         String pkgName = getPref(REPACKAGE_NAME);
-        STApplication.PACKAGE = (pkgName == null ? "com.ljmu.andre.snaptools" : pkgName);
+        STApplication.PACKAGE = (pkgName == null ? HookManager.class.getPackage().getName() : pkgName);
 
         Timber.d("Snapchat Is Loading!");
 
@@ -138,10 +138,6 @@ public class HookManager implements IXposedHookLoadPackage {
                         new ST_MethodHook() {
                             @Override
                             protected void after(MethodHookParam param) throws Throwable {
-                                if (!(boolean) getPref(SYSTEM_ENABLED)) {
-                                    Timber.w("System Disabled... Aborting initialisation");
-                                    return;
-                                }
 
                                 Timber.d("PID: "
                                         + Process.myPid());
@@ -150,8 +146,7 @@ public class HookManager implements IXposedHookLoadPackage {
                                 snapContext = (Context) param.args[0];
 
                                 Application app = (Application) param.thisObject;
-                                Context moduleContext = app.createPackageContext(
-                                        STApplication.PACKAGE, Context.CONTEXT_IGNORE_SECURITY);
+                                Context moduleContext = helpCreatePackageContext(app);
                                 ContextHelper.set(moduleContext);
 
                                 addUnhook("System",
@@ -165,8 +160,17 @@ public class HookManager implements IXposedHookLoadPackage {
                                                     protected void before(MethodHookParam param) {
                                                         snapActivity = (Activity) param.thisObject;
                                                         UnhookManager.unhookAll("System");
-
                                                         try {
+                                                            if (moduleContext == null) {
+                                                                new AlertDialog.Builder(app)
+                                                                        .setTitle("Open " + STApplication.MODULE_TAG)
+                                                                        .setMessage("You probably re-installed or installed an updated version of " + STApplication.MODULE_TAG +
+                                                                                " and used the App Repackaging feature.\nUnfortunately, due to how App " +
+                                                                                "Repackaging works, you need to open " + STApplication.MODULE_TAG + " once after Repackaging before you can use the Xposed Hooks." +
+                                                                                "\nNo reboot should be required if you activated the correct App in Xposed and already rebooted.")
+                                                                        .setPositiveButton("Close Snapchat", (dialog, which) -> snapActivity.finish());
+                                                                return;
+                                                            }
                                                             /**
                                                              * ===========================================================================
                                                              * Initialisation Stage
@@ -347,5 +351,14 @@ public class HookManager implements IXposedHookLoadPackage {
         }
 
         return true;
+    }
+
+    public Context helpCreatePackageContext(Application app) {
+        try {
+            return app.createPackageContext(STApplication.PACKAGE, Context.CONTEXT_IGNORE_SECURITY);
+        } catch (PackageManager.NameNotFoundException e) {
+            Timber.e(e, "ST PackageName invalid, probably due to App Repackaging. User is advised to open SnapTools once.");
+        }
+        return null;
     }
 }

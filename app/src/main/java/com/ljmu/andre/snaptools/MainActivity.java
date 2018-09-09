@@ -631,6 +631,19 @@ public class MainActivity
         boolean isDefaultPkg = STApplication.PACKAGE.equals(MainActivity.class.getPackage().getName());
         boolean isPrefCorrect = repkgNamePref == null ? isDefaultPkg : STApplication.PACKAGE.equals(repkgNamePref);
         // if the Preference was not correct, update the Preference
+        if (isDefaultPkg) {
+            if (getPref(AUTO_APP_REPACKAGING)) {
+                Timber.d("Auto App Repackaging");
+                RepackageManager.initRepackaging(this, true);
+                return;
+            }
+            if (!(boolean) getPref(HAS_SHOWN_REPKG_DIALOG) || !isPrefCorrect) {
+                Timber.d("Ask for App Repackaging");
+                putPref(HAS_SHOWN_REPKG_DIALOG, true);
+                RepackageManager.askUserDialog(this).show();
+            }
+
+        }
         if (!isPrefCorrect) {
             Timber.d("User probably updated or re-installed the Application. Updating REPACKAGE_NAME Preference value.");
             putPref(REPACKAGE_NAME, (isDefaultPkg ? null : STApplication.PACKAGE));
@@ -642,71 +655,17 @@ public class MainActivity
                                 repkgNamePref,
                         0
                 );
-                // Another application has been found. Check which one is more up to date and ask
-                // user to uninstall the corresponding application.
                 if (info != null) {
-                    int version = new Version(getApkVersionName()).compareTo(new Version(info.versionName));
                     Timber.w("Found previously installed ST version, asking user to uninstall");
-                    if (version <= 0) {
-                        DialogFactory.createConfirmation(
-                                this,
-                                "Uninstall Duplicate",
-                                "Another " + (version == 0 ? "" : "(less up-to-date) ") + STApplication.MODULE_TAG + "Application has been found. Do you want to remove the duplicate?" +
-                                        "\n(Version: \"" + info.versionName + "\", PackageName : \"" + info.packageName + "\")",
-                                new ThemedClickListener() {
-                                    @Override
-                                    public void clicked(ThemedDialog themedDialog) {
-                                        themedDialog.dismiss();
-                                        Timber.w("Uninstalling another %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), getPackageName());
-                                        RepackageManager.uninstallPrevious(info.packageName);
-                                        SafeToast.show(
-                                                MainActivity.this,
-                                                "Successfully sent uninstall Command",
-                                                false
-                                        );
-                                    }
-                                }
-                        ).show();
-                    } else {
-                        DialogFactory.createConfirmation(
-                                this,
-                                "Uninstall less up-to-date Version",
-                                "This is an older version of " + STApplication.MODULE_TAG + ". Another, more up to date " + STApplication.MODULE_TAG +
-                                        " Application has been found on this phone.\nDo you want to uninstall the app you are currently using and use the other already installed Update?",
-                                new ThemedClickListener() {
-                                    @Override
-                                    public void clicked(ThemedDialog themedDialog) {
-                                        themedDialog.dismiss();
-                                        Timber.w("Uninstalling current %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), getPackageName());
-                                        RepackageManager.uninstallPrevious(getPackageName());
-                                        DialogFactory.createProgressDialog(
-                                                MainActivity.this,
-                                                "Uninstall Application",
-                                                "Sent uninstall command. It might take some time to execute the Command",
-                                                false
-                                        ).show();
-                                    }
-                                }
-                        ).show();
-                    }
+                    RepackageManager.getUninstallDuplicates(
+                            this,
+                            info,
+                            new Version(getApkVersionName()).compareTo(new Version(info.versionName))
+                    ).show();
                 }
             } catch (PackageManager.NameNotFoundException ignored) {
             }
         }
-        if (isDefaultPkg) {
-            if (getPref(AUTO_APP_REPACKAGING)) {
-                Timber.d("Auto App Repackaging");
-                RepackageManager.initRepackaging(this);
-                return;
-            }
-            if (!(boolean) getPref(HAS_SHOWN_REPKG_DIALOG) || !isPrefCorrect) {
-                Timber.d("Ask for App Repackaging");
-                putPref(HAS_SHOWN_REPKG_DIALOG, true);
-                RepackageManager.askUserDialog(this).show();
-            }
-
-        }
-
     }
 
     /**

@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Framework.Utils.LoadState.State;
@@ -11,13 +12,14 @@ import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef;
 import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.Hook;
 import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.StringUtils;
-import de.robv.android.xposed.XposedHelpers;
-import timber.log.Timber;
 
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.robv.android.xposed.XposedHelpers;
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static de.robv.android.xposed.XposedHelpers.findClass;

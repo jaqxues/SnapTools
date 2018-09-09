@@ -1,13 +1,15 @@
 package com.ljmu.andre.ErrorLogger;
 
 import android.util.Log;
+
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.StringUtils;
-import timber.log.Timber;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Date;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

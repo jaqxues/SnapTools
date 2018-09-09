@@ -3,8 +3,10 @@ package com.ljmu.andre.snaptools.Utils;
 import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.view.View;
+
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
+
 import me.toptas.fancyshowcase.FancyShowCaseView;
 import timber.log.Timber;
 

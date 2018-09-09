@@ -10,11 +10,13 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
+
 import com.github.javiersantos.appupdater.objects.Version;
 import com.ljmu.andre.snaptools.STApplication;
-import timber.log.Timber;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 

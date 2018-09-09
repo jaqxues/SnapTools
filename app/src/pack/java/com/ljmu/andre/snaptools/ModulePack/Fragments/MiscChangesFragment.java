@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.MiscChangesViewProvider;
 import com.ljmu.andre.snaptools.ModulePack.MiscChanges;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result;
+
 import org.jetbrains.annotations.NotNull;
-import timber.log.Timber;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +23,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;

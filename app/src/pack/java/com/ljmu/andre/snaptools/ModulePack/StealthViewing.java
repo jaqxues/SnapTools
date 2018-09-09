@@ -8,23 +8,63 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.StealthViewProvider;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.StealthViewingFragment;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import timber.log.Timber;
 
-import java.util.*;
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_V10_BUILDER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAP_STATUS;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.STORY_SNAP;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CONSTRUCTOR_OPERA_PAGE_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CREATE_CHEETAH_PROFILE_SETTINGS_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CREATE_PROFILE_SETTINGS_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.DISPATCH_CHAT_UPDATE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_RECEIVED_SNAP_PAYLOAD;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_SNAP_ID;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_STORY_SNAP_PAYLOAD;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.MARK_DIRECT_CHAT_VIEWED_PRESENT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.MARK_DIRECT_CHAT_VIEWED_UNPRESENT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.MARK_GROUP_CHAT_VIEWED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.MARK_STORY_VIEWED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.NETWORK_EXECUTE_SYNC;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.OPENED_SNAP;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SET_SNAP_STATUS;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_DISPLAYED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_METADATA_BUILDER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_METADATA_GET_OBJECT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_METADATA_INSERT_OBJECT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.CHAT_TOP_PANEL_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.RECEIVED_SNAP_PAYLOAD_HOLDER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.RECEIVED_SNAP_PAYLOAD_MAP;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_ADVANCER_DISPLAY_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_ADVANCER_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_UPDATE_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_UPDATE_METADATA_ID;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_UPDATE_METADATA_LIST;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DEFAULT_CHAT_STEALTH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DEFAULT_SNAP_STEALTH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_CHAT_STEALTH_BUTTON;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SNAP_STEALTH_BUTTON;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_MARK_STORY_VIEWED;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.detach;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 
 /**

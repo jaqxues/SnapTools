@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.UIComponents.Adapters;
 
 import android.app.Activity;
+
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.UIComponents.SettingBasedLayout;
 

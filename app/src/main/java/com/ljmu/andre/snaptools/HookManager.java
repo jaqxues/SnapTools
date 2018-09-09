@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Process;
+
 import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
@@ -20,18 +21,23 @@ import com.ljmu.andre.snaptools.Utils.ModuleChecker;
 import com.ljmu.andre.snaptools.Utils.TimberUtils;
 import com.ljmu.andre.snaptools.Utils.UnhookManager;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import timber.log.Timber;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.*;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.ACCEPTED_TOS;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_PACK_UPDATES_SC;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.NOTIFY_ON_LOAD;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SYSTEM_ENABLED;
 import static com.ljmu.andre.snaptools.Utils.NotificationUtils.showLoadedNotification;
 import static com.ljmu.andre.snaptools.Utils.ResourceMapper.getResId;
 import static com.ljmu.andre.snaptools.Utils.UnhookManager.addUnhook;

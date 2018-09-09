@@ -4,7 +4,9 @@ import android.content.Context;
 
 import java.io.File;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.*;
+import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
+import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Utils.Constants.TRANSLATIONS_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_TRANSLATIONS;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TRANSLATIONS_PATH;

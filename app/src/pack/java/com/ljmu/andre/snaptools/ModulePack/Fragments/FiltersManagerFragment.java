@@ -19,9 +19,21 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.util.Pair;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.common.collect.FluentIterable;
 import com.google.common.io.Files;
@@ -35,28 +47,43 @@ import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.FiltersSelectio
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ListedViewPageAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.EditTextListener;
-import com.ljmu.andre.snaptools.Utils.*;
+import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
+import com.ljmu.andre.snaptools.Utils.FileUtils;
+import com.ljmu.andre.snaptools.Utils.GlideApp;
+import com.ljmu.andre.snaptools.Utils.PackUtils;
+import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.nononsenseapps.filepicker.Utils;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
 import static android.app.Activity.RESULT_OK;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.ljmu.andre.GsonPreferences.Preferences.*;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
+import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTERS_PATH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_BACKGROUND_SAMPLE_PATH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SCALING_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SHOW_SAMPLE_BACKGROUND;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFilterScaleType;
 import static com.ljmu.andre.snaptools.Utils.FileUtils.createReadme;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
 
 /**
  * This class was created by Andre R M (SID: 701439)

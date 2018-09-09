@@ -3,9 +3,10 @@ package com.ljmu.andre.snaptools.Utils;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v4.util.LruCache;
-import timber.log.Timber;
 
 import java.lang.ref.WeakReference;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

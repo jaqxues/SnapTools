@@ -1,19 +1,27 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.util.Pair;
-import de.robv.android.xposed.XC_MethodHook;
-import timber.log.Timber;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import de.robv.android.xposed.XC_MethodHook;
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.UnhookManager.addUnhook;
 import static de.robv.android.xposed.XposedBridge.hookMethod;
-import static de.robv.android.xposed.XposedHelpers.*;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 /**
  * This class was created by Andre R M (SID: 701439)

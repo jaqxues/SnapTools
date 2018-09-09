@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.ModulePack.Utils;
 
 import android.support.annotation.NonNull;
 import android.widget.ImageView.ScaleType;
+
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
 import com.ljmu.andre.GsonPreferences.Preferences.ConditionalCheck;
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;

@@ -15,13 +15,15 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.SnapPreviewView;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.BitmapUtils;
-import timber.log.Timber;
 
 import java.io.File;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
 

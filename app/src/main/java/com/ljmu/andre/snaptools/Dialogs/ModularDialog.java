@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.ljmu.andre.snaptools.Dialogs.Content.ModularDialogContainer;
 import com.ljmu.andre.snaptools.R;
 

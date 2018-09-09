@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+
 import com.google.common.io.Files;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
@@ -13,16 +14,20 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.SharingFragment;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import timber.log.Timber;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.robv.android.xposed.XC_MethodReplacement;
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_BATCHED_SNAP_POSITION;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.BATCHED_MEDIA_LIMITER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CAMERA_IS_VISIBLE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.REPLACE_SHARED_IMAGE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.REPLACE_SHARED_VIDEO;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.BATCHED_MEDIA_ITEM_BOOLEAN;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.BATCHED_MEDIA_LIST;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BATCHED_MEDIA_CAP;

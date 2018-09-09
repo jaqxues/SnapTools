@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedDialogExtension;
 import com.ljmu.andre.snaptools.Networking.Packets.DevicePacket;
@@ -17,10 +18,15 @@ import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Callable;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSplitter;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getStyle;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 
 /**
  * This class was created by Andre R M (SID: 701439)

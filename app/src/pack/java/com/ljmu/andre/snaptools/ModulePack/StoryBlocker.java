@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.StoryBlockingSettingsFragment;
@@ -16,24 +17,37 @@ import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import de.robv.android.xposed.XC_MethodReplacement;
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.STORY_FRIEND_RECENT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.STORY_FRIEND_VIEWED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.STORY_SPONSORED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.FRIEND_PROFILE_POPUP_CREATED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.FRIEND_STORY_TILE_USERNAME;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.LOAD_INITIAL_STORIES;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.LOAD_NEW_STORY;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.LOAD_STORIES;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.LOAD_STORY_SNAP_ADVERT;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_COLLECTION_MAP;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCKED_STORIES;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_ADVERTS_BLOCKED;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_DISCOVER_BLOCKED;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_SHOW_BUTTON;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.detach;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.dp;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContains;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 

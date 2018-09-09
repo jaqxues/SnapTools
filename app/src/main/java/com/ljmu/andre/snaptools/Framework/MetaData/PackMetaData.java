@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Framework.MetaData;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.g00fy2.versioncompare.Version;

@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
@@ -16,11 +17,12 @@ import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
-import timber.log.Timber;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;

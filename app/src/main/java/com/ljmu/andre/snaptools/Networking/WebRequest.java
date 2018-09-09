@@ -4,9 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView.ScaleType;
-import com.android.volley.*;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.Request.Method;
+import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -16,12 +23,14 @@ import com.ljmu.andre.snaptools.BuildConfig;
 import com.ljmu.andre.snaptools.Networking.Packets.Packet;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
+
 import org.json.JSONException;
-import timber.log.Timber;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

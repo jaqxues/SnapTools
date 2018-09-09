@@ -11,18 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
-import com.ljmu.andre.snaptools.EventBus.Events.*;
+import com.ljmu.andre.snaptools.EventBus.Events.PackDeleteEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent.DownloadState;
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest.EventRequest;
+import com.ljmu.andre.snaptools.EventBus.Events.PackLoadEvent;
+import com.ljmu.andre.snaptools.EventBus.Events.PackUnloadEvent;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
 import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData.FailedPackToolbar;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
@@ -32,15 +34,27 @@ import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
-import com.ljmu.andre.snaptools.Utils.*;
+import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.Constants;
+import com.ljmu.andre.snaptools.Utils.PackUtils;
+import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
+import com.ljmu.andre.snaptools.Utils.SafeToast;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import java.util.*;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContains;

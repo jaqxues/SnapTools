@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 
 import static com.ljmu.andre.snaptools.ModulePack.Notifications.NotificationPrefHelper.getDotLocation;

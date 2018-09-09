@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings.Secure;
+
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.ljmu.andre.GsonPreferences.Preferences;
@@ -13,17 +14,21 @@ import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.Translation.Translator.translate;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.INSTALLATION_ID;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
-import static com.ljmu.andre.snaptools.Utils.TranslationDef.*;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.APPLICATION_INITIALISATION_FAILED_MSG;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.APPLICATION_INITIALISATION_FAILED_TITLE;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.APPLICATION_INITIALISATION_SUCCESS_MSG;
+import static com.ljmu.andre.snaptools.Utils.TranslationDef.APPLICATION_INITIALISATION_SUCCESS_TITLE;
 
 /**
  * ===========================================================================

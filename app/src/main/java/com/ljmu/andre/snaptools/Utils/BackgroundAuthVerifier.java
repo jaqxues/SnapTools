@@ -1,9 +1,9 @@
 package com.ljmu.andre.snaptools.Utils;
 
 
-import timber.log.Timber;
-
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 /**
  * ===========================================================================

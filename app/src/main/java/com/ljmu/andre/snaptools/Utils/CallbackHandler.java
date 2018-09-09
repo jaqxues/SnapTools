@@ -2,10 +2,11 @@ package com.ljmu.andre.snaptools.Utils;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import timber.log.Timber;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

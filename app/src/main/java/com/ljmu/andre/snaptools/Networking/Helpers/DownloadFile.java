@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.content.Context;
+
 import com.android.volley.Request.Method;
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
@@ -9,10 +10,15 @@ import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
-import timber.log.Timber;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

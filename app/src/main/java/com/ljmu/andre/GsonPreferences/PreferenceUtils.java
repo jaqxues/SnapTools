@@ -1,14 +1,19 @@
 package com.ljmu.andre.GsonPreferences;
 
 import android.support.annotation.Nullable;
+
 import com.google.common.io.Closer;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
-import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,6 +23,12 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

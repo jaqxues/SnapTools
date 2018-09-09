@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers;
 
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SaveState;
 

@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.Caching;
 
 import android.support.annotation.NonNull;
+
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closer;
 import com.google.common.io.Files;
@@ -8,14 +9,24 @@ import com.ljmu.andre.snaptools.ModulePack.Notifications.SaveNotification.ToastT
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import java.io.*;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;

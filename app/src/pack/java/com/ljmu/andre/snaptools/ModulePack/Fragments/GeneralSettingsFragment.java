@@ -7,12 +7,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.common.eventbus.Subscribe;
@@ -28,15 +33,20 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.Text
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DISABLED_MODULES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.setContainerPadding;
-import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.*;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.addToCollection;
+import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContains;
+import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.removeFromCollection;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
 
 /**
  * This class was created by Andre R M (SID: 701439)

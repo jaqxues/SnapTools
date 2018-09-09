@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.g00fy2.versioncompare.Version;
@@ -25,11 +26,12 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.uppercaseFirst;

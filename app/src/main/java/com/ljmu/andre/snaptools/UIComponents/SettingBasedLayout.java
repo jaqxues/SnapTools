@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
-import timber.log.Timber;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

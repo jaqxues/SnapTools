@@ -1,20 +1,43 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
+
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_BOOLEAN;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_FLOAT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_INT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_LONG;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_STRING;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.ERROR_SUPPRESS_DOWNLOADER_RUNNABLE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.NETWORK_EXECUTE_SYNC;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_ANIMATED_CONTENT_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAMERA2_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAPTIONV2_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CHAT_VIDEO_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CHEETAH_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_EMOJIBRUSH_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_FPS_OVERLAY_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_GIPHY_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_HANDSFREEREC_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_INSIGHTS_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_MULTI_SNAP_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_SKYFILTERS_STATE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_ADVERTS_BLOCKED;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_DISCOVER_BLOCKED;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DISABLED_MODULES;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContains;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
-import static de.robv.android.xposed.XposedHelpers.*;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 
 /**
  * This class was created by Andre R M (SID: 701439)

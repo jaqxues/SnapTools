@@ -11,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 import com.google.common.eventbus.Subscribe;
 import com.kekstudio.dachshundtablayout.DachshundTabLayout;
 import com.ljmu.andre.snaptools.BuildConfig;
@@ -29,9 +27,13 @@ import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
-import timber.log.Timber;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

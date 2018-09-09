@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
@@ -10,18 +11,33 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.ConversationObject;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.ChatManagerFragment;
 import com.ljmu.andre.snaptools.ModulePack.Utils.FieldMapper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
-import timber.log.Timber;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_BODY_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_HEADER_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_ISSAVED_INAPP;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_MESSAGE_VIEW_MEASURE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_METADATA_READ;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_METADATA_READ_SECOND;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_METADATA_WRITE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_METADATA_WRITE_SECOND;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_NOTIFICATION;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_SAVE_INAPP;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_USERNAME;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.CHAT_SAVING_LINKER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.CHAT_SAVING_LINKER_CHAT_REF;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.NOTIFICATION_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCK_TYPING_NOTIFICATIONS;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_CHAT_IN_SC;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORE_CHAT_MESSAGES;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**

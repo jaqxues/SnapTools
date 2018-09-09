@@ -1,12 +1,14 @@
 package com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps;
 
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.ModulePack.Caching.SnapDiskCache;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SaveTriggerManager;
-import timber.log.Timber;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
 import com.ljmu.andre.snaptools.Fragments.ViewProviders.FeaturesViewProvider;
@@ -16,12 +17,13 @@ import com.ljmu.andre.snaptools.Networking.Helpers.GetFeatures;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import timber.log.Timber;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;

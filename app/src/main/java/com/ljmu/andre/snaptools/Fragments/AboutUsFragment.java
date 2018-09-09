@@ -7,13 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Utils.RemoteConfigDefaults;
 
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml;
 

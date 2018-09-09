@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Point;
 import android.support.v4.util.Pair;
+
 import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;
 import com.ljmu.andre.CBIDatabase.CBITable;
@@ -13,11 +14,12 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.LensAssetObject;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.LensObject;
 import com.ljmu.andre.snaptools.ModulePack.Utils.InterruptFlag;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result;
-import timber.log.Timber;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_MERGE_ENABLE;

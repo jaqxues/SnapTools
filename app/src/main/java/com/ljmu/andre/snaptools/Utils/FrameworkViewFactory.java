@@ -17,13 +17,21 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.Spinner;
+
 import com.ljmu.andre.snaptools.R;
-import timber.log.Timber;
 
 import java.util.concurrent.Callable;
+
+import timber.log.Timber;
 
 import static android.os.Build.VERSION.SDK_INT;
 

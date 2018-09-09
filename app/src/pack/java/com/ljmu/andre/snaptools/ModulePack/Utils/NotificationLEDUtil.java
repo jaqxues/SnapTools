@@ -1,14 +1,16 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
 import android.os.Build;
+
 import com.ljmu.andre.snaptools.Utils.ShellUtils;
-import timber.log.Timber;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import timber.log.Timber;
 
 //import com.crashlytics.android.answers.Answers;
 //import com.crashlytics.android.answers.CustomEvent;

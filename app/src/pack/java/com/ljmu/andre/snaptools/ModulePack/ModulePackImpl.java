@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
 import android.util.Pair;
+
 import com.ljmu.andre.snaptools.Exceptions.ModulePackLoadAborted;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
@@ -15,10 +16,15 @@ import com.ljmu.andre.snaptools.ModulePack.Fragments.GeneralSettingsFragment;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KnownBugsFragment;
 import com.ljmu.andre.snaptools.ModulePack.ModulesDef.Modules;
 import com.ljmu.andre.snaptools.Utils.Constants;
-import timber.log.Timber;
 
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;

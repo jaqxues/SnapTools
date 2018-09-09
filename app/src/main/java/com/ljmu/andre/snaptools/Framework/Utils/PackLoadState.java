@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Framework.Utils;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.StatefulEListAdapter.StatefulListable;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;

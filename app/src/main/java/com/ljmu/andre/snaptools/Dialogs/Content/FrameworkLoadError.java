@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
@@ -16,10 +17,11 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableListHelper.ItemL
 import com.ljmu.andre.snaptools.UIComponents.Adapters.StatefulEListAdapter;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DISABLED_MODULES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS;

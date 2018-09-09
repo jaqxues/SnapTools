@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.MediaSaving;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.support.annotation.Nullable;
+
 import com.google.common.io.Closer;
 import com.ljmu.andre.snaptools.Exceptions.MediaNotSavedException;
 import com.ljmu.andre.snaptools.MediaSaving.AdapterHandler.MediaAdapter;

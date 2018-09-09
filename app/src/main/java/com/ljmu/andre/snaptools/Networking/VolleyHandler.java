@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Networking;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;

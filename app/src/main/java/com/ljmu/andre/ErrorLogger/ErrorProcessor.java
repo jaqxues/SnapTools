@@ -2,6 +2,7 @@ package com.ljmu.andre.ErrorLogger;
 
 import android.os.Build.VERSION;
 import android.util.Log;
+
 import com.google.common.io.CharSink;
 import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
@@ -12,13 +13,19 @@ import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
 import com.ljmu.andre.snaptools.Utils.StringUtils;
-import timber.log.Timber;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS;

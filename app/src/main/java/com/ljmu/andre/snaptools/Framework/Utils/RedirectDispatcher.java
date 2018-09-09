@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.Framework.Utils;
 
-import timber.log.Timber;
-
 import java.util.Arrays;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

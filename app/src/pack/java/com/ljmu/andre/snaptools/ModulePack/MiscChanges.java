@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInputBasic;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
@@ -21,16 +22,24 @@ import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.FontPickerDialo
 import com.ljmu.andre.snaptools.ModulePack.Fragments.MiscChangesFragment;
 import com.ljmu.andre.snaptools.Utils.ResourceMapper;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
-import timber.log.Timber;
 
 import java.io.File;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.*;
+import timber.log.Timber;
+
+import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
+import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAPCHAT_CAPTION_VIEW_CLASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CAPTION_CREATE_HOOK;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.FONT_HOOK;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.SNAPCAPTIONVIEW_CONTEXT;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.COPY_BUTTON;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CURRENT_FONT;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CUT_BUTTON;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FONTS_PATH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_MULTILINE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.PASTE_BUTTON;
 
 /*import com.flask.colorpicker.ColorPickerView.WHEEL_TYPE;
 import com.flask.colorpicker.OnColorChangedListener;

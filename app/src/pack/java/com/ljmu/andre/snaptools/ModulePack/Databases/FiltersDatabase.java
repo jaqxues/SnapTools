@@ -1,9 +1,11 @@
 package com.ljmu.andre.snaptools.ModulePack.Databases;
 
 import android.content.Context;
+
 import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;
 import com.ljmu.andre.CBIDatabase.CBITable;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;

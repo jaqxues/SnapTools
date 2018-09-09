@@ -1,7 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
 import com.ljmu.andre.snaptools.Utils.Assert;
-import timber.log.Timber;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -9,7 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static de.robv.android.xposed.XposedHelpers.*;
+import timber.log.Timber;
+
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
 /**
  * This class was created by Andre R M (SID: 701439)

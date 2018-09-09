@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.EventBus;
 
-import timber.log.Timber;
-
 import java.util.HashSet;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

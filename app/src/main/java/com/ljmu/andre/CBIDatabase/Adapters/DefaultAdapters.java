@@ -1,6 +1,7 @@
 package com.ljmu.andre.CBIDatabase.Adapters;
 
 import android.database.Cursor;
+
 import com.google.gson.Gson;
 
 import java.util.Arrays;

@@ -3,13 +3,15 @@ package com.ljmu.andre.GsonPreferences;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+
 import com.ljmu.andre.GsonPreferences.DeadlockItemModel.DeadlockItem;
-import timber.log.Timber;
 
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Utils;
 
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
+
 import net.ypresto.androidtranscoder.format.MediaFormatStrategy;
 
 /**

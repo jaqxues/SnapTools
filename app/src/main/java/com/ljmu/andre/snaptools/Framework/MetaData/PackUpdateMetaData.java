@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Framework.MetaData;
 
 import android.content.res.Resources;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;

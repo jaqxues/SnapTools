@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Framework;
 
 import android.app.Activity;
+
 import com.ljmu.andre.snaptools.Exceptions.ModuleCertificateException;
 import com.ljmu.andre.snaptools.Exceptions.ModulePackFatalError;
 import com.ljmu.andre.snaptools.Exceptions.ModulePackLoadAborted;
@@ -18,7 +19,6 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.StatefulEListAdapter.State
 import com.ljmu.andre.snaptools.Utils.FileUtils;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.StringEncryptor;
-import dalvik.system.DexClassLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
+import dalvik.system.DexClassLoader;
 
 import static com.ljmu.andre.snaptools.Utils.PackUtils.getFlavourFromAttributes;
 

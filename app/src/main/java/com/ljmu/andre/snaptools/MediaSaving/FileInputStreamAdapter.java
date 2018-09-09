@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.MediaSaving;
 
 import android.support.annotation.Nullable;
+
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closer;
 import com.ljmu.andre.snaptools.Exceptions.MediaNotSavedException;
@@ -8,7 +9,12 @@ import com.ljmu.andre.snaptools.MediaSaving.AdapterHandler.MediaAdapter;
 import com.ljmu.andre.snaptools.MediaSaving.MediaSaver.MediaSaveState;
 import com.ljmu.andre.snaptools.MediaSaving.MediaSaver.Saveable;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * This class was created by Andre R M (SID: 701439)

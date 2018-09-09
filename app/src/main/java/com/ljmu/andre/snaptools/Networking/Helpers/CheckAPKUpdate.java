@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+
 import com.android.volley.Request.Method;
 import com.github.javiersantos.appupdater.AppUpdaterUtils;
 import com.github.javiersantos.appupdater.enums.AppUpdaterError;
@@ -16,14 +17,17 @@ import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.Utils.ApkFileProvider;
-import io.reactivex.annotations.Nullable;
-import timber.log.Timber;
 
 import java.util.Objects;
 
+import io.reactivex.annotations.Nullable;
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.*;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.IGNORED_UPDATE_VERSION_CODE;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_APK_UPDATE_CHECK;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LATEST_APK_VERSION_CODE;
 
 /**
  * This class was created by Andre R M (SID: 701439)

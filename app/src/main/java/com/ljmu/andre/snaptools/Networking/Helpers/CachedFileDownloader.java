@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
 import android.content.Context;
+
 import com.android.volley.Request.Method;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
@@ -12,10 +13,11 @@ import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
-import timber.log.Timber;
 
 import java.io.File;
 import java.io.IOException;
+
+import timber.log.Timber;
 
 /**
  * ===========================================================================

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
@@ -20,10 +21,11 @@ import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.nononsenseapps.filepicker.Utils;
-import timber.log.Timber;
 
 import java.io.File;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;

@@ -13,18 +13,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+
 import com.ljmu.andre.snaptools.BuildConfig;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
 import com.ljmu.andre.snaptools.Fragments.Tutorials.HomeTutorial;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
-import timber.log.Timber;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;

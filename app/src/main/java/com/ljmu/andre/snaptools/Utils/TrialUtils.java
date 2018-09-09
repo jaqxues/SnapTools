@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.app.Activity;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.PurchaseTable;
@@ -10,10 +11,11 @@ import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckTrialMode;
 import com.ljmu.andre.snaptools.Networking.Packets.TrialPacket;
 import com.ljmu.andre.snaptools.Networking.WebResponse.PacketResultListener;
-import timber.log.Timber;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;

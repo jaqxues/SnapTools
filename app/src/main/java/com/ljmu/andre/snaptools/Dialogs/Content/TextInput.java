@@ -6,13 +6,19 @@ import android.os.Build;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedDialogExtension;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
+
 import timber.log.Timber;
 
 import static android.os.Build.VERSION.SDK_INT;

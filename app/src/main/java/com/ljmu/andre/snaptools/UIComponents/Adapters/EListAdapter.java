@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.EListAdapter.Listable;
 

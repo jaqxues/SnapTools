@@ -1,12 +1,12 @@
 package com.ljmu.andre.snaptools.Utils;
 
-import timber.log.Timber;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

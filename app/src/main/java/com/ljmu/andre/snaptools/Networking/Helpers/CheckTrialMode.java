@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
+
 import com.ljmu.andre.snaptools.Networking.Packets.TrialPacket;
 import com.ljmu.andre.snaptools.Networking.WebRequest.Builder;
 import com.ljmu.andre.snaptools.Networking.WebRequest.RequestType;
@@ -8,6 +9,7 @@ import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.PacketResultListener;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;

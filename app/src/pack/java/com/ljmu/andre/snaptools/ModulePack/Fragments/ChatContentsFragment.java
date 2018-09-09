@@ -15,15 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+
 import com.kekstudio.dachshundtablayout.DachshundTabLayout;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.Children.ChatConversationFragment;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.Children.ChatSettingsFragment;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.dp;
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.setContainerPadding;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 
 /**
  * This class was created by Andre R M (SID: 701439)

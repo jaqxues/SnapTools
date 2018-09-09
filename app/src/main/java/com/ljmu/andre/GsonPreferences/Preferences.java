@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.io.Closer;
 import com.google.gson.Gson;
@@ -15,16 +16,25 @@ import com.google.gson.reflect.TypeToken;
 import com.ljmu.andre.ConstantDefiner.Constant;
 import com.ljmu.andre.GsonPreferences.PreferenceUtils.PreferenceMapDeserialiser;
 import com.ljmu.andre.snaptools.HangErrorActivity;
-import com.ljmu.andre.snaptools.Utils.*;
-import timber.log.Timber;
+import com.ljmu.andre.snaptools.Utils.Assert;
+import com.ljmu.andre.snaptools.Utils.Constants;
+import com.ljmu.andre.snaptools.Utils.FileUtils;
+import com.ljmu.andre.snaptools.Utils.MethodTimeout;
+import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

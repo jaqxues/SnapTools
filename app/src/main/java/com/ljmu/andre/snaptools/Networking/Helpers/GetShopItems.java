@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ShopItem;
@@ -13,10 +14,15 @@ import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ServerListResultListener;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import io.reactivex.Observable;
 import timber.log.Timber;
-
-import java.util.*;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;

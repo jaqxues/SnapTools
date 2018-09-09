@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.CBIDatabase.Utils.QueryBuilder;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
@@ -11,15 +12,28 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.FieldMapper;
 import com.ljmu.andre.snaptools.Utils.MapUtils;
 import com.ljmu.andre.snaptools.Utils.MapUtils.KeyBinder;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import timber.log.Timber;
 
-import java.util.*;
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_CONTEXT_HOLDER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_SLUG;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_TRACK;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHECK_LENS_ASSET_AUTH;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHECK_LENS_AUTH;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHECK_LENS_CATEGORY_AUTH;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.LENS_LOADING;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.RESOLVE_LENS_CATEGORY;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.LENS_CATEGORY_MAP;
 import static com.ljmu.andre.snaptools.ModulePack.HookResolver.resolveHookClass;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_AUTO_ENABLE;

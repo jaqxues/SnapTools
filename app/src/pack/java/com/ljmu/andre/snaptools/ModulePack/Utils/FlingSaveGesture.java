@@ -4,7 +4,9 @@ import android.support.v4.view.VelocityTrackerCompat;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFlingVelocity;

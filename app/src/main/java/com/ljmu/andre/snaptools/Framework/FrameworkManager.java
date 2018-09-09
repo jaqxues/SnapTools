@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Framework;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.EventBus.EventBus;
 import com.ljmu.andre.snaptools.EventBus.Events.PackDeleteEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.PackLoadEvent;
@@ -13,11 +14,21 @@ import com.ljmu.andre.snaptools.Exceptions.ModulePackNotFound;
 import com.ljmu.andre.snaptools.Framework.Utils.LoadState.State;
 import com.ljmu.andre.snaptools.Framework.Utils.ModuleLoadState;
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
-import com.ljmu.andre.snaptools.Utils.*;
-import timber.log.Timber;
+import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
+import com.ljmu.andre.snaptools.Utils.FileUtils;
+import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef;
+import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;

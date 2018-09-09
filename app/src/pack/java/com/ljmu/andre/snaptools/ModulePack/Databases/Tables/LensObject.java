@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.common.base.MoreObjects;
@@ -31,23 +32,39 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.FieldMapper;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.Utils.GlideApp;
-import de.robv.android.xposed.XposedHelpers;
-import timber.log.Timber;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import de.robv.android.xposed.XposedHelpers;
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_LENS_ACTIVATOR_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_LENS_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_APPLICATION_CONTEXT_ENUM;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_ASSET_BUILT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_ASSET_LOAD_MODE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_ASSET_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_CAMERA_CONTEXT_ENUM;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_CONTEXT_HOLDER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.LENS_ACTIVATOR;
 import static com.ljmu.andre.snaptools.ModulePack.HookResolver.resolveHookClass;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_LENS_NAMES;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
-import static de.robv.android.xposed.XposedHelpers.*;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
+import static de.robv.android.xposed.XposedHelpers.newInstance;
 
 /**
  * This class was created by Andre R M (SID: 701439)

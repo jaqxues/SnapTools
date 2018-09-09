@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Framework.MetaData;
 
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
 import com.ljmu.andre.snaptools.EventBus.Events.PackDeleteEvent;

@@ -6,13 +6,15 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
+
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers.SavingTrigger;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers.SavingTrigger.SavingMode;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
-import timber.log.Timber;
 
 import java.util.ArrayList;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getSavingMode;
 

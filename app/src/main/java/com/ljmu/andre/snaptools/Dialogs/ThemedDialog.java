@@ -13,19 +13,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
-import timber.log.Timber;
 
 import java.lang.ref.WeakReference;
 
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getStyle;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 
 /**
  * This class was created by Andre R M (SID: 701439)

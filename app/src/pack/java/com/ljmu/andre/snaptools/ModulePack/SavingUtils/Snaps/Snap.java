@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.support.annotation.Nullable;
+
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.ConstantDefiner.Constant;
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
@@ -11,15 +12,20 @@ import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormat;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.StringUtils;
-import timber.log.Timber;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CHAT_FOLDER_NAME;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.GROUP_FOLDER_NAME;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.RECEIVED_FOLDER_NAME;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SENT_FOLDER_NAME;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_FOLDER_NAME;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**

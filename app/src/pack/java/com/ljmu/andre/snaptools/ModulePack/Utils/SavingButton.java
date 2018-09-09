@@ -8,11 +8,16 @@ import android.util.Pair;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
+
 import timber.log.Timber;
 
-import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.*;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getButtonHeightAspect;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getButtonLocation;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getButtonOpacity;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getButtonWidth;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.dp;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleResources;

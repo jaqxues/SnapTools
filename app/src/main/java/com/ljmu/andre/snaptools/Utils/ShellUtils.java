@@ -3,13 +3,14 @@ package com.ljmu.andre.snaptools.Utils;
 import com.jaredrummler.android.shell.CommandResult;
 import com.jaredrummler.android.shell.Shell;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
+
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class was created by Andre R M (SID: 701439)

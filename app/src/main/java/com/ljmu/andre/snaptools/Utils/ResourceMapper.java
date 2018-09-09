@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.util.SparseIntArray;
+
 import com.ljmu.andre.snaptools.BuildConfig;
+
 import timber.log.Timber;
 
 /**

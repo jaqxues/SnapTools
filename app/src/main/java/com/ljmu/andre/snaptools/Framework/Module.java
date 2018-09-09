@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Framework;
 import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Framework.Utils.LoadState.State;
 import com.ljmu.andre.snaptools.Framework.Utils.ModuleLoadState;
@@ -10,9 +11,10 @@ import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.StatefulEListAdapter.StatefulListable;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef;
-import timber.log.Timber;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 import static android.view.View.GONE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DISABLED_MODULES;

@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Utils;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 
 import java.util.Collection;

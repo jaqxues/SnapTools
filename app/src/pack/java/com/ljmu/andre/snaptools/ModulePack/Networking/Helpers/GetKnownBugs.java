@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.Networking.Helpers;
 
 import android.app.Activity;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
@@ -14,12 +15,13 @@ import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;

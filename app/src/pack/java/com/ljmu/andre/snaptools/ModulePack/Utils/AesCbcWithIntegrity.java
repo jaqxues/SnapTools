@@ -28,18 +28,37 @@ import android.os.Process;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
-import timber.log.Timber;
 
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
-import java.security.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.security.SecureRandom;
+import java.security.SecureRandomSpi;
+import java.security.Security;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+
+import timber.log.Timber;
 
 /**
  * Simple library for the "right" defaults for AES key generation, encryption,

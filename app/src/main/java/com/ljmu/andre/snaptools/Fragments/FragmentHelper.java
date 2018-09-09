@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
@@ -26,6 +27,10 @@ import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail.InflationProcessor;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail.MessagePosition;
+
+import java.util.Collections;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -33,9 +38,6 @@ import me.toptas.fancyshowcase.AnimationListener;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 import me.toptas.fancyshowcase.FocusShape;
 import timber.log.Timber;
-
-import java.util.Collections;
-import java.util.List;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.addRelativeParamRule;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDimen;

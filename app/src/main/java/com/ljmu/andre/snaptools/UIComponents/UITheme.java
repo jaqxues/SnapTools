@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.UIComponents;
 
 import com.ljmu.andre.snaptools.R;
+
 import timber.log.Timber;
 
 /**

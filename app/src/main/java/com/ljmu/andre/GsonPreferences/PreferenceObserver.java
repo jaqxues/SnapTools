@@ -2,9 +2,10 @@ package com.ljmu.andre.GsonPreferences;
 
 import android.os.FileObserver;
 import android.support.annotation.Nullable;
-import timber.log.Timber;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

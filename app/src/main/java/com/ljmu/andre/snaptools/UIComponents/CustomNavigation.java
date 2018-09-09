@@ -8,8 +8,19 @@ import android.support.design.widget.NavigationView;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.MenuItem;
-import com.ljmu.andre.snaptools.Fragments.*;
+
+import com.ljmu.andre.snaptools.Fragments.AboutUsFragment;
+import com.ljmu.andre.snaptools.Fragments.FAQFragment;
+import com.ljmu.andre.snaptools.Fragments.FeaturesFragment;
+import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
+import com.ljmu.andre.snaptools.Fragments.HomeFragment;
+import com.ljmu.andre.snaptools.Fragments.LegalFragment;
+import com.ljmu.andre.snaptools.Fragments.PackManagerFragment;
+import com.ljmu.andre.snaptools.Fragments.SettingsFragment;
+import com.ljmu.andre.snaptools.Fragments.ShopFragment;
+import com.ljmu.andre.snaptools.Fragments.SupportFragment;
 import com.ljmu.andre.snaptools.Utils.Assert;
+
 import timber.log.Timber;
 
 /**

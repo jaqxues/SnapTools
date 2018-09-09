@@ -6,6 +6,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.CBIDatabase.Adapters.AdapterHandler.TypeAdapter;
 import com.ljmu.andre.CBIDatabase.Utils.CBIDescriptor;
 import com.ljmu.andre.CBIDatabase.Utils.CBIUtils;
@@ -13,9 +14,15 @@ import com.ljmu.andre.CBIDatabase.Utils.QueryBuilder;
 import com.ljmu.andre.CBIDatabase.Utils.SQLCommand;
 import com.ljmu.andre.snaptools.Utils.Callable;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
-import timber.log.Timber;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

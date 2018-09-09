@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
 import android.app.Activity;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ljmu.andre.CBIDatabase.CBITable;
@@ -15,16 +16,17 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.ConversationObject;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.Utils.Callable;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CHAT_EXPORT_PATH;

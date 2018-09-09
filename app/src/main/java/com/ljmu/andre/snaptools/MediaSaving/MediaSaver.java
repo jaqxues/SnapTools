@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.MediaSaving;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.snaptools.Exceptions.MediaNotSavedException;
 import com.ljmu.andre.snaptools.MediaSaving.AdapterHandler.MediaAdapter;

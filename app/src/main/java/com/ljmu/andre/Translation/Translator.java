@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
+
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.ConstantDefiner.Constant;
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
@@ -15,11 +16,17 @@ import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener.ErrorObjectResultListener;
 import com.ljmu.andre.snaptools.Utils.Callable;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
-import timber.log.Timber;
 
 import java.io.ByteArrayInputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;

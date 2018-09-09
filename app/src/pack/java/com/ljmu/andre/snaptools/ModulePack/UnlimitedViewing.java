@@ -1,16 +1,22 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
-import timber.log.Timber;
 
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_SNAP_ADVANCE_MODES;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.RECEIVED_SNAP;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SNAP_COUNTDOWN_POSTER;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SNAP_GET_MEDIA_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_METADATA_INSERT_OBJECT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.TEXTURE_VIDVIEW_SETLOOPING;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.TEXTURE_VIDVIEW_START;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.MCANONICALDISPLAYNAME;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.NO_AUTO_ADVANCE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.UNLIMITED_VIEWING_IMAGES;

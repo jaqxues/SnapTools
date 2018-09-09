@@ -8,6 +8,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
+
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
@@ -15,6 +16,22 @@ import com.ljmu.andre.snaptools.Exceptions.NullObjectException;
 import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.jar.Attributes;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -22,18 +39,11 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.jar.Attributes;
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.*;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_PACKS;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS;
 import static com.ljmu.andre.snaptools.Utils.MiscUtils.calcTimeDiff;
 
 /**

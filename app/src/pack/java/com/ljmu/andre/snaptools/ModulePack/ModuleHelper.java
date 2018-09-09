@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Framework.Module;
 import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.HookClass;
@@ -8,14 +9,15 @@ import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.Hook;
 import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.HookVariable;
 import com.ljmu.andre.snaptools.ModulePack.HookResolver.HookReference;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import timber.log.Timber;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static com.ljmu.andre.snaptools.Utils.UnhookManager.addUnhook;

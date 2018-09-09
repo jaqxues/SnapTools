@@ -1,10 +1,10 @@
 package com.ljmu.andre.snaptools.Utils;
 
-import timber.log.Timber;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

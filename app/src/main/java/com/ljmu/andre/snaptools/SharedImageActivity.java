@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.*;
+import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Matrix.ScaleToFit;
+import android.graphics.RectF;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
@@ -18,10 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteStreams;
@@ -41,21 +42,37 @@ import com.ljmu.andre.snaptools.Utils.FileUtils;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.ljmu.andre.snaptools.Utils.SharedVideoFormatStrategy;
+
+import net.ypresto.androidtranscoder.MediaTranscoder;
+import net.ypresto.androidtranscoder.MediaTranscoder.Listener;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.schedulers.Schedulers;
-import net.ypresto.androidtranscoder.MediaTranscoder;
-import net.ypresto.androidtranscoder.MediaTranscoder.Listener;
 import timber.log.Timber;
 
-import java.io.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.*;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.COMPRESSION_QUALITY;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LOCK_SHARING_RATIO;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.RESIZE_SHARING_IMAGE;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHARED_IMAGE_PATH;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_COMPRESSION_DIALOG;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_SHARING_ADVICE;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 
 public class SharedImageActivity extends AppCompatActivity {

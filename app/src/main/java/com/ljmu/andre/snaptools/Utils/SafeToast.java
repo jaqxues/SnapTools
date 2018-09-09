@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;

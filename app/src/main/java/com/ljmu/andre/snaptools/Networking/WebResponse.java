@@ -1,13 +1,19 @@
 package com.ljmu.andre.snaptools.Networking;
 
-import com.android.volley.*;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.snaptools.Networking.Packets.Packet;
-import timber.log.Timber;
 
-import javax.net.ssl.SSLException;
 import java.net.UnknownHostException;
 import java.util.List;
+
+import javax.net.ssl.SSLException;
+
+import timber.log.Timber;
 
 
 /**

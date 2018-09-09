@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.HookDefinitions;
 
 import android.support.annotation.NonNull;
+
 import com.ljmu.andre.ConstantDefiner.Constant;
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
 import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.HookClass;

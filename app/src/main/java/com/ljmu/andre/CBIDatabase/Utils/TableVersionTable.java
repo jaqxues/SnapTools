@@ -6,6 +6,7 @@ import com.ljmu.andre.CBIDatabase.Annotations.TableName;
 import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;
 import com.ljmu.andre.CBIDatabase.CBITable;
+
 import timber.log.Timber;
 
 /**

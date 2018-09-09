@@ -13,16 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
+
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Framework.ModulePack;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.KnownBugObject;
-import com.ljmu.andre.snaptools.ModulePack.Networking.Helpers.GetKnownBugs;
-import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory;
-import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
-import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import com.ljmu.andre.snaptools.Utils.Constants;
 
 import java.util.List;
 

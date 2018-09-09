@@ -2,11 +2,12 @@ package com.ljmu.andre.snaptools.Utils;
 
 import com.google.common.io.Files;
 import com.ljmu.andre.GsonPreferences.Preferences;
-import timber.log.Timber;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;

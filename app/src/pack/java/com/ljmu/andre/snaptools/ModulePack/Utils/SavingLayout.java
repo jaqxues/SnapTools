@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SaveNotification;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SaveNotification.ToastType;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers.SavingTrigger;
@@ -18,6 +19,7 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers.SavingTrig
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SaveState;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
 import com.ljmu.andre.snaptools.ModulePack.Utils.GestureEvent.ReturnType;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers.SavingTrigger.SavingMode.FLING_TO_SAVE;

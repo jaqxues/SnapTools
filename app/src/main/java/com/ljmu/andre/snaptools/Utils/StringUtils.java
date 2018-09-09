@@ -1,13 +1,15 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.support.annotation.Nullable;
+
 import org.jetbrains.annotations.NotNull;
-import timber.log.Timber;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -17,9 +17,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.*;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.google.common.base.Optional;
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.CBIDatabase.Utils.QueryBuilder;
@@ -39,10 +48,6 @@ import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,19 +56,40 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SERIALIZABLE_FILTER_METADATA;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.*;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CREATE_FILTER_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CREATE_GEOFILTER_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.FILTER_LOAD_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GEOFILTER_SHOULD_SUBSAMPLE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GEOFILTER_TAPPED;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_GEOFILTER_CONTENT_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.FILTER_METADATA_CACHE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.FILTER_SERIALIZABLE_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.GEOFILTER_VIEW_CREATION_ARG3;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTERS_PATH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_NOW_PLAYING_ENABLED;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.NOW_PLAYING_BOTTOM_MARGIN;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.NOW_PLAYING_IMAGE_SIZE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFilterScaleType;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSelectableBackgroundId;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 import static com.ljmu.andre.snaptools.Utils.XposedUtils.logStackTrace;
-import static de.robv.android.xposed.XposedHelpers.*;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
+import static de.robv.android.xposed.XposedHelpers.newInstance;
+import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -4,9 +4,10 @@ import com.google.common.base.MoreObjects;
 import com.google.gson.annotations.SerializedName;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.KnownBugObject;
 import com.ljmu.andre.snaptools.Networking.Packets.Packet;
-import timber.log.Timber;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

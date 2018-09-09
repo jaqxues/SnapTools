@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -1,6 +1,7 @@
 package com.ljmu.andre.ConstantDefiner;
 
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 
 import java.lang.reflect.Array;

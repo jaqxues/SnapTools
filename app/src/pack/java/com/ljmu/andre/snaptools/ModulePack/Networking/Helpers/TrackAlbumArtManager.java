@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.Networking.Helpers;
 
 import android.graphics.Bitmap;
+
 import com.ljmu.andre.snaptools.ModulePack.Networking.Packets.ItunesTrackDataPacket;
 import com.ljmu.andre.snaptools.ModulePack.Networking.Packets.SpotifyTrackDataPacket;
 import com.ljmu.andre.snaptools.ModulePack.Utils.TrackMetaData;
@@ -11,6 +12,7 @@ import com.ljmu.andre.snaptools.Networking.WebRequest.RequestType;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
+
 import timber.log.Timber;
 
 /**

@@ -7,20 +7,29 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.util.DisplayMetrics;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedDialogExtension;
 import com.ljmu.andre.snaptools.Utils.Callable;
+
 import timber.log.Timber;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getStyle;
 
 /**
  * This class was created by Andre R M (SID: 701439)

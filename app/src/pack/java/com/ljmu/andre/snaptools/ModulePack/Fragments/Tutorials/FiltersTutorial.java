@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.Tutorials;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import com.google.common.collect.ImmutableList;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
 

@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.support.annotation.Nullable;
+
 import com.android.volley.Request.Method;
 import com.google.gson.Gson;
 import com.ljmu.andre.snaptools.Networking.WebRequest;

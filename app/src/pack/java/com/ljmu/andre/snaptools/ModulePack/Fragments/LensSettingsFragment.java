@@ -17,6 +17,7 @@ import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.common.eventbus.Subscribe;
@@ -39,22 +40,33 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.Result;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.EditTextListener;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
-import com.ljmu.andre.snaptools.Utils.*;
+import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
+import com.ljmu.andre.snaptools.Utils.PackUtils;
+import com.ljmu.andre.snaptools.Utils.ResourceUtils;
+import com.ljmu.andre.snaptools.Utils.SafeToast;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import java.util.*;
-
 import static android.app.Activity.RESULT_OK;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LENS_SELECTOR_SPAN;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
 
 /**
  * This class was created by Andre R M (SID: 701439)

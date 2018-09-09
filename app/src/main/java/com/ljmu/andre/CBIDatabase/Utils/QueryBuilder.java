@@ -2,11 +2,13 @@ package com.ljmu.andre.CBIDatabase.Utils;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.google.common.base.MoreObjects;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

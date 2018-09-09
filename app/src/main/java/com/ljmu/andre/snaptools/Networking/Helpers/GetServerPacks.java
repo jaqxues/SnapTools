@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
+
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ServerPackObject;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
@@ -17,13 +18,18 @@ import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import java.util.*;
-import java.util.concurrent.Callable;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;

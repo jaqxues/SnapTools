@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.ModulePack.SavingUtils;
 import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
@@ -12,19 +13,28 @@ import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapTypeDef;
-import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.*;
+import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.AllSnaps;
+import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.TypeAllSnaps;
+import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.TypeUsernameSnaps;
+import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.UsernameSnaps;
+import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.UsernameTypeSnaps;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import java.io.File;
-import java.util.*;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDIA_PATH;

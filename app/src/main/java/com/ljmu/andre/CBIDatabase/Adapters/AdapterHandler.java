@@ -1,7 +1,16 @@
 package com.ljmu.andre.CBIDatabase.Adapters;
 
 import android.database.Cursor;
-import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.*;
+
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.BlobAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.BooleanAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.DoubleAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.IntegerAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.ListAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.LongAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.MapAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.ShortAdapter;
+import com.ljmu.andre.CBIDatabase.Adapters.DefaultAdapters.StringAdapter;
 
 import java.util.HashMap;
 import java.util.List;

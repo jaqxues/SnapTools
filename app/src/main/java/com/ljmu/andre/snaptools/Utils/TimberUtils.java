@@ -2,14 +2,16 @@ package com.ljmu.andre.snaptools.Utils;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.snaptools.STApplication;
+
+import java.util.HashSet;
+
 import de.robv.android.xposed.XposedBridge;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 import timber.log.Timber.Tree;
-
-import java.util.HashSet;
 
 /**
  * This class was created by Andre R M (SID: 701439)

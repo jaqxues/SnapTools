@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Resources;
+
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +24,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

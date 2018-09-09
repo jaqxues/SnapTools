@@ -1,12 +1,19 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import de.robv.android.xposed.XC_MethodHook.Unhook;
 import timber.log.Timber;
-
-import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * This class was created by Andre R M (SID: 701439)

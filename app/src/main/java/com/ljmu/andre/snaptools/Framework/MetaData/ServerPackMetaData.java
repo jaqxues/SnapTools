@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.gson.annotations.SerializedName;
 import com.ljmu.andre.snaptools.BuildConfig;
@@ -19,6 +20,7 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.Expa
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.HtmlTextItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleResources;

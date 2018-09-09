@@ -3,8 +3,14 @@ package com.ljmu.andre.snaptools.Dialogs;
 import android.app.Activity;
 import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
-import com.ljmu.andre.snaptools.Dialogs.Content.*;
+
+import com.ljmu.andre.snaptools.Dialogs.Content.BasicMessage;
+import com.ljmu.andre.snaptools.Dialogs.Content.Confirmation;
+import com.ljmu.andre.snaptools.Dialogs.Content.Options;
 import com.ljmu.andre.snaptools.Dialogs.Content.Options.OptionsButtonData;
+import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
+import com.ljmu.andre.snaptools.Dialogs.Content.TextInput;
+import com.ljmu.andre.snaptools.Dialogs.Content.TextInputBasic;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 

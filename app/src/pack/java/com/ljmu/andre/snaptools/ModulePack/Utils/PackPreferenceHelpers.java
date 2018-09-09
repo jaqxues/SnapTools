@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.ModulePack.Utils;
 
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.StealthLocationOverlay.StealthPosition;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers.SavingTrigger.SavingMode;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
@@ -9,7 +10,14 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.SavingButton.ButtonLocation;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SCALING_TYPE;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FLING_VELOCITY;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_LOCATIONS;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_OPACITIES;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_RELATIVE_HEIGHTS;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_WIDTHS;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVING_MODES;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_SNAP_BUTTON_LOCATION;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ServerPackObject;
@@ -16,6 +17,7 @@ import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
+
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.Constants.PACK_CHECK_COOLDOWN;

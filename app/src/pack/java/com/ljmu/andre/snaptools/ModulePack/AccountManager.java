@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.AccountManagerFragment;
 

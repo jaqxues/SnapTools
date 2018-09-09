@@ -1,7 +1,9 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
+
 import de.robv.android.xposed.XC_MethodReplacement;
 
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SCREENSHOT_BYPASS;

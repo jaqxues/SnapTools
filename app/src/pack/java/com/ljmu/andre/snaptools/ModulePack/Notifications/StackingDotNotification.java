@@ -14,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
+
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import timber.log.Timber;
 
 import java.lang.ref.WeakReference;
+
+import timber.log.Timber;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static com.ljmu.andre.snaptools.ModulePack.Notifications.NotificationPrefHelper.getDotLocation;

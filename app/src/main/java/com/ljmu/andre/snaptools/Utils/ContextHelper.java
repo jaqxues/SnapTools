@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+
 import com.ljmu.andre.snaptools.STApplication;
-import timber.log.Timber;
 
 import java.lang.ref.WeakReference;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

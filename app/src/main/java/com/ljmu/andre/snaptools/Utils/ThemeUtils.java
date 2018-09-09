@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import com.ljmu.andre.snaptools.R;
 
 /**

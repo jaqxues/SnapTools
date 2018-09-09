@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.UIComponents.Adapters.StatefulEListAdapter.StatefulListable;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
-import timber.log.Timber;
 
 import java.util.List;
 import java.util.Map;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;

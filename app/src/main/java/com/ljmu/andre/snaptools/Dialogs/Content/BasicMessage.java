@@ -11,13 +11,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
+
 import timber.log.Timber;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getStyle;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 
 /**
  * This class was created by Andre R M (SID: 701439)

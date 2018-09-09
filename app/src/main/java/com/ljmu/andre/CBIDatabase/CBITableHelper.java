@@ -1,6 +1,7 @@
 package com.ljmu.andre.CBIDatabase;
 
 import android.database.Cursor;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.ljmu.andre.CBIDatabase.Adapters.AdapterHandler;
@@ -11,7 +12,6 @@ import com.ljmu.andre.CBIDatabase.Annotations.TableField;
 import com.ljmu.andre.CBIDatabase.Utils.CBIDescriptor;
 import com.ljmu.andre.CBIDatabase.Utils.CBIDescriptor.ObjectType;
 import com.ljmu.andre.CBIDatabase.Utils.QueryBuilder;
-import timber.log.Timber;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -19,6 +19,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

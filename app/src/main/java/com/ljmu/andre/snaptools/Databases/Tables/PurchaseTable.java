@@ -9,10 +9,11 @@ import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.CBIDatabase.Utils.SQLCommand;
-import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

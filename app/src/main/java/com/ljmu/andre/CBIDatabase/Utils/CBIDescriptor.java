@@ -3,11 +3,12 @@ package com.ljmu.andre.CBIDatabase.Utils;
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.CBIDatabase.Adapters.AdapterHandler;
 import com.ljmu.andre.CBIDatabase.Adapters.AdapterHandler.TypeAdapter;
-import timber.log.Timber;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Fragments.Tutorials;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
 import com.google.common.collect.ImmutableList;
 import com.ljmu.andre.snaptools.Fragments.PackDownloaderFragment;
 import com.ljmu.andre.snaptools.Fragments.PackManagerFragment;

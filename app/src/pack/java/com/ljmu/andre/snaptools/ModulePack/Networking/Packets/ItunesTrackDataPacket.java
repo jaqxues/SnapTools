@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.Networking.Packets;
 
 import android.support.annotation.Nullable;
+
 import com.google.common.base.MoreObjects;
 import com.google.gson.annotations.SerializedName;
 import com.ljmu.andre.snaptools.Networking.Packets.Packet;

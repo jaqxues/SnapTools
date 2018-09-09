@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInputBasic;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
@@ -22,21 +23,29 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.AccountManagerUtils;
 import com.ljmu.andre.snaptools.ModulePack.Utils.AccountManagerUtils.SnapchatAccountModel;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result.BadResult;
-import com.ljmu.andre.snaptools.Utils.*;
+import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.Assert;
+import com.ljmu.andre.snaptools.Utils.Callable;
+import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
+import com.ljmu.andre.snaptools.Utils.FileUtils;
+import com.ljmu.andre.snaptools.Utils.MiscUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.AccountManagerUtils.loadSnapchatAccountModels;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.ACCOUNTS_PATH;
-import static com.ljmu.andre.snaptools.Utils.ResourceUtils.*;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
+import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 
 /**

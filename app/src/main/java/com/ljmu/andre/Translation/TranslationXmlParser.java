@@ -1,14 +1,17 @@
 package com.ljmu.andre.Translation;
 
 import android.util.Xml;
+
 import com.ljmu.andre.Translation.Translator.Translation;
 import com.ljmu.andre.snaptools.Utils.Callable;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import timber.log.Timber;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.Assert.nonFatalAssert;
 

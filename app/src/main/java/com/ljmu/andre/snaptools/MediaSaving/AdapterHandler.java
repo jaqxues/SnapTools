@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.MediaSaving;
 
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.snaptools.MediaSaving.MediaSaver.Saveable;
 
 import java.io.File;

@@ -3,6 +3,7 @@ package com.ljmu.andre.modulepackloader;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.ljmu.andre.modulepackloader.Exceptions.PackBuildException;
 import com.ljmu.andre.modulepackloader.Exceptions.PackLoadException;
 import com.ljmu.andre.modulepackloader.Exceptions.PackSecurityException;
@@ -11,7 +12,6 @@ import com.ljmu.andre.modulepackloader.Utils.Assert;
 import com.ljmu.andre.modulepackloader.Utils.JarUtils;
 import com.ljmu.andre.modulepackloader.Utils.Logger;
 import com.ljmu.andre.modulepackloader.Utils.Logger.DefaultLogger;
-import dalvik.system.DexClassLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.jar.JarFile;
+
+import dalvik.system.DexClassLoader;
 
 /**
  * This class was created by Andre R M (SID: 701439)

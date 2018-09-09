@@ -1,10 +1,14 @@
 package com.ljmu.andre.snaptools.Repackaging;
 
 import android.app.Activity;
+
+import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
+import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
+import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
+import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.Assert;
+import com.ljmu.andre.snaptools.Utils.CustomObservers;
 import com.topjohnwu.superuser.io.SuFileOutputStream;
-import io.reactivex.ObservableEmitter;
-import timber.log.Timber;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +20,15 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.jar.JarEntry;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.*;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
+import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
+import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Repackaging.RepackageUtil.findAndPatch;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
@@ -27,6 +39,57 @@ import static com.ljmu.andre.snaptools.Utils.ShellUtils.sendCommandSync;
  * It and its contents are free to use by all
  */
 public class RepackageManager {
+
+    public static ThemedDialog askUserDialog(Activity activity) {
+        return DialogFactory.createConfirmation(
+                activity,
+                "Application repackaging?",
+                "Do you want to repackage " + STApplication.MODULE_TAG + " to circumvent Snapchat's malicious app detection?",
+                new ThemedDialog.ThemedClickListener() {
+                    @Override
+                    public void clicked(ThemedDialog themedDialog) {
+                        themedDialog.dismiss();
+                        initRepackaging(activity);
+                    }
+                });
+    }
+
+    public static void initRepackaging(Activity activity) {
+        ThemedDialog progressDialog = DialogFactory.createProgressDialog(
+                activity,
+                "Repackaging SnapTools",
+                "Repackaging is required to circumvent Snapchat malicious app discovery",
+                false
+        );
+
+        progressDialog.show();
+
+        // ===========================================================================
+        Observable.<String>create(e ->
+                RepackageManager.repackageApplication(activity, e))
+                // ===========================================================================
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObservers.SimpleObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        progressDialog.<Progress>getExtension()
+                                .setMessage(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        progressDialog.dismiss();
+
+                        DialogFactory.createErrorDialog(
+                                activity,
+                                "Error Repackaging Application",
+                                e.getMessage()
+                        ).show();
+                    }
+                });
+    }
 
     public static void repackageApplication(Activity activity, ObservableEmitter<String> emitter)
             throws RepackageException {
@@ -76,10 +139,10 @@ public class RepackageManager {
 
         if (previousRepackageName != null) {
             emitter.onNext("Uninstalling alternate repackages");
-
-            if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
-                Timber.e("Couldn't find previously repackaged app!");
-            }
+            uninstallPrevious(previousRepackageName);
+//            if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
+//                Timber.e("Couldn't find previously repackaged app!");
+//            }
         }
         // ===========================================================================
 
@@ -90,11 +153,12 @@ public class RepackageManager {
          */
         // TODO: Reword
         emitter.onNext("Uninstalling original application");
-        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
+        uninstallPrevious(activity.getPackageName());
+//        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
 //			throw new RepackageException("Failed to uninstall original application");
-            // Test on emulator: Successful un-installation threw this exception
-            // Probably because the first line of output is "pkg...". Magisk not performing checks either
-        }
+        // Test on emulator: Successful un-installation threw this exception
+        // Probably because the first line of output is "pkg...". Magisk not performing checks either
+//        }
         // ===========================================================================
 
         emitter.onNext("Completing");
@@ -169,6 +233,10 @@ public class RepackageManager {
         } catch (GeneralSecurityException e) {
             throw new RepackageException("Couldn't create application signatures!");
         }
+    }
+
+    public static void uninstallPrevious(String pkg) {
+        sendCommandSync("pm uninstall " + pkg);
     }
 
     private static class RepackageException extends Exception {

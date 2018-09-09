@@ -1,8 +1,10 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.support.annotation.NonNull;
+
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
-import com.ljmu.andre.GsonPreferences.Preferences.*;
+import com.ljmu.andre.GsonPreferences.Preferences.ConditionalCheck;
+import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.BuildConfig;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
@@ -10,7 +12,9 @@ import com.ljmu.andre.snaptools.UIComponents.UITheme;
 import java.util.HashSet;
 import java.util.UUID;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.*;
+import static com.ljmu.andre.GsonPreferences.Preferences.getExternalPath;
+import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -31,9 +35,14 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "SHOW_TUTORIAL",
             true, Boolean.class
     );
-    public static final Preference REPACKAGE_PREF = new Preference(
-            "REPACKAGE_PREF",
-            true, Boolean.class);
+    public static final Preference HAS_SHOWN_REPKG_DIALOG = new Preference(
+            "HAS_SHOWN_REPKG_DIALOG",
+            false, Boolean.class
+    );
+    public static final Preference AUTO_APP_REPACKAGING = new Preference(
+            "AUTO_APP_REPACKAGING",
+            false, Boolean.class
+    );
     public static final Preference SYSTEM_ENABLED = new Preference(
             "SYSTEM_ENABLED",
             true, Boolean.class

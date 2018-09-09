@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools;
 
 import android.Manifest.permission;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,13 +29,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.javiersantos.appupdater.objects.Version;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
-import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
@@ -65,7 +66,6 @@ import com.ljmu.andre.snaptools.UIComponents.CustomNavigation.NavigationFragment
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
 import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
-import com.ljmu.andre.snaptools.Utils.CustomObservers;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
@@ -86,7 +86,6 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -100,15 +99,17 @@ import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.Translation.Translator.translate;
 import static com.ljmu.andre.snaptools.Utils.Constants.APK_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.Constants.REMIND_TUTORIAL_COOLDOWN;
+import static com.ljmu.andre.snaptools.Utils.Constants.getApkVersionName;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.AUTO_APP_REPACKAGING;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_MENU;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CURRENT_THEME;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOWN_REPKG_DIALOG;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_APK_UPDATE_CHECK;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_SHOP;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_OPEN_APP;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LATEST_APK_VERSION_CODE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_PREF;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_TUTORIAL;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SYSTEM_ENABLED;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TRANSLATION_LOCALE;
@@ -301,25 +302,12 @@ public class MainActivity
 
         /**
          * ==========================================================================
-         * Related to Repackaging
+         * Application Repackaging requires to update {@link STApplication#PACKAGE} to be updated
+         * with the actual PackageName
          * ==========================================================================
          */
-
-        // For re-installations, avoiding conflicts
-        String pkgName = getPackageName();
-        boolean equals = pkgName.equals(SplashActivity.class.getPackage().getName());
-        if (getPref(REPACKAGE_NAME) != null == equals)
-            putPref(REPACKAGE_NAME, (equals ? null : pkgName));
-
-        /**
-         * ==========================================================================
-         * App Repackaging
-         * ==========================================================================
-         */
-        if (shouldRepackage()) {
-            Timber.d("Repackaging is recommended... Asking User");
-            return;
-        }
+        // Assign the actual PackageName
+        STApplication.PACKAGE = getPackageName();
 
         /**
          * ===========================================================================
@@ -535,86 +523,7 @@ public class MainActivity
         checkForSnapchatBeta();
         initReminders();
         Translator.translateActivity(this);
-    }
-
-    /**
-     * ===========================================================================
-     * Checks if repackaging is needed -> Asks user -> Repackages ST
-     * ===========================================================================
-     */
-    private boolean shouldRepackage() {
-
-        String storedRepackageName = getPref(REPACKAGE_NAME);
-
-        if (storedRepackageName != null && storedRepackageName.equals(getPackageName())) {
-            Timber.d("Application already repackaged... Allowing progress to MainActivity");
-            return false;
-        }
-
-        // Check if user has already been asked to repackage
-        if (getPref(REPACKAGE_PREF)) {
-            DialogFactory.createConfirmation(
-                    this,
-                    "Repackage SnapTools?",
-                    "Do you want to repackage SnapTools to circumvent Snapchat's malicious app detection?",
-                    new ThemedClickListener() {
-                        @Override
-                        public void clicked(ThemedDialog themedDialog) {
-                            themedDialog.dismiss();
-                            repackage();
-                        }
-                    }, new ThemedClickListener() {
-                        @Override
-                        public void clicked(ThemedDialog themedDialog) {
-                            themedDialog.dismiss();
-                            putPref(REPACKAGE_PREF, false);
-                        }
-                    }).show();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * ===========================================================================
-     * Repackages SnapTools after the user's confirmation
-     * ===========================================================================
-     */
-    private void repackage() {
-        ThemedDialog progressDialog = DialogFactory.createProgressDialog(
-                this,
-                "Repackaging SnapTools",
-                "Repackaging is required to circumvent Snapchat malicious app discovery",
-                false
-        );
-
-        progressDialog.show();
-
-        // ===========================================================================
-        Observable.<String>create(e ->
-                RepackageManager.repackageApplication(MainActivity.this, e))
-                // ===========================================================================
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObservers.SimpleObserver<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        progressDialog.<Progress>getExtension()
-                                .setMessage(s);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        progressDialog.dismiss();
-
-                        DialogFactory.createErrorDialog(
-                                MainActivity.this,
-                                "Error Repackaging Application",
-                                e.getMessage()
-                        ).show();
-                    }
-                });
+        initAppRepackaging();
     }
 
     /**
@@ -708,6 +617,96 @@ public class MainActivity
         }
 
         putPref(LAST_OPEN_APP, System.currentTimeMillis());
+    }
+
+    /**
+     * ===========================================================================
+     * Handles App Repackaging (Incorrect preferences due to re-installations...)
+     * ===========================================================================
+     */
+    private void initAppRepackaging() {
+        // During re-installations or updates, the PackageName gets reset.
+        // Check if the REPACKAGE_NAME Preference is correct
+        String repkgNamePref = getPref(REPACKAGE_NAME);
+        boolean isDefaultPkg = STApplication.PACKAGE.equals(MainActivity.class.getPackage().getName());
+        boolean isPrefCorrect = repkgNamePref == null ? isDefaultPkg : STApplication.PACKAGE.equals(repkgNamePref);
+        // if the Preference was not correct, update the Preference
+        if (!isPrefCorrect) {
+            Timber.d("User probably updated or re-installed the Application. Updating REPACKAGE_NAME Preference value.");
+            putPref(REPACKAGE_NAME, (isDefaultPkg ? null : STApplication.PACKAGE));
+            // This is probably caused by an update or re-installation
+            try {
+                PackageInfo info = getPackageManager().getPackageInfo(
+                        repkgNamePref == null ?
+                                MainActivity.class.getPackage().getName() :
+                                repkgNamePref,
+                        0
+                );
+                // Another application has been found. Check which one is more up to date and ask
+                // user to uninstall the corresponding application.
+                if (info != null) {
+                    int version = new Version(getApkVersionName()).compareTo(new Version(info.versionName));
+                    Timber.w("Found previously installed ST version, asking user to uninstall");
+                    if (version <= 0) {
+                        DialogFactory.createConfirmation(
+                                this,
+                                "Uninstall Duplicate",
+                                "Another " + (version == 0 ? "" : "(less up-to-date) ") + STApplication.MODULE_TAG + "Application has been found. Do you want to remove the duplicate?" +
+                                        "\n(Version: \"" + info.versionName + "\", PackageName : \"" + info.packageName + "\")",
+                                new ThemedClickListener() {
+                                    @Override
+                                    public void clicked(ThemedDialog themedDialog) {
+                                        themedDialog.dismiss();
+                                        Timber.w("Uninstalling another %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), getPackageName());
+                                        RepackageManager.uninstallPrevious(info.packageName);
+                                        SafeToast.show(
+                                                MainActivity.this,
+                                                "Successfully sent uninstall Command",
+                                                false
+                                        );
+                                    }
+                                }
+                        ).show();
+                    } else {
+                        DialogFactory.createConfirmation(
+                                this,
+                                "Uninstall less up-to-date Version",
+                                "This is an older version of " + STApplication.MODULE_TAG + ". Another, more up to date " + STApplication.MODULE_TAG +
+                                        " Application has been found on this phone.\nDo you want to uninstall the app you are currently using and use the other already installed Update?",
+                                new ThemedClickListener() {
+                                    @Override
+                                    public void clicked(ThemedDialog themedDialog) {
+                                        themedDialog.dismiss();
+                                        Timber.w("Uninstalling current %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), getPackageName());
+                                        RepackageManager.uninstallPrevious(getPackageName());
+                                        DialogFactory.createProgressDialog(
+                                                MainActivity.this,
+                                                "Uninstall Application",
+                                                "Sent uninstall command. It might take some time to execute the Command",
+                                                false
+                                        ).show();
+                                    }
+                                }
+                        ).show();
+                    }
+                }
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
+        }
+        if (isDefaultPkg) {
+            if (getPref(AUTO_APP_REPACKAGING)) {
+                Timber.d("Auto App Repackaging");
+                RepackageManager.initRepackaging(this);
+                return;
+            }
+            if (!(boolean) getPref(HAS_SHOWN_REPKG_DIALOG) || !isPrefCorrect) {
+                Timber.d("Ask for App Repackaging");
+                putPref(HAS_SHOWN_REPKG_DIALOG, true);
+                RepackageManager.askUserDialog(this).show();
+            }
+
+        }
+
     }
 
     /**

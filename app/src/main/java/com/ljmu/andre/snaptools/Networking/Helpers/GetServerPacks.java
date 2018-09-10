@@ -16,7 +16,6 @@ import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ServerListResultListener;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 
@@ -33,7 +32,6 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 import static com.ljmu.andre.snaptools.Utils.Constants.PACK_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_PACKS;
 
@@ -102,22 +100,22 @@ public class GetServerPacks {
     }
 
     public static void getPacksFromServer(Activity activity, ServerListResultListener<ServerPackMetaData> serverPackResult) {
-        Class cls = GetServerPacks.class;
-        String token;
-        String email;
-        String deviceId;
+//        Class cls = GetServerPacks.class;
+//        String token;
+//        String email;
+//        String deviceId;
 
-        try {
-            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
-        } catch (IllegalArgumentException e) {
-            Timber.e(e);
-            serverPackResult.error(
-                    "Missing Authentication Parameters",
-                    e,
-                    202
-            );
-            return;
-        }
+//        try {
+//            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
+//        } catch (IllegalArgumentException e) {
+//            Timber.e(e);
+//            serverPackResult.error(
+//                    "Missing Authentication Parameters",
+//                    e,
+//                    202
+//            );
+//            return;
+//        }
 
         new WebRequest.Builder()
                 .setUrl(GET_PACKS_URL)
@@ -126,8 +124,8 @@ public class GetServerPacks {
                 .setType(RequestType.PACKET)
                 .setPacketClass(ServerPacksPacket.class)
                 // ===========================================================================
-                .addParam("device_id", deviceId)
-                .addParam("developer", String.valueOf(STApplication.DEBUG))
+//                .addParam("device_id", deviceId)
+//                .addParam("developer", String.valueOf(STApplication.DEBUG))
                 // ===========================================================================
                 .shouldClearCache(true)
                 .setCallback(new WebResponseListener() {
@@ -153,7 +151,8 @@ public class GetServerPacks {
                             String name = PackMetaData.getFileNameFromTemplate(
                                     metaData.getType(),
                                     metaData.getScVersion(),
-                                    metaData.getFlavour()
+                                    metaData.getFlavour(),
+                                    metaData.getPackVersion()
                             );
 
                             metaData.setName(name);

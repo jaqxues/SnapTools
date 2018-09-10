@@ -598,13 +598,13 @@ public class PackDownloaderFragment
                                                         .setReleaseNotes(packet.getChangelog())
                                         ).show();
 
-//								DialogFactory.createBasicMessage(
-//										getActivity(),
-//										"Pack Changelog",
-//										"Snapchat Version: " + packet.getSCVersion()
-//												+ "\nPack Type: " + packet.getPackType()
-//												+ "\n\nRelease Notes:\n" + packet.getChangelog()
-//								).show();
+                                DialogFactory.createBasicMessage(
+                                        getActivity(),
+                                        "Pack Changelog",
+                                        "Snapchat Version: " + packet.getSCVersion()
+                                                + "\nPack Type: " + packet.getPackType()
+                                                + "\n\nRelease Notes:\n" + packet.getChangelog()
+                                ).show();
                             }
 
                             @Override

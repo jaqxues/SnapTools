@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 import android.app.Activity;
 import android.support.annotation.Nullable;
 
+import com.android.volley.Request;
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
@@ -36,7 +37,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PAT
 
 public class DownloadModulePack implements DownloadListener {
     private static final String VOLLEY_TAG = "pack_download";
-    private static final String PACK_REQUEST_URL = "https://snaptools.org/SnapTools/Scripts/download_pack.php";
+    private static final String PACK_BASE_URL = "https://github.com/jaqxues/SnapToolsAdditionals/blob/master/Packs/";
 
     private Activity activity;
     private String packName;
@@ -103,7 +104,8 @@ public class DownloadModulePack implements DownloadListener {
         }
 
         new DownloadFile()
-                .setUrl(PACK_REQUEST_URL)
+                .setUrl(getDownloadUrl())
+                .setMethod(Request.Method.GET)
                 .setContext(activity)
                 .setVolleyTag(VOLLEY_TAG)
                 .setDirectory(getPref(MODULES_PATH))
@@ -120,6 +122,10 @@ public class DownloadModulePack implements DownloadListener {
                 .download();
 
         progressDialog.show();
+    }
+
+    public String getDownloadUrl() {
+        return PACK_BASE_URL + packName + ".jar?raw=true";
     }
 
     @Override

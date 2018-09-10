@@ -46,7 +46,8 @@ public class PackHistoryObject implements Comparable<PackHistoryObject> {
         return PackMetaData.getFileNameFromTemplate(
                 packType,
                 scVersion,
-                flavour
+                flavour,
+                packVersion
         );
     }
 

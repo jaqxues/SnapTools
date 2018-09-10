@@ -21,6 +21,8 @@ import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -352,9 +354,10 @@ public abstract class PackMetaData extends ExpandableItemEntity<MultiItemEntity>
      * @return A string that can be used to determine the filename of a ModulePack
      * based on some MetaData
      */
-    public static String getFileNameFromTemplate(String type, String scVersion, String flavour) {
+    public static String getFileNameFromTemplate(String type, String scVersion, String flavour, @Nullable String packVersion) {
         return "STModulePack"
                 + (!"prod".equals(flavour) ? getFlavourText(flavour) : "")
+                + (packVersion == null ? "" : "_" + packVersion)
                 + "_" + type
                 + "_" + scVersion;
     }

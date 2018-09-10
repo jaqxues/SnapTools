@@ -2,6 +2,11 @@ package com.ljmu.andre.snaptools.ModulePack.Networking.Helpers;
 
 import android.app.Activity;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
@@ -26,7 +31,6 @@ import timber.log.Timber;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LAST_CHECK_KNOWN_BUGS;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -35,7 +39,7 @@ import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 public class GetKnownBugs {
     private static final long BUGS_CHECK_COOLDOWN = STApplication.DEBUG ? 0 : TimeUnit.HOURS.toMillis(12);
-    private static final String KNOWN_BUGS_URL = /*https://snaptools.org/SnapTools/Scripts/get_known_bugs.php*/ decryptMsg(new byte[]{-4, -118, -56, -116, -67, 26, -1, -39, 30, 104, 108, 5, -64, 78, 25, -2, -100, -63, 90, -124, 11, -84, 111, -37, 59, 25, -36, 92, -106, 78, -120, 10, 102, 8, -126, -10, 21, 70, -102, 61, -62, 102, -69, 4, 115, -86, -36, 74, -9, 19, 44, -6, -128, -117, -114, 34, -121, -49, -11, -16, -97, 39, -98, 7});
+    private static final String KNOWN_BUGS_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/KnownBugs/";
     private static final String FETCH_BUGS_TAG = "fetching_bugs";
 
     public static void getBugs(Activity activity, String scVersion, String packVersion,
@@ -81,7 +85,7 @@ public class GetKnownBugs {
 
     public static void getBugsFromServer(Activity activity, String scVersion, String packVersion,
                                          ObjectResultListener<List<KnownBugObject>> resultListener) {
-        Timber.d("Getting bugs from server");
+        Timber.d("Getting bugs from server (SCVersion: %s, PackVersion: %s", scVersion, packVersion);
 
         ThemedDialog progressDialog = DialogFactory.createProgressDialog(
                 activity,
@@ -97,37 +101,55 @@ public class GetKnownBugs {
 
         progressDialog.show();
         new WebRequest.Builder()
-                .setUrl(KNOWN_BUGS_URL)
-                .setType(RequestType.PACKET)
-                .setPacketClass(KnownBugsPacket.class)
+                .setUrl(getKnownBugsUrl(scVersion))
+                .setType(RequestType.STRING)
+                .setMethod(Request.Method.GET)
                 .setContext(activity)
                 .setTag(FETCH_BUGS_TAG)
                 .useDefaultRetryPolicy()
-                .addParam("sc_version", scVersion)
-                .addParam("pack_version", packVersion)
                 .setCallback(new WebResponseListener() {
                     @Override
                     public void success(WebResponse webResponse) throws Throwable {
                         progressDialog.dismiss();
 
-                        KnownBugsPacket bugsPacket = webResponse.getResult();
+                        String json = webResponse.getResult();
+                        KnownBugsPacket packet = null;
+                        JsonObject object;
+                        try {
+                            JsonElement element = new JsonParser().parse(json);
+                            object = element.getAsJsonObject();
+                        } catch (Exception e) {
+                            Timber.e(e, "WebResponse Result: " + json);
+                            resultListener.error("Could not fetch KnownBugs (Error Parsing Json)", e, 202);
+                            return;
+                        }
 
-                        if (bugsPacket.bugs == null) {
+                        if (object.has(packVersion)) {
+                            object = object.getAsJsonObject(packVersion);
+                            packet = new Gson().fromJson(object, KnownBugsPacket.class);
+                        } else {
+                            resultListener.error("No KnownBugs file found for this version", new IllegalStateException(), -1);
+                            packet = new Gson().fromJson(
+                                    "{\"bugs\":[{\"category\": \"KnownBugs Fetching\",\"bugs\":[\"No KnownBugs Entry for this Version\",\"How ironic that this is the error\"]}]}",
+                                    KnownBugsPacket.class);
+                        }
+
+                        if (packet.bugs == null) {
                             resultListener.error("Empty bugs list pulled from server", null, webResponse.getResponseCode());
                             return;
                         }
 
-                        bugsPacket.assignChildrensKeys(scVersion, packVersion);
+                        packet.assignChildrensKeys(scVersion, packVersion);
 
                         putPref(LAST_CHECK_KNOWN_BUGS, System.currentTimeMillis());
-                        resultListener.success(null, bugsPacket.bugs);
+                        resultListener.success(null, packet.bugs);
 
                         CBITable<KnownBugObject> knownBugsTable = CacheDatabase.getTable(KnownBugObject.class);
 
                         if (knownBugsTable == null)
                             return;
 
-                        knownBugsTable.insertAll(bugsPacket.bugs);
+                        knownBugsTable.insertAll(packet.bugs);
                     }
 
                     @Override
@@ -145,7 +167,10 @@ public class GetKnownBugs {
                                 webResponse.getResponseCode()
                         );
                     }
-                })
-                .performRequest();
+                }).performRequest();
+    }
+
+    public static String getKnownBugsUrl(String scVersion) {
+        return KNOWN_BUGS_BASE_URL + "Snapchat_v" + scVersion + ".json";
     }
 }

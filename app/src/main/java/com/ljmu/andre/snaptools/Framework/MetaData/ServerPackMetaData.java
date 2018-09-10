@@ -45,6 +45,22 @@ public class ServerPackMetaData extends PackMetaData {
     @SerializedName("is_purchased")
     private Boolean isPurchased;
 
+    public static ServerPackMetaData getTutorialPack(String scVersion) {
+        return (ServerPackMetaData) new ServerPackMetaData()
+                .setPurchased(false)
+                .setDescription(htmlHighlight("Tutorial Item"))
+                .setHasUpdate(false)
+                .setInstalled(true)
+                .setScVersion(scVersion)
+                .setPackVersion("1.0.0.0")
+                .setDevelopment(false)
+                .setType("Tutorial")
+                .setName("TutorialPack v" + scVersion)
+                .setFlavour("prod")
+                .setTutorial(true)
+                .completedBinding();
+    }
+
     public int getMinApkCode() {
         return minApkCode;
     }
@@ -174,22 +190,6 @@ public class ServerPackMetaData extends PackMetaData {
     @Override
     public int getLevel() {
         return 0;
-    }
-
-    public static ServerPackMetaData getTutorialPack(String scVersion) {
-        return (ServerPackMetaData) new ServerPackMetaData()
-                .setPurchased(false)
-                .setDescription(htmlHighlight("Tutorial Item"))
-                .setHasUpdate(false)
-                .setInstalled(true)
-                .setScVersion(scVersion)
-                .setPackVersion("1.0.0.0")
-                .setDevelopment(false)
-                .setType("Tutorial")
-                .setName("TutorialPack v" + scVersion)
-                .setFlavour("prod")
-                .setTutorial(true)
-                .completedBinding();
     }
 
     public ServerPackMetaData setHasUpdate(boolean hasUpdate) {

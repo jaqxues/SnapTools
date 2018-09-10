@@ -29,7 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.javiersantos.appupdater.objects.Version;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
 import com.ljmu.andre.GsonPreferences.Preferences;
@@ -99,8 +98,6 @@ import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.Translation.Translator.translate;
 import static com.ljmu.andre.snaptools.Utils.Constants.APK_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.Constants.REMIND_TUTORIAL_COOLDOWN;
-import static com.ljmu.andre.snaptools.Utils.Constants.getApkVersionName;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.AUTO_APP_REPACKAGING;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_MENU;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CURRENT_THEME;
@@ -630,20 +627,18 @@ public class MainActivity
         String repkgNamePref = getPref(REPACKAGE_NAME);
         boolean isDefaultPkg = STApplication.PACKAGE.equals(MainActivity.class.getPackage().getName());
         boolean isPrefCorrect = repkgNamePref == null ? isDefaultPkg : STApplication.PACKAGE.equals(repkgNamePref);
+
         // if the Preference was not correct, update the Preference
         if (isDefaultPkg) {
-            if (getPref(AUTO_APP_REPACKAGING)) {
-                Timber.d("Auto App Repackaging");
-                RepackageManager.initRepackaging(this, true);
-                return;
-            }
             if (!(boolean) getPref(HAS_SHOWN_REPKG_DIALOG) || !isPrefCorrect) {
                 Timber.d("Ask for App Repackaging");
                 putPref(HAS_SHOWN_REPKG_DIALOG, true);
                 RepackageManager.askUserDialog(this).show();
             }
-
         }
+
+        // An old preference, usually from a previously installed SnapTools version
+        // Update corrupt preference and check for duplicate --> uninstall duplicate
         if (!isPrefCorrect) {
             Timber.d("User probably updated or re-installed the Application. Updating REPACKAGE_NAME Preference value.");
             putPref(REPACKAGE_NAME, (isDefaultPkg ? null : STApplication.PACKAGE));
@@ -656,11 +651,10 @@ public class MainActivity
                         0
                 );
                 if (info != null) {
-                    Timber.w("Found previously installed ST version, asking user to uninstall");
+                    Timber.w("Found an installed ST duplicate, asking user to uninstall");
                     RepackageManager.getUninstallDuplicates(
                             this,
-                            info,
-                            new Version(getApkVersionName()).compareTo(new Version(info.versionName))
+                            info
                     ).show();
                 }
             } catch (PackageManager.NameNotFoundException ignored) {

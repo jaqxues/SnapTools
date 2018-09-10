@@ -2,7 +2,9 @@ package com.ljmu.andre.snaptools.Repackaging;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
+import android.support.annotation.CheckResult;
 
+import com.github.javiersantos.appupdater.objects.Version;
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
@@ -11,6 +13,7 @@ import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.CustomObservers;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
+import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.io.SuFileOutputStream;
 
 import java.io.File;
@@ -44,7 +47,7 @@ import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
  * It and its contents are free to use by all
  */
 public class RepackageManager {
-
+    @CheckResult
     public static ThemedDialog askUserDialog(Activity activity) {
         return DialogFactory.createConfirmation(
                 activity,
@@ -60,15 +63,15 @@ public class RepackageManager {
                     @Override
                     public void clicked(ThemedDialog themedDialog) {
                         themedDialog.dismiss();
-                        initRepackaging(activity, false);
+                        initRepackaging(activity);
                     }
                 });
     }
 
-    public static void initRepackaging(Activity activity, boolean autoRpkg) {
+    public static void initRepackaging(Activity activity) {
         ThemedDialog progressDialog = DialogFactory.createProgressDialog(
                 activity,
-                (autoRpkg ? "Auto-" : "") + "Repackaging SnapTools",
+                "Repackaging SnapTools",
                 "Initialising App Repackaging",
                 false
         );
@@ -147,7 +150,10 @@ public class RepackageManager {
          */
         String previousRepackageName = getPref(REPACKAGE_NAME);
         putPref(REPACKAGE_NAME, obfusPackageName);
-
+        if (!Shell.rootAccess()) {
+            emitter.onError(new Throwable("No Root Permission"));
+            return;
+        }
         if (previousRepackageName != null) {
             emitter.onNext("Uninstalling alternate repackages");
             uninstallPrevious(previousRepackageName);
@@ -250,7 +256,8 @@ public class RepackageManager {
         sendCommandSync("pm uninstall " + pkg);
     }
 
-    public static ThemedDialog getUninstallDuplicates(Activity activity, PackageInfo info, int comparedVersions) {
+    public static ThemedDialog getUninstallDuplicates(Activity activity, PackageInfo info) {
+        int comparedVersions = new Version(getApkVersionName()).compareTo(new Version(info.versionName));
         String message;
         boolean targetDuplicate;
         ThemedDialog.ThemedClickListener listener;

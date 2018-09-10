@@ -60,7 +60,6 @@ import timber.log.Timber;
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.AUTO_APP_REPACKAGING;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.AUTO_ERROR_REPORTING;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACKUP_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_MENU;
@@ -98,8 +97,6 @@ public class SettingsFragment extends FragmentHelper {
     SwitchCompat switchBackOpensMenu;
     @BindView(R.id.switch_transition_animations)
     SwitchCompat switchTransitionAnimations;
-    @BindView(R.id.switch_auto_app_repackaging)
-    SwitchCompat switchCompatAutoAppRepackaging;
     @BindView(R.id.btn_force_repkg)
     Button btnRepackage;
     @BindView(R.id.spin_theme)
@@ -582,14 +579,6 @@ public class SettingsFragment extends FragmentHelper {
     }
 
     private void initRepackaging() {
-        switchCompatAutoAppRepackaging.setChecked(getPref(AUTO_APP_REPACKAGING));
-        switchCompatAutoAppRepackaging.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            putPref(AUTO_APP_REPACKAGING, isChecked);
-            if (isChecked && getPref(REPACKAGE_NAME) == null) {
-                RepackageManager.askUserDialog(getActivity());
-            }
-        });
-
         if (getPref(REPACKAGE_NAME) == null) {
             btnRepackage.setOnClickListener(v ->
                     RepackageManager.askUserDialog(getActivity()).show());

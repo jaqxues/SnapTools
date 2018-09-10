@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
 
+import com.android.volley.Request.Method;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ServerPackObject;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
@@ -42,7 +43,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_
  */
 
 public class GetServerPacks {
-    private static final String GET_PACKS_URL = "https://snaptools.org/SnapTools/Scripts/get_all_packs.php";
+    private static final String GET_PACKS_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/ServerPacks.json";
 
     public static void getServerPacks(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
         getServerPacks(activity, false, resultListener);
@@ -76,33 +77,9 @@ public class GetServerPacks {
                 getPacksFromServer(activity, resultListener);
                 return Collections.emptyList();
             }
-
-            ArrayList<ServerPackMetaData> serverMetaDataList = new ArrayList<>(serverPackObjects.size());
             Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
 
-            for (ServerPackObject packObject : serverPackObjects) {
-                if (packObject.development != STApplication.DEBUG)
-                    continue;
-
-                ServerPackMetaData serverMetaData = new ServerPackMetaData();
-                packObject.bindMetaData(serverMetaData);
-
-                if (installedMetaData != null) {
-                    LocalPackMetaData localMetaData = installedMetaData.get(serverMetaData.getName());
-
-                    if (localMetaData != null) {
-                        serverMetaData.setInstalled(true);
-                        serverMetaData.setHasUpdate(MiscUtils.versionCompare(
-                                serverMetaData.getPackVersion(), localMetaData.getPackVersion()) > 0
-                        );
-                    }
-                }
-
-                serverMetaData.completedBinding();
-                serverMetaDataList.add(serverMetaData);
-            }
-
-            return serverMetaDataList;
+            return processPacks(serverPackObjects, installedMetaData);
         }).subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SimpleObserver<List<ServerPackMetaData>>("Couldn't retrieve server packs from cache") {
@@ -145,6 +122,7 @@ public class GetServerPacks {
         new WebRequest.Builder()
                 .setUrl(GET_PACKS_URL)
                 .setContext(activity)
+                .setMethod(Method.GET)
                 .setType(RequestType.PACKET)
                 .setPacketClass(ServerPacksPacket.class)
                 // ===========================================================================
@@ -238,32 +216,34 @@ public class GetServerPacks {
                 return Collections.emptyList();
 
             Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
-            List<ServerPackMetaData> serverMetaDataList = new ArrayList<>();
+            return processPacks(packObjects, installedMetaData);
+        });
+    }
 
-            for (ServerPackObject packObject : packObjects) {
-                if (packObject.development != STApplication.DEBUG)
-                    continue;
+    private static List<ServerPackMetaData> processPacks(Collection<ServerPackObject> packObjects, Map<String, LocalPackMetaData> installedMetaData) {
+        List<ServerPackMetaData> serverMetaDataList = new ArrayList<>();
+        for (ServerPackObject packObject : packObjects) {
+            if (packObject.development != STApplication.DEBUG)
+                continue;
 
-                ServerPackMetaData serverMetaData = new ServerPackMetaData();
-                packObject.bindMetaData(serverMetaData);
+            ServerPackMetaData serverMetaData = new ServerPackMetaData();
+            packObject.bindMetaData(serverMetaData);
 
-                if (installedMetaData != null) {
-                    LocalPackMetaData localMetaData = installedMetaData.get(serverMetaData.getName());
+            if (installedMetaData != null) {
+                LocalPackMetaData localMetaData = installedMetaData.get(serverMetaData.getName());
 
-                    if (localMetaData != null) {
-                        serverMetaData.setInstalled(true);
-                        serverMetaData.setHasUpdate(MiscUtils.versionCompare(
-                                serverMetaData.getPackVersion(), localMetaData.getPackVersion()) > 0
-                        );
-                    }
+                if (localMetaData != null) {
+                    serverMetaData.setInstalled(true);
+                    serverMetaData.setHasUpdate(MiscUtils.versionCompare(
+                            serverMetaData.getPackVersion(), localMetaData.getPackVersion()) > 0
+                    );
                 }
-
-                serverMetaData.completedBinding();
-                serverMetaDataList.add(serverMetaData);
             }
 
-            return serverMetaDataList;
-        });
+            serverMetaData.completedBinding();
+            serverMetaDataList.add(serverMetaData);
+        }
+        return serverMetaDataList;
     }
 
     public interface ServerPackResultListener {

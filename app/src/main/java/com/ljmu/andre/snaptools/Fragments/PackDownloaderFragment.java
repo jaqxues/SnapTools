@@ -36,7 +36,9 @@ import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData;
 import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData.ServerPackToolbarItem;
 import com.ljmu.andre.snaptools.Networking.Helpers.DownloadModulePack;
 import com.ljmu.andre.snaptools.Networking.Helpers.GetPackChangelog;
+import com.ljmu.andre.snaptools.Networking.Helpers.GetServerPacks;
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
+import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.PacketResultListener;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
@@ -145,13 +147,12 @@ public class PackDownloaderFragment
 
     public void generateMetaData(boolean invalidateCache) {
         if (swipeRefreshLayout != null)
-            swipeRefreshLayout.setRefreshing(false);
-        adapter.setEmptyView(R.layout.layout_empty_packs);
-		/*
+            swipeRefreshLayout.setRefreshing(true);
+
 		GetServerPacks.getServerPacks(
 				getActivity(),
 				invalidateCache,
-				new ServerListResultListener<ServerPackMetaData>() {
+                new WebResponse.ServerListResultListener<ServerPackMetaData>() {
 					@Override public void success(List<ServerPackMetaData> metaDataList) {
 						if (swipeRefreshLayout != null)
 							swipeRefreshLayout.setRefreshing(false);
@@ -189,7 +190,7 @@ public class PackDownloaderFragment
 							adapter.setEmptyView(R.layout.layout_empty_packs);
 					}
 				}
-		);*/
+        );
     }
 
     public void setPacks(Collection<ServerPackMetaData> newPacks) {

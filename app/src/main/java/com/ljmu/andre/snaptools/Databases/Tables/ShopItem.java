@@ -75,6 +75,14 @@ public class ShopItem extends ExpandableItemEntity<MultiItemEntity> implements C
     private boolean isTutorial;
     private Boolean isPack;
 
+    public static ShopItem generateTutorialItem(String identifier) {
+        ShopItem tutorialItem = new ShopItem();
+        tutorialItem.isTutorial = true;
+        tutorialItem.identifier = identifier;
+        tutorialItem.type = "Tutorial";
+        return tutorialItem;
+    }
+
     @Override
     public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
         Timber.d("Table Upgrade");
@@ -201,14 +209,6 @@ public class ShopItem extends ExpandableItemEntity<MultiItemEntity> implements C
                 .add("description", description)
                 .add("purchased", purchased)
                 .toString();
-    }
-
-    public static ShopItem generateTutorialItem(String identifier) {
-        ShopItem tutorialItem = new ShopItem();
-        tutorialItem.isTutorial = true;
-        tutorialItem.identifier = identifier;
-        tutorialItem.type = "Tutorial";
-        return tutorialItem;
     }
 
     public static class ShopItemToolbar extends ExpandableItemEntity {

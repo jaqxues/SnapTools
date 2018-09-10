@@ -39,10 +39,6 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "HAS_SHOWN_REPKG_DIALOG",
             false, Boolean.class
     );
-    public static final Preference AUTO_APP_REPACKAGING = new Preference(
-            "AUTO_APP_REPACKAGING",
-            false, Boolean.class
-    );
     public static final Preference SYSTEM_ENABLED = new Preference(
             "SYSTEM_ENABLED",
             true, Boolean.class

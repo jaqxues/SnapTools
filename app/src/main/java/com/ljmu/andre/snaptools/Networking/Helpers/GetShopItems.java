@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
+import com.android.volley.Request;
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ShopItem;
@@ -35,7 +36,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_
  */
 
 public class GetShopItems {
-    private static final String SHOP_ITEMS_URL = "https://snaptools.org/SnapTools/Scripts/get_shop_items.php";
+    private static final String SHOP_ITEMS_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/ShopItems.json";
 
     public static boolean shouldUseCache() {
         return MiscUtils.calcTimeDiff(getPref(LAST_CHECK_SHOP)) < SHOP_CHECK_COOLDOWN;
@@ -57,8 +58,8 @@ public class GetShopItems {
 
     public static void getFromServer(Activity activity, ServerListResultListener<ShopItem> resultListener) {
         Class cls = GetShopItems.class;
-        String token;
-        String email;
+//        String token;
+//        String email;
         String deviceId;
 
         try {
@@ -75,6 +76,7 @@ public class GetShopItems {
 
         new WebRequest.Builder()
                 .setUrl(SHOP_ITEMS_URL)
+                .setMethod(Request.Method.GET)
                 .setType(RequestType.PACKET)
                 .setPacketClass(ShopItemsPacket.class)
                 .setContext(activity)
@@ -103,7 +105,7 @@ public class GetShopItems {
                                 }
 
                                 List<ShopItem> shopItems = Arrays.asList(itemsPacket.shopItems);
-                                resultListener.success(Arrays.asList(itemsPacket.shopItems));
+                                resultListener.success(shopItems);
 
                                 CBITable<ShopItem> itemTable = CacheDatabase.getTable(ShopItem.class);
                                 itemTable.deleteAll();

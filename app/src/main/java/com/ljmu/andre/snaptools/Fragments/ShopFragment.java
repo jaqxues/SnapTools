@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,8 @@ import com.ljmu.andre.snaptools.EventBus.Events.ReqItemPurchaseEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.ReqItemPurchaseEvent.PaymentType;
 import com.ljmu.andre.snaptools.EventBus.Events.ShopPurchaseEvent;
 import com.ljmu.andre.snaptools.Fragments.Tutorials.ShopTutorial;
+import com.ljmu.andre.snaptools.Networking.Helpers.GetShopItems;
+import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
@@ -46,6 +49,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DefaultObserver;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
@@ -192,104 +197,81 @@ public class ShopFragment extends FragmentHelper {
     private void generateShopItems(boolean invalidateCache) {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
-        double[] prices = new double[]{1, 2, 5, 7.50, 10, 25, 30, 50, 100};
-        String[] links = new String[]{"643c81d5ba00", "38cd6bd1d4a7", "27a01a184c93", "30df2002f18c", "a621497ae114", "498c745aa76c", "51ec69d480c9", "f81dd7be2ca1", "66807b650173"};
-        String[] identifiers = new String[]{"Candy", "Bus Pass", "Fish & Chips", "Medicine", "Server", "Proper Meal", "Jack Daniels", "Dinner for Two", "Student Debt"};
-        String[] descriptions = new String[]{"Gives me something to eat while working", "Gotta get around the UK somehow", "Need some food to go with the Jack Daniels", "To help with my countless hangovers", "SnapTools needs to go somewhere, you know (Not anymore, but...)", "Help me eat properly for once", "I'm an alcoholic, you can help support my addiction by purchasing one of these for me", "In case I ever date someone... Unlikely", "I'm a broke Uni student, help me pay off my debts"};
-        List<ShopItem> items = new ArrayList<>();
-        for (int x = 0; x < prices.length; x++) {
-            ShopItem item = new ShopItem();
-            item.price = prices[x];
-            item.rocketrLink = "https://rocketr.net/buy/" + links[x];
-            item.type = "donation";
-            item.identifier = identifiers[x] + " (Andre)";
-            item.description = descriptions[x];
-            items.add(item);
+        WebResponse.ServerListResultListener<ShopItem> resultListener =
+                new WebResponse.ServerListResultListener<ShopItem>() {
+                    @Override
+                    public void success(List<ShopItem> list) {
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
+
+                        if (runningTutorial)
+                            return;
+
+                        if (list == null)
+                            error("There was an unhandled error during Shop Item fetching", null, -1);
+
+                        setShopItems(list);
+                    }
+
+                    @Override
+                    public void error(String message, Throwable t, int responseCode) {
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
+
+                        if (runningTutorial)
+                            return;
+
+                        if (t != null)
+                            Timber.e(t, message);
+
+                        if (getActivity() == null)
+                            return;
+
+                        DialogFactory.createErrorDialog(
+                                getActivity(),
+                                "Error Fetching Shop Items",
+                                message,
+                                responseCode
+                        ).show();
+                    }
+                };
+
+        if (GetShopItems.shouldUseCache() && !invalidateCache) {
+            GetShopItems.getCacheObservable()
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DefaultObserver<List<ShopItem>>() {
+                        @Override
+                        public void onNext(@NonNull List<ShopItem> shopItems) {
+                            if (shopItems.isEmpty()) {
+                                GetShopItems.getFromServer(
+                                        getActivity(),
+                                        resultListener
+                                );
+
+                                return;
+                            }
+
+                            if (swipeRefreshLayout != null)
+                                swipeRefreshLayout.setRefreshing(false);
+                            resultListener.success(shopItems);
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            resultListener.error(e.getMessage(), e, -1);
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        } else {
+            GetShopItems.getFromServer(
+                    getActivity(),
+                    resultListener
+            );
         }
-        ShopItem item = new ShopItem();
-        item.price = 999.99;
-        item.type = "pack";
-        item.identifier = "Unavailable";
-        item.description = "Purchasing packs is no longer needed";
-        items.add(item);
-        setShopItems(items);
-        if (swipeRefreshLayout != null)
-            swipeRefreshLayout.setRefreshing(false);
-//        ServerListResultListener<ShopItem> resultListener =
-//                new ServerListResultListener<ShopItem>() {
-//                    @Override
-//                    public void success(List<ShopItem> list) {
-//                        if (swipeRefreshLayout != null)
-//                            swipeRefreshLayout.setRefreshing(false);
-//
-//                        if (runningTutorial)
-//                            return;
-//
-//                        if (list == null)
-//                            error("There was an unhandled error during Shop Item fetching", null, -1);
-//
-//                        setShopItems(list);
-//                    }
-//
-//                    @Override
-//                    public void error(String message, Throwable t, int responseCode) {
-//                        if (swipeRefreshLayout != null)
-//                            swipeRefreshLayout.setRefreshing(false);
-//
-//                        if (runningTutorial)
-//                            return;
-//
-//                        if (t != null)
-//                            Timber.e(t, message);
-//
-//                        if (getActivity() == null)
-//                            return;
-//
-//                        DialogFactory.createErrorDialog(
-//                                getActivity(),
-//                                "Error Fetching Shop Items",
-//                                message,
-//                                responseCode
-//                        ).show();
-//                    }
-//                };
-//
-//        if (GetShopItems.shouldUseCache() && !invalidateCache) {
-//            GetShopItems.getCacheObservable()
-//                    .subscribeOn(Schedulers.computation())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new DefaultObserver<List<ShopItem>>() {
-//                        @Override
-//                        public void onNext(@NonNull List<ShopItem> shopItems) {
-//                            if (shopItems.isEmpty()) {
-//                                GetShopItems.getFromServer(
-//                                        getActivity(),
-//                                        resultListener
-//                                );
-//
-//                                return;
-//                            }
-//
-//                            if (swipeRefreshLayout != null)
-//                                swipeRefreshLayout.setRefreshing(false);
-//                            resultListener.success(shopItems);
-//                        }
-//
-//                        @Override
-//                        public void onError(@NonNull Throwable e) {
-//                            resultListener.error(e.getMessage(), e, -1);
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//                        }
-//                    });
-//        } else {
-//            GetShopItems.getFromServer(
-//                    getActivity(),
-//                    resultListener
-//            );
-//        }
     }
 
     private void showPaymentModelReasoning() {
@@ -319,38 +301,8 @@ public class ShopFragment extends FragmentHelper {
     }
 
     public void setShopItems(Collection<ShopItem> shopItems) {
-        packRecycler.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            private boolean hasAnimated = false;
-
-            @Override
-            public void onGlobalLayout() {
-                //At this point the layout is complete and the
-                //dimensions of recyclerView and any child views are known.
-
-                if (!hasAnimated && Constants.getApkVersionCode() >= 66) {
-                    hasAnimated = true;
-                    AnimationUtils.sequentGroup(packRecycler);
-                }
-
-                packRecycler.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-        donationRecycler.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            private boolean hasAnimated = false;
-
-            @Override
-            public void onGlobalLayout() {
-                //At this point the layout is complete and the
-                //dimensions of recyclerView and any child views are known.
-
-                if (!hasAnimated && Constants.getApkVersionCode() >= 66) {
-                    hasAnimated = true;
-                    AnimationUtils.sequentGroup(donationRecycler);
-                }
-
-                donationRecycler.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
+        addGlobalListener(packRecycler);
+        addGlobalListener(donationRecycler);
 
         Timber.d("Setting shop items");
 
@@ -376,6 +328,25 @@ public class ShopFragment extends FragmentHelper {
         if (donationAdapter != null) {
             donationAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void addGlobalListener(RecyclerView recyclerView) {
+        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            private boolean hasAnimated = false;
+
+            @Override
+            public void onGlobalLayout() {
+                //At this point the layout is complete and the
+                //dimensions of recyclerView and any child views are known.
+
+                if (!hasAnimated && Constants.getApkVersionCode() >= 66) {
+                    hasAnimated = true;
+                    AnimationUtils.sequentGroup(recyclerView);
+                }
+
+                recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
     }
 
     @Override

@@ -484,7 +484,11 @@ public class SharedImageActivity extends AppCompatActivity {
                         super.onError(e);
                         progressDialog.dismiss();
 
-                        // TODO Error dialog
+                        DialogFactory.createErrorDialog(
+                                SharedImageActivity.this,
+                                "Error while processing shared image",
+                                "Could not load Bitmap from shared image"
+                        ).show();
                     }
                 });
     }

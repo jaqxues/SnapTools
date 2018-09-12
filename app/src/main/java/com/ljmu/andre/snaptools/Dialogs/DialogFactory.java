@@ -23,15 +23,18 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
 
 public class DialogFactory {
 
+    @CheckResult
     public static ThemedDialog createProgressDialog(Activity activity, String title, String message) {
         return createProgressDialog(activity, title, message, true);
     }
 
+    @CheckResult
     public static ThemedDialog createProgressDialog(Activity activity, String title, String message,
                                                     boolean cancelable) {
         return createProgressDialog(activity, title, message, null, cancelable);
     }
 
+    @CheckResult
     public static ThemedDialog createProgressDialog(Activity activity, String title, String message,
                                                     String volleyTag, boolean cancelable) {
         return new ThemedDialog(activity)
@@ -44,15 +47,18 @@ public class DialogFactory {
                 );
     }
 
+    @CheckResult
     public static ThemedDialog createTextInputDialog(Activity activity, String title, String message) {
         return createTextInputDialog(activity, title, message, null, null);
     }
 
+    @CheckResult
     public static ThemedDialog createTextInputDialog(Activity activity, String title, String message,
                                                      String hint, String defaultText) {
         return createTextInputDialog(activity, title, message, hint, defaultText, null, null);
     }
 
+    @CheckResult
     public static ThemedDialog createTextInputDialog(Activity activity, String title, String message,
                                                      String hint, String defaultText, Integer inputType,
                                                      ThemedClickListener yesListener) {
@@ -69,15 +75,18 @@ public class DialogFactory {
     }
 
     ///////
+    @CheckResult
     public static ThemedDialog createBasicTextInputDialog(Activity activity, String title, String message) {
         return createBasicTextInputDialog(activity, title, message, null, null);
     }
 
+    @CheckResult
     public static ThemedDialog createBasicTextInputDialog(Activity activity, String title, String message,
                                                           String hint, String defaultText) {
         return createBasicTextInputDialog(activity, title, message, hint, defaultText, null, null);
     }
 
+    @CheckResult
     public static ThemedDialog createBasicTextInputDialog(Activity activity, String title, String message,
                                                           String hint, String defaultText, Integer inputType,
                                                           ThemedClickListener okayListener) {
@@ -94,10 +103,12 @@ public class DialogFactory {
     }
 
     ///////
+    @CheckResult
     public static ThemedDialog createErrorDialog(Activity activity, String title, String message) {
         return createErrorDialog(activity, title, message, null, null);
     }
 
+    @CheckResult
     public static ThemedDialog createErrorDialog(Activity activity, String title, String message,
                                                  ThemedClickListener clickListener, @Nullable Integer errorCode) {
         return new ThemedDialog(activity)
@@ -112,19 +123,23 @@ public class DialogFactory {
                 );
     }
 
+    @CheckResult
     public static ThemedDialog createErrorDialog(Activity activity, String title, String message, Integer errorCode) {
         return createErrorDialog(activity, title, message, null, errorCode);
     }
 
+    @CheckResult
     public static ThemedDialog createErrorDialog(Activity activity, String title, String message,
                                                  ThemedClickListener clickListener) {
         return createErrorDialog(activity, title, message, clickListener, null);
     }
 
+    @CheckResult
     public static ThemedDialog createBasicMessage(Activity activity, String title, String message) {
         return createBasicMessage(activity, title, message, null);
     }
 
+    @CheckResult
     public static ThemedDialog createBasicMessage(Activity activity, String title, String message, ThemedClickListener clickListener) {
         return new ThemedDialog(activity)
                 .setTitle(title)

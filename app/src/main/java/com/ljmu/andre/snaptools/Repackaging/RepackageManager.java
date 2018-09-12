@@ -168,7 +168,6 @@ public class RepackageManager {
          * Use root to remove any previous default apks
          * ===========================================================================
          */
-        // TODO: Reword
         emitter.onNext("Uninstalling original application");
         uninstallPrevious(activity.getPackageName());
 //        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
@@ -245,7 +244,6 @@ public class RepackageManager {
             Timber.d("Repackage success");
             emitter.onNext("Successfully signed apk!");
         } catch (IOException e) {
-            // TODO: Reword error
             throw new RepackageException("Couldn't access file");
         } catch (GeneralSecurityException e) {
             throw new RepackageException("Couldn't create application signatures!");

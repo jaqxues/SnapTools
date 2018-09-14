@@ -4,15 +4,14 @@ import android.app.Activity;
 
 import com.android.volley.Request;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
+import com.ljmu.andre.snaptools.Exceptions.KeyNotFoundException;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.KnownBugObject;
 import com.ljmu.andre.snaptools.ModulePack.Networking.Packets.KnownBugsPacket;
+import com.ljmu.andre.snaptools.Networking.NetworkUtils;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
 import com.ljmu.andre.snaptools.Networking.WebRequest.RequestType;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
@@ -114,21 +113,14 @@ public class GetKnownBugs {
 
                         String json = webResponse.getResult();
                         KnownBugsPacket packet = null;
-                        JsonObject object;
                         try {
-                            JsonElement element = new JsonParser().parse(json);
-                            object = element.getAsJsonObject();
-                        } catch (Exception e) {
-                            Timber.e(e, "WebResponse Result: " + json);
-                            resultListener.error("Could not fetch KnownBugs (Error Parsing Json)", e, 202);
-                            return;
+                            String extracted = NetworkUtils.extractFromJson(json, packVersion);
+                            packet = NetworkUtils.parsePacket(extracted, KnownBugsPacket.class);
+                        } catch (KeyNotFoundException e) {
+                            resultListener.error("No KnownBugs found for this Pack Version", e, 202);
                         }
 
-                        if (object.has(packVersion)) {
-                            object = object.getAsJsonObject(packVersion);
-                            packet = new Gson().fromJson(object, KnownBugsPacket.class);
-                        } else {
-                            resultListener.error("No KnownBugs file found for this version", new IllegalStateException(), -1);
+                        if (packet == null) {
                             packet = new Gson().fromJson(
                                     "{\"bugs\":[{\"category\": \"KnownBugs Fetching\",\"bugs\":[\"No KnownBugs Entry for this Version\",\"How ironic that this is the error\"]}]}",
                                     KnownBugsPacket.class);

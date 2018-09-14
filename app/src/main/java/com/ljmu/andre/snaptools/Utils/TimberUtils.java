@@ -21,9 +21,9 @@ import timber.log.Timber.Tree;
 public class TimberUtils {
     public static void plantAppropriateXposedTree() {
         if (STApplication.DEBUG)
-            plantCheck(new XposedDebugTree(), "XposeDebug");
+            plantCheck(new XposedDebugTree(), "XposedDebug");
         else
-            plantCheck(new XposedReleaseTree(), "XposeRelease");
+            plantCheck(new XposedReleaseTree(), "XposedRelease");
     }
 
     private static void plantCheck(Tree tree, String treeName) {

@@ -41,7 +41,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_
  */
 
 public class GetServerPacks {
-    private static final String GET_PACKS_URL = "https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Packs/JSON/ServerPacks.json";
+    private static final String GET_PACKS_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/ServerPacks.json";
 
     public static void getServerPacks(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
         getServerPacks(activity, false, resultListener);

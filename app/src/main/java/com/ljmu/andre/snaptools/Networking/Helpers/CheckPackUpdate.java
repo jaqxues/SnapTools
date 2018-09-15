@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.android.volley.Request;
 import com.ljmu.andre.snaptools.Dialogs.Content.PackUpdate;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
@@ -43,6 +44,7 @@ public class CheckPackUpdate {
                 .setPacketClass(PackDataPacket.class)
                 .shouldClearCache(true)
                 .setContext(activity)
+                .setMethod(Request.Method.GET)
                 // ===========================================================================
                 .setCallback(new WebResponseListener() {
                     @Override

@@ -2,6 +2,9 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
 
+import com.android.volley.Request;
+import com.ljmu.andre.snaptools.Exceptions.KeyNotFoundException;
+import com.ljmu.andre.snaptools.Networking.NetworkUtils;
 import com.ljmu.andre.snaptools.Networking.Packets.PackHistoryListPacket;
 import com.ljmu.andre.snaptools.Networking.Packets.PackHistoryObject;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
@@ -9,14 +12,10 @@ import com.ljmu.andre.snaptools.Networking.WebRequest.RequestType;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ServerListResultListener;
-import com.ljmu.andre.snaptools.STApplication;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 
 import java.util.Collections;
 
 import timber.log.Timber;
-
-import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -24,46 +23,35 @@ import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
  */
 
 public class GetPackHistory {
-    private static final String GET_PACKS_URL = "https://snaptools.org/SnapTools/Scripts/get_pack_history.php";
+    private static final String GET_PACK_HISTORY_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/";
 
     public static void getPacksFromServer(Activity activity, String scVersion, String packType, String packFlavour,
                                           ServerListResultListener<PackHistoryObject> serverPackResult) {
         Timber.d("Fetching Pack history from Server");
 
-        Class cls = GetPackHistory.class;
-        String deviceId;
-
-        try {
-            deviceId = assertParam(cls, "Invalid Device ID",
-                    DeviceIdManager.getDeviceId(activity));
-        } catch (IllegalArgumentException e) {
-            Timber.e(e);
-            serverPackResult.error(
-                    "Missing Authentication Parameters",
-                    e,
-                    202
-            );
-            return;
-        }
-
         new WebRequest.Builder()
-                .setUrl(GET_PACKS_URL)
+                .setUrl(getPackHistoryUrl(scVersion))
                 .setContext(activity)
-                .setType(RequestType.PACKET)
-                .setPacketClass(PackHistoryListPacket.class)
-                // ===========================================================================
-                .addParam("device_id", deviceId)
-                .addParam("developer", String.valueOf(STApplication.DEBUG))
-                .addParam("sc_version", scVersion)
-                .addParam("pack_type", packType)
-                .addParam("pack_flavour", packFlavour)
+                .setMethod(Request.Method.GET)
+                .setType(RequestType.STRING)
                 // ===========================================================================
                 .shouldClearCache(true)
                 .setCallback(new WebResponseListener() {
                     @Override
                     public void success(WebResponse webResponse) {
-                        PackHistoryListPacket packsPacket = webResponse.getResult();
-
+                        PackHistoryListPacket packsPacket;
+                        try {
+                            packsPacket = NetworkUtils.extractPack(webResponse.getResult(), PackHistoryListPacket.class, packFlavour);
+                        } catch (KeyNotFoundException e) {
+                            Timber.e(e);
+                            serverPackResult.success(Collections.emptyList());
+                            return;
+                        }
+                        if (packsPacket == null) {
+                            Timber.e("Received Empty Pack. Source JSON: \"%s\"", webResponse.getResult());
+                            serverPackResult.success(Collections.emptyList());
+                            return;
+                        }
                         if (packsPacket.banned) {
                             serverPackResult.error(
                                     packsPacket.getBanReason(),
@@ -96,5 +84,9 @@ public class GetPackHistory {
                     }
                 })
                 .performRequest();
+    }
+
+    private static String getPackHistoryUrl(String scVersion) {
+        return GET_PACK_HISTORY_BASE_URL + "PackHistory_SC_v" + scVersion + ".json";
     }
 }

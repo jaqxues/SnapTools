@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import com.ljmu.andre.snaptools.Dialogs.Content.PackChangelog;
 import com.ljmu.andre.snaptools.Dialogs.Content.PackHistory;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
@@ -588,15 +587,6 @@ public class PackDownloaderFragment
                             @Override
                             public void success(String message, PackDataPacket packet) {
                                 progressDialog.dismiss();
-
-                                new ThemedDialog(getActivity())
-                                        .setTitle("Pack Changelog")
-                                        .setExtension(
-                                                new PackChangelog()
-                                                        .setSCVersion(packet.getSCVersion())
-                                                        .setPackType(packet.getPackType())
-                                                        .setReleaseNotes(packet.getChangelog())
-                                        ).show();
 
                                 DialogFactory.createBasicMessage(
                                         getActivity(),

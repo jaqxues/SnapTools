@@ -4,16 +4,16 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.android.volley.Request;
+import com.ljmu.andre.snaptools.Exceptions.KeyNotFoundException;
+import com.ljmu.andre.snaptools.Networking.NetworkUtils;
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.PacketResultListener;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 
 import timber.log.Timber;
-
-import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -22,7 +22,7 @@ import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 
 public class GetPackChangelog {
     public static final String TAG = "get_changelog";
-    private static final String GET_CHANGELOG_URL = "https://snaptools.org/SnapTools/Scripts/get_pack_changelog.php";
+    private static final String GET_CHANGELOG_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/";
 
     public static void performCheck(
             @Nullable Activity activity,
@@ -30,38 +30,29 @@ public class GetPackChangelog {
             @NonNull String snapVersion,
             @NonNull String packFlavour,
             PacketResultListener<PackDataPacket> packetResultListener) {
-        Class cls = GetPackChangelog.class;
-        String deviceId;
-
-        try {
-            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
-        } catch (IllegalArgumentException e) {
-            Timber.e(e);
-            packetResultListener.error(
-                    "Missing Authentication Parameters",
-                    e,
-                    202
-            );
-            return;
-        }
 
         new WebRequest.Builder()
-                .setUrl(GET_CHANGELOG_URL)
+                .setUrl(getChangelogUrl(snapVersion))
                 .setTag(TAG)
-                .setPacketClass(PackDataPacket.class)
+                .setMethod(Request.Method.GET)
+                .setType(WebRequest.RequestType.STRING)
                 .shouldClearCache(true)
                 .setContext(activity)
-                // ===========================================================================
-                .addParam("device_id", deviceId)
-                .addParam("pack_type", packType)
-                .addParam("sc_version", snapVersion)
-                .addParam("pack_flavour", packFlavour)
                 // ===========================================================================
                 .setCallback(new WebResponseListener() {
                     @Override
                     public void success(WebResponse webResponse) {
-                        PackDataPacket packDataPacket = webResponse.getResult();
-
+                        PackDataPacket packDataPacket;
+                        try {
+                            packDataPacket = NetworkUtils.extractPack(webResponse.getResult(), PackDataPacket.class, packFlavour);
+                        } catch (KeyNotFoundException e) {
+                            packetResultListener.error(
+                                    "No changelog for this Version",
+                                    e,
+                                    204
+                            );
+                            return;
+                        }
                         if (packDataPacket == null) {
                             packetResultListener.error(
                                     "Received Empty Result!",
@@ -106,5 +97,9 @@ public class GetPackChangelog {
                     }
                 })
                 .performRequest();
+    }
+
+    private static String getChangelogUrl(String snapVersion) {
+        return GET_CHANGELOG_BASE_URL + "PackChangelog_SC_v" + snapVersion + ".json";
     }
 }

@@ -41,7 +41,7 @@ public class NetworkUtils {
         }
         for (String key : keys) {
             if (!object.has(key)) {
-                KeyNotFoundException e = new KeyNotFoundException("Key not found");
+                KeyNotFoundException e = new KeyNotFoundException("Key \"" + key + "\" not found");
                 Timber.e(e, "Key \"%s\" not found in JSON. Current JSONObject: \"%s\"", key, object);
                 throw e;
             }

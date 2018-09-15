@@ -12,9 +12,6 @@ import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
-import com.ljmu.andre.snaptools.STApplication;
-import com.ljmu.andre.snaptools.Utils.Assert;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 
@@ -43,20 +40,12 @@ public class CheckForUpdates {
             @NonNull String moduleVersion,
             @NonNull PackUpdateMetaData updateMetaData) {
 
-        String device_id = DeviceIdManager.getDeviceId(activity);
-        Assert.notNull("Null DeviceId", device_id);
-
         new WebRequest.Builder()
                 .setUrl(CHECK_UPDATE_URL)
                 .setTag(TAG)
                 .setPacketClass(PackDataPacket.class)
                 .shouldClearCache(true)
                 .setContext(activity)
-                // ===========================================================================
-                .addParam("device_id", device_id)
-                .addParam("pack_type", packType)
-                .addParam("sc_version", snapVersion)
-                .addParam("allow_dev", String.valueOf(STApplication.DEBUG))
                 // ===========================================================================
                 .setCallback(new WebResponseListener() {
                     @Override

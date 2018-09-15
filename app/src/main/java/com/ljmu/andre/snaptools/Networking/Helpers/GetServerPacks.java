@@ -41,7 +41,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_
  */
 
 public class GetServerPacks {
-    private static final String GET_PACKS_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/ServerPacks.json";
+    private static final String GET_PACKS_URL = "https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Packs/JSON/ServerPacks.json";
 
     public static void getServerPacks(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
         getServerPacks(activity, false, resultListener);
@@ -100,32 +100,12 @@ public class GetServerPacks {
     }
 
     public static void getPacksFromServer(Activity activity, ServerListResultListener<ServerPackMetaData> serverPackResult) {
-//        Class cls = GetServerPacks.class;
-//        String token;
-//        String email;
-//        String deviceId;
-
-//        try {
-//            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
-//        } catch (IllegalArgumentException e) {
-//            Timber.e(e);
-//            serverPackResult.error(
-//                    "Missing Authentication Parameters",
-//                    e,
-//                    202
-//            );
-//            return;
-//        }
-
         new WebRequest.Builder()
                 .setUrl(GET_PACKS_URL)
                 .setContext(activity)
                 .setMethod(Method.GET)
                 .setType(RequestType.PACKET)
                 .setPacketClass(ServerPacksPacket.class)
-                // ===========================================================================
-//                .addParam("device_id", deviceId)
-//                .addParam("developer", String.valueOf(STApplication.DEBUG))
                 // ===========================================================================
                 .shouldClearCache(true)
                 .setCallback(new WebResponseListener() {

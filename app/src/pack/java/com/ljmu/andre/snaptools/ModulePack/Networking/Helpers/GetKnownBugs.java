@@ -38,7 +38,7 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LAST
 
 public class GetKnownBugs {
     private static final long BUGS_CHECK_COOLDOWN = STApplication.DEBUG ? 0 : TimeUnit.HOURS.toMillis(12);
-    private static final String KNOWN_BUGS_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/KnownBugs/";
+    private static final String KNOWN_BUGS_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/KnownBugs/";
     private static final String FETCH_BUGS_TAG = "fetching_bugs";
 
     public static void getBugs(Activity activity, String scVersion, String packVersion,
@@ -163,6 +163,6 @@ public class GetKnownBugs {
     }
 
     public static String getKnownBugsUrl(String scVersion) {
-        return KNOWN_BUGS_BASE_URL + "Snapchat_v" + scVersion + ".json";
+        return KNOWN_BUGS_BASE_URL + "KnownBugs_SC_v" + scVersion + ".json";
     }
 }

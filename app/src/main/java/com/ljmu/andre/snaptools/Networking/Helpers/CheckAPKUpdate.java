@@ -35,8 +35,8 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LATEST_APK_
  */
 
 public class CheckAPKUpdate {
-    private static final String APK_RELEASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/LatestApkVersion.json";
-    private static final String APK_BETA_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/LatestBetaApkVersion.json";
+    private static final String APK_RELEASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Apks/JSON/APKUpdates/LatestApkVersion.json";
+    private static final String APK_BETA_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Apks/JSON/APKUpdates/LatestBetaApkVersion.json";
 
     public static void checkApkUpdate(Activity activity, boolean reportNoUpdates) {
         checkApkUpdate(activity, reportNoUpdates, false);

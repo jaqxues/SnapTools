@@ -36,7 +36,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_
  */
 
 public class GetShopItems {
-    private static final String SHOP_ITEMS_URL = "https://raw.githubusercontent.com/jaqxues/SnapToolsAdditionals/master/ShopItems.json";
+    private static final String SHOP_ITEMS_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/General/ShopItems.json";
 
     public static boolean shouldUseCache() {
         return MiscUtils.calcTimeDiff(getPref(LAST_CHECK_SHOP)) < SHOP_CHECK_COOLDOWN;

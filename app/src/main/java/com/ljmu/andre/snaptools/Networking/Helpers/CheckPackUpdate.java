@@ -10,9 +10,6 @@ import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
-import com.ljmu.andre.snaptools.STApplication;
-import com.ljmu.andre.snaptools.Utils.Assert;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 
 import timber.log.Timber;
@@ -29,7 +26,7 @@ import static com.ljmu.andre.snaptools.Utils.TranslationDef.PACK_UPDATE_AVAILABL
 
 public class CheckPackUpdate {
     public static final String TAG = "check_updates";
-    private static final String CHECK_UPDATE_URL = "https://snaptools.org/SnapTools/Scripts/check_version.php";
+    private static final String CHECK_UPDATE_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/PackUpdates/";
 
     // TODO Setup JSON Error=True detection
     public static void performCheck(
@@ -40,21 +37,12 @@ public class CheckPackUpdate {
             @NonNull String packName,
             @NonNull String packFlavour) {
 
-        String device_id = DeviceIdManager.getDeviceId(activity);
-        Assert.notNull("Null DeviceId", device_id);
-
         new WebRequest.Builder()
-                .setUrl(CHECK_UPDATE_URL)
+                .setUrl(getPackUpdateCheckUrl(snapVersion, packFlavour))
                 .setTag(TAG)
                 .setPacketClass(PackDataPacket.class)
                 .shouldClearCache(true)
                 .setContext(activity)
-                // ===========================================================================
-                .addParam("device_id", device_id)
-                .addParam("pack_type", packType)
-                .addParam("sc_version", snapVersion)
-                .addParam("allow_dev", String.valueOf(STApplication.DEBUG))
-                .addParam("pack_flavour", packFlavour)
                 // ===========================================================================
                 .setCallback(new WebResponseListener() {
                     @Override
@@ -94,5 +82,12 @@ public class CheckPackUpdate {
                     }
                 })
                 .performRequest();
+    }
+
+    private static String getPackUpdateCheckUrl(String snapVersion, String packFlavour) {
+        return
+                CHECK_UPDATE_BASE_URL + "Latest" +
+                        (packFlavour.equals("prod") ? "" : "Beta") +
+                        "Pack_SC_v" + snapVersion + ".json";
     }
 }

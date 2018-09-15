@@ -16,17 +16,13 @@ import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import timber.log.Timber;
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
 
@@ -37,7 +33,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PAT
 
 public class DownloadModulePack implements DownloadListener {
     private static final String VOLLEY_TAG = "pack_download";
-    private static final String PACK_BASE_URL = "https://github.com/jaqxues/SnapToolsAdditionals/blob/master/Packs/";
+    private static final String PACK_BASE_URL = "https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Packs/Files/";
 
     private Activity activity;
     private String packName;
@@ -72,22 +68,6 @@ public class DownloadModulePack implements DownloadListener {
     }
 
     public void download() {
-        Class cls = DownloadModulePack.class;
-        String deviceId;
-
-        try {
-            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
-        } catch (IllegalArgumentException e) {
-            Timber.e(e);
-            downloadFinished(
-                    false,
-                    "Missing Authentication Parameters",
-                    null,
-                    202
-            );
-            return;
-        }
-
         progressDialog = new ThemedDialog(ContextHelper.getActivity())
                 .setTitle("Downloading Pack")
                 .setExtension(
@@ -110,13 +90,6 @@ public class DownloadModulePack implements DownloadListener {
                 .setVolleyTag(VOLLEY_TAG)
                 .setDirectory(getPref(MODULES_PATH))
                 .setFilename(packName + ".jar")
-                // ===========================================================================
-                .setParams(params)
-                .addParam("device_id", deviceId)
-                .addParam("sc_version", snapVersion)
-                .addParam("pack_type", packType)
-                .addParam("development", development ? "1" : "0")
-                .addParam("pack_flavour", flavour)
                 // ===========================================================================
                 .addDownloadListener(this)
                 .download();

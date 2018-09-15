@@ -96,6 +96,8 @@ android {
             versionName '2.0.0.0b'
         }
         pack {
+            // "Pack" Flavour should not be installed as APK
+            resValue 'string', 'app_name', 'SnapTools Pack Compiled'
             versionName '2.0.0.0'
         }
     }

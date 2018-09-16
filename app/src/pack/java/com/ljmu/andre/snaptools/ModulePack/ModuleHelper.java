@@ -19,7 +19,6 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static com.ljmu.andre.snaptools.Utils.UnhookManager.addUnhook;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 
@@ -63,7 +62,7 @@ public abstract class ModuleHelper extends Module {
 
             moduleLoadState.success();
         } catch (HookNotFoundException e) {
-            Timber.e(/*Hook Failed: */ decryptMsg(new byte[]{-9, 55, -101, 19, -7, 32, 110, 113, -113, 52, -108, -79, 10, 69, 124, -26}) + e.getMessage());
+            Timber.e("Hook Failed: %s", e.getMessage());
             moduleLoadState.fail();
         }
     }
@@ -86,7 +85,7 @@ public abstract class ModuleHelper extends Module {
 
             moduleLoadState.success();
         } catch (HookNotFoundException e) {
-            Timber.e(/*Hook Failed: */ decryptMsg(new byte[]{-9, 55, -101, 19, -7, 32, 110, 113, -113, 52, -108, -79, 10, 69, 124, -26}) + e.getMessage());
+            Timber.e("Hook Failed: %s", e.getMessage());
             moduleLoadState.fail();
         }
     }

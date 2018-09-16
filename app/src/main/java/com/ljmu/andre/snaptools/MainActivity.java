@@ -299,7 +299,7 @@ public class MainActivity
 
         /**
          * ==========================================================================
-         * Application Repackaging requires to update {@link STApplication#PACKAGE} to be updated
+         * Application Repackaging requires to update {@link STApplication#PACKAGE}
          * with the actual PackageName
          * ==========================================================================
          */
@@ -320,8 +320,11 @@ public class MainActivity
 
             if (!hasSavedLocale) {
                 savedLocaleString = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
-                Timber.d("Saved language not found... Defaulting to "
-                        + savedLocaleString);
+                Timber.d("Saved language not found... Defaulting to %s.", savedLocaleString);
+            }
+            if (!Translator.getAvailableTranslations().contains(savedLocaleString)) {
+                Timber.d("Did not find Translation for %s. Defaulting to English", savedLocaleString);
+                savedLocaleString = Locale.ENGLISH.getDisplayLanguage();
             }
 
             /**

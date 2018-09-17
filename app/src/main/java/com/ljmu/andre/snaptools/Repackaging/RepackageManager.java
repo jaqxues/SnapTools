@@ -259,7 +259,7 @@ public class RepackageManager {
         String message;
         boolean targetDuplicate;
         ThemedDialog.ThemedClickListener listener;
-        if (comparedVersions < 0) {
+        if (comparedVersions > 0) {
             message = "Another (less up-to-date) " + STApplication.MODULE_TAG + " Application has been found.";
             targetDuplicate = true;
         } else if (comparedVersions == 0) {

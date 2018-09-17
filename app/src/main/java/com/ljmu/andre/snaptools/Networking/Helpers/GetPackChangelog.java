@@ -22,7 +22,7 @@ import timber.log.Timber;
 
 public class GetPackChangelog {
     public static final String TAG = "get_changelog";
-    private static final String GET_CHANGELOG_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/";
+    private static final String GET_CHANGELOG_BASE_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/ChangeLog/";
 
     public static void performCheck(
             @Nullable Activity activity,

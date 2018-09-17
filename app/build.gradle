@@ -49,8 +49,8 @@ android {
         applicationId "com.ljmu.andre.snaptools"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 100
-        versionName "2.0.0.0"
+        versionCode 0
+        versionName "0.0.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         resValue "string", "app_name", "SnapTools"
@@ -89,16 +89,19 @@ android {
     }
     productFlavors {
         prod {
-            versionName '2.0.0.0'
+            versionName '1.0.0.0'
+            versionCode 1
         }
         beta {
             resValue 'string', 'app_name', 'SnapTools Beta'
-            versionName '2.0.0.0b'
+            versionName '1.0.0.0b'
+            versionCode 1
         }
         pack {
             // "Pack" Flavour should not be installed as APK
             resValue 'string', 'app_name', 'SnapTools Pack Compiled'
-            versionName '2.0.0.0'
+            versionName '1.0.0.0'
+            versionCode 1
         }
     }
 }

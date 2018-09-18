@@ -265,7 +265,7 @@ public class MiscChanges extends ModuleHelper {
 
         hookAllConstructors(
                 SNAPCHAT_CAPTION_VIEW_CLASS,
-                new HookWrapper((HookBefore) param -> {
+                new HookWrapper((HookAfter) param -> {
                     EditText text = (EditText) param.thisObject;
                     if (getPref(FORCE_MULTILINE)) {
                         text.setSingleLine(false);

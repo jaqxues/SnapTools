@@ -112,6 +112,14 @@ public class WebRequest {
         performRequest();
     }
 
+    public static String assertParam(Class callingClass, String errorMessage, String param) throws IllegalArgumentException {
+        return Assert.stringExists(formatParamError(callingClass, errorMessage), param);
+    }
+
+    public static String formatParamError(Class callingClass, String errorMessage) {
+        return String.format("[%s]: %s", callingClass.getSimpleName(), errorMessage);
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -302,14 +310,6 @@ public class WebRequest {
             throw new IllegalArgumentException("Tried to Cancel WebRequest with no Tag");
 
         VolleyHandler.getInstance().cancelPendingRequests(tag);
-    }
-
-    public static String assertParam(Class callingClass, String errorMessage, String param) throws IllegalArgumentException {
-        return Assert.stringExists(formatParamError(callingClass, errorMessage), param);
-    }
-
-    public static String formatParamError(Class callingClass, String errorMessage) {
-        return String.format("[%s]: %s", callingClass.getSimpleName(), errorMessage);
     }
 
     public enum RequestType {
@@ -506,9 +506,9 @@ public class WebRequest {
         }
 
         public WebRequest performRequest() {
-            Assert.notNull("No URL, CALLBACK, or CONTEXT provided! " +
+            Assert.notNull("No URL, CALLBACK, (or CONTEXT) provided! " +
                             "[Url: " + url + "] [Callback: " + callback + "] [Context: " + context + "]",
-                    url, callback, context);
+                    url, callback);
 
             addParam("code", String.valueOf(BuildConfig.VERSION_CODE));
             addParam("flavour", BuildConfig.FLAVOR);

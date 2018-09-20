@@ -5,6 +5,8 @@ import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.util.SparseIntArray;
 
+import com.ljmu.andre.snaptools.BuildConfig;
+
 import timber.log.Timber;
 
 /**
@@ -56,6 +58,6 @@ public class ResourceMapper {
     }
 
     public static int getResId(Context context, String tag, String type) {
-        return context.getResources().getIdentifier(tag, type, context.getPackageName());
+        return context.getResources().getIdentifier(tag, type, BuildConfig.APPLICATION_ID);
     }
 }

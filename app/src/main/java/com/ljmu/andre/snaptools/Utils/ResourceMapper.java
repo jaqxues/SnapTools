@@ -58,6 +58,9 @@ public class ResourceMapper {
     }
 
     public static int getResId(Context context, String tag, String type) {
-        return context.getResources().getIdentifier(tag, type, BuildConfig.APPLICATION_ID);
+        return context.getResources().getIdentifier(tag, type,
+                context.getPackageName().equals("com.snapchat.android") ?
+                        "com.snapchat.android" : // Needed for Resource Things like Stealth in Snapchat
+                        BuildConfig.APPLICATION_ID); // Needed for App Repackaging
     }
 }

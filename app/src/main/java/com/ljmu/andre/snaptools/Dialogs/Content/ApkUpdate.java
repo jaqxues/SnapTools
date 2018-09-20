@@ -64,7 +64,7 @@ public class ApkUpdate implements ThemedDialog.ThemedDialogExtension {
         btnUpdate.setOnClickListener(
                 v -> CheckAPKUpdate.updateApk(
                         activity,
-                        update.getUrlToDownload().toString() + "?raw=true",
+                        update.getUrlToDownload().toString(),
                         getPref(TEMP_PATH),
                         "SnapTools_" + update.getLatestVersion() + ".apk",
                         themedDialog

@@ -52,13 +52,14 @@ public class RepackageManager {
         return DialogFactory.createConfirmation(
                 activity,
                 "Application repackaging?",
-                "Do you want to repackage " + STApplication.MODULE_TAG + " to circumvent Snapchat's malicious app detection?" +
-                        "\n\nThis should uninstall this Application and only the repackaged App will remain." +
-                        "\n\nDo " + htmlHighlight("NOT") + " rely on App Repackaging if you are scared to be banned." +
+                "This is an attempt to circumvent Snapchat's malicious app detection." +
+                        "\n\nYou are " + htmlHighlight("NOT") + " forced to use Application Repackaging. Every feature will be usable with or without Application Repackaging." +
+                        "\nDo " + htmlHighlight("NOT") + " rely on App Repackaging if you are scared to be banned." +
+                        "\n\nThis will install a new " + STApplication.MODULE_TAG + " Application with a different Package Name, only the repackaged App should remain." +
                         "\n\n" + htmlHighlight("IMPORTANT: ") + "\nAfter the Repackaging Process completed, do the following:" +
-                        "\n\t- Open " + STApplication.MODULE_TAG + " once" +
-                        "\n\t- Activate repackaged " + STApplication.MODULE_TAG + " in Xposed" +
-                        "\n\t- Reboot",
+                        "\n- Open repackaged " + STApplication.MODULE_TAG + " once" +
+                        "\n- Activate repackaged " + STApplication.MODULE_TAG + " in Xposed" +
+                        "\n- Reboot",
                 new ThemedDialog.ThemedClickListener() {
                     @Override
                     public void clicked(ThemedDialog themedDialog) {

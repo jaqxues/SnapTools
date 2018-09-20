@@ -89,8 +89,8 @@ android {
     }
     productFlavors {
         prod {
-            versionName '2.0.0.1'
-            versionCode 101
+            versionName '2.0.0.3'
+            versionCode 103
         }
         beta {
             resValue 'string', 'app_name', 'SnapTools Beta'

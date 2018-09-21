@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Process;
+import android.view.ContextThemeWrapper;
 
 import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.GsonPreferences.Preferences;
@@ -161,16 +162,6 @@ public class HookManager implements IXposedHookLoadPackage {
                                                         snapActivity = (Activity) param.thisObject;
                                                         UnhookManager.unhookAll("System");
                                                         try {
-                                                            if (moduleContext == null) {
-                                                                new AlertDialog.Builder(app)
-                                                                        .setTitle("Open " + STApplication.MODULE_TAG)
-                                                                        .setMessage("You probably re-installed or installed an updated version of " + STApplication.MODULE_TAG +
-                                                                                " and used the App Repackaging feature.\nUnfortunately, due to how App " +
-                                                                                "Repackaging works, you need to open " + STApplication.MODULE_TAG + " once after Repackaging before you can use the Xposed Hooks." +
-                                                                                "\nNo reboot should be required if you activated the correct App in Xposed and already rebooted.")
-                                                                        .setPositiveButton("Close Snapchat", (dialog, which) -> snapActivity.finish());
-                                                                return;
-                                                            }
                                                             /**
                                                              * ===========================================================================
                                                              * Initialisation Stage
@@ -178,6 +169,19 @@ public class HookManager implements IXposedHookLoadPackage {
                                                              */
                                                             snapActivity = (Activity) param.thisObject;
                                                             ContextHelper.setActivity(snapActivity);
+
+                                                            if (moduleContext == null) {
+                                                                new AlertDialog.Builder(new ContextThemeWrapper(snapActivity, android.R.style.Theme_Material_Dialog))
+                                                                        .setTitle("Open " + STApplication.MODULE_TAG)
+                                                                        .setMessage("You probably re-installed or installed an updated version of " + STApplication.MODULE_TAG +
+                                                                                " and used the App Repackaging feature.\nUnfortunately, due to how App " +
+                                                                                "Repackaging works, you need to open " + STApplication.MODULE_TAG + " once after Repackaging before you can use the Xposed Hooks." +
+                                                                                "\nNo reboot should be required if you activated the correct App in Xposed and already rebooted.")
+                                                                        .setCancelable(false)
+                                                                        .setPositiveButton("Close Snapchat", (dialog, which) -> snapActivity.finish())
+                                                                        .show();
+                                                                return;
+                                                            }
 
 //															initFabrics(snapActivity, moduleContext);
 

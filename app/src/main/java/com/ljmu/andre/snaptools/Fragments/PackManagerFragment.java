@@ -169,6 +169,7 @@ public class PackManagerFragment extends FragmentHelper {
 
     @Override
     public void closeTutorial() {
+        super.closeTutorial();
         resetTutorialItems();
     }
 

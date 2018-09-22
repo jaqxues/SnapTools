@@ -102,7 +102,7 @@ public class WebRequest {
         this.callback = callback;
 
         if (context != null && !MiscUtils.isNetworkAvailable(context)) {
-            this.callback.error(new WebResponse("No Network Connection!", null));
+            this.callback.error(new WebResponse("No Network Connection!", null, -1, this.url));
             return;
         }
 

@@ -171,13 +171,11 @@ public class HookManager implements IXposedHookLoadPackage {
                                                             ContextHelper.setActivity(snapActivity);
 
                                                             if (moduleContext == null) {
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(snapActivity, android.R.style.Theme_Material_Dialog))
-                                                                        .setTitle("Open " + STApplication.MODULE_TAG)
-                                                                        .setMessage("You probably re-installed or installed an updated version of " + STApplication.MODULE_TAG +
-                                                                                " and used the App Repackaging feature.\nUnfortunately, due to how App " +
-                                                                                "Repackaging works, you need to open " + STApplication.MODULE_TAG + " once after Repackaging before you can use the Xposed Hooks." +
-                                                                                "\nNo reboot should be required if you activated the correct App in Xposed and already rebooted.")
-                                                                        .setCancelable(false)
+                                                                new AlertDialog.Builder(new ContextThemeWrapper(snapActivity, android.R.style.Theme_Material_Dialog_Alert))
+                                                                        .setTitle("Unable to start " + STApplication.MODULE_TAG)
+                                                                        .setMessage(STApplication.MODULE_TAG + " could not detect its own Package Name and is unable to initialize the hooks correctly." +
+                                                                                "\n\nTo fix this, just open " + STApplication.MODULE_TAG + " once and re-open Snapchat. The correct PackageName will be set and everything should work correctly again." +
+                                                                                "\n\nThis can happen if you restore a backup of a repackaged Version of ST without restoring the preferences located on the SdCard or Internal Storage.")
                                                                         .setPositiveButton("Close Snapchat", (dialog, which) -> snapActivity.finish())
                                                                         .show();
                                                                 return;
@@ -357,11 +355,15 @@ public class HookManager implements IXposedHookLoadPackage {
         return true;
     }
 
-    public Context helpCreatePackageContext(Application app) {
+    private Context helpCreatePackageContext(Application app) {
         try {
             return app.createPackageContext(STApplication.PACKAGE, Context.CONTEXT_IGNORE_SECURITY);
         } catch (PackageManager.NameNotFoundException e) {
-            Timber.e(e, "ST PackageName invalid, probably due to App Repackaging. User is advised to open SnapTools once.");
+            try {
+                return app.createPackageContext(HookManager.class.getPackage().getName(), Context.CONTEXT_IGNORE_SECURITY);
+            } catch (PackageManager.NameNotFoundException e1) {
+                Timber.e(e, "ST PackageName (and ST Default PackageName) invalid, due to App Repackaging. User is advised to open SnapTools once.");
+            }
         }
         return null;
     }

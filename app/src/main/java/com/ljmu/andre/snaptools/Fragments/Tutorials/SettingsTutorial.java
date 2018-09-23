@@ -81,14 +81,6 @@ public class SettingsTutorial {
                 )
                 .add(
                         new TutorialDetail()
-                                .setViewId(R.id.switch_enable_auto_reporting)
-                                .setTitle("Auto Error Reporting")
-                                .setMessage(
-                                        "SnapTools uses a system to automatically notify the developers of crashes or errors. This system can be entirely disabled and issues will still log to your ErrorLogs folder"
-                                )
-                )
-                .add(
-                        new TutorialDetail()
                                 .setViewId(R.id.switch_enable_load_notify)
                                 .setTitle("Show Icon on successful launch")
                                 .setMessage(

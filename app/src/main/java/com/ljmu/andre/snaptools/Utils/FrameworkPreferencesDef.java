@@ -63,10 +63,6 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "SHOWN_ANDROID_N_WARNING",
             false, Boolean.class
     );
-    public static final Preference AUTO_ERROR_REPORTING = new Preference(
-            "AUTO_ERROR_REPORTING",
-            true, Boolean.class
-    );
     public static final Preference NOTIFY_ON_LOAD = new Preference(
             "NOTIFY_ON_LOAD",
             true, Boolean.class

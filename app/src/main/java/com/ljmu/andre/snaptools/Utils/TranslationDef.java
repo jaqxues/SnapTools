@@ -144,12 +144,6 @@ public class TranslationDef extends ConstantDefiner<Translation> {
             SettingsFragment.class,
             R.id.switch_kill_sc
     );
-    public static final Translation ERROR_REPORT_SWITCH = new Translation(
-            "error_report_switch",
-            "Automatic error reporting",
-            SettingsFragment.class,
-            R.id.switch_enable_auto_reporting
-    );
     public static final Translation ICON_ON_LAUNCH_SWITCH = new Translation(
             "icon_on_launch_switch",
             "Show icon on successful launch",

@@ -60,7 +60,6 @@ import timber.log.Timber;
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.AUTO_ERROR_REPORTING;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACKUP_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_MENU;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
@@ -89,8 +88,6 @@ public class SettingsFragment extends FragmentHelper {
     SwitchCompat masterSwitch;
     @BindView(R.id.switch_kill_sc)
     SwitchCompat switchKillSc;
-    @BindView(R.id.switch_enable_auto_reporting)
-    SwitchCompat switchEnableAutoReporting;
     @BindView(R.id.switch_enable_load_notify)
     SwitchCompat switchEnableLoadNotify;
     @BindView(R.id.switch_back_opens_menu)
@@ -132,7 +129,6 @@ public class SettingsFragment extends FragmentHelper {
         initUpdateSettingsSwitch();
         initUpdateChannel();
         initKillSCSwitch();
-        initAutoErrorReporting();
         initLoadNotify();
         initBackOpensMenu();
         initTransitionAnimations();
@@ -308,23 +304,6 @@ public class SettingsFragment extends FragmentHelper {
 
                     Answers.safeLogEvent(
                             new CustomEvent("SC Killswitch")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
-        );
-    }
-
-    private void initAutoErrorReporting() {
-        boolean isEnabled = getPref(AUTO_ERROR_REPORTING);
-        switchEnableAutoReporting.setChecked(isEnabled);
-
-        switchEnableAutoReporting.setOnCheckedChangeListener(
-                (buttonView, isChecked)
-                        -> {
-                    putAndKill(AUTO_ERROR_REPORTING, isChecked, getActivity());
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("Error Reporting")
                                     .putCustomAttribute("Enabled", String.valueOf(isChecked))
                     );
                 }

@@ -15,7 +15,7 @@ public interface RedirectDispatcher {
         CompatibilityRedirector redirector = getRedirector();
 
         if (redirector == null) {
-            Timber.w("Tried to redirect with no redirector [Id: %s][Params: %s]", id, Arrays.toString(params));
+            Timber.d("Tried to redirect with no redirector [Id: %s][Params: %s]", id, Arrays.toString(params));
             return defaultValue;
         }
 

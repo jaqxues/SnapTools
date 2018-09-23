@@ -69,9 +69,6 @@ public class RemoteConfig {
             .put("check_sc_beta", true)
 
             // Translation API ===========================================================
-            .put("enable_translation_api_beta", true)
-            .put("enable_translation_api_prod", false)
-            .put("translation_url_root", "https://raw.githubusercontent.com/Andrerm124/SnapToolsTranslations/master/")
             .put("translation_files", "English, French, German, Polski, TestLanguage")
             // ===========================================================================
 

@@ -295,6 +295,10 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "LAST_OPEN_APP",
             0L, Long.class
     );
+    public static final Preference LAST_CHECK_REMOTE_CONFIG = new Preference(
+            "LAST_CHECK_REMOTE_CONFIG",
+            0L, Long.class
+    );
     /**
      * ===========================================================================
      * Integers

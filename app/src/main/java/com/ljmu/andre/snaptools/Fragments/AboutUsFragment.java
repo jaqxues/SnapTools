@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ljmu.andre.snaptools.R;
-import com.ljmu.andre.snaptools.Utils.RemoteConfigDefaults;
-
-import java.util.Map;
+import com.ljmu.andre.snaptools.Utils.RemoteConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +38,9 @@ public class AboutUsFragment extends FragmentHelper {
         View layoutContainer = inflater.inflate(R.layout.frag_about_us, container, false);
         unbinder = ButterKnife.bind(this, layoutContainer);
 
-        Map<String, Object> defaultConfig = RemoteConfigDefaults.get();
-        concept.setText(getSpannedHtml((String) defaultConfig.get("about_us_concept")));
-        aboutUs.setText(getSpannedHtml((String) defaultConfig.get("about_us_description")));
+        RemoteConfig remoteConfig = RemoteConfig.getConfig();
+        concept.setText(getSpannedHtml(remoteConfig.getString("about_us_concept")));
+        aboutUs.setText(getSpannedHtml(remoteConfig.getString("about_us_description")));
 
         return layoutContainer;
     }

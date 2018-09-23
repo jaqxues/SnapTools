@@ -11,10 +11,12 @@ import android.widget.TextView;
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.ConstantDefiner.Constant;
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
+import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Networking.Helpers.GetTranslations;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener.ErrorObjectResultListener;
 import com.ljmu.andre.snaptools.Utils.Callable;
+import com.ljmu.andre.snaptools.Utils.RemoteConfig;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 
 import java.io.ByteArrayInputStream;
@@ -22,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -350,6 +353,22 @@ public class Translator {
                     .add("activityOrFragmentClass", activityOrFragmentClass)
                     .add("resourceId", resourceId)
                     .toString();
+        }
+    }
+
+    public static void fetchedRemoteConfig(Activity activity, RemoteConfig config) {
+        List<String> fetched = Arrays.asList(config.getString("translation_files").split(", "));
+        if (!AVAILABLE_TRANSLATIONS.containsAll(fetched)) {
+            String locale = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
+            if (!AVAILABLE_TRANSLATIONS.contains(locale) && fetched.contains(locale)) {
+                DialogFactory.createBasicMessage(
+                        activity,
+                        "New " + locale + "Translation",
+                        "New Translations have just been fetched. " + locale + "has been uploaded. You can change the Translation in Settings."
+                ).show();
+            }
+            AVAILABLE_TRANSLATIONS.clear();
+            AVAILABLE_TRANSLATIONS.addAll(fetched);
         }
     }
 }

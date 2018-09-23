@@ -69,6 +69,7 @@ import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.ModuleChecker;
+import com.ljmu.andre.snaptools.Utils.RemoteConfig;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.ljmu.andre.snaptools.Utils.ShowcaseFactory;
 import com.ljmu.andre.snaptools.Utils.ThemeUtils;
@@ -411,6 +412,12 @@ public class MainActivity
 //		Crashlytics.setString("Selected Packs",
 //				String.valueOf(selectedPacks));
 //		Crashlytics.setString("User", email);
+
+
+        RemoteConfig.init(this, remoteConfig -> {
+            Translator.fetchedRemoteConfig(this, remoteConfig);
+            Constants.initConstants(remoteConfig);
+        });
 
         /**
          * ===========================================================================
@@ -1096,7 +1103,9 @@ public class MainActivity
                     btnNext.setText("Done");
                     btnNext.setOnClickListener(v -> navigationView.getActiveFragment().triggerOnVisible(
                             (fragmentHelper, v1) -> {
-                                showCaseView.hide();
+                                // Fixes Bug if tapping Next Button too fast
+                                if (showCaseView.isAttachedToWindow())
+                                    showCaseView.hide();
                                 triggerKonfetti();
                             }, 250
                     ));

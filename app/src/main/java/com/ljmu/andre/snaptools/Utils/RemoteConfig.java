@@ -72,7 +72,7 @@ public class RemoteConfig {
             .put("enable_translation_api_beta", true)
             .put("enable_translation_api_prod", false)
             .put("translation_url_root", "https://raw.githubusercontent.com/Andrerm124/SnapToolsTranslations/master/")
-            .put("translation_files", "English, TestLanguage")
+            .put("translation_files", "English, French, German, Polski, TestLanguage")
             // ===========================================================================
 
             // Shop Fragment =============================================================
@@ -100,11 +100,20 @@ public class RemoteConfig {
                     @Override
                     public void success(String message, byte[] object) {
                         Timber.d("Fetched RemoteConfig, Message: %s", message);
-                        remoteConfigMap = new Gson().fromJson(
-                                new String(object, Charset.defaultCharset()),
-                                new TypeToken<HashMap<String, Object>>() {
-                                }.getType()
-                        );
+                        try {
+                            remoteConfigMap = new Gson().fromJson(
+                                    new String(object, Charset.defaultCharset()),
+                                    new TypeToken<HashMap<String, Object>>() {
+                                    }.getType()
+                            );
+                        } catch (Exception e) {
+                            Timber.e(e, "Could not build Remote Config Map from JSON: %s", new String(object, Charset.defaultCharset()));
+                            return;
+                        }
+                        for (String key : defaultConfigMap.keySet()) {
+                            if (!remoteConfigMap.containsKey(key))
+                                remoteConfigMap.put(key, defaultConfigMap.get(key));
+                        }
                         if (remoteConfig == null)
                             remoteConfig = new RemoteConfig();
 

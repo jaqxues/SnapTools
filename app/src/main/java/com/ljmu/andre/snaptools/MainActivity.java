@@ -650,6 +650,11 @@ public class MainActivity
         // An old preference, usually from a previously installed SnapTools version
         // Update corrupt preference and check for duplicate --> uninstall duplicate
         if (!isPrefCorrect) {
+            triggerKonfetti();
+            SafeToast.show(
+                    this,
+                    "Successfully repackaged SnapTools"
+            );
             Timber.d("User probably updated or re-installed the Application. Updating REPACKAGE_NAME Preference value.");
             putPref(REPACKAGE_NAME, (isDefaultPkg ? null : STApplication.PACKAGE));
             // This is probably caused by an update or re-installation

@@ -53,6 +53,7 @@ import com.ljmu.andre.snaptools.Utils.SafeToast;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -164,9 +165,11 @@ public class PackDownloaderFragment
 							return;
 						}
 
-                        for (ServerPackMetaData metaData : metaDataList) {
+                        Iterator<ServerPackMetaData> iterator = metaDataList.iterator();
+                        while (iterator.hasNext()) {
+                            ServerPackMetaData metaData = iterator.next();
                             if (!metaData.getFlavour().equals(Constants.getApkFlavor()))
-                                metaDataList.remove(metaData);
+                                iterator.remove();
                         }
 						setPacks(metaDataList);
 					}

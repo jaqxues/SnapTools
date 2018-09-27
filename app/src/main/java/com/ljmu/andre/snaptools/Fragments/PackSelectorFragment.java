@@ -35,7 +35,6 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
@@ -196,8 +195,7 @@ public class PackSelectorFragment extends FragmentHelper {
                     //At this point the layout is complete and the
                     //dimensions of recyclerView and any child views are known.
 
-                    if (Constants.getApkVersionCode() >= 66)
-                        AnimationUtils.sequentGroup(list_packs);
+                    AnimationUtils.sequentGroup(list_packs);
 
                     list_packs.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }

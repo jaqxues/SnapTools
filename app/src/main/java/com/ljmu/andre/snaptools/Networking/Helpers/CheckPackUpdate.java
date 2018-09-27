@@ -61,6 +61,9 @@ public class CheckPackUpdate {
                             return;
                         }
 
+                        if (packDataPacket == null)
+                            return;
+
                         String lastIgnoredVer = getPref(IGNORED_PACK_UPDATE_VERSION);
 
                         if (lastIgnoredVer.equals(packDataPacket.getModVersion()))

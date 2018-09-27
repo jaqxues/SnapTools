@@ -48,8 +48,11 @@ public class GetPackHistory {
                             return;
                         }
                         if (packsPacket == null) {
-                            Timber.e("Received Empty Pack. Source JSON: \"%s\"", webResponse.getResult());
-                            serverPackResult.success(Collections.emptyList());
+                            serverPackResult.error(
+                                    "Received Empty Result!",
+                                    null,
+                                    203
+                            );
                             return;
                         }
                         if (packsPacket.banned) {

@@ -207,8 +207,7 @@ public class PackDownloaderFragment
                     //At this point the layout is complete and the
                     //dimensions of recyclerView and any child views are known.
 
-                    if (Constants.getApkVersionCode() >= 66)
-                        AnimationUtils.sequentGroup(list_packs);
+                    AnimationUtils.sequentGroup(list_packs);
 
                     list_packs.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }

@@ -35,7 +35,6 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 
@@ -339,7 +338,7 @@ public class ShopFragment extends FragmentHelper {
                 //At this point the layout is complete and the
                 //dimensions of recyclerView and any child views are known.
 
-                if (!hasAnimated && Constants.getApkVersionCode() >= 66) {
+                if (!hasAnimated) {
                     hasAnimated = true;
                     AnimationUtils.sequentGroup(recyclerView);
                 }

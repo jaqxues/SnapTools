@@ -164,6 +164,10 @@ public class PackDownloaderFragment
 							return;
 						}
 
+                        for (ServerPackMetaData metaData : metaDataList) {
+                            if (!metaData.getFlavour().equals(Constants.getApkFlavor()))
+                                metaDataList.remove(metaData);
+                        }
 						setPacks(metaDataList);
 					}
 

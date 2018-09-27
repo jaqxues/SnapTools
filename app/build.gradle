@@ -90,13 +90,13 @@ android {
     }
     productFlavors {
         prod {
-            versionName '2.0.0.3'
-            versionCode 103
+            versionName '2.0.0.5'
+            versionCode 105
         }
         beta {
             resValue 'string', 'app_name', 'SnapTools Beta'
-            versionName '2.0.0.0b'
-            versionCode 101
+            versionName '2.0.0.6b'
+            versionCode 106
         }
         pack {
             // "Pack" Flavour should not be installed as APK

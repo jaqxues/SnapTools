@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import com.android.volley.Request;
 import com.ljmu.andre.snaptools.Dialogs.Content.PackUpdate;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
+import com.ljmu.andre.snaptools.Exceptions.KeyNotFoundException;
+import com.ljmu.andre.snaptools.Networking.NetworkUtils;
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
@@ -17,6 +19,7 @@ import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.Translation.Translator.translate;
+import static com.ljmu.andre.snaptools.Networking.WebRequest.RequestType.STRING;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.IGNORED_PACK_UPDATE_VERSION;
 import static com.ljmu.andre.snaptools.Utils.TranslationDef.PACK_UPDATE_AVAILABLE_TITLE;
 
@@ -39,9 +42,9 @@ public class CheckPackUpdate {
             @NonNull String packFlavour) {
 
         new WebRequest.Builder()
-                .setUrl(getPackUpdateCheckUrl(snapVersion, packFlavour))
+                .setUrl(getPackUpdateCheckUrl(snapVersion))
                 .setTag(TAG)
-                .setPacketClass(PackDataPacket.class)
+                .setType(STRING)
                 .shouldClearCache(true)
                 .setContext(activity)
                 .setMethod(Request.Method.GET)
@@ -49,7 +52,14 @@ public class CheckPackUpdate {
                 .setCallback(new WebResponseListener() {
                     @Override
                     public void success(WebResponse webResponse) {
-                        PackDataPacket packDataPacket = webResponse.getResult();
+                        PackDataPacket packDataPacket;
+                        try {
+                            packDataPacket = NetworkUtils.extractPack(webResponse.getResult(), PackDataPacket.class, packFlavour);
+                        } catch (KeyNotFoundException e) {
+                            Timber.d(e, "Key %s not found", packFlavour);
+                            Timber.e("Could not determine latest Pack Version, Flavour %s, SnapVersion: %s", packFlavour, snapVersion);
+                            return;
+                        }
 
                         String lastIgnoredVer = getPref(IGNORED_PACK_UPDATE_VERSION);
 
@@ -86,10 +96,8 @@ public class CheckPackUpdate {
                 .performRequest();
     }
 
-    private static String getPackUpdateCheckUrl(String snapVersion, String packFlavour) {
+    private static String getPackUpdateCheckUrl(String snapVersion) {
         return
-                CHECK_UPDATE_BASE_URL + "Latest" +
-                        (packFlavour.equals("prod") ? "" : "Beta") +
-                        "Pack_SC_v" + snapVersion + ".json";
+                CHECK_UPDATE_BASE_URL + "LatestPack_SC_v" + snapVersion + ".json";
     }
 }

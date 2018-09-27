@@ -324,8 +324,8 @@ public class MainActivity
                 Timber.d("Saved language not found... Defaulting to %s.", savedLocaleString);
             }
             if (!Translator.getAvailableTranslations().contains(savedLocaleString)) {
-                Timber.d("Did not find Translation for %s. Defaulting to English", savedLocaleString);
-                savedLocaleString = Locale.ENGLISH.getDisplayLanguage();
+                Timber.d("Could not find Translation for %s. Defaulting to English", savedLocaleString);
+                savedLocaleString = "English";
             }
 
             /**

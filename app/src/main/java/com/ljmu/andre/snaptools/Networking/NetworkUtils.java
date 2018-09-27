@@ -9,6 +9,8 @@ import com.ljmu.andre.snaptools.Exceptions.NoJSONObjectException;
 import com.ljmu.andre.snaptools.Networking.Packets.Packet;
 import com.ljmu.andre.snaptools.Utils.Assert;
 
+import org.jetbrains.annotations.NotNull;
+
 import timber.log.Timber;
 
 /**
@@ -87,6 +89,7 @@ public class NetworkUtils {
      * @return The parsed packet from the extracted JSON
      * @throws KeyNotFoundException Throws an exception if the given <code>keys</code> have not been found
      */
+    @NotNull
     public static <T extends Packet> T extractPack(String json, Class<T> packetClass, String... keys) throws KeyNotFoundException {
         try {
             return parsePacket(extractFromJson(json, keys), packetClass);

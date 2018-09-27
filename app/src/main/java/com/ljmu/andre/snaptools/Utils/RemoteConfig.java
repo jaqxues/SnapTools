@@ -131,7 +131,7 @@ public class RemoteConfig {
     }
 
     public long getLong(String key) {
-        return (long) getObject(key);
+        return ((Number) getObject(key)).longValue();
     }
 
     public String getString(String key) {

@@ -16,6 +16,7 @@ import com.ljmu.andre.snaptools.Dialogs.Content.TextInputBasic;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickWrapper;
+import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.ColorPickerDialogExtension;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.FontPickerDialogExtension;
@@ -25,21 +26,31 @@ import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 
 import java.io.File;
 
+import de.robv.android.xposed.XC_MethodReplacement;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHEETAH_EXPERIMENT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHEETAH_EXPERIMENT_ENUM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAPCHAT_CAPTION_VIEW_CLASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CAPTION_CREATE_HOOK;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHEETAH_DEFINE_MODE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.EXPERIMENT_PUSH_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.FONT_HOOK;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.SNAPCAPTIONVIEW_CONTEXT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.UI_MODE_ENUM;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.UI_MODE_NAME;
+import static com.ljmu.andre.snaptools.ModulePack.HookResolver.resolveHookClass;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.COPY_BUTTON;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CURRENT_FONT;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CUT_BUTTON;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FONTS_PATH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CHEETAH;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_MULTILINE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.PASTE_BUTTON;
+import static de.robv.android.xposed.XposedHelpers.newInstance;
 
 /*import com.flask.colorpicker.ColorPickerView.WHEEL_TYPE;
 import com.flask.colorpicker.OnColorChangedListener;
@@ -68,36 +79,37 @@ public class MiscChanges extends ModuleHelper {
     public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
         String currentFontFile = getPref(CURRENT_FONT);
 
-//		try {
-//			Class cheetahModeEnumClass = resolveHookClass(CHEETAH_EXPERIMENT_ENUM);
-//			Class cheetahExperimentClass = resolveHookClass(CHEETAH_EXPERIMENT);
-//
-//			boolean forceCheetah = getPref(FORCE_CHEETAH);
-//
-//			hookMethod(
-//					CHEETAH_DEFINE_MODE,
-//					new XC_MethodReplacement() {
-//						@Override protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-//							setObjectField(UI_MODE_NAME, param.thisObject, forceCheetah ? "CHEETAH_ANDROID" : null);
-//							setObjectField(UI_MODE_ENUM, param.thisObject,
-//									Enum.valueOf(
-//											cheetahModeEnumClass,
-//											forceCheetah ? "FULL_CHEETAH" : "OLD_DESIGN"
-//									)
-//							);
-//
-//							if (forceCheetah) {
-//								Object cheetahExperiment = newInstance(cheetahExperimentClass);
-//								callHook(EXPERIMENT_PUSH_STATE, cheetahExperiment);
-//							}
-//
-//							return null;
-//						}
-//					});
-//		} catch (HookNotFoundException e) {
-//			Timber.e(e);
-//			moduleLoadState.fail();
-//		}
+        try {
+            Class cheetahModeEnumClass = resolveHookClass(CHEETAH_EXPERIMENT_ENUM);
+            Class cheetahExperimentClass = resolveHookClass(CHEETAH_EXPERIMENT);
+
+            boolean forceCheetah = getPref(FORCE_CHEETAH);
+
+            hookMethod(
+                    CHEETAH_DEFINE_MODE,
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                            setObjectField(UI_MODE_NAME, param.thisObject, forceCheetah ? "CHEETAH_ANDROID" : null);
+                            setObjectField(UI_MODE_ENUM, param.thisObject,
+                                    Enum.valueOf(
+                                            cheetahModeEnumClass,
+                                            forceCheetah ? "FULL_CHEETAH" : "OLD_DESIGN"
+                                    )
+                            );
+
+                            if (forceCheetah) {
+                                Object cheetahExperiment = newInstance(cheetahExperimentClass);
+                                callHook(EXPERIMENT_PUSH_STATE, cheetahExperiment);
+                            }
+
+                            return null;
+                        }
+                    });
+        } catch (HookNotFoundException e) {
+            Timber.e(e);
+            moduleLoadState.fail();
+        }
 
         if (!currentFontFile.equals("Default")) {
             hookMethod(

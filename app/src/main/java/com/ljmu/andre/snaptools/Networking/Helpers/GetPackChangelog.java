@@ -44,7 +44,7 @@ public class GetPackChangelog {
                     public void success(WebResponse webResponse) {
                         PackDataPacket packDataPacket;
                         try {
-                            packDataPacket = NetworkUtils.extractPack(webResponse.getResult(), PackDataPacket.class, packFlavour);
+                            packDataPacket = NetworkUtils.extractPacket(webResponse.getResult(), PackDataPacket.class, packFlavour);
                         } catch (KeyNotFoundException e) {
                             packetResultListener.error(
                                     "No changelog for this Version",

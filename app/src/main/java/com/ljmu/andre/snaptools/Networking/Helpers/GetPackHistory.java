@@ -41,7 +41,7 @@ public class GetPackHistory {
                     public void success(WebResponse webResponse) {
                         PackHistoryListPacket packsPacket;
                         try {
-                            packsPacket = NetworkUtils.extractPack(webResponse.getResult(), PackHistoryListPacket.class, packFlavour);
+                            packsPacket = NetworkUtils.extractPacket(webResponse.getResult(), PackHistoryListPacket.class, packFlavour);
                         } catch (KeyNotFoundException e) {
                             Timber.e(e);
                             serverPackResult.success(Collections.emptyList());

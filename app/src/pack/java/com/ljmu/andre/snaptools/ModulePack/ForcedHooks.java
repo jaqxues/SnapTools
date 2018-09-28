@@ -22,7 +22,6 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORC
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAMERA2_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAPTIONV2_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CHAT_VIDEO_STATE;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CHEETAH_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_EMOJIBRUSH_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_FPS_OVERLAY_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_GIPHY_STATE;
@@ -122,7 +121,7 @@ public class ForcedHooks extends ModuleHelper {
 //		);
 
 
-        String cheetahMode = transformOtherString(FORCE_CHEETAH_STATE);
+//        String cheetahMode = transformOtherString(FORCE_CHEETAH_STATE);
 //		Boolean chatV10Mode = transformBoolean(FORCE_CHEETAH_CHAT_STATE);
         Boolean insightsMode = transformBoolean(FORCE_INSIGHTS_STATE);
         String multiSnapMode = transformOverwrite(FORCE_MULTI_SNAP_STATE);
@@ -155,9 +154,9 @@ public class ForcedHooks extends ModuleHelper {
                                  * Experiments
                                  * ===========================================================================
                                  */
-                                case "developerOptionCheetahMode":
-                                    handleExperiment(param, cheetahMode);
-                                    break;
+//                                case "developerOptionCheetahMode":
+//                                    handleExperiment(param, cheetahMode);
+//                                    break;
 //							case "chat_v10":
 //								handleExperiment(param, chatV10Mode);
 //								break;

@@ -54,7 +54,7 @@ public class CheckPackUpdate {
                     public void success(WebResponse webResponse) {
                         PackDataPacket packDataPacket;
                         try {
-                            packDataPacket = NetworkUtils.extractPack(webResponse.getResult(), PackDataPacket.class, packFlavour);
+                            packDataPacket = NetworkUtils.extractPacket(webResponse.getResult(), PackDataPacket.class, packFlavour);
                         } catch (KeyNotFoundException e) {
                             Timber.d(e, "Key %s not found", packFlavour);
                             Timber.e("Could not determine latest Pack Version, Flavour %s, SnapVersion: %s", packFlavour, snapVersion);

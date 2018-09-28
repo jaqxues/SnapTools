@@ -88,7 +88,7 @@ public class NetworkUtils {
      * @throws KeyNotFoundException Throws an exception if the given <code>keys</code> have not been found
      */
 
-    public static <T extends Packet> T extractPack(String json, Class<T> packetClass, String... keys) throws KeyNotFoundException {
+    public static <T extends Packet> T extractPacket(String json, Class<T> packetClass, String... keys) throws KeyNotFoundException {
         try {
             return parsePacket(extractFromJson(json, keys), packetClass);
         } catch (NoJSONObjectException e) {

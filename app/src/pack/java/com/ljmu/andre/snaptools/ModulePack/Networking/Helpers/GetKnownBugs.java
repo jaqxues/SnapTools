@@ -114,8 +114,7 @@ public class GetKnownBugs {
                         String json = webResponse.getResult();
                         KnownBugsPacket packet = null;
                         try {
-                            String extracted = NetworkUtils.extractFromJson(json, packVersion);
-                            packet = NetworkUtils.parsePacket(extracted, KnownBugsPacket.class);
+                            packet = NetworkUtils.extractPacket(json, KnownBugsPacket.class, packVersion);
                         } catch (KeyNotFoundException e) {
                             resultListener.error("No KnownBugs found for this Pack Version", e, 202);
                         }

@@ -21,6 +21,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
+import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -85,7 +86,7 @@ public class PackUpdate implements ThemedDialogExtension {
                         DialogFactory.createBasicMessage(
                                 activity,
                                 "Pack Downloaded",
-                                message + "\n\nEnable the downloaded Pack in SnapTools"
+                                message + "\n\n" + htmlHighlight("IMPORTANT") + "\nPlease activate the Pack in the SnapTools Pack Selector"
                         ).show();
                     } else {
                         failedDownload(message, responseCode);

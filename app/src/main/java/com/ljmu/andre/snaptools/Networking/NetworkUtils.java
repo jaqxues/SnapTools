@@ -78,9 +78,9 @@ public class NetworkUtils {
     }
 
     /**
-     * Combines {@link this#extractFromJson(String, String...)} and {@link this#parsePacket(String, Class)}.
+     * Combines {@link NetworkUtils#extractFromJson(String, String...)} and {@link NetworkUtils#parsePacket(String, Class)}.
      *
-     * @param json        The source String from which {@link this#extractFromJson(String, String...)} is called
+     * @param json        The source String from which {@link NetworkUtils#extractFromJson(String, String...)} is called
      * @param packetClass The Class of the Packet which should be parsed.
      * @param keys        The keys that should be used to get to the correct JSONObject in the JSON File.
      * @param <T>         The type of the Packet that should be returned

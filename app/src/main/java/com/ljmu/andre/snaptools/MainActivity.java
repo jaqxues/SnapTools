@@ -307,6 +307,11 @@ public class MainActivity
         // Assign the actual PackageName
         STApplication.PACKAGE = getPackageName();
 
+        RemoteConfig.init(this, remoteConfig -> {
+            Translator.fetchedRemoteConfig(this, remoteConfig);
+            Constants.initConstants(remoteConfig);
+        });
+
         /**
          * ===========================================================================
          * Translation System Initialisation
@@ -323,7 +328,7 @@ public class MainActivity
                 savedLocaleString = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
                 Timber.d("Saved language not found... Defaulting to %s.", savedLocaleString);
             }
-            if (!Translator.getAvailableTranslations().contains(savedLocaleString)) {
+            if (!Translator.getAvailableTranslations().contains(savedLocaleString) && !hasSavedLocale) {
                 Timber.d("Could not find Translation for %s. Defaulting to English", savedLocaleString);
                 savedLocaleString = "English";
             }
@@ -412,12 +417,6 @@ public class MainActivity
 //		Crashlytics.setString("Selected Packs",
 //				String.valueOf(selectedPacks));
 //		Crashlytics.setString("User", email);
-
-
-        RemoteConfig.init(this, remoteConfig -> {
-            Translator.fetchedRemoteConfig(this, remoteConfig);
-            Constants.initConstants(remoteConfig);
-        });
 
         /**
          * ===========================================================================

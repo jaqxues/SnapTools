@@ -85,7 +85,7 @@ public class PackUpdate implements ThemedDialogExtension {
                         DialogFactory.createBasicMessage(
                                 activity,
                                 "Pack Downloaded",
-                                message
+                                message + "\n\nEnable the downloaded Pack in SnapTools"
                         ).show();
                     } else {
                         failedDownload(message, responseCode);

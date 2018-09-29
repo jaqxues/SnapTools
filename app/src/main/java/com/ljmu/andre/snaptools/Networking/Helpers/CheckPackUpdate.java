@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.ljmu.andre.snaptools.Dialogs.Content.PackUpdate;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Exceptions.KeyNotFoundException;
+import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
 import com.ljmu.andre.snaptools.Networking.NetworkUtils;
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
 import com.ljmu.andre.snaptools.Networking.WebRequest;
@@ -56,7 +57,6 @@ public class CheckPackUpdate {
                         try {
                             packDataPacket = NetworkUtils.extractPacket(webResponse.getResult(), PackDataPacket.class, packFlavour);
                         } catch (KeyNotFoundException e) {
-                            Timber.d(e, "Key %s not found", packFlavour);
                             Timber.e("Could not determine latest Pack Version, Flavour %s, SnapVersion: %s", packFlavour, snapVersion);
                             return;
                         }
@@ -75,7 +75,12 @@ public class CheckPackUpdate {
 
                         if (hasUpdate) {
                             packDataPacket.setCurrentModVersion(moduleVersion);
-                            packDataPacket.setPackName(packName);
+                            packDataPacket.setPackName(PackMetaData.getFileNameFromTemplate(
+                                    packType,
+                                    snapVersion,
+                                    packFlavour,
+                                    packDataPacket.getModVersion()
+                            ));
 
                             new ThemedDialog(activity)
                                     .setTitle(translate(PACK_UPDATE_AVAILABLE_TITLE))

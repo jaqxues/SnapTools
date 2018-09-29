@@ -16,6 +16,7 @@ import com.ljmu.andre.snaptools.Dialogs.Content.ApkUpdate;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
+import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.ApkFileProvider;
 
 import java.util.Objects;
@@ -156,7 +157,7 @@ public class CheckAPKUpdate {
                             if (VERSION.SDK_INT > VERSION_CODES.M) {
                                 Uri uri = ApkFileProvider.getUriForFile(
                                         activity,
-                                        BuildConfig.APPLICATION_ID + ".apk_provider",
+                                        STApplication.PACKAGE + ".apk_provider",
                                         outputFile
                                 );
 

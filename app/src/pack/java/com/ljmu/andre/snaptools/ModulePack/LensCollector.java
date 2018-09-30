@@ -37,7 +37,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.RESOLV
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.LENS_CATEGORY_MAP;
 import static com.ljmu.andre.snaptools.ModulePack.HookResolver.resolveHookClass;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_AUTO_ENABLE;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 //import com.crashlytics.android.answers.Answers;
 //import com.crashlytics.android.answers.CustomEvent;
@@ -252,7 +251,7 @@ public class LensCollector extends ModuleHelper {
 
                                     if (convertedLenses != null && convertedLenses.size() > 0) {
                                         lensList.addAll(convertedLenses);
-                                        Timber.d(/*Inserted %s lenses*/ decryptMsg(new byte[]{61, -26, -106, 29, -103, 95, 84, 117, 2, -57, -67, -41, 90, 116, -128, 120, 120, -104, 37, 120, 89, -13, -57, 108, -56, 81, 29, 110, -97, -94, -45, 86}), convertedLenses.size());
+                                        Timber.d("Inserted %s lenses", convertedLenses.size());
                                     }
 
                                     cleanEmptyLenses(lensMapper, lensList);
@@ -334,7 +333,7 @@ public class LensCollector extends ModuleHelper {
 				}*/
             }
 
-            Timber.d(/*Converted %s lenses*/ decryptMsg(new byte[]{33, -71, 97, 48, 39, 103, 125, -107, -75, 72, -72, 115, 70, 95, -6, -115, -110, -110, 28, -39, 118, 24, 98, 59, 59, -124, -120, 100, 112, -14, 75, -102}), convertedLenses.size());
+            Timber.d("Converted %s lenses", convertedLenses.size());
             return convertedLenses;
         } catch (Throwable t) {
             Timber.e(t);

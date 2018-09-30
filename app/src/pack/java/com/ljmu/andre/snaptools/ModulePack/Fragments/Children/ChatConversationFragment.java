@@ -54,7 +54,6 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -240,8 +239,8 @@ public class ChatConversationFragment extends FragmentHelper {
     private void renameConversation(ConversationObject conversationObject) {
         DialogFactory.createBasicTextInputDialog(
                 getActivity(),
-                /*Rename Conversation*/ decryptMsg(new byte[]{68, 88, 81, -53, -53, 113, 46, 47, 83, 97, -113, -17, -34, 77, 1, -10, 48, 93, 118, -56, -16, 52, -6, 100, -68, -103, -72, 41, -82, 0, -84, 83}),
-                /*Please enter a name for the conversation*/ decryptMsg(new byte[]{-104, -114, -102, -87, 109, -85, -28, -75, 124, 42, -94, -23, 114, -22, -128, -106, -32, -121, 67, 72, 123, -92, -122, 78, 111, 36, -55, 92, -11, 40, 125, 12, 57, -121, 63, 57, -87, 124, 75, -75, 16, 11, 56, -53, 22, 53, 39, 53}),
+                "Rename Conversation",
+                "Please enter a name for the conversation",
                 null,
                 conversationObject.getConversationName(),
                 null,
@@ -308,8 +307,8 @@ public class ChatConversationFragment extends FragmentHelper {
     private void deleteConversation(ConversationObject conversationObject) {
         DialogFactory.createConfirmation(
                 getActivity(),
-                /*Delete Confirmation?*/ decryptMsg(new byte[]{-15, -56, 40, -74, -84, -70, 84, 49, 115, 109, -94, 91, -25, 122, -121, 27, 48, -80, -36, 99, -95, 69, -15, -41, -74, 16, 59, -107, 85, -58, 69, 73}),
-                /*Are you sure you want to delete this conversation (*/ decryptMsg(new byte[]{124, -63, 53, -11, 86, -30, -46, 37, -98, -41, 23, -17, -27, 80, 93, -10, -83, 49, -22, -39, 44, 11, -48, 15, 71, 55, -29, -28, 84, -33, 102, 88, 43, 30, -92, -45, -26, 88, 83, -86, 55, 8, 15, 52, 24, -97, -14, 73, -79, -113, 107, 19, -85, -54, -20, -69, 1, -21, 50, -73, 7, -64, -103, -42})
+                "Delete Confirmation?",
+                "Are you sure you want to delete this conversation ("
                         + conversationObject.getConversationName() + ")?",
                 new ThemedClickListener() {
                     @Override

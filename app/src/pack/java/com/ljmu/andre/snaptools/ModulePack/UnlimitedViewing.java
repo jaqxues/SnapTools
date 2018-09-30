@@ -21,7 +21,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.NO_AUTO_ADVANCE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.UNLIMITED_VIEWING_IMAGES;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.UNLIMITED_VIEWING_VIDEOS;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 
 /**
@@ -70,8 +69,8 @@ public class UnlimitedViewing extends ModuleHelper {
         try {
             Class enumClass = HookResolver.resolveHookClass(ENUM_SNAP_ADVANCE_MODES);
             Object NO_AUTO_ADVANCE_ENUM = getStaticObjectField(enumClass, NO_AUTO_ADVANCE.getVarName());
-            String durationKey = /*total_duration_sec*/ decryptMsg(new byte[]{62, 36, 39, -124, 49, 38, -27, 3, 99, -100, 85, 105, -108, 89, -121, -85, 125, 15, 108, -109, 66, -101, -22, -6, 116, 16, -109, 62, -117, 20, -77, -118});
-            String autoAdvanceKey = /*auto_advance_mode*/ decryptMsg(new byte[]{118, -85, -11, -84, -4, -108, 19, -68, -61, 100, 18, -78, -21, 83, -46, 85, 98, -26, -2, -18, -36, -10, 43, 28, 92, 30, 18, 97, 38, 112, 33, -43});
+            String durationKey = "total_duration_sec";
+            String autoAdvanceKey = "auto_advance_mode";
 
             hookMethod(
                     STORY_METADATA_INSERT_OBJECT,
@@ -88,7 +87,7 @@ public class UnlimitedViewing extends ModuleHelper {
                     });
 
         } catch (Throwable e) {
-            Timber.e(e, /*Couldn't find AdvanceMode Enum*/ decryptMsg(new byte[]{-61, 67, 113, 19, -35, 15, -110, -5, 113, -75, -74, 76, -28, 109, 50, 31, -45, 28, 78, 69, -2, -11, -54, -69, 88, -57, 2, -61, 105, -20, 20, -38}));
+            Timber.e(e, "Couldn't find AdvanceMode Enum");
             moduleLoadState.fail();
         }
 

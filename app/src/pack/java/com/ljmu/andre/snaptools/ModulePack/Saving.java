@@ -84,7 +84,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STREAM_TYPE_CHECK_BOOLEAN;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_SENT_SNAPS;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static com.ljmu.andre.snaptools.Utils.XposedUtils.logEntireClass;
 import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
@@ -96,7 +95,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 @SuppressWarnings("WeakerAccess")
 public class Saving extends ModuleHelper {
-    private static final String KEY_HEADER = /*SNAP_KEY*/ decryptMsg(new byte[]{30, -38, 54, -113, 37, -102, 34, -32, -128, -66, 41, 58, -102, -46, 115, -25});
+    private static final String KEY_HEADER = "SNAP_KEY";
     public static boolean hasLoadedHooks;
     private static String yourUsername = "";
 
@@ -223,7 +222,7 @@ public class Saving extends ModuleHelper {
                                 else if (media.getClass().equals(sentVideo))
                                     sentSnap = handleSentSnap(snapActivity, media, true);
                                 else {
-                                    Timber.e(/*Unhandled Sent Snap Type: */ decryptMsg(new byte[]{-59, -105, -107, -71, -108, -94, 96, -119, 96, -114, -2, 48, -107, 2, -70, 19, 87, 99, -62, 67, -53, -28, -71, 77, 118, -30, 25, -89, 70, -41, 124, -93})
+                                    Timber.e("Unhandled Sent Snap Type: "
                                             + media.getClass());
                                 }
                             } catch (Throwable t) {

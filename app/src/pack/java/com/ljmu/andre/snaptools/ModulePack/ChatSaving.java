@@ -38,7 +38,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCK_TYPING_NOTIFICATIONS;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_CHAT_IN_SC;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORE_CHAT_MESSAGES;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -122,13 +121,13 @@ public class ChatSaving extends ModuleHelper {
 
                 // ===========================================================================
 
-                FieldMapper.initMapper(/*Chat*/ decryptMsg(new byte[]{-53, 23, 42, 20, -103, 5, -111, -84, 121, 78, 31, 29, 43, -105, 24, 72}),
+                FieldMapper.initMapper("Chat",
                         chatClass);
-                FieldMapper.initMapper(/*ChatSuper*/ decryptMsg(new byte[]{40, -36, -17, -1, 69, 49, 13, -2, -12, -33, -107, 122, 97, 23, 125, -85}),
+                FieldMapper.initMapper("ChatSuper",
                         chatSuperClass);
-                FieldMapper.initMapper(/*Header*/ decryptMsg(new byte[]{36, 29, -34, 45, 50, -107, -113, 31, 71, 5, 66, 80, -111, 61, -72, -108}),
+                FieldMapper.initMapper("Header",
                         headerClass);
-                FieldMapper.initMapper(/*Body*/ decryptMsg(new byte[]{-95, -121, -59, 80, -75, 94, 106, -53, 75, -44, 66, -102, -110, -9, 123, 22}),
+                FieldMapper.initMapper("Body",
                         bodyClass);
 
                 // ===========================================================================

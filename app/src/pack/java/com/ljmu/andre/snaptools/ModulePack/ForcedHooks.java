@@ -33,7 +33,6 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STOR
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_DISCOVER_BLOCKED;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DISABLED_MODULES;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContains;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
@@ -71,7 +70,7 @@ public class ForcedHooks extends ModuleHelper {
         boolean blockDiscovery = getPref(STORY_BLOCKER_DISCOVER_BLOCKED);
         boolean blockAds = getPref(STORY_BLOCKER_ADVERTS_BLOCKED);
 
-        miscChangesEnabled = !collectionContains(DISABLED_MODULES, /*Misc Changes*/ decryptMsg(new byte[]{-107, -91, -53, -59, -70, -40, -71, -32, 113, 120, 77, 33, 5, 83, -69, 0}));
+        miscChangesEnabled = !collectionContains(DISABLED_MODULES, "Misc Changes");
 
         /**
          * ===========================================================================

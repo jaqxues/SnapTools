@@ -109,8 +109,7 @@ public class HookManager implements IXposedHookLoadPackage {
 
         TimberUtils.plantAppropriateTree();
 
-        Timber.d("PID: "
-                + Process.myPid());
+        Timber.d("PID: %s", Process.myPid());
 
         ErrorLogger.init();
 
@@ -140,8 +139,7 @@ public class HookManager implements IXposedHookLoadPackage {
                             @Override
                             protected void after(MethodHookParam param) throws Throwable {
 
-                                Timber.d("PID: "
-                                        + Process.myPid());
+                                Timber.d("PID: %s", Process.myPid());
 
                                 Timber.d("Application Attach Called");
                                 snapContext = (Context) param.args[0];

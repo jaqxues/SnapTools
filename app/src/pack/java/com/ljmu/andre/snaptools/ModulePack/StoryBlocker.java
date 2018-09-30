@@ -48,7 +48,6 @@ import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContain
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 
 /**
@@ -100,11 +99,11 @@ public class StoryBlocker extends ModuleHelper {
                     new ST_MethodHook() {
                         @Override
                         protected void after(MethodHookParam param) throws Throwable {
-                            Bundle arguments = (Bundle) callMethod(param.thisObject, /*getArguments*/ decryptMsg(new byte[]{-31, 92, 100, -24, -82, -102, 81, 66, 47, 37, -69, 58, -121, -9, 74, 69}));
-                            String username = arguments.getString(/*FRIEND_MINI_PROFILE_USERNAME*/ decryptMsg(new byte[]{-118, -114, -111, 122, -96, 122, 104, 20, -37, -7, -35, -14, -68, 78, -18, 37, 100, 94, -37, -43, 73, 101, -123, 127, -40, 7, -123, -87, 121, -92, -101, 81}));
+                            Bundle arguments = (Bundle) callMethod(param.thisObject, "getArguments");
+                            String username = arguments.getString("FRIEND_MINI_PROFILE_USERNAME");
 
                             if (username == null) {
-                                Timber.e(new Throwable(/*Empty StoryTile Username*/ decryptMsg(new byte[]{-43, 46, -27, -67, -69, -81, -51, 100, 77, 42, -24, -13, 39, -39, -1, 13, -59, -126, 71, 3, 24, -33, -128, -96, 90, -77, -32, -80, -24, -126, -112, 1})));
+                                Timber.e(new Throwable("Empty StoryTile Username"));
                                 return;
                             }
 
@@ -112,7 +111,7 @@ public class StoryBlocker extends ModuleHelper {
 
                             boolean isUserBlocked = collectionContains(BLOCKED_STORIES, username);
 
-                            RelativeLayout relativeView = getView((View) param.args[0], /*mini_profile_view*/ decryptMsg(new byte[]{125, 29, 88, -75, -43, 105, -44, 84, 68, 80, -113, -47, -65, -26, -44, -31, -12, 33, -64, 126, 27, 24, 73, 88, -27, 44, 75, 23, -48, 46, -115, 103}));
+                            RelativeLayout relativeView = getView((View) param.args[0], "mini_profile_view");
 
                             relativeView.addView(detach(blockerButton));
 
@@ -132,7 +131,7 @@ public class StoryBlocker extends ModuleHelper {
 
                                 SafeToastAdapter.showDefaultToast(
                                         snapActivity,
-                                        /*Restart Snapchat for the changes to take affect*/ decryptMsg(new byte[]{-81, -107, -90, -36, 61, 97, 86, -56, -99, 101, -30, 45, 88, 123, -28, -41, -101, -5, -35, 54, 15, 87, 93, 31, -124, 101, 77, 31, 70, 9, -17, 122, 9, -7, 75, 35, -116, -26, 22, -103, 27, 23, -64, -33, -118, 10, 121, 21})
+                                        "Restart Snapchat for the changes to take affect"
                                 );
                             });
 
@@ -247,20 +246,20 @@ public class StoryBlocker extends ModuleHelper {
                     }
             );
         } catch (HookNotFoundException e) {
-            Timber.e(e, /*Failed loading story blockers*/ decryptMsg(new byte[]{11, 6, 65, 21, -76, -106, 65, 33, -4, -89, -80, 103, -98, -17, -37, 53, -90, -93, 111, 45, 88, 57, -62, -72, -34, 32, 3, -57, 105, 100, -35, 37}));
+            Timber.e(e, "Failed loading story blockers");
             moduleLoadState.fail();
         }
     }
 
     private void updateBlockerButtonState(Context modContext, Button button, boolean isUserBlocked) {
         if (isUserBlocked) {
-            button.setBackgroundResource(getDrawable(modContext, /*neutral_button*/ decryptMsg(new byte[]{24, 84, -4, 80, 25, -75, 48, 57, 31, 74, 44, -99, -69, 88, -100, 48})));
-            button.setTextColor(ContextCompat.getColor(modContext, getColor(modContext, /*primaryLight*/ decryptMsg(new byte[]{40, 119, -28, 37, -45, 55, -47, -6, -22, 53, -74, -109, -103, -61, -36, 24}))));
-            button.setText(/*Unblock Stories*/ decryptMsg(new byte[]{-81, 125, 66, 44, 113, -91, 65, 21, 49, -110, 57, 23, -105, -123, 87, -28}));
+            button.setBackgroundResource(getDrawable(modContext, "neutral_button"));
+            button.setTextColor(ContextCompat.getColor(modContext, getColor(modContext, "primaryLight")));
+            button.setText("Unblock Stories");
         } else {
-            button.setBackgroundResource(getDrawable(modContext, /*error_button*/ decryptMsg(new byte[]{49, -61, -114, -56, 56, 71, 89, -6, 83, -77, -65, -107, -117, -78, 48, 97})));
-            button.setTextColor(ContextCompat.getColor(modContext, getColor(modContext, /*errorLight*/ decryptMsg(new byte[]{-94, -96, 80, 124, 105, 88, 97, 77, 44, 121, 77, 22, -35, -19, 27, 82}))));
-            button.setText(/*Block Stories*/ decryptMsg(new byte[]{-41, -24, 81, -100, 62, -116, 106, -25, 70, -124, -50, 89, 65, -87, 72, 2}));
+            button.setBackgroundResource(getDrawable(modContext, "error_button"));
+            button.setTextColor(ContextCompat.getColor(modContext, getColor(modContext, "errorLight")));
+            button.setText("Block Stories");
         }
 
         AnimationUtils.scaleUp(button);

@@ -24,7 +24,6 @@ import timber.log.Timber;
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_MERGE_ENABLE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DATABASES_PATH;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -32,7 +31,7 @@ import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
  */
 
 public class LensDatabase {
-    public static final String DB_NAME = /*Lenses.db*/ decryptMsg(new byte[]{73, 44, -43, 18, 45, -11, 33, 22, 79, -127, 64, 47, 98, 13, 78, -15});
+    public static final String DB_NAME = "Lenses.db";
     private static final int VERSION = 1;
     private static CBIDatabaseCore databaseCore;
 
@@ -96,8 +95,8 @@ public class LensDatabase {
             boolean wasSuccessful = true;
 
             Set<String> headerBlacklist = new HashSet<>();
-            headerBlacklist.add(/*isActive*/ decryptMsg(new byte[]{4, -53, -26, -98, -32, 106, -67, 43, -13, 79, 72, 18, -85, 25, -82, -39}));
-            headerBlacklist.add(/*favourited*/ decryptMsg(new byte[]{8, -61, -28, 83, -35, -104, -20, 93, 29, -23, -106, 93, -6, 4, 36, -26}));
+            headerBlacklist.add("isActive");
+            headerBlacklist.add("favourited");
 
             for (LensObject lensObject : newTable.getAll()) {
                 if (interruptFlag.shouldInterrupt()) {

@@ -26,7 +26,6 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.GROU
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.RECEIVED_FOLDER_NAME;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SENT_FOLDER_NAME;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_FOLDER_NAME;
-import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -210,31 +209,31 @@ public abstract class Snap {
 
         public static final SnapType RECEIVED = new SnapType(
                 1,
-                /*Received*/ decryptMsg(new byte[]{11, 84, -41, -42, -41, -27, -54, 93, -125, 5, -39, 124, -119, -117, 8, -34}),
+                "Received",
                 RECEIVED_FOLDER_NAME
         );
 
         public static final SnapType STORY = new SnapType(
                 2,
-                /*Story*/ decryptMsg(new byte[]{89, 88, -13, 2, -96, 96, 52, 8, 29, 44, 83, 50, -126, 33, -63, 57}),
+                "Story",
                 STORY_FOLDER_NAME
         );
 
         public static final SnapType SENT = new SnapType(
                 3,
-                /*Sent*/ decryptMsg(new byte[]{-36, 78, -57, -93, 3, -127, 60, 67, 42, 39, -39, 42, 27, -1, -85, -122}),
+                "Sent",
                 SENT_FOLDER_NAME
         );
 
         public static final SnapType CHAT = new SnapType(
                 4,
-                /*Chat*/ decryptMsg(new byte[]{-53, 23, 42, 20, -103, 5, -111, -84, 121, 78, 31, 29, 43, -105, 24, 72}),
+                "Chat",
                 CHAT_FOLDER_NAME
         );
 
         public static final SnapType GROUP = new SnapType(
                 5,
-                /*Group*/ decryptMsg(new byte[]{34, -42, 118, -42, -102, 63, -59, 65, 61, 74, 126, -122, 108, -11, 44, 22}),
+                "Group",
                 GROUP_FOLDER_NAME
         );
     }

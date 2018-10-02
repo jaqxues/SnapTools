@@ -66,7 +66,6 @@ import com.ljmu.andre.snaptools.UIComponents.UITheme;
 import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.ModuleChecker;
 import com.ljmu.andre.snaptools.Utils.RemoteConfig;
@@ -115,7 +114,6 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.addRelativePar
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
-import static com.ljmu.andre.snaptools.Utils.TranslationDef.AUTOMATIC_INITIALISATION_SUCCESS;
 import static com.ljmu.andre.snaptools.Utils.TranslationDef.DEFAULT_TRANSLATION_FOUND_MESSAGE;
 import static com.ljmu.andre.snaptools.Utils.TranslationDef.DEFAULT_TRANSLATION_FOUND_TITLE;
 import static com.ljmu.andre.snaptools.Utils.TranslationDef.FRAMEWORK_LOAD_ERROR_TITLE;
@@ -420,10 +418,10 @@ public class MainActivity
 
         /**
          * ===========================================================================
-         * Device ID Initialisation
+         * Device ID Initialisation (No Need Anymore)
          * ===========================================================================
          */
-        if (!DeviceIdManager.isSystemIdAssigned()) {
+/*        if (!DeviceIdManager.isSystemIdAssigned()) {
             if (!DeviceIdManager.assignSystemId(this)) {
                 return;
             } else {
@@ -432,7 +430,7 @@ public class MainActivity
                         translate(AUTOMATIC_INITIALISATION_SUCCESS)
                 );
             }
-        }
+        }*/
 
         /**
          * ===========================================================================

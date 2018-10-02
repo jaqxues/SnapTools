@@ -13,7 +13,6 @@ import com.ljmu.andre.snaptools.Networking.WebRequest.RequestType;
 import com.ljmu.andre.snaptools.Networking.WebRequest.WebResponseListener;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ServerListResultListener;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import io.reactivex.Observable;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 import static com.ljmu.andre.snaptools.Utils.Constants.SHOP_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_SHOP;
 
@@ -57,22 +55,22 @@ public class GetShopItems {
     }
 
     public static void getFromServer(Activity activity, ServerListResultListener<ShopItem> resultListener) {
-        Class cls = GetShopItems.class;
+//        Class cls = GetShopItems.class;
 //        String token;
 //        String email;
-        String deviceId;
+//        String deviceId;
 
-        try {
-            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
-        } catch (IllegalArgumentException e) {
-            Timber.e(e);
-            resultListener.error(
-                    "Missing Authentication Parameters",
-                    e,
-                    202
-            );
-            return;
-        }
+//        try {
+//            deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
+//        } catch (IllegalArgumentException e) {
+//            Timber.e(e);
+//            resultListener.error(
+//                    "Missing Authentication Parameters",
+//                    e,
+//                    202
+//            );
+//            return;
+//        }
 
         new WebRequest.Builder()
                 .setUrl(SHOP_ITEMS_URL)
@@ -82,7 +80,7 @@ public class GetShopItems {
                 .setContext(activity)
                 .useDefaultRetryPolicy()
                 // ===========================================================================
-                .addParam("device_id", deviceId)
+//                .addParam("device_id", deviceId)
                 // ===========================================================================
                 .setCallback(
                         new WebResponseListener() {

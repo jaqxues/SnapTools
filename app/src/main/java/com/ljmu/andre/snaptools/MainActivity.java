@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.IdRes;
@@ -399,41 +400,6 @@ public class MainActivity
 
         /**
          * ===========================================================================
-         * Fabric Setup
-         * ===========================================================================
-         */
-//		Fabric.with(this, this, new Crashlytics());
-//		String email = getPref(ST_EMAIL);
-//		if (email != null)
-//			Crashlytics.setUserEmail(email);
-//
-//		String displayName = getPref(ST_DISPLAY_NAME_OBFUS);
-//		if (displayName != null)
-//			Crashlytics.setUserName(displayName);
-//
-//		Set<String> selectedPacks = getPref(SELECTED_PACKS);
-//		Crashlytics.setString("Selected Packs",
-//				String.valueOf(selectedPacks));
-//		Crashlytics.setString("User", email);
-
-        /**
-         * ===========================================================================
-         * Device ID Initialisation (No Need Anymore)
-         * ===========================================================================
-         */
-/*        if (!DeviceIdManager.isSystemIdAssigned()) {
-            if (!DeviceIdManager.assignSystemId(this)) {
-                return;
-            } else {
-                SafeToast.show(
-                        this,
-                        translate(AUTOMATIC_INITIALISATION_SUCCESS)
-                );
-            }
-        }*/
-
-        /**
-         * ===========================================================================
          *  App Theming Preferences Check
          * ===========================================================================
          */
@@ -528,6 +494,7 @@ public class MainActivity
         initReminders();
         Translator.translateActivity(this);
         initAppRepackaging();
+        checkForPie();
     }
 
     /**
@@ -586,6 +553,17 @@ public class MainActivity
         }
     }
 
+    private void checkForPie() {
+        // Using Hardcoded 28 and not VERSION_CODES class because this project is compiled with Nougat and does not include this code
+        if (Build.VERSION.SDK_INT >= 28) {
+            DialogFactory.createErrorDialog(
+                    this,
+                    "Android Pie",
+                    "Since Xposed does not support Android Pie, " + STApplication.MODULE_TAG + htmlHighlight("CANNOT") + " support Android 9.0.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0"
+            ).show();
+        }
+    }
+
     /**
      * ===========================================================================
      * Display a reminder about viewing page tutorials if they have been
@@ -638,7 +616,7 @@ public class MainActivity
         // if the Preference was not correct, update the Preference
         if (isDefaultPkg) {
             if (!(boolean) getPref(HAS_SHOWN_REPKG_DIALOG) || !isPrefCorrect) {
-                Timber.d("Ask for App Repackaging");
+                Timber.d("Asking for App Repackaging");
                 putPref(HAS_SHOWN_REPKG_DIALOG, true);
                 RepackageManager.askUserDialog(this).show();
             }
@@ -646,14 +624,14 @@ public class MainActivity
 
         // An old preference, usually from a previously installed SnapTools version
         // Update corrupt preference and check for duplicate --> uninstall duplicate
-        if (!isPrefCorrect) {
+        if (!isPrefCorrect && !isDefaultPkg) {
             triggerKonfetti();
             SafeToast.show(
                     this,
                     "Successfully repackaged SnapTools"
             );
             Timber.d("User probably updated or re-installed the Application. Updating REPACKAGE_NAME Preference value.");
-            putPref(REPACKAGE_NAME, (isDefaultPkg ? null : STApplication.PACKAGE));
+            putPref(REPACKAGE_NAME, STApplication.PACKAGE);
             // This is probably caused by an update or re-installation
             try {
                 PackageInfo info = getPackageManager().getPackageInfo(

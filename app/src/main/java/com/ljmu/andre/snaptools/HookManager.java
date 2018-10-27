@@ -353,6 +353,14 @@ public class HookManager implements IXposedHookLoadPackage {
         return true;
     }
 
+    /**
+     * A Helper needed for App Repackaging that uses two possible options to create the ModuleContext.
+     * It first tries to create a PackageContext with the PackageName from the Preferences.
+     * The default PackageName is used as a fallback option in case the Preferences were wrong.
+     *
+     * @param app The context used to create new Package Context
+     * @return The created Package Context, null if both options failed.
+     */
     private Context helpCreatePackageContext(Application app) {
         try {
             return app.createPackageContext(STApplication.PACKAGE, Context.CONTEXT_IGNORE_SECURITY);

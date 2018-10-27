@@ -47,27 +47,6 @@ import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
  * It and its contents are free to use by all
  */
 public class RepackageManager {
-    @CheckResult
-    public static ThemedDialog askUserDialog(Activity activity) {
-        return DialogFactory.createConfirmation(
-                activity,
-                "Application repackaging?",
-                "This is an attempt to circumvent Snapchat's malicious app detection." +
-                        "\n\nYou are " + htmlHighlight("NOT") + " forced to use Application Repackaging. Every feature will be usable with or without Application Repackaging." +
-                        "\nDo " + htmlHighlight("NOT") + " rely on App Repackaging if you are scared to be banned." +
-                        "\n\nThis will install a new " + STApplication.MODULE_TAG + " Application with a different Package Name, only the repackaged App should remain." +
-                        "\n\n" + htmlHighlight("IMPORTANT: ") + "\nAfter the Repackaging Process completed, do the following:" +
-                        "\n- Open repackaged " + STApplication.MODULE_TAG + " once" +
-                        "\n- Activate repackaged " + STApplication.MODULE_TAG + " in Xposed" +
-                        "\n- Reboot",
-                new ThemedDialog.ThemedClickListener() {
-                    @Override
-                    public void clicked(ThemedDialog themedDialog) {
-                        themedDialog.dismiss();
-                        initRepackaging(activity);
-                    }
-                });
-    }
 
     public static void initRepackaging(Activity activity) {
         ThemedDialog progressDialog = DialogFactory.createProgressDialog(
@@ -157,7 +136,7 @@ public class RepackageManager {
         }
         if (previousRepackageName != null) {
             emitter.onNext("Uninstalling alternate repackages");
-            uninstallPrevious(previousRepackageName);
+            uninstallPackage(previousRepackageName);
 //            if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
 //                Timber.e("Couldn't find previously repackaged app!");
 //            }
@@ -170,7 +149,7 @@ public class RepackageManager {
          * ===========================================================================
          */
         emitter.onNext("Uninstalling original application");
-        uninstallPrevious(activity.getPackageName());
+        uninstallPackage(activity.getPackageName());
 //        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
 //			throw new RepackageException("Failed to uninstall original application");
         // Test on emulator: Successful un-installation threw this exception
@@ -251,10 +230,40 @@ public class RepackageManager {
         }
     }
 
-    public static void uninstallPrevious(String pkg) {
+    public static void uninstallPackage(String pkg) {
         sendCommandSync("pm uninstall " + pkg);
     }
 
+    @CheckResult
+    public static ThemedDialog askUserDialog(Activity activity) {
+        return DialogFactory.createConfirmation(
+                activity,
+                "Application repackaging?",
+                "This is an attempt to circumvent Snapchat's malicious app detection." +
+                        "\n\nYou are " + htmlHighlight("NOT") + " forced to use Application Repackaging. Every feature will be usable with or without Application Repackaging." +
+                        "\nDo " + htmlHighlight("NOT") + " rely on App Repackaging if you are scared to be banned." +
+                        "\n\nThis will install a new " + STApplication.MODULE_TAG + " Application with a different Package Name, only the repackaged App should remain." +
+                        "\n\n" + htmlHighlight("IMPORTANT: ") + "\nAfter the Repackaging Process completed, do the following:" +
+                        "\n- Open repackaged " + STApplication.MODULE_TAG + " once" +
+                        "\n- Activate repackaged " + STApplication.MODULE_TAG + " in Xposed" +
+                        "\n- Reboot",
+                new ThemedDialog.ThemedClickListener() {
+                    @Override
+                    public void clicked(ThemedDialog themedDialog) {
+                        themedDialog.dismiss();
+                        initRepackaging(activity);
+                    }
+                });
+    }
+
+    /**
+     * Helper Method if multiple SnapTools Applications have been detected.
+     *
+     * @param activity Context used for Dialogs
+     * @param info     PackageInfo of the detected Duplicate.
+     * @return Uninstall Dialog with ClickListener
+     */
+    @CheckResult
     public static ThemedDialog getUninstallDuplicates(Activity activity, PackageInfo info) {
         int comparedVersions = new Version(getApkVersionName()).compareTo(new Version(info.versionName));
         String message;
@@ -288,7 +297,7 @@ public class RepackageManager {
                 public void clicked(ThemedDialog themedDialog) {
                     themedDialog.dismiss();
                     Timber.w("Uninstalling the duplicate %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
-                    RepackageManager.uninstallPrevious(info.packageName);
+                    RepackageManager.uninstallPackage(info.packageName);
                     SafeToast.show(
                             activity,
                             "Successfully sent uninstall Command",
@@ -302,7 +311,7 @@ public class RepackageManager {
                 public void clicked(ThemedDialog themedDialog) {
                     themedDialog.dismiss();
                     Timber.w("Uninstalling this %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
-                    RepackageManager.uninstallPrevious(activity.getPackageName());
+                    RepackageManager.uninstallPackage(activity.getPackageName());
                     DialogFactory.createProgressDialog(
                             activity,
                             "Uninstall Application",

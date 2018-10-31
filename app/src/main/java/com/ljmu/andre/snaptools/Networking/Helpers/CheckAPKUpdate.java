@@ -1,10 +1,6 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 
 import com.android.volley.Request.Method;
 import com.github.javiersantos.appupdater.AppUpdaterUtils;
@@ -16,8 +12,7 @@ import com.ljmu.andre.snaptools.Dialogs.Content.ApkUpdate;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
-import com.ljmu.andre.snaptools.STApplication;
-import com.ljmu.andre.snaptools.Utils.ApkFileProvider;
+import com.ljmu.andre.snaptools.Utils.InstallUtils;
 
 import java.util.Objects;
 
@@ -152,30 +147,8 @@ public class CheckAPKUpdate {
                                 return;
                             }
 
-                            Intent intent;
-
-                            if (VERSION.SDK_INT > VERSION_CODES.M) {
-                                Uri uri = ApkFileProvider.getUriForFile(
-                                        activity,
-                                        STApplication.PACKAGE + ".apk_provider",
-                                        outputFile
-                                );
-
-                                intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                            } else {
-                                Uri uri = Uri.fromFile(outputFile);
-                                intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                                intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                            }
-
-                            if (activity != null && !activity.isFinishing()) {
-                                activity.startActivity(intent);
-                                activity.finish();
-                            }
-
+                            InstallUtils.install(activity, outputFile);
+                            activity.finish();
 
                             if (resultListener != null)
                                 resultListener.success(null, true);

@@ -12,6 +12,7 @@ import com.ljmu.andre.snaptools.MainActivity;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.CustomObservers;
+import com.ljmu.andre.snaptools.Utils.InstallUtils;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.io.SuFileOutputStream;
@@ -114,11 +115,7 @@ public class RepackageManager {
          * ===========================================================================
          */
         emitter.onNext("Installing repackaged application");
-        if (!sendCommandSync("pm install -t " + repackFile)) {
-//			throw new RepackageException("Failed to install repackaged application");
-            // Test on emulator: Successful installation threw this exception
-            // Probably because the first line of output is "pkg...". Magisk not performing checks either
-        }
+        InstallUtils.install(activity, repackFile);
         // ===========================================================================
 
         /**

@@ -38,4 +38,13 @@ public class InstallUtils {
             activity.startActivity(intent);
         }
     }
+
+    public static void uninstallPackage(Activity activity, String packageName) {
+        ShellUtils.sendCommandSync("pm uninstall " + packageName); // TODO TEST
+//        Intent intent = new Intent(Intent.ACTION_DELETE);
+//        intent.setData(Uri.parse("package:" + packageName));
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+//        if (activity != null && !activity.isFinishing())
+//            activity.startActivity(intent);
+    }
 }

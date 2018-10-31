@@ -40,7 +40,6 @@ import static com.ljmu.andre.snaptools.Repackaging.RepackageUtil.findAndPatch;
 import static com.ljmu.andre.snaptools.Utils.Constants.getApkVersionName;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
-import static com.ljmu.andre.snaptools.Utils.ShellUtils.sendCommandSync;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 
 /**
@@ -133,7 +132,7 @@ public class RepackageManager {
         }
         if (previousRepackageName != null) {
             emitter.onNext("Uninstalling alternate repackages");
-            uninstallPackage(previousRepackageName);
+            InstallUtils.uninstallPackage(activity, previousRepackageName);
 //            if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
 //                Timber.e("Couldn't find previously repackaged app!");
 //            }
@@ -146,7 +145,7 @@ public class RepackageManager {
          * ===========================================================================
          */
         emitter.onNext("Uninstalling original application");
-        uninstallPackage(activity.getPackageName());
+        InstallUtils.uninstallPackage(activity, activity.getPackageName());
 //        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
 //			throw new RepackageException("Failed to uninstall original application");
         // Test on emulator: Successful un-installation threw this exception
@@ -227,10 +226,6 @@ public class RepackageManager {
         }
     }
 
-    public static void uninstallPackage(String pkg) {
-        sendCommandSync("pm uninstall " + pkg);
-    }
-
     @CheckResult
     public static ThemedDialog askUserDialog(Activity activity) {
         return DialogFactory.createConfirmation(
@@ -294,7 +289,7 @@ public class RepackageManager {
                 public void clicked(ThemedDialog themedDialog) {
                     themedDialog.dismiss();
                     Timber.w("Uninstalling the duplicate %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
-                    RepackageManager.uninstallPackage(info.packageName);
+                    InstallUtils.uninstallPackage(activity, info.packageName);
                     SafeToast.show(
                             activity,
                             "Successfully sent uninstall Command",
@@ -308,7 +303,7 @@ public class RepackageManager {
                 public void clicked(ThemedDialog themedDialog) {
                     themedDialog.dismiss();
                     Timber.w("Uninstalling this %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
-                    RepackageManager.uninstallPackage(activity.getPackageName());
+                    InstallUtils.uninstallPackage(activity, activity.getPackageName());
                     DialogFactory.createProgressDialog(
                             activity,
                             "Uninstall Application",

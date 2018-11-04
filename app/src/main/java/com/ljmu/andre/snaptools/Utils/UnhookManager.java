@@ -59,7 +59,7 @@ public class UnhookManager {
     }
 
     @RequiresFramework(77)
-    public static void unhookAll(@Nullable String ignoredKey) {
+    public static void unhookAll(@Nullable String key) {
         Timber.d("Performing unhook all");
 
         synchronized (UNHOOK_LOCK) {
@@ -69,11 +69,11 @@ public class UnhookManager {
 
             while (unhookIterator.hasNext()) {
                 Entry<String, List<Unhook>> unhookEntry = unhookIterator.next();
-                if (unhookEntry.getKey().equals(ignoredKey))
+                if (!unhookEntry.getKey().equals(key) && key != null)
                     continue;
 
                 List<Unhook> unhooks = unhookEntry.getValue();
-                Timber.d("found unhook list of: " + unhooks.size());
+                Timber.d("Unhooking Unhook List %s (Size: %s)", key, unhooks.size());
 
                 for (Unhook unhook : unhooks) {
                     if (unhook == null)

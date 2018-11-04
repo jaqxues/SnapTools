@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 
@@ -29,7 +29,7 @@ public class RemoveSnapTimer extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         // Removed within snapchat ===================================================
 //		hookMethod(
 //				SNAPTIMERVIEW_ONDRAW,

@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
@@ -66,7 +66,7 @@ public class ForcedHooks extends ModuleHelper {
     }
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         boolean blockDiscovery = getPref(STORY_BLOCKER_DISCOVER_BLOCKED);
         boolean blockAds = getPref(STORY_BLOCKER_ADVERTS_BLOCKED);
 

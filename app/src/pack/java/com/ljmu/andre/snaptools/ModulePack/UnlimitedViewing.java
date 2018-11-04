@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
@@ -43,7 +43,7 @@ public class UnlimitedViewing extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapCntext) {
         boolean unlimitedViewingImages = getPref(UNLIMITED_VIEWING_IMAGES);
         boolean unlimitedViewingVideos = getPref(UNLIMITED_VIEWING_VIDEOS);
 

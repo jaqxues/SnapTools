@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
@@ -41,12 +41,56 @@ public class HookResolver extends ModuleHelper {
 
     // ===========================================================================
 
+    /**
+     * ===========================================================================
+     * Attempt to find the HookReference associated with the input Hook
+     * ===========================================================================
+     *
+     * @param hook - The Hook to find the linked HookReference for
+     * @return The HookReference linked to Hook
+     * @throws HookNotFoundException - When no HookReference is found
+     */
+    @NonNull
+    public static HookReference resolveHook(@NonNull Hook hook) throws HookNotFoundException {
+        HookReference hookReference = hookReferenceMap.get(hook.getName());
+
+        if (hookReference == null) {
+            throw new HookNotFoundException(
+                    String.format("Could not find hook [Name:%s][Class:%s][Method:%s]",
+                            hook.getName(), hook.getHookClass().getStrClass(), hook.getHookMethod()));
+        }
+
+        return hookReference;
+    }
+
+    // ===========================================================================
+
+    /**
+     * ===========================================================================
+     * Attempt to find the Class associated with the input HookClass
+     * ===========================================================================
+     *
+     * @param hookClass - The HookClass to find the linked Class for
+     * @return The Class<?> linked to HookClass
+     * @throws HookNotFoundException - When no Class is found
+     */
+    @NonNull
+    public static Class<?> resolveHookClass(@NonNull HookClass hookClass) throws HookNotFoundException {
+        Class<?> resolvedClass = hookClassMap.get(hookClass.getName());
+
+        if (resolvedClass == null)
+            throw new HookNotFoundException(
+                    String.format(
+                            "Could not find HookClass [Class:%s]",
+                            hookClass.getStrClass()));
+
+        return resolvedClass;
+    }
+
     @Override
     public FragmentHelper[] getUIFragments() {
         return null;
     }
-
-    // ===========================================================================
 
     /**
      * ===========================================================================
@@ -54,7 +98,7 @@ public class HookResolver extends ModuleHelper {
      * ===========================================================================
      */
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         if (hookReferenceMap.size() > 0) {
             Timber.w("Tried to resolve hooks more than once!");
             return;
@@ -131,50 +175,6 @@ public class HookResolver extends ModuleHelper {
         }
 
         return failedHooks;
-    }
-
-    /**
-     * ===========================================================================
-     * Attempt to find the HookReference associated with the input Hook
-     * ===========================================================================
-     *
-     * @param hook - The Hook to find the linked HookReference for
-     * @return The HookReference linked to Hook
-     * @throws HookNotFoundException - When no HookReference is found
-     */
-    @NonNull
-    public static HookReference resolveHook(@NonNull Hook hook) throws HookNotFoundException {
-        HookReference hookReference = hookReferenceMap.get(hook.getName());
-
-        if (hookReference == null) {
-            throw new HookNotFoundException(
-                    String.format("Could not find hook [Name:%s][Class:%s][Method:%s]",
-                            hook.getName(), hook.getHookClass().getStrClass(), hook.getHookMethod()));
-        }
-
-        return hookReference;
-    }
-
-    /**
-     * ===========================================================================
-     * Attempt to find the Class associated with the input HookClass
-     * ===========================================================================
-     *
-     * @param hookClass - The HookClass to find the linked Class for
-     * @return The Class<?> linked to HookClass
-     * @throws HookNotFoundException - When no Class is found
-     */
-    @NonNull
-    public static Class<?> resolveHookClass(@NonNull HookClass hookClass) throws HookNotFoundException {
-        Class<?> resolvedClass = hookClassMap.get(hookClass.getName());
-
-        if (resolvedClass == null)
-            throw new HookNotFoundException(
-                    String.format(
-                            "Could not find HookClass [Class:%s]",
-                            hookClass.getStrClass()));
-
-        return resolvedClass;
     }
 
     // ===========================================================================

@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Pair;
 
 import com.ljmu.andre.snaptools.Exceptions.ModulePackLoadAborted;
@@ -134,7 +135,7 @@ public class ModulePackImpl extends ModulePack {
     }
 
     @Override
-    public List<ModuleLoadState> injectAllHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public List<ModuleLoadState> injectAllHooks(ClassLoader snapClassLoader, Context snapContext) {
         if (!hasLoaded)
             throw new IllegalStateException("Module Pack not loaded!");
 
@@ -161,7 +162,7 @@ public class ModulePackImpl extends ModulePack {
             }
 
             try {
-                module.injectHooks(snapClassLoader, snapActivity, moduleLoadState);
+                module.injectHooks(snapClassLoader, snapContext, moduleLoadState);
             } catch (Throwable t) {
                 Timber.e(t);
                 moduleLoadState.fail();
@@ -172,6 +173,25 @@ public class ModulePackImpl extends ModulePack {
 
         hasInjected = true;
         return hookResults;
+    }
+
+    @Override
+    public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+        Map<String, ModuleLoadState> moduleLoadStateMap = getPackLoadState().getModuleLoadStates();
+
+        for (ModuleLoadState state : moduleLoadStateMap.values()) {
+            if (state.getState() != State.SUCCESS)
+                continue;
+
+            Module module = getModule(state.getName());
+
+            try {
+                module.prepareActivity(snapClassLoader, snapActivity);
+            } catch (Throwable t) {
+                Timber.e(t);
+                state.fail();
+            }
+        }
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +13,7 @@ import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.SharingFragment;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import java.io.File;
@@ -60,16 +61,16 @@ public class Sharing extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         if (getPref(SHOW_SHARING_TUTORIAL)) {
             hookMethod(
                     CAMERA_IS_VISIBLE,
                     new ST_MethodHook() {
                         @Override
                         protected void after(MethodHookParam param) throws Throwable {
-                            Intent intent = snapActivity.getIntent();
+                            Intent intent = ContextHelper.getActivity().getIntent();
 
-                            if (intent == null || snapActivity.isFinishing()) {
+                            if (intent == null || ContextHelper.getActivity().isFinishing()) {
                                 Timber.d("Null Intent");
                                 return;
                             }
@@ -77,7 +78,7 @@ public class Sharing extends ModuleHelper {
                             if (intent.getBooleanExtra("IS_SHARE", false)) {
                                 if (intent.getStringExtra("image_url") != null) {
                                     DialogFactory.createConfirmation(
-                                            snapActivity,
+                                            ContextHelper.getActivity(),
                                             "Shared Image Detected",
                                             "Found an image that has been shared to Snapchat"
                                                     + "\nPress No to cancel the share" +
@@ -100,7 +101,7 @@ public class Sharing extends ModuleHelper {
                                     ).show();
                                 } else if (intent.getStringExtra("video_url") != null) {
                                     DialogFactory.createConfirmation(
-                                            snapActivity,
+                                            ContextHelper.getActivity(),
                                             "Shared Video Detected",
                                             "Found a video that has been shared to Snapchat"
                                                     + "\nPress No to cancel the share" +
@@ -135,7 +136,7 @@ public class Sharing extends ModuleHelper {
                 new ST_MethodHook() {
                     @Override
                     protected void before(MethodHookParam param) throws Throwable {
-                        Intent intent = snapActivity.getIntent();
+                        Intent intent = ContextHelper.getActivity().getIntent();
 
                         Timber.d("Called camera a(bitmap, bool, bool)");
 
@@ -153,7 +154,7 @@ public class Sharing extends ModuleHelper {
 
                             if (imgPath == null) {
                                 SafeToastAdapter.showErrorToast(
-                                        snapActivity,
+                                        ContextHelper.getActivity(),
                                         "Shared image path not found"
                                 );
 
@@ -171,7 +172,7 @@ public class Sharing extends ModuleHelper {
 
                             if (bitmap == null) {
                                 SafeToastAdapter.showErrorToast(
-                                        snapActivity,
+                                        ContextHelper.getActivity(),
                                         "Failed to load shared media"
                                 );
 
@@ -200,12 +201,12 @@ public class Sharing extends ModuleHelper {
                 new ST_MethodHook() {
                     @Override
                     protected void before(MethodHookParam param) throws Throwable {
-                        if (snapActivity == null || snapActivity.isDestroyed() || snapActivity.isFinishing()) {
+                        if (ContextHelper.getActivity() == null || ContextHelper.getActivity().isDestroyed() || ContextHelper.getActivity().isFinishing()) {
                             Timber.w("SnapActivity not valid for shared video");
                             return;
                         }
 
-                        Intent intent = snapActivity.getIntent();
+                        Intent intent = ContextHelper.getActivity().getIntent();
 
                         if (intent == null) {
                             Timber.d("Null Intent");
@@ -222,7 +223,7 @@ public class Sharing extends ModuleHelper {
 
                                 if (videoPath == null) {
                                     SafeToastAdapter.showErrorToast(
-                                            snapActivity,
+                                            ContextHelper.getActivity(),
                                             "Shared video path not found"
                                     );
 
@@ -237,7 +238,7 @@ public class Sharing extends ModuleHelper {
 
                                 if (!sourceFile.exists()) {
                                     SafeToastAdapter.showErrorToast(
-                                            snapActivity,
+                                            ContextHelper.getActivity(),
                                             "Shared video doesn't exist"
                                     );
 
@@ -253,7 +254,7 @@ public class Sharing extends ModuleHelper {
 
                                 if (snapPath == null) {
                                     SafeToastAdapter.showErrorToast(
-                                            snapActivity,
+                                            ContextHelper.getActivity(),
                                             "Recorded video path not found"
                                     );
 

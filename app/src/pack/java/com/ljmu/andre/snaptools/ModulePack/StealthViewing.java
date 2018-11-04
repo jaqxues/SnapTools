@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.StealthViewProvider;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.StealthViewingFragment;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import java.util.ArrayList;
@@ -89,6 +91,9 @@ public class StealthViewing extends ModuleHelper {
     });
     private StealthViewProvider viewProvider = new StealthViewProvider();
 
+    private int cheetahHeaderId, oldHeaderId;
+    private ViewGroup cheetahStealthContainer, stealthContainer;
+
     public StealthViewing(String name, boolean canBeDisabled) {
         super(name, canBeDisabled);
     }
@@ -101,7 +106,7 @@ public class StealthViewing extends ModuleHelper {
     }
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         bypassNextStealthView = !(boolean) getPref(DEFAULT_SNAP_STEALTH);
 
         if (getPref(SHOW_SNAP_STEALTH_BUTTON)) {
@@ -124,9 +129,9 @@ public class StealthViewing extends ModuleHelper {
                             Timber.d("Direct snap displayed... Binding stealth to active layout");
 
                             if (Looper.myLooper() != Looper.getMainLooper()) {
-                                new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(snapActivity));
+                                new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(ContextHelper.getActivity()));
                             } else
-                                assignStealthToActiveLayout(snapActivity);
+                                assignStealthToActiveLayout(ContextHelper.getActivity());
                         }
                     }
             );
@@ -175,9 +180,9 @@ public class StealthViewing extends ModuleHelper {
                             Timber.d("Story snap displayed... Binding stealth to active layout");
 
                             if (Looper.myLooper() != Looper.getMainLooper()) {
-                                new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(snapActivity));
+                                new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(ContextHelper.getActivity()));
                             } else
-                                assignStealthToActiveLayout(snapActivity);
+                                assignStealthToActiveLayout(ContextHelper.getActivity());
                         }
                     }
             );
@@ -388,8 +393,6 @@ public class StealthViewing extends ModuleHelper {
          * Chat Header Button hook
          * ===========================================================================
          */
-        int cheetahHeaderId = getId(snapActivity, "chat_name_and_story_container");
-        int oldHeaderId = getId(snapActivity, "chat_friends_name");
 
         if (getPref(SHOW_CHAT_STEALTH_BUTTON)) {
             hookAllConstructors(
@@ -398,21 +401,18 @@ public class StealthViewing extends ModuleHelper {
                         @Override
                         protected void after(MethodHookParam param) throws Throwable {
                             View topPanel = getObjectField(CHAT_TOP_PANEL_VIEW, param.thisObject);
-                            RelativeLayout headerTitle = getView(topPanel, getId(snapActivity, "chat_header_title"));
+                            RelativeLayout headerTitle = getView(topPanel, getId(ContextHelper.getActivity(), "chat_header_title"));
 
                             boolean isCheetah = getView(headerTitle, cheetahHeaderId) != null;
 
                             int headerId = isCheetah ?
                                     cheetahHeaderId : oldHeaderId;
 
-                            headerTitle.addView(viewProvider.getStealthChatButton(snapActivity, headerId, getModuleContext(snapActivity), isCheetah));
+                            headerTitle.addView(viewProvider.getStealthChatButton(ContextHelper.getActivity(), headerId, getModuleContext(ContextHelper.getActivity()), isCheetah));
                         }
                     }
             );
         }
-
-        ViewGroup cheetahStealthContainer = viewProvider.getProfileContainer(snapActivity, getModuleContext(snapActivity));
-        ViewGroup stealthContainer = viewProvider.getProfileContainer(snapActivity, getModuleContext(snapActivity));
 
         hookConstructor(
                 CREATE_CHEETAH_PROFILE_SETTINGS_VIEW,
@@ -437,11 +437,20 @@ public class StealthViewing extends ModuleHelper {
                     @Override
                     protected void after(MethodHookParam param) throws Throwable {
                         ViewGroup contentView = (ViewGroup) param.getResult();
-                        LinearLayout buttonsLayout = getView(contentView, getId(snapActivity, "profile_navigation_buttons"));
+                        LinearLayout buttonsLayout = getView(contentView, getId(ContextHelper.getActivity(), "profile_navigation_buttons"));
 
                         buttonsLayout.addView(detach(stealthContainer));
                     }
                 });
+    }
+
+
+    @Override
+    public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+        cheetahHeaderId = getId(snapActivity, "chat_name_and_story_container");
+        oldHeaderId = getId(snapActivity, "chat_friends_name");
+        cheetahStealthContainer = viewProvider.getProfileContainer(snapActivity, getModuleContext(snapActivity));
+        stealthContainer = viewProvider.getProfileContainer(snapActivity, getModuleContext(snapActivity));
     }
 
     private void assignStealthToActiveLayout(Activity snapActivity) {

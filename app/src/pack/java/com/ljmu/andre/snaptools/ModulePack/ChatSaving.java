@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
@@ -10,6 +10,7 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.ChatObject;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.ConversationObject;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.ChatManagerFragment;
 import com.ljmu.andre.snaptools.ModulePack.Utils.FieldMapper;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import java.util.Collections;
@@ -60,7 +61,7 @@ public class ChatSaving extends ModuleHelper {
     }
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		/*findAndHookMethod(
 				"ify", snapClassLoader,
 				"a", findClass("com.snapchat.android.core.structure.fragment.SnapchatFragment", snapClassLoader),
@@ -107,7 +108,7 @@ public class ChatSaving extends ModuleHelper {
             try {
                 yourUsername = callStaticHook(GET_USERNAME);
 
-                ChatDatabase.init(snapActivity);
+                ChatDatabase.init(snapContext);
 
                 chatTable = ChatDatabase.getTable(ChatObject.class);
                 conversationTable = ChatDatabase.getTable(ConversationObject.class);
@@ -210,7 +211,7 @@ public class ChatSaving extends ModuleHelper {
                     new ST_MethodHook() {
                         @Override
                         protected void after(MethodHookParam param) throws Throwable {
-                            snapActivity.runOnUiThread(new Runnable() {
+                            ContextHelper.getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {

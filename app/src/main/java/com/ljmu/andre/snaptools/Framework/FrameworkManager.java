@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Framework;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.ljmu.andre.snaptools.EventBus.EventBus;
@@ -76,7 +77,7 @@ public class FrameworkManager {
      * ===========================================================================
      */
     public static List<PackLoadState> injectAllHooks(List<PackLoadState> packLoadStates,
-                                                     ClassLoader snapClassLoader, Activity snapActivity) {
+                                                     ClassLoader snapClassLoader, Context snapContext) {
 
         for (PackLoadState packLoadState : packLoadStates) {
             if (packLoadState.hasFailed())
@@ -84,7 +85,7 @@ public class FrameworkManager {
 
             ModulePack modulePack = FrameworkManager.getModulePack(packLoadState.getName());
             if (modulePack != null) {
-                modulePack.injectAllHooks(snapClassLoader, snapActivity);
+                modulePack.injectAllHooks(snapClassLoader, snapContext);
 
                 if (modulePack.isPremiumCheck().equals("A SnapTools Pack"))
                     AnimationUtils.shouldTriggerAuthVerifier = true;
@@ -93,6 +94,20 @@ public class FrameworkManager {
 
         return packLoadStates;
 
+    }
+
+    public static void prepareActivityAll(List<PackLoadState> packLoadStates,
+                                          ClassLoader classLoader, Activity snapActivity) {
+
+        for (PackLoadState packLoadState : packLoadStates) {
+            if (packLoadState.hasFailed())
+                continue;
+
+            ModulePack modulePack = FrameworkManager.getModulePack(packLoadState.getName());
+            if (modulePack != null) {
+                modulePack.prepareActivity(classLoader, snapActivity);
+            }
+        }
     }
 
     public static ModulePack getModulePack(String key) {
@@ -110,10 +125,10 @@ public class FrameworkManager {
      * This can be subscribed to in order to update UI elements based on loaded packs
      * ===========================================================================
      *
-     * @param activity - An activity used for {@link this#loadModPack(Activity, String, PackLoadState)}
+     * @param context - Context used for {@link this#loadModPack(Context, String, PackLoadState)}
      * @return A List of {@link PackLoadState}
      */
-    public static List<PackLoadState> loadAllModulePacks(Activity activity) {
+    public static List<PackLoadState> loadAllModulePacks(Context context) {
         Set<String> selectPackSet = getPref(SELECTED_PACKS);
         List<PackLoadState> packLoadStates = new ArrayList<>();
         modulePackMap.clear();
@@ -130,7 +145,7 @@ public class FrameworkManager {
 
             try {
 
-                packLoadEvent = loadModPack(activity, selectedPack, packLoadState);
+                packLoadEvent = loadModPack(context, selectedPack, packLoadState);
 
             }
             // ===========================================================================
@@ -207,7 +222,7 @@ public class FrameworkManager {
      * PackLoadEvent and throw an exception in any other circumstance
      * ===========================================================================
      *
-     * @param activity      - An activity used to retrieve the installed Snapchat version
+     * @param context       - Context used to retrieve the installed Snapchat version
      * @param packname      - The filename of the pack to be loaded (Sans .jar extension)
      * @param packLoadState - An object to be assigned load state details
      * @return PackLoadEvent - A successful event containing the ModulePack/File
@@ -217,12 +232,12 @@ public class FrameworkManager {
      * @throws ModulePackNotFound
      * @throws ModulePackLoadAborted
      */
-    public static PackLoadEvent loadModPack(Activity activity, String packname,
+    public static PackLoadEvent loadModPack(Context context, String packname,
                                             PackLoadState packLoadState)
             throws ModuleCertificateException, ModulePackFatalError, ModulePackNotFound, ModulePackLoadAborted {
         // Get an instance of ModulePackImpl from within the .jar file ===============
         File modulePackFile = new File((String) getPref(MODULES_PATH), packname + ".jar");
-        ModulePack modulePack = ModulePack.getInstance(activity, modulePackFile, packLoadState);
+        ModulePack modulePack = ModulePack.getInstance(context, modulePackFile, packLoadState);
 
         synchronized (INSERT_PACK_LOCK) {
             modulePackMap.put(

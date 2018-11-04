@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 
@@ -28,7 +28,7 @@ public class ScreenshotBypass extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         hookMethod(
                 SCREENSHOT_BYPASS,
                 XC_MethodReplacement.DO_NOTHING);

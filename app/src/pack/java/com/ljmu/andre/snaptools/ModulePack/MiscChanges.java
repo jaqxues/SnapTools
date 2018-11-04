@@ -1,6 +1,5 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -21,6 +20,7 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.ColorPickerDialogExtension;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.FontPickerDialogExtension;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.MiscChangesFragment;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.ResourceMapper;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 
@@ -70,13 +70,18 @@ public class MiscChanges extends ModuleHelper {
         super(name, canBeDisabled);
     }
 
+    public static Typeface createTypefaceSafe(File fontFile) {
+        isInternalFontCall = true;
+        return Typeface.createFromFile(fontFile);
+    }
+
     @Override
     public FragmentHelper[] getUIFragments() {
         return new FragmentHelper[]{new MiscChangesFragment()};
     }
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         String currentFontFile = getPref(CURRENT_FONT);
 
         try {
@@ -148,13 +153,13 @@ public class MiscChanges extends ModuleHelper {
                     ActionMode actionMode = (ActionMode) param.args[0];
                     Menu menu = (Menu) param.args[1];
                     menu.clear();
-                    actionMode.getMenuInflater().inflate(ResourceMapper.getResId(snapActivity, "caption_context_menu", "menu"), menu);
+                    actionMode.getMenuInflater().inflate(ResourceMapper.getResId(ContextHelper.getActivity(), "caption_context_menu", "menu"), menu);
 
                     EditText captionEditText = getObjectField(SNAPCAPTIONVIEW_CONTEXT, param.thisObject);
 
-                    int paste = ResourceUtils.getId(snapActivity, "menu_item_paste");
-                    int cut = ResourceUtils.getId(snapActivity, "menu_item_cut");
-                    int copy = ResourceUtils.getId(snapActivity, "menu_item_copy");
+                    int paste = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_paste");
+                    int cut = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_cut");
+                    int copy = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_copy");
 
                     if (getPref(COPY_BUTTON)) {
                         menu.findItem(copy).setVisible(true);
@@ -163,7 +168,7 @@ public class MiscChanges extends ModuleHelper {
                         menu.findItem(cut).setVisible(true);
                     }
                     //TODO: check if something is on the clipboard
-                    ClipboardManager clipboardManager = (ClipboardManager) snapActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipboardManager clipboardManager = (ClipboardManager) ContextHelper.getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     if (getPref(PASTE_BUTTON)) {
                         if (clipboardManager != null) {
                             if (!clipboardManager.hasPrimaryClip()) {
@@ -176,9 +181,9 @@ public class MiscChanges extends ModuleHelper {
                             menu.findItem(paste).setVisible(true);
                         }
                     }
-                    int bold = ResourceUtils.getId(snapActivity, "menu_item_bold");
-                    int italic = ResourceUtils.getId(snapActivity, "menu_item_italic");
-                    int underline = ResourceUtils.getId(snapActivity, "menu_item_underline");
+                    int bold = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_bold");
+                    int italic = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_italic");
+                    int underline = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_underline");
                     menu.findItem(bold).setVisible(true);
                     menu.findItem(italic).setVisible(true);
                     menu.findItem(underline).setVisible(true);
@@ -193,11 +198,11 @@ public class MiscChanges extends ModuleHelper {
                     MenuItem bgColor = menu.add("BG Color");
                     bgColor.setOnMenuItemClickListener(item -> {
                         Timber.d("Changing BG color");
-                        new ThemedDialog(snapActivity)
+                        new ThemedDialog(ContextHelper.getActivity())
                                 .setTitle("Color Picker")
                                 .setExtension(
                                         new ColorPickerDialogExtension(
-                                                snapActivity,
+                                                ContextHelper.getActivity(),
                                                 "primary",
                                                 captionEditText::setBackgroundColor
                                         )
@@ -216,11 +221,11 @@ public class MiscChanges extends ModuleHelper {
                      */
                     MenuItem font = menu.add("Font");
                     font.setOnMenuItemClickListener(item -> {
-                        new ThemedDialog(snapActivity)
+                        new ThemedDialog(ContextHelper.getActivity())
                                 .setTitle("Choose Font")
                                 .setExtension(
                                         new FontPickerDialogExtension(
-                                                snapActivity,
+                                                ContextHelper.getActivity(),
                                                 MiscChangesFragment.getInstalledFonts(),
                                                 s -> {
                                                     Timber.d("Selected font: " + s);
@@ -243,7 +248,7 @@ public class MiscChanges extends ModuleHelper {
                     MenuItem size = menu.add("Size");
                     size.setOnMenuItemClickListener(item -> {
                         DialogFactory.createBasicTextInputDialog(
-                                snapActivity,
+                                ContextHelper.getActivity(),
                                 "Font Size",
                                 "What size should the text be set to?",
                                 null,
@@ -292,10 +297,5 @@ public class MiscChanges extends ModuleHelper {
                     }
                 })
         );
-    }
-
-    public static Typeface createTypefaceSafe(File fontFile) {
-        isInternalFontCall = true;
-        return Typeface.createFromFile(fontFile);
     }
 }

@@ -45,6 +45,7 @@ import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.Constants;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
@@ -120,8 +121,8 @@ public class CustomFilters extends ModuleHelper {
     }
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
-        FiltersDatabase.init(snapActivity);
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
+        FiltersDatabase.init(snapContext);
         filtersPath = getPref(FILTERS_PATH);
 
         CBITable<FilterObject> filterTable = FiltersDatabase.getTable(FilterObject.class);
@@ -195,7 +196,7 @@ public class CustomFilters extends ModuleHelper {
 
                             Timber.d("It's a now playing filter");
 
-                            snapActivity.runOnUiThread(() -> {
+                            ContextHelper.getActivity().runOnUiThread(() -> {
                                 if (!(boolean) param.args[0])
                                     AnimationUtils.collapse(nowPlayingSettingsView, 2);
                                 else
@@ -229,7 +230,7 @@ public class CustomFilters extends ModuleHelper {
                                 bitmapFactoryOptions.inSampleSize = BACKGROUND_FILTER_SAMPLE_SIZE;
                                 Bitmap decodedBitmap = BitmapFactory.decodeFile(filterFilePath, bitmapFactoryOptions);
 
-                                snapActivity.runOnUiThread(() -> {
+                                ContextHelper.getActivity().runOnUiThread(() -> {
                                     Drawable viewDrawable = filterImageView.getDrawable();
 
                                     if (viewDrawable != null && viewDrawable instanceof BitmapDrawable) {
@@ -330,7 +331,7 @@ public class CustomFilters extends ModuleHelper {
                                     RelativeLayout geofilterView = callHook(GET_GEOFILTER_CONTENT_VIEW, geofilterViewHolder);
                                     geofilterView.removeAllViews();
 
-                                    ImageView testView = new ImageView(snapActivity);
+                                    ImageView testView = new ImageView(ContextHelper.getActivity());
                                     testView.setId(getIdFromString(FILTER_IMAGEVIEW_ID));
                                     testView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                                     testView.setScaleType(getFilterScaleType());
@@ -345,7 +346,7 @@ public class CustomFilters extends ModuleHelper {
 
                             if ((boolean) getPref(FILTER_NOW_PLAYING_ENABLED) && !filterMetaData.isEmpty()) {
                                 try {
-                                    setupNowPlayingSettings(snapActivity);
+                                    setupNowPlayingSettings(ContextHelper.getActivity());
                                 } catch (Throwable t) {
                                     Timber.e(t, "Couldn't create Filter Settings");
                                 }
@@ -355,10 +356,10 @@ public class CustomFilters extends ModuleHelper {
                                 Object geofilterViewHolder = callStaticHook(CREATE_GEOFILTER_VIEW, filterMetaData.get(filterMetaData.size() - 1), param.args[1], noIdeaWhatThisVarIs);
                                 RelativeLayout geofilterView = callHook(GET_GEOFILTER_CONTENT_VIEW, geofilterViewHolder);
                                 geofilterView.removeAllViews();
-                                View nowPlayingMainContainer = getPlayerViewProvider(snapActivity).getCurrentPlayerView(snapActivity);
+                                View nowPlayingMainContainer = getPlayerViewProvider(ContextHelper.getActivity()).getCurrentPlayerView(ContextHelper.getActivity());
 
                                 nowPlayingView = getDSLView(nowPlayingMainContainer, "now_playing_container");
-                                updateNowPlaying(snapActivity);
+                                updateNowPlaying(ContextHelper.getActivity());
 
                                 geofilterView.addView(nowPlayingMainContainer);
                                 setAdditionalInstanceField(geofilterView, "is_now_playing", true);
@@ -403,10 +404,10 @@ public class CustomFilters extends ModuleHelper {
                             RelativeLayout geofilterView = (RelativeLayout) param.thisObject;
                             geofilterView.removeAllViews();
 
-                            View nowPlayingMainContainer = getPlayerViewProvider(snapActivity).getPlayerView(snapActivity, true);
+                            View nowPlayingMainContainer = getPlayerViewProvider(ContextHelper.getActivity()).getPlayerView(ContextHelper.getActivity(), true);
 
                             nowPlayingView = getDSLView(nowPlayingMainContainer, "now_playing_container");
-                            updateNowPlaying(snapActivity);
+                            updateNowPlaying(ContextHelper.getActivity());
 
                             geofilterView.addView(nowPlayingMainContainer);
                             Timber.d("Now playing tapped " + param.args[0]);
@@ -553,7 +554,7 @@ public class CustomFilters extends ModuleHelper {
 
                 if (touchHandler.hasMessages(1)) {
                     v.performClick();
-                    Timber.d("View %s got click");
+                    Timber.d("View %s got click", v);
                 }
 
                 putPref(NOW_PLAYING_BOTTOM_MARGIN, marginHeight);

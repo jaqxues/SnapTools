@@ -1,6 +1,5 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +14,7 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.StoryBlockingSettingsFragment;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
@@ -70,7 +70,7 @@ public class StoryBlocker extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         boolean blockDiscovery = getPref(STORY_BLOCKER_DISCOVER_BLOCKED);
 
         if (getPref(STORY_BLOCKER_ADVERTS_BLOCKED)) {
@@ -81,9 +81,9 @@ public class StoryBlocker extends ModuleHelper {
         }
 
         if (getPref(STORY_BLOCKER_SHOW_BUTTON)) {
-            Context modContext = getModuleContext(snapActivity);
-            int horizontalPadding = dp(20, snapActivity);
-            int verticalPadding = dp(7, snapActivity);
+            Context modContext = getModuleContext(snapContext);
+            int horizontalPadding = dp(20, snapContext);
+            int verticalPadding = dp(7, snapContext);
 
             Button blockerButton = new Button(modContext);
             blockerButton.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
@@ -91,7 +91,7 @@ public class StoryBlocker extends ModuleHelper {
             RelativeLayout.LayoutParams buttonparams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             buttonparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             buttonparams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            buttonparams.bottomMargin = dp(20, snapActivity);
+            buttonparams.bottomMargin = dp(20, snapContext);
             blockerButton.setLayoutParams(buttonparams);
 
             hookMethod(
@@ -130,7 +130,7 @@ public class StoryBlocker extends ModuleHelper {
                                 updateBlockerButtonState(modContext, blockerButton, !isUserBlocked1);
 
                                 SafeToastAdapter.showDefaultToast(
-                                        snapActivity,
+                                        ContextHelper.getActivity(),
                                         "Restart Snapchat for the changes to take affect"
                                 );
                             });

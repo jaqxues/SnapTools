@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.CBIDatabase.Utils.QueryBuilder;
@@ -38,9 +38,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookResolver.resolveHookClass;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_AUTO_ENABLE;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
-
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
@@ -64,8 +61,8 @@ public class LensCollector extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
-        LensDatabase.init(snapActivity);
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
+        LensDatabase.init(snapContext);
 
         /**
          * ===========================================================================
@@ -212,7 +209,7 @@ public class LensCollector extends ModuleHelper {
 
                                     for (Object lens : lensList) {
                                         try {
-                                            Timber.d("Working on lens: " + lens);
+                                            Timber.d("Working on lens: %s", lens);
 
                                             String idFieldName = lensMapper.get("id");
                                             String lensId = (String) XposedHelpers.getObjectField(lens, idFieldName);
@@ -229,15 +226,15 @@ public class LensCollector extends ModuleHelper {
                                             newDbLens.isActive = enableNewLenses;
 
                                             if (!newDbLens.isReady()) {
-                                                Timber.w("Lens not ready to save: " + newDbLens);
+                                                Timber.w("Lens not ready to save: %s", newDbLens);
                                                 lensDbMap.remove(lensId);
                                                 continue;
                                             }
 
                                             if (!lensTable.insert(newDbLens))
-                                                Timber.w("Failed to insert lens into database: " + newDbLens);
+                                                Timber.w("Failed to insert lens into database: %s", newDbLens);
                                         } catch (Throwable t) {
-                                            Timber.w(t, "Failed to build lens: " + lens);
+                                            Timber.w(t, "Failed to build lens: %s", lens);
                                         }
                                     }
 

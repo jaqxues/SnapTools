@@ -129,6 +129,20 @@ public class HookManager implements IXposedHookLoadPackage {
         Timber.d("Snapchat Is Loading!");
 
         Timber.d("Hooking Application Attach");
+
+        /*
+        To avoid hangs on Snapchat Startup, we have to abandon nested Hooks. These Hangs have mainly
+        been caused by SnapTools' HookManager Class: The Framework has only been loaded when the
+        Snapchat Activity has been created and started. We still need to hook Snapchat's Activity
+        Class to use make ContextHelper.getActivitiy() possible, a method that is widely used in
+        SnapTools to get the Activity (Displaying Save Button...). The Activity Hook is also used to
+        display Errors.
+         */
+
+        Context[] moduleContext = new Context[1];
+        //noinspection unchecked
+        List<PackLoadState>[] packLoadStates = new List[1];
+        Throwable[] throwables = new Throwable[1];
         addUnhook("System",
                 findAndHookMethod(
                         "android.app.Application",
@@ -138,175 +152,140 @@ public class HookManager implements IXposedHookLoadPackage {
                         new ST_MethodHook() {
                             @Override
                             protected void after(MethodHookParam param) throws Throwable {
+                                try {
 
-                                Timber.d("PID: %s", Process.myPid());
+                                    Timber.d("PID: %s", Process.myPid());
+                                    Timber.d("Application Attach Called");
 
-                                Timber.d("Application Attach Called");
-                                snapContext = (Context) param.args[0];
+                                    snapContext = (Context) param.args[0];
 
-                                Application app = (Application) param.thisObject;
-                                Context moduleContext = helpCreatePackageContext(app);
-                                ContextHelper.set(moduleContext);
+                                    Application app = (Application) param.thisObject;
+                                    moduleContext[0] = helpCreatePackageContext(app);
+                                    if (moduleContext[0] == null)
+                                        return;
+                                    ContextHelper.set(moduleContext[0]);
 
-                                addUnhook("System",
-                                        findAndHookMethod(
-                                                "com.snapchat.android.LandingPageActivity",
-                                                lpparam.classLoader,
-                                                "onCreate",
-                                                Bundle.class,
-                                                new ST_MethodHook() {
-                                                    @Override
-                                                    protected void before(MethodHookParam param) {
-                                                        snapActivity = (Activity) param.thisObject;
-                                                        UnhookManager.unhookAll("System");
-                                                        try {
-                                                            /**
-                                                             * ===========================================================================
-                                                             * Initialisation Stage
-                                                             * ===========================================================================
-                                                             */
-                                                            snapActivity = (Activity) param.thisObject;
-                                                            ContextHelper.setActivity(snapActivity);
+                                    CacheDatabase.init(snapContext);
+                                    VolleyHandler.init(snapContext);
 
-                                                            if (moduleContext == null) {
-                                                                new AlertDialog.Builder(new ContextThemeWrapper(snapActivity, android.R.style.Theme_Material_Dialog_Alert))
-                                                                        .setTitle("Unable to start " + STApplication.MODULE_TAG)
-                                                                        .setMessage(STApplication.MODULE_TAG + " could not detect its own Package Name and is unable to initialize the hooks correctly." +
-                                                                                "\n\nTo fix this, just open " + STApplication.MODULE_TAG + " once and re-open Snapchat. The correct PackageName will be set and everything should work correctly again." +
-                                                                                "\n\nThis can happen if you restore a backup of a repackaged Version of ST without restoring the preferences located on the SdCard or Internal Storage.")
-                                                                        .setPositiveButton("Close Snapchat", (dialog, which) -> snapActivity.finish())
-                                                                        .show();
-                                                                return;
-                                                            }
 
-//															initFabrics(snapActivity, moduleContext);
+                                    // ===========================================================================
+                                    // TrialUtils.endTrialIfExpired(snapActivity);
 
-                                                            CacheDatabase.init(snapContext);
-                                                            VolleyHandler.init(snapActivity);
+                                    Timber.d("Loading FrameworkManager");
 
-                                                            if (!initTOS())
-                                                                return;
+                                    // Load the certificate required to validate the ModulePack ==================
+                                    // Security.init(ContextHelper.getModuleResources(snapActivity));
 
-                                                            // ===========================================================================
+                                    long packLoadStart = System.currentTimeMillis();
+                                    packLoadStates[0] = FrameworkManager.loadAllModulePacks(snapContext);
+                                    long packLoadEnd = System.currentTimeMillis();
 
-//															TrialUtils.endTrialIfExpired(snapActivity);
+                                    Timber.d("Starting Inject");
+                                    FrameworkManager.injectAllHooks(packLoadStates[0], lpparam.classLoader, snapContext);
+                                    long packInjectEnd = System.currentTimeMillis();
 
-                                                            Timber.d("Loading FrameworkManager");
+                                    Timber.d("Load Times [Load: %s][Inject: %s]", (packLoadEnd - packLoadStart), (packInjectEnd - packLoadEnd));
 
-                                                            // Load the certificate required to validate the ModulePack ==================
-//															Security.init(ContextHelper.getModuleResources(snapActivity));
+                                    Timber.d("Framework loaded successfully");
 
-                                                            List<PackLoadState> packLoadStates;
+                                } catch (Throwable t) {
+                                    Timber.wtf(t, "Error inside LandingPage Hook");
+                                    throwables[0] = t;
+                                }
+                            }
+                        }
+                ));
 
-                                                            long packLoadStart = System.currentTimeMillis();
-                                                            packLoadStates = FrameworkManager.loadAllModulePacks(snapActivity);
-                                                            long packLoadEnd = System.currentTimeMillis();
+        addUnhook("System",
+                findAndHookMethod(
+                        "com.snapchat.android.LandingPageActivity",
+                        lpparam.classLoader,
+                        "onCreate",
+                        Bundle.class,
+                        new ST_MethodHook() {
+                            @Override
+                            protected void before(MethodHookParam param) {
+                                snapActivity = (Activity) param.thisObject;
+                                ContextHelper.setActivity(snapActivity);
+                                UnhookManager.unhookAll("System");
+                                FrameworkManager.prepareActivityAll(
+                                        packLoadStates[0],
+                                        lpparam.classLoader,
+                                        snapActivity
+                                );
+                                /**
+                                 * ===========================================================================
+                                 * Initialisation Stage
+                                 * ===========================================================================
+                                 */
 
-                                                            Timber.d("Starting Inject");
-                                                            FrameworkManager.injectAllHooks(packLoadStates, lpparam.classLoader, snapActivity);
-                                                            long packInjectEnd = System.currentTimeMillis();
+                                if (moduleContext == null) {
+                                    new AlertDialog.Builder(new ContextThemeWrapper(snapActivity, android.R.style.Theme_Material_Dialog_Alert))
+                                            .setTitle("Unable to start " + STApplication.MODULE_TAG)
+                                            .setMessage(STApplication.MODULE_TAG + " could not detect its own Package Name and is unable to initialize the hooks correctly." +
+                                                    "\n\nTo fix this, just open " + STApplication.MODULE_TAG + " once and re-open Snapchat. The correct PackageName will be set and everything should work correctly again." +
+                                                    "\n\nThis can happen if you restore a backup of a repackaged Version of ST without restoring the preferences located on the SdCard or Internal Storage.")
+                                            .setPositiveButton("Close Snapchat", (dialog, which) -> snapActivity.finish())
+                                            .show();
+                                    return;
+                                }
 
-                                                            Timber.d("Load Times [Load: %s][Inject: %s]", (packLoadEnd - packLoadStart), (packInjectEnd - packLoadEnd));
-                                                            // Just a quick toggle to test the hang system =================
-                                                            //if(getPref(KILL_SC_ON_CHANGE))
-                                                            //Thread.sleep(30000);
+                                if (!initTOS())
+                                    return;
 
-                                                            if (getPref(CHECK_PACK_UPDATES_SC))
-                                                                FrameworkManager.checkPacksForUpdate(snapActivity);
+                                boolean hasFailed = false;
+                                for (PackLoadState loadState : packLoadStates[0]) {
+                                    if (loadState.hasFailed())
+                                        hasFailed = true;
+                                }
 
-                                                            boolean hasFailed = false;
-                                                            for (PackLoadState loadState : packLoadStates) {
-                                                                if (loadState.hasFailed())
-                                                                    hasFailed = true;
-                                                            }
+                                if (hasFailed) {
+                                    new ThemedDialog(snapActivity)
+                                            .setTitle("Framework Load Error")
+                                            .setHeaderDrawable(
+                                                    getResId(
+                                                            moduleContext[0],
+                                                            "error_header",
+                                                            "drawable"
+                                                    )
+                                            )
+                                            .setExtension(new FrameworkLoadError(packLoadStates[0]))
+                                            .show();
+                                    return;
+                                }
 
-                                                            if (hasFailed) {
-                                                                new ThemedDialog(snapActivity)
-                                                                        .setTitle("Framework Load Error")
-                                                                        .setHeaderDrawable(
-                                                                                getResId(
-                                                                                        moduleContext,
-                                                                                        "error_header",
-                                                                                        "drawable"
-                                                                                )
-                                                                        )
-                                                                        .setExtension(new FrameworkLoadError(packLoadStates))
-                                                                        .show();
-                                                                return;
-                                                            }
+                                if (throwables[0] != null) {
+                                    if (throwables[0] instanceof NoSuchMethodError
+                                            || throwables[0] instanceof NoClassDefFoundError)
+                                        DialogFactory.createErrorDialog(
+                                                snapActivity,
+                                                "Error Loading SnapTools!",
+                                                "Fatal error loading system!"
+                                                        + "\nPlease ensure you have performed a full reboot before seeking help"
+                                                        + "\n\nThere appears to be an invalid Pack/Apk combination installed. Please make sure your Pack and APK are both updated"
+                                        ).show();
+                                    else
+                                        DialogFactory.createErrorDialog(
+                                                snapActivity,
+                                                "Error Loading SnapTools!",
+                                                "Fatal error loading system!"
+                                                        + "\nPlease ensure you have performed a full reboot before seeking help"
+                                                        + "\n\n" + throwables[0].getMessage()
+                                        ).show();
+                                }
+//                                BackgroundAuthVerifier.spoolVerifierThread();
 
-//															BackgroundAuthVerifier.spoolVerifierThread();
 
-                                                            Timber.d("Framework loaded successfully");
+                                if ((boolean) getPref(NOTIFY_ON_LOAD) && packLoadStates[0].size() > 0)
+                                    showLoadedNotification(snapActivity);
 
-                                                            if ((boolean) getPref(NOTIFY_ON_LOAD) && packLoadStates.size() > 0)
-                                                                showLoadedNotification(snapActivity);
-                                                        } catch (NoSuchMethodError | NoClassDefFoundError e) {
-                                                            Timber.wtf(e, "Error inside LandingPage Hook");
-                                                            DialogFactory.createErrorDialog(
-                                                                    snapActivity,
-                                                                    "Error Loading SnapTools!",
-                                                                    "Fatal error loading system!"
-                                                                            + "\n" + "Please ensure you have performed a full reboot before seeking help"
-                                                                            + "\n\n" + "There appears to be an invalid Pack/Apk combination installed. Please make sure your Pack and APK are both updated"
-                                                            ).show();
-                                                        } catch (Throwable t) {
-                                                            Timber.wtf(t, "Error inside LandingPage Hook");
-                                                            DialogFactory.createErrorDialog(
-                                                                    snapActivity,
-                                                                    "Error Loading SnapTools!",
-                                                                    "Fatal error loading system!"
-                                                                            + "\n" + "Please ensure you have performed a full reboot before seeking help"
-                                                                            + "\n\n" + t.getMessage()
-                                                            ).show();
-                                                        }
-                                                    }
-                                                }
-                                        ));
+                                if (getPref(CHECK_PACK_UPDATES_SC))
+                                    FrameworkManager.checkPacksForUpdate(snapActivity);
                             }
                         }
                 ));
     }
-
-//	private void initFabrics(Activity snapActivity, Context moduleContext) {
-//		Timber.e("FABRICS ANALYTICS WAS REDACTED FROM PUBLIC SOURCE!");
-//
-//		try {
-//			Fabric.with(snapActivity, moduleContext, new Crashlytics());
-//			String email = getPref(ST_EMAIL);
-//			if (email != null)
-//				Crashlytics.setUserEmail(email);
-//
-//			String displayName = getPref(ST_DISPLAY_NAME_OBFUS);
-//			if (displayName != null)
-//				Crashlytics.setUserName(displayName);
-//
-//			Set<String> selectedPacks = getPref(SELECTED_PACKS);
-//			Crashlytics.setString("Selected Packs",
-//					String.valueOf(selectedPacks));
-//			Crashlytics.setString("User",
-//					email);
-//		} catch (Throwable e) {
-//			Timber.e(e);
-//
-//			try {
-//				SlackUtils.uploadToSlack(
-//						"FabricsInitError",
-//						Log.getStackTraceString(e)
-//				);
-//
-//				if (snapActivity != null && !snapActivity.isFinishing()) {
-//					SafeToast.show(
-//							snapActivity,
-//							"Failed to load error reporting... Please contact developers",
-//							Toast.LENGTH_LONG,
-//							true
-//					);
-//				}
-//			} catch (Throwable ignored) {
-//			}
-//		}
-//	}
 
     private boolean initTOS() {
         if (!(boolean) getPref(ACCEPTED_TOS)) {

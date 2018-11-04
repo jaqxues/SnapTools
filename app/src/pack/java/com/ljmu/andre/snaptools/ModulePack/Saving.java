@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapTypeDef;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.StorySnap;
 import com.ljmu.andre.snaptools.ModulePack.Utils.SavingLayout;
 import com.ljmu.andre.snaptools.ModulePack.Utils.SavingViewPool;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
@@ -114,16 +116,10 @@ public class Saving extends ModuleHelper {
 
     // ===========================================================================
 
-    @Override
-    public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
-        SaveTriggerManager.init();
 
-        try {
-            yourUsername = callStaticHook(GET_USERNAME);
-        } catch (HookNotFoundException e) {
-            Timber.e(e);
-            moduleLoadState.fail();
-        }
+    @Override
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
+        SaveTriggerManager.init();
 
         /**
          * ===========================================================================
@@ -137,7 +133,7 @@ public class Saving extends ModuleHelper {
                     protected void after(MethodHookParam param) throws Throwable {
                         try {
                             FrameLayout operaLayout = (FrameLayout) param.thisObject;
-                            SavingLayout savingLayout = SavingViewPool.requestLayout(snapActivity);
+                            SavingLayout savingLayout = SavingViewPool.requestLayout(ContextHelper.getActivity());
 
                             operaLayout.addView(savingLayout);
                         } catch (Throwable t) {
@@ -218,9 +214,9 @@ public class Saving extends ModuleHelper {
                                 Class sentVideo = HookResolver.resolveHookClass(SENT_VIDEO);
 
                                 if (media.getClass().equals(sentImage))
-                                    sentSnap = handleSentSnap(snapActivity, media, false);
+                                    sentSnap = handleSentSnap(ContextHelper.getActivity(), media, false);
                                 else if (media.getClass().equals(sentVideo))
-                                    sentSnap = handleSentSnap(snapActivity, media, true);
+                                    sentSnap = handleSentSnap(ContextHelper.getActivity(), media, true);
                                 else {
                                     Timber.e("Unhandled Sent Snap Type: "
                                             + media.getClass());
@@ -230,7 +226,7 @@ public class Saving extends ModuleHelper {
                             }
 
                             SaveNotification.show(
-                                    snapActivity,
+                                    ContextHelper.getActivity(),
                                     sentSnap != null ? SaveNotification.ToastType.GOOD : SaveNotification.ToastType.BAD,
                                     Toast.LENGTH_LONG,
                                     sentSnap
@@ -274,7 +270,7 @@ public class Saving extends ModuleHelper {
 
                         // Build the snap ============================================================
                         new Builder()
-                                .setContext(snapActivity)
+                                .setContext(ContextHelper.getActivity())
                                 .setKey(key)
                                 .setUsername(username)
                                 .setDateTime(timestamp)
@@ -317,7 +313,7 @@ public class Saving extends ModuleHelper {
                         String username = callHook(SNAP_GET_USERNAME, snapMetaData);
 
                         new Builder()
-                                .setContext(snapActivity)
+                                .setContext(ContextHelper.getActivity())
                                 .setKey(key)
                                 .setUsername(username)
                                 .setDateTime(timestamp)
@@ -368,7 +364,7 @@ public class Saving extends ModuleHelper {
                         String username = callHook(SNAP_GET_USERNAME, chatMetaData);
 
                         new Snap.Builder()
-                                .setContext(snapActivity)
+                                .setContext(ContextHelper.getActivity())
                                 .setKey(key)
                                 .setUsername(username)
                                 .setDateTime(timestamp)
@@ -405,7 +401,7 @@ public class Saving extends ModuleHelper {
 
                         ChatVideoSnap snap = new ChatVideoSnap.Builder()
                                 .setVideoPath(videoPath)
-                                .setContext(snapActivity)
+                                .setContext(ContextHelper.getActivity())
                                 .setKey(key)
                                 .setUsername(username)
                                 .setDateTime(timestamp)
@@ -455,7 +451,7 @@ public class Saving extends ModuleHelper {
                         String username = callHook(SNAP_GET_USERNAME, groupMetaData);
 
                         new Builder()
-                                .setContext(snapActivity)
+                                .setContext(ContextHelper.getActivity())
                                 .setKey(key)
                                 .setUsername(username)
                                 .setDateTime(timestamp)
@@ -529,7 +525,7 @@ public class Saving extends ModuleHelper {
                             }
 
                             SaveNotification.show(
-                                    snapActivity,
+                                    ContextHelper.getActivity(),
                                     toastType,
                                     Toast.LENGTH_LONG,
                                     snap
@@ -592,7 +588,7 @@ public class Saving extends ModuleHelper {
                         if (snap == null) {
                             Timber.e("Null Snap from Cache");
                             SaveNotification.show(
-                                    snapActivity,
+                                    ContextHelper.getActivity(),
                                     SaveNotification.ToastType.BAD,
                                     Toast.LENGTH_LONG
                             );
@@ -629,7 +625,7 @@ public class Saving extends ModuleHelper {
                         }
 
                         SaveNotification.show(
-                                snapActivity,
+                                ContextHelper.getActivity(),
                                 toastType,
                                 Toast.LENGTH_LONG,
                                 snap
@@ -661,7 +657,7 @@ public class Saving extends ModuleHelper {
 
                         if (snap == null) {
                             Timber.e("Null Snap from Cache");
-                            SaveNotification.show(snapActivity, SaveNotification.ToastType.BAD, Toast.LENGTH_LONG);
+                            SaveNotification.show(ContextHelper.getActivity(), SaveNotification.ToastType.BAD, Toast.LENGTH_LONG);
                             return;
                         }
 
@@ -700,7 +696,7 @@ public class Saving extends ModuleHelper {
                         }
 
                         SaveNotification.show(
-                                snapActivity,
+                                ContextHelper.getActivity(),
                                 toastType,
                                 Toast.LENGTH_LONG,
                                 snap
@@ -719,6 +715,17 @@ public class Saving extends ModuleHelper {
         );
 
         hasLoadedHooks = true;
+    }
+
+    @Override
+    public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+        // Safer to call User Prefs later, after Snapchat has been initialized
+        try {
+            yourUsername = callStaticHook(GET_USERNAME);
+        } catch (HookNotFoundException e) {
+            Timber.e(e);
+            moduleLoadState.fail();
+        }
     }
 
     // ===========================================================================

@@ -184,6 +184,10 @@ public class ModulePackImpl extends ModulePack {
                 continue;
 
             Module module = getModule(state.getName());
+            if (module == null) {
+                state.setState(State.FAILED);
+                continue;
+            }
 
             try {
                 module.prepareActivity(snapClassLoader, snapActivity);

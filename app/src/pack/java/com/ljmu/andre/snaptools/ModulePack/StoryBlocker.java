@@ -1,5 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -56,6 +57,9 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
  */
 
 public class StoryBlocker extends ModuleHelper {
+
+    private Button blockerButton;
+
     public StoryBlocker(String name, boolean canBeDisabled) {
         super(name, canBeDisabled);
     }
@@ -81,18 +85,6 @@ public class StoryBlocker extends ModuleHelper {
         }
 
         if (getPref(STORY_BLOCKER_SHOW_BUTTON)) {
-            Context modContext = getModuleContext(snapContext);
-            int horizontalPadding = dp(20, snapContext);
-            int verticalPadding = dp(7, snapContext);
-
-            Button blockerButton = new Button(modContext);
-            blockerButton.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
-
-            RelativeLayout.LayoutParams buttonparams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            buttonparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            buttonparams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            buttonparams.bottomMargin = dp(20, snapContext);
-            blockerButton.setLayoutParams(buttonparams);
 
             hookMethod(
                     FRIEND_PROFILE_POPUP_CREATED,
@@ -115,7 +107,7 @@ public class StoryBlocker extends ModuleHelper {
 
                             relativeView.addView(detach(blockerButton));
 
-                            updateBlockerButtonState(modContext, blockerButton, isUserBlocked);
+                            updateBlockerButtonState(ContextHelper.getModuleContext(snapContext), blockerButton, isUserBlocked);
 
                             String finalUsername = username;
                             blockerButton.setOnClickListener(v -> {
@@ -127,7 +119,7 @@ public class StoryBlocker extends ModuleHelper {
                                     PreferenceHelpers.addToCollection(BLOCKED_STORIES, finalUsername);
                                 }
 
-                                updateBlockerButtonState(modContext, blockerButton, !isUserBlocked1);
+                                updateBlockerButtonState(ContextHelper.getModuleContext(snapContext), blockerButton, !isUserBlocked1);
 
                                 SafeToastAdapter.showDefaultToast(
                                         ContextHelper.getActivity(),
@@ -263,5 +255,23 @@ public class StoryBlocker extends ModuleHelper {
         }
 
         AnimationUtils.scaleUp(button);
+    }
+
+    @Override
+    public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+        if (getPref(STORY_BLOCKER_SHOW_BUTTON)) {
+            Context modContext = getModuleContext(snapActivity);
+            int horizontalPadding = dp(20, snapActivity);
+            int verticalPadding = dp(7, snapActivity);
+
+            blockerButton = new Button(modContext);
+            blockerButton.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
+
+            RelativeLayout.LayoutParams buttonparams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            buttonparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            buttonparams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            buttonparams.bottomMargin = dp(20, snapActivity);
+            blockerButton.setLayoutParams(buttonparams);
+        }
     }
 }

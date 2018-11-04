@@ -103,6 +103,7 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CURRENT_THEME;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOWN_REPKG_DIALOG;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOW_PIE_WARN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_APK_UPDATE_CHECK;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_SHOP;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_OPEN_APP;
@@ -555,11 +556,17 @@ public class MainActivity
 
     private void checkForPie() {
         // Using Hardcoded 28 and not VERSION_CODES class because this project is compiled with Nougat and does not include this code
-        if (Build.VERSION.SDK_INT >= 28) {
+        if (Build.VERSION.SDK_INT >= 28 && !(boolean) getPref(HAS_SHOW_PIE_WARN)) {
             DialogFactory.createErrorDialog(
                     this,
                     "Android Pie",
-                    "Since Xposed does not support Android Pie, " + STApplication.MODULE_TAG + htmlHighlight("CANNOT") + " support Android 9.0.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0"
+                    "Since Xposed does not support Android Pie, " + STApplication.MODULE_TAG + " does " + htmlHighlight("NOT") + " support Android 9.0 either.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0 or try Virtual Xposed.",
+                    new ThemedClickListener() {
+                        @Override
+                        public void clicked(ThemedDialog themedDialog) {
+                            putPref(HAS_SHOW_PIE_WARN, true);
+                        }
+                    }
             ).show();
         }
     }

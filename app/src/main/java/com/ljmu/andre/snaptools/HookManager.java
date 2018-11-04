@@ -131,12 +131,12 @@ public class HookManager implements IXposedHookLoadPackage {
         Timber.d("Hooking Application Attach");
 
         /*
-        To avoid hangs on Snapchat Startup, we have to abandon nested Hooks. These Hangs have mainly
-        been caused by SnapTools' HookManager Class: The Framework has only been loaded when the
-        Snapchat Activity has been created and started. We still need to hook Snapchat's Activity
-        Class to use make ContextHelper.getActivitiy() possible, a method that is widely used in
-        SnapTools to get the Activity (Displaying Save Button...). The Activity Hook is also used to
-        display Errors.
+        To avoid Hangs on Snapchat Startup, we have to hook as early as possible. These Hangs have
+        mainly been caused by SnapTools' HookManager Class: The Framework has only been loaded when
+        the Snapchat Activity has been created and started. We still need to hook Snapchat's
+        Activity Class to make ContextHelper.getActivity() possible, a method that is widely used
+        in SnapTools to get the Snapchat Activity (Displaying Save Button...). The Activity Hook is
+        also used to display Errors, Warns and TOS Acceptance
          */
 
         Context[] moduleContext = new Context[1];

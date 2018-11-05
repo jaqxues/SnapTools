@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
+import android.support.media.ExifInterface;
 
 import com.google.common.io.Files;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
@@ -150,19 +152,13 @@ public class Sharing extends ModuleHelper {
                             Timber.d("It's a shared item");
                             String imgPath = intent.getStringExtra("image_url");
                             intent.removeExtra("image_url");
-                            Timber.d("ImgPath: " + imgPath);
+                            Timber.d("ImgPath: %s", imgPath);
 
                             if (imgPath == null) {
                                 SafeToastAdapter.showErrorToast(
                                         ContextHelper.getActivity(),
                                         "Shared image path not found"
                                 );
-
-//								Answers.safeLogEvent(
-//										new CustomEvent("SharedMedia")
-//												.putCustomAttribute("Type", "Image")
-//												.putCustomAttribute("Success", "FALSE")
-//								);
                                 return;
                             }
 
@@ -175,22 +171,39 @@ public class Sharing extends ModuleHelper {
                                         ContextHelper.getActivity(),
                                         "Failed to load shared media"
                                 );
+                                return;
+                            }
 
-//								Answers.safeLogEvent(
-//										new CustomEvent("SharedMedia")
-//												.putCustomAttribute("Type", "Image")
-//												.putCustomAttribute("Success", "FALSE")
-//								);
+                            // Weird Image Rotation Fix (The infamous 270 degrees bug)
+                            ExifInterface exif = new ExifInterface(imgPath);
+                            int exifRot = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                            int degrees = exifRot == ExifInterface.ORIENTATION_ROTATE_90 ? 90
+                                    : exifRot == ExifInterface.ORIENTATION_ROTATE_180 ? 180
+                                    : exifRot == ExifInterface.ORIENTATION_ROTATE_270 ? 270
+                                    : 0;
+                            if (exifRot != ExifInterface.ORIENTATION_UNDEFINED && degrees != 0) {
+                                Matrix matrix = new Matrix();
+                                matrix.postRotate(degrees);
+                                bitmap = Bitmap.createBitmap(
+                                        bitmap,
+                                        0,
+                                        0,
+                                        bitmap.getWidth(),
+                                        bitmap.getHeight(),
+                                        matrix,
+                                        true
+                                );
+                            }
+
+                            if (bitmap == null) {
+                                SafeToastAdapter.showErrorToast(
+                                        ContextHelper.getActivity(),
+                                        "Failed to manipulate shared media to prevent Image Rotation"
+                                );
                                 return;
                             }
 
                             param.args[0] = bitmap;
-
-//							Answers.safeLogEvent(
-//									new CustomEvent("SharedMedia")
-//											.putCustomAttribute("Type", "Image")
-//											.putCustomAttribute("Success", "TRUE")
-//							);
                         }
                     }
                 }

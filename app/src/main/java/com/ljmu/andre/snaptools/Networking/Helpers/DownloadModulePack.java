@@ -19,8 +19,6 @@ import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE;
@@ -76,13 +74,6 @@ public class DownloadModulePack implements DownloadListener {
                                 .setVolleyTag(VOLLEY_TAG)
                 );
 
-        Map<String, String> params = new HashMap<>();
-
-        if (packVersion != null) {
-            params.put("pack_version",
-                    packVersion);
-        }
-
         new DownloadFile()
                 .setUrl(getDownloadUrl())
                 .setMethod(Request.Method.GET)
@@ -97,7 +88,7 @@ public class DownloadModulePack implements DownloadListener {
         progressDialog.show();
     }
 
-    public String getDownloadUrl() {
+    private String getDownloadUrl() {
         return PACK_BASE_URL + packName + ".jar?raw=true";
     }
 

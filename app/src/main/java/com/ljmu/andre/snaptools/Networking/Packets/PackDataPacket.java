@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Packets;
 
 import com.google.gson.annotations.SerializedName;
+import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -22,6 +23,7 @@ public class PackDataPacket extends AuthResultPacket {
     private String flavour;
 
     private String currentModVersion = "Unknown";
+    @SerializedName("pack_name")
     private String packName;
 
     public boolean isDevelopment() {
@@ -74,7 +76,13 @@ public class PackDataPacket extends AuthResultPacket {
     }
 
     public String getPackName() {
-        return packName;
+        return packName == null ?
+                PackMetaData.getFileNameFromTemplate(
+                        getPackType(),
+                        getSCVersion(),
+                        getFlavour(),
+                        getModVersion())
+                : packName;
     }
 
     public PackDataPacket setPackName(String packName) {

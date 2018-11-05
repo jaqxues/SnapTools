@@ -1,7 +1,6 @@
 package com.ljmu.andre.snaptools.Fragments;
 
 import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -26,12 +25,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOWN_ANDROID_N_WARNING;
-import static com.ljmu.andre.snaptools.Utils.ModuleChecker.getXposedVersion;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOWN_ANDROID_P_WARNING;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -68,20 +65,18 @@ public class HomeFragment extends FragmentHelper {
 
         //resizeThis();
 
-        Integer xposedVersion = getXposedVersion();
-        Timber.d("Xposed Version: " + xposedVersion);
-
-        if (!(boolean) getPref(SHOWN_ANDROID_N_WARNING) &&
-                VERSION.SDK_INT >= VERSION_CODES.N &&
-                (xposedVersion != null && xposedVersion < 88)) {
+        if (!(boolean) getPref(SHOWN_ANDROID_P_WARNING) &&
+                // Using Hardcoded 28 and not VERSION_CODES class because this project is compiled with Nougat and does not include this code
+                VERSION.SDK_INT >= 28) {
             DialogFactory.createErrorDialog(
                     getActivity(),
-                    getString(R.string.android_n_warning_title),
-                    getString(R.string.android_n_warning_message)
+                    getString(R.string.android_p_warning_title),
+                    getString(R.string.android_p_warning_message)
             ).show();
 
-            putPref(SHOWN_ANDROID_N_WARNING, true);
+            putPref(SHOWN_ANDROID_P_WARNING, true);
         }
+
         return layoutContainer;
     }
 

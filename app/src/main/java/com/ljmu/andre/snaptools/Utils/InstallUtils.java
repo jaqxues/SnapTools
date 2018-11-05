@@ -15,7 +15,11 @@ import java.io.File;
  */
 
 public class InstallUtils {
-    public static void install(Activity activity, File file) {
+    public static void install(Activity activity, File file, boolean shouldTryRoot) {
+        if (shouldTryRoot) {
+            ShellUtils.sendCommandSync("pm install -t " + file);
+            return;
+        }
         Intent intent;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             Uri uri = ApkFileProvider.getUriForFile(
@@ -39,12 +43,15 @@ public class InstallUtils {
         }
     }
 
-    public static void uninstallPackage(Activity activity, String packageName) {
-        ShellUtils.sendCommandSync("pm uninstall " + packageName); // TODO TEST
-//        Intent intent = new Intent(Intent.ACTION_DELETE);
-//        intent.setData(Uri.parse("package:" + packageName));
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-//        if (activity != null && !activity.isFinishing())
-//            activity.startActivity(intent);
+    public static void uninstallPackage(Activity activity, String packageName, boolean shouldTryRoot) {
+        if (shouldTryRoot) {
+            ShellUtils.sendCommandSync("pm uninstall " + packageName);
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_DELETE);
+        intent.setData(Uri.parse("package:" + packageName));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        if (activity != null && !activity.isFinishing())
+            activity.startActivity(intent);
     }
 }

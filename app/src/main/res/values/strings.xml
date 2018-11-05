@@ -56,8 +56,8 @@
     <string name="aboutUs">SnapTools started with Andre (andrerm124) as the sole developer, with Pedro (pedroc1999) and Gabe (quorn23) as part of the decision making team. Ethan (electronicwizard) also joined as a developer/tester and Michal (nightmean) helped while testing SnapTools and during the bug finding process. The majority of our team are currently in or recently graduated from higher level education. </string>
     <string name="wow">\n\nWhy did you read all this.</string>
 
-    <string name="android_n_warning_title">Android N Warning</string>
-    <string name="android_n_warning_message">Although Android N will be supported via the Unofficial Xposed Framework, there may be situations where Xposed is unstable and a hang or crash could happen, this is not the fault of SnapTools and is due to the nature of the unstable Xposed Framework</string>
+    <string name="android_p_warning_title">Android P Warning</string>
+    <string name="android_p_warning_message">Since Xposed does not support Android Pie, SnapTools does NOT support Android 9.0 either.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0 or try Virtual Xposed.</string>
 
     <string name="donation_toolbar_message">Thank you for considering to donate. Any donations you provide mean the world to our team and hopefully it suggests you\'re enjoying what we\'re providing!</string>
 

@@ -63,8 +63,8 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "KILL_SC_ON_CHANGE",
             true, Boolean.class
     );
-    public static final Preference SHOWN_ANDROID_N_WARNING = new Preference(
-            "SHOWN_ANDROID_N_WARNING",
+    public static final Preference SHOWN_ANDROID_P_WARNING = new Preference(
+            "SHOWN_ANDROID_P_WARNING",
             false, Boolean.class
     );
     public static final Preference NOTIFY_ON_LOAD = new Preference(
@@ -129,6 +129,13 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
      */
     public static final Preference REPACKAGE_NAME = new Preference(
             "REPACKAGE_NAME",
+            null, String.class
+    );
+    /**
+     * Ability to save an old PackageName after App Repackaging to detect duplicates
+     */
+    public static final Preference PLACE_HOLDER_UNINSTALL_REPKG = new Preference(
+            "PLACE_HOLDER_UNINSTALL_REPKG",
             null, String.class
     );
     public static final Preference CURRENT_THEME = new Preference(

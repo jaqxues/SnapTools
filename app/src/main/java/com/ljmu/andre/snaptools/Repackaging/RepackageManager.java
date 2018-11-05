@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Repackaging;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.annotation.CheckResult;
 
 import com.github.javiersantos.appupdater.objects.Version;
@@ -34,11 +35,11 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
 import static com.ljmu.andre.snaptools.Repackaging.RepackageUtil.findAndPatch;
 import static com.ljmu.andre.snaptools.Utils.Constants.getApkVersionName;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.PLACE_HOLDER_UNINSTALL_REPKG;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 
@@ -110,47 +111,23 @@ public class RepackageManager {
 
         /**
          * ===========================================================================
-         * Use root to install the newly repackaged apk
+         * Install the newly repackaged apk
          * ===========================================================================
          */
+        boolean rootAccess = Shell.rootAccess();
         emitter.onNext("Installing repackaged application");
-        InstallUtils.install(activity, repackFile);
-        // ===========================================================================
-
-        /**
-         * ===========================================================================
-         * Use root to remove any previously repackaged apps
-         * This will likely fail as repackaging will generally only be required for
-         * default distributed apk's
-         * ===========================================================================
-         */
-        String previousRepackageName = getPref(REPACKAGE_NAME);
         putPref(REPACKAGE_NAME, obfusPackageName);
-        if (!Shell.rootAccess()) {
-            emitter.onError(new Throwable("No Root Permission"));
-            return;
-        }
-        if (previousRepackageName != null) {
-            emitter.onNext("Uninstalling alternate repackages");
-            InstallUtils.uninstallPackage(activity, previousRepackageName);
-//            if (!sendCommandSync("pm uninstall " + previousRepackageName)) {
-//                Timber.e("Couldn't find previously repackaged app!");
-//            }
-        }
+        putPref(PLACE_HOLDER_UNINSTALL_REPKG, activity.getPackageName());
+        InstallUtils.install(activity, repackFile, rootAccess);
         // ===========================================================================
 
         /**
          * ===========================================================================
-         * Use root to remove any previous default apks
+         * Remove any previous default apks
          * ===========================================================================
          */
         emitter.onNext("Uninstalling original application");
-        InstallUtils.uninstallPackage(activity, activity.getPackageName());
-//        if (!sendCommandSync("pm uninstall " + activity.getPackageName())) {
-//			throw new RepackageException("Failed to uninstall original application");
-        // Test on emulator: Successful un-installation threw this exception
-        // Probably because the first line of output is "pkg...". Magisk not performing checks either
-//        }
+        InstallUtils.uninstallPackage(activity, activity.getPackageName(), rootAccess);
         // ===========================================================================
 
         emitter.onNext("Completing");
@@ -289,10 +266,10 @@ public class RepackageManager {
                 public void clicked(ThemedDialog themedDialog) {
                     themedDialog.dismiss();
                     Timber.w("Uninstalling the duplicate %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
-                    InstallUtils.uninstallPackage(activity, info.packageName);
+                    InstallUtils.uninstallPackage(activity, info.packageName, Shell.rootAccess());
                     SafeToast.show(
                             activity,
-                            "Successfully sent uninstall Command",
+                            "Successfully uninstalled " + info.packageName,
                             false);
                 }
             };
@@ -303,11 +280,11 @@ public class RepackageManager {
                 public void clicked(ThemedDialog themedDialog) {
                     themedDialog.dismiss();
                     Timber.w("Uninstalling this %s application (Version: \"%s\", PackageName: \"%s\"", STApplication.MODULE_TAG, getApkVersionName(), activity.getPackageName());
-                    InstallUtils.uninstallPackage(activity, activity.getPackageName());
+                    InstallUtils.uninstallPackage(activity, activity.getPackageName(), Shell.rootAccess());
                     DialogFactory.createProgressDialog(
                             activity,
                             "Uninstall Application",
-                            "Sent uninstall command. It might take some time to execute the Command",
+                            "Uninstalling this Application...",
                             false
                     ).show();
                 }
@@ -322,6 +299,25 @@ public class RepackageManager {
                 message,
                 listener
         );
+    }
+
+    public static boolean checkDuplicate(Activity activity, String pkg) {
+        try {
+            PackageInfo info = activity.getPackageManager().getPackageInfo(
+                    pkg,
+                    0
+            );
+            if (info != null) {
+                Timber.w("Found an installed SnapTools duplicate (Package: %s), asking user to uninstall", info.packageName);
+                RepackageManager.getUninstallDuplicates(
+                        activity,
+                        info
+                ).show();
+                return true;
+            }
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return false;
     }
 
     private static class RepackageException extends Exception {

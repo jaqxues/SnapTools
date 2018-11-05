@@ -147,7 +147,7 @@ public class CheckAPKUpdate {
                                 return;
                             }
 
-                            InstallUtils.install(activity, outputFile);
+                            InstallUtils.install(activity, outputFile, false);
                             activity.finish();
 
                             if (resultListener != null)

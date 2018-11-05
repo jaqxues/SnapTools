@@ -2,10 +2,8 @@ package com.ljmu.andre.snaptools;
 
 import android.Manifest.permission;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.IdRes;
@@ -103,11 +101,11 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CURRENT_THEME;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOWN_REPKG_DIALOG;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOW_PIE_WARN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_APK_UPDATE_CHECK;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_SHOP;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_OPEN_APP;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LATEST_APK_VERSION_CODE;
+import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.PLACE_HOLDER_UNINSTALL_REPKG;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_TUTORIAL;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SYSTEM_ENABLED;
@@ -307,11 +305,6 @@ public class MainActivity
         // Assign the actual PackageName
         STApplication.PACKAGE = getPackageName();
 
-        RemoteConfig.init(this, remoteConfig -> {
-            Translator.fetchedRemoteConfig(this, remoteConfig);
-            Constants.initConstants(remoteConfig);
-        });
-
         /**
          * ===========================================================================
          * Translation System Initialisation
@@ -419,6 +412,16 @@ public class MainActivity
         CacheDatabase.init(this);
         EventBus.getInstance().register(this);
 
+        /**
+         * ===========================================================================
+         * Fetching Remote Config
+         * ===========================================================================
+         */
+        RemoteConfig.init(this, remoteConfig -> {
+            Translator.fetchedRemoteConfig(this, remoteConfig);
+            Constants.initConstants(remoteConfig);
+        });
+
         // ===========================================================================
 
         /**
@@ -495,7 +498,6 @@ public class MainActivity
         initReminders();
         Translator.translateActivity(this);
         initAppRepackaging();
-        checkForPie();
     }
 
     /**
@@ -554,23 +556,6 @@ public class MainActivity
         }
     }
 
-    private void checkForPie() {
-        // Using Hardcoded 28 and not VERSION_CODES class because this project is compiled with Nougat and does not include this code
-        if (Build.VERSION.SDK_INT >= 28 && !(boolean) getPref(HAS_SHOW_PIE_WARN)) {
-            DialogFactory.createErrorDialog(
-                    this,
-                    "Android Pie",
-                    "Since Xposed does not support Android Pie, " + STApplication.MODULE_TAG + " does " + htmlHighlight("NOT") + " support Android 9.0 either.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0 or try Virtual Xposed.",
-                    new ThemedClickListener() {
-                        @Override
-                        public void clicked(ThemedDialog themedDialog) {
-                            putPref(HAS_SHOW_PIE_WARN, true);
-                        }
-                    }
-            ).show();
-        }
-    }
-
     /**
      * ===========================================================================
      * Display a reminder about viewing page tutorials if they have been
@@ -614,49 +599,29 @@ public class MainActivity
      * ===========================================================================
      */
     private void initAppRepackaging() {
-        // During re-installations or updates, the PackageName gets reset.
-        // Check if the REPACKAGE_NAME Preference is correct
+
         String repkgNamePref = getPref(REPACKAGE_NAME);
         boolean isDefaultPkg = STApplication.PACKAGE.equals(MainActivity.class.getPackage().getName());
         boolean isPrefCorrect = repkgNamePref == null ? isDefaultPkg : STApplication.PACKAGE.equals(repkgNamePref);
 
-        // if the Preference was not correct, update the Preference
-        if (isDefaultPkg) {
-            if (!(boolean) getPref(HAS_SHOWN_REPKG_DIALOG) || !isPrefCorrect) {
-                Timber.d("Asking for App Repackaging");
-                putPref(HAS_SHOWN_REPKG_DIALOG, true);
-                RepackageManager.askUserDialog(this).show();
-            }
+        if (!isPrefCorrect) {
+            RepackageManager.checkDuplicate(
+                    this,
+                    repkgNamePref == null ? MainActivity.class.getPackage().getName() : repkgNamePref
+            );
+            putPref(REPACKAGE_NAME, isDefaultPkg ? null : STApplication.PACKAGE);
         }
 
-        // An old preference, usually from a previously installed SnapTools version
-        // Update corrupt preference and check for duplicate --> uninstall duplicate
-        if (!isPrefCorrect && !isDefaultPkg) {
-            triggerKonfetti();
-            SafeToast.show(
-                    this,
-                    "Successfully repackaged SnapTools"
-            );
-            Timber.d("User probably updated or re-installed the Application. Updating REPACKAGE_NAME Preference value.");
-            putPref(REPACKAGE_NAME, STApplication.PACKAGE);
-            // This is probably caused by an update or re-installation
-            try {
-                PackageInfo info = getPackageManager().getPackageInfo(
-                        repkgNamePref == null ?
-                                MainActivity.class.getPackage().getName() :
-                                repkgNamePref,
-                        0
-                );
-                if (info != null) {
-                    Timber.w("Found an installed ST duplicate, asking user to uninstall");
-                    RepackageManager.getUninstallDuplicates(
-                            this,
-                            info
-                    ).show();
-                }
-            } catch (PackageManager.NameNotFoundException ignored) {
-            }
+        if (isDefaultPkg && !(boolean) getPref(HAS_SHOWN_REPKG_DIALOG)) {
+            Timber.d("Asking for App Repackaging");
+            putPref(HAS_SHOWN_REPKG_DIALOG, true);
+            RepackageManager.askUserDialog(this).show();
         }
+
+        if (getPref(PLACE_HOLDER_UNINSTALL_REPKG) != null
+                && !STApplication.PACKAGE.equals(getPref(PLACE_HOLDER_UNINSTALL_REPKG))
+                && !RepackageManager.checkDuplicate(this, getPref(PLACE_HOLDER_UNINSTALL_REPKG)))
+            putPref(PLACE_HOLDER_UNINSTALL_REPKG, null);
     }
 
     /**

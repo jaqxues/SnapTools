@@ -342,6 +342,11 @@ public class ModulePreferenceDef extends ConstantDefiner<Preference> {
             true, Boolean.class
     );
 
+    public static final Preference SHARING_AUTO_ROTATE = new Preference(
+            "SHARING_AUTO_ROTATE",
+            false, Boolean.class
+    );
+
     public static final Preference LED_INFO_ALREADY_SENT = new Preference(
             "LED_INFO_ALREADY_SENT",
             false, Boolean.class

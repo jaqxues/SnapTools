@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.support.media.ExifInterface;
 
 import com.google.common.io.Files;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
@@ -34,6 +33,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.REPLAC
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.BATCHED_MEDIA_ITEM_BOOLEAN;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.BATCHED_MEDIA_LIST;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BATCHED_MEDIA_CAP;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHARING_AUTO_ROTATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SHARING_TUTORIAL;
 
 //import com.crashlytics.android.answers.Answers;
@@ -166,6 +166,7 @@ public class Sharing extends ModuleHelper {
                             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                             Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
 
+
                             if (bitmap == null) {
                                 SafeToastAdapter.showErrorToast(
                                         ContextHelper.getActivity(),
@@ -175,23 +176,11 @@ public class Sharing extends ModuleHelper {
                             }
 
                             // Weird Image Rotation Fix (The infamous 270 degrees bug)
-                            ExifInterface exif = new ExifInterface(imgPath);
-                            int exifRot = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                            int degrees = exifRot == ExifInterface.ORIENTATION_ROTATE_90 ? 90
-                                    : exifRot == ExifInterface.ORIENTATION_ROTATE_180 ? 180
-                                    : exifRot == ExifInterface.ORIENTATION_ROTATE_270 ? 270
-                                    : 0;
-                            if (exifRot != ExifInterface.ORIENTATION_UNDEFINED && degrees != 0) {
+                            if (getPref(SHARING_AUTO_ROTATE)) {
                                 Matrix matrix = new Matrix();
-                                matrix.postRotate(degrees);
-                                bitmap = Bitmap.createBitmap(
-                                        bitmap,
-                                        0,
-                                        0,
-                                        bitmap.getWidth(),
-                                        bitmap.getHeight(),
-                                        matrix,
-                                        true
+                                matrix.postRotate(-90);
+                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                                        bitmap.getHeight(), matrix, true
                                 );
                             }
 

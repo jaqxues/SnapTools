@@ -7,276 +7,355 @@ import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.HookV
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
+ *
+ * <p>
+ *     Class References of each Variable are in JavaDoc. Once again, classes in parentheses mean
+ *     the class names of the last Update. When updating, just ignore them.<br>
+ *     <strong>_var_</strong> is the thing you name you need to find.<br>
+ *     <strong>_any_</strong> is just a placeholder for all the obfuscated stuff
+ * </p>
  */
 public class HookVariableDef extends ConstantDefiner<HookVariable> {
+    /**
+     * Class: {@link HookClassDef#RECEIVED_SNAP}
+     * <p>
+     * Code Chunk:
+     * <code>
+     * return (int) (this._var_ * 1000.0d);
+     * </code>
+     * </p>
+     */
     public static final HookVariable MCANONICALDISPLAYNAME = new HookVariable(
             "MCANONICALDISPLAYNAME",
-            "az"
-
-            /** CLASS: {@link HookClassDef.RECEIVED_SNAP} =============================*/
-            // CODE CHUNK ================================================================
-            /**
-             return (int) (this.az * 1000.0d);
-             ^^^^^^^^
-             */
-    ); // TODO: DONE
+            "aL"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: Parent of {@link HookClassDef#STORY_ADVANCER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         this._var_ = _any_.NONE;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable STORY_ADVANCER_DISPLAY_STATE = new HookVariable(
             "STORY_ADVANCER_DISPLAY_STATE",
             "f"
-
-            /** CLASS: Parent Of {@link HookClassDef.STORY_ADVANCER} ==================*/
-            // CODE CHUNK ================================================================
-            /**
-             this.f = bub.NONE;
-             ^^^^^^
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#RECEIVED_SNAP}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         DiscoverStorySnapModel.ISZIPPED, this.
+     *     </code>
+     * </p>
+     */
     public static final HookVariable SNAP_IS_ZIPPED = new HookVariable(
             "SNAP_IS_ZIPPED",
-            "ax"
-
-            /** CLASS: {@link HookClassDef.RECEIVED_SNAP} ============================*/
-            // CODE CHUNK ================================================================
-            /**
-             "isZipped", this.ax
-             ^^^^^^^
-             */
-    ); // TODO: DONE
+            "aJ"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: ansy (rbi)
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public long _var_ = -1;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable SENT_MEDIA_TIMESTAMP = new HookVariable(
             "SENT_MEDIA_TIMESTAMP",
-            "bt"
-
-            /** CLASS: rbi ==============================================================*/
-            // CODE CHUNK ================================================================
-            /**
-             *	public long bt = -1;
-             */
-    ); // TODO: DONE
+            "bE"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#SENT_SNAP_BASE}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         private void _any_() {
+     *             super.a(this._var_);
+     *             this._var_ = null;
+     *             this._any_ = _any_.RECYCLE;
+     *         }
+     *     </code>
+     * </p>
+     */
     public static final HookVariable SENT_MEDIA_BITMAP = new HookVariable(
             "SENT_MEDIA_BITMAP",
-            "ay"
-
-            /** CLASS: {@link HookClassDef.SENT_SNAP_BASE} ===========================*/
-            // CODE CHUNK ================================================================
-            /**
-             *	super.a(this.ay);
-             *           ^^^^^^
-             *	this.ay = null;
-             *	this.J = qjw.RECYCLE;
-             */
-    ); // TODO: DONE
+            "aF"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: Parent of {@link HookClassDef#SENT_SNAP_BASE}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final Uri _var_;
+     *     </code><br>
+     *     Also
+     *     <code><br>
+     *         return this._var_ == null ? null : this._var_.getPath();
+     *     </code>
+     * </p>
+     */
     public static final HookVariable SENT_MEDIA_VIDEO_URI = new HookVariable(
             "SENT_MEDIA_VIDEO_URI",
-            "aG"
+            "aO"
+    );
 
-            /** CLASS: Parent Of: {@link HookClassDef.SENT_SNAP_BASE} ==================*/
-            // CODE CHUNK ================================================================
-            /**
-             * public final Uri aG;
-             *
-             * ALSO: return this.aG == null ? null : this.aG.getPath();
-             */
-    ); // TODO: DONE
-
+    /**
+     * Class: {@link HookClassDef#SENT_BATCHED_VIDEO}
+     * <p>
+     * Code Chunk:
+     * <code>
+     * "Original video has no Magikarp playback metadata", this._var_._any_
+     * </code>
+     * </p>
+     */
     public static final HookVariable SENT_BATCHED_VIDEO_MEDIAHOLDER = new HookVariable(
             "SENT_BATCHED_VIDEO_MEDIAHOLDER",
             "c"
-
-
-            /** CLASS: {@link HookClassDef.SENT_BATCHED_VIDEO} ===========================*/
-            // CODE CHUNK ================================================================
-            /**
-             * "Original video has no Magikarp playback metadata", this.c.bd
-             *                                                      ^^^^^
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#SENT_VIDEO}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         private _int_ _var_;
+     *     </code>
+     * </p>
+     * <strong>Important: _int_ = Interface of {@link HookClassDef#SENT_BATCHED_VIDEO}</strong>
+     */
     public static final HookVariable SENT_MEDIA_BATCH_DATA = new HookVariable(
             "SENT_MEDIA_BATCH_DATA",
-            "bP"
-
-            /** CLASS: Interface Of: {@link HookClassDef.SENT_BATCHED_VIDEO} =============*/
-            /** FOUND IN: {@link HookClassDef.SENT_VIDEO} ================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * private rba bG;
-             */
-    ); // TODO: DONE
+            "cf"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#CHAT_VIDEO_METADATA}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         if (this._var_ == null) {
+     *             throw new IllegalStateException("Chat media is null before playing");
+     *         }
+     *     </code>
+     * </p>
+     * <strong>Instance of {@link HookClassDef#CHAT_VIDEO}</strong>
+     */
     public static final HookVariable CHAT_METADATA_MEDIA = new HookVariable(
             "CHAT_METADATA_MEDIA",
             "c"
-
-            /** CLASS: {@link HookClassDef.CHAT_VIDEO_METADATA} ==========================*/
-            // CODE CHUNK ================================================================
-            /**
-             if (this.c == null) {
-             ^^^^^^^
-             throw new IllegalStateException("Chat media is null before playing");
-             }
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
     public static final HookVariable NO_AUTO_ADVANCE = new HookVariable(
             "NO_AUTO_ADVANCE",
             "NO_AUTO_ADVANCE"
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#LENS_CATEGORY}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final String _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable LENS_CATEGORY = new HookVariable(
             "LENS_CATEGORY",
             "a"
-            /** CLASS: {@link HookClassDef.LENS_CATEGORY} ================================*/
-            // CODE CHUNK ================================================================
-            /**
-             public final String a;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#LENS_CATEGORY}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final ActivatorType _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable LENS_ACTIVATOR = new HookVariable(
             "LENS_ACTIVATOR",
             "b"
-
-            /** CLASS: {@link HookClassDef.LENS_CATEGORY} ================================*/
-            // CODE CHUNK ================================================================
-            /**
-             public final ActivatorType b;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
+
+    /**
+     * Class: {@link HookClassDef#CAPTION_MANAGER_CLASS}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         private final SnapCaptionView _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable SNAPCAPTIONVIEW_CONTEXT = new HookVariable(
             "SNAPCAPTIONVIEW_CONTEXT",
             "b"
-
-            /** CLASS: {@link HookClassDef.CAPTION_MANAGER_CLASS} ========================*/
-            // CODE CHUNK ================================================================
-            /**
-             private final SnapCaptionView b;
-             */
-    ); // TODO: DONE
+    );
+    //TODO
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#ENCRYPTED_STREAM_BUILDER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         (this._var_ && _any_.markSupported())
+     *     </code>
+     * </p>
+     */
     public static final HookVariable STREAM_TYPE_CHECK_BOOLEAN = new HookVariable(
             "STREAM_TYPE_CHECK_BOOLEAN",
             "d"
-
-            /** CLASS: {@link HookClassDef.ENCRYPTED_STREAM_BUILDER} =====================*/
-            // CODE CHUNK ================================================================
-            /**
-             (this.d && a.markSupported())
-             ^^^^^^
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: Parent of {@link HookClassDef#STORY_ADVANCER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         this._any_._any_("OPEN_VIEW_DISPLAYED", this._var_, _any_._any_("page_view_id", this._any_, _any_._any_, Long.valueOf(_any_._any_())));
+     *     </code>
+     * </p>
+     */
     public static final HookVariable STORY_ADVANCER_METADATA = new HookVariable(
             "STORY_ADVANCER_METADATA",
             "c"
-
-            /** CLASS: Parent Of: {@link HookClassDef.STORY_ADVANCER} ====================*/
-            // CODE CHUNK ================================================================
-            /**
-             this.d.a("OPEN_VIEW_DISPLAYED", this.c, cez.a("page_view_id", this.p, buv.u, Long.valueOf(tkp.c())));
-             -----------------------------^^^^^^^^^^^
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#CHAT_MESSAGE_VIEW_HOLDER}
+     * <p>
+     *     Code Chunk (~Line 113):
+     *     <code>
+     *         this._var_._any_(this._any_);
+     *         this._var._any_((_any_) this._any_);
+     *     </code>
+     * </p>
+     */
     public static final HookVariable CHAT_SAVING_LINKER = new HookVariable(
             "CHAT_SAVING_LINKER",
-            "N"
-
-            /** CLASS: {@link HookClassDef.CHAT_MESSAGE_VIEW_HOLDER}======================*/
-            // CODE CHUNK ================================================================
-            /**
-             * this.N.a(new b[]{this.M, this.p});
-             * ^^^^^^
-             * this.N.a(new b[]{(b) this.L});
-             * if (this.Y != null) {
-             * 	View view2 = this.Y;
-             * 	OnTouchListener mtg = new mtg(this.A);
-             * 	mtg.c = new mje$b(this, (byte) 0);
-             * 	mtg.d = this.R;
-             * 	mtg.b = this.Q;
-             * 	view2.setOnTouchListener(mtg);
-             * }
-             **/
-    ); // TODO: DONE
+            "B"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: ahsr (Type of {@link #CHAT_SAVING_LINKER})
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public _any_ _var_;
+     *         public _any_ _any_;
+     *         public boolean _any_;
+     *     </code><br>
+     *     <strong>The only interfaced non final field</strong>
+     * </p>
+     */
     public static final HookVariable CHAT_SAVING_LINKER_CHAT_REF = new HookVariable(
             "CHAT_SAVING_LINKER_CHAT_REF",
             "d"
-
-            // CLASS: lru ================================================================
-            // CODE CHUNK ================================================================
-            /**
-             public mnt d;
-             ^^^^^^^^^^^^ - The only interfaced non final field
-             public mnl e;
-             public boolean f;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#SENT_VIDEO}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final Long _any_() {
+     *             if (this._var_ == null || this._int_ == null) {
+     *                 return null;
+     *             }
+     *             return Long.valueOf((long) this._int_.intValue());
+     *         }
+     *     </code><br>
+     *     <strong>_var_ = SparseArray and _int_ = an Integer Object</strong>
+     * </p>
+     */
     public static final HookVariable BATCHED_MEDIA_LIST = new HookVariable(
             "BATCHED_MEDIA_LIST",
-            "aB"
-
-            /** CLASS: {@link HookClassDef.SENT_VIDEO} ===================================*/
-    ); // TODO: DONE
+            "aK"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: ancp
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public boolean _var_;
+     *     </code><br><br>
+     *     IMPORTANT: Code Chunk (~Line 32) in ancp ( = _cls_):
+     *     <code>
+     *         StringBuffer stringBuffer = new StringBuffer();
+     *         for (int i3 = 0; i3 < _any_.size(); i3++) {
+     *             _cls_ _cls_ = (_cls_) _any_.valueAt(i3);
+     *             stringBuffer.append(_cls_._any_);
+     *             stringBuffer.append(':');
+     *             stringBuffer.append(_cls_._var_);
+     *             stringBuffer.append(',');
+     *         }
+     *     </code>
+     * </p>
+     */
     public static final HookVariable BATCHED_MEDIA_ITEM_BOOLEAN = new HookVariable(
             "BATCHED_MEDIA_ITEM_BOOLEAN",
-            "b"
-
-            /** CLASS: qkn ===============================================================*/
-    ); // TODO: DONE
+            "e"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#LENS_CATEGORY_RESOLVER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final Map&lt;String, _any_&gt; _var_ = new HashMap();
+     *     </code>
+     * </p>
+     */
     public static final HookVariable LENS_CATEGORY_MAP = new HookVariable(
             "LENS_CATEGORY_MAP",
             "a"
-
-            /** CLASS: {@link HookClassDef.LENS_CATEGORY_RESOLVER} =======================*/
-            // CODE CHUNK ================================================================
-            /**
-             * public final Map<String, jkq> a = new HashMap();
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
@@ -290,88 +369,105 @@ public class HookVariableDef extends ConstantDefiner<HookVariable> {
              * arrayList.add(ghb.a(a, context, this.a));
              *                                 ^^^^^^
              */
-    ); // TODO: DONE
+    ); // TODO: REDO
 
     // ===========================================================================
 
+    /**
+     * Class: apgz (sof) ( = _cls_)
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         this._var_ = _cls_._var_(bundle.getString("type"));
+     *     </code>
+     * </p>
+     */
     public static final HookVariable NOTIFICATION_TYPE = new HookVariable(
             "NOTIFICATION_TYPE",
             "a"
-
-            /** CLASS: sof ===============================================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * this.a = sob.a(bundle.getString("type"));
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#RECEIVED_SNAP_PAYLOAD_BUILDER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final _any_ getRequestPayload() {
+     *             this._any_ = new HashMap(this._var_._any_());
+     *     </code>
+     * </p>
+     */
     public static final HookVariable RECEIVED_SNAP_PAYLOAD_HOLDER = new HookVariable(
             "RECEIVED_SNAP_PAYLOAD_HOLDER",
             "b"
-
-            /** CLASS: {@link HookClassDef.RECEIVED_SNAP_PAYLOAD_BUILDER} ================*/
-            // CODE CHUNK ================================================================
-            /**
-             * public final rnw getRequestPayload() {
-             *      this.d = new HashMap(this.b.b());
-             *                               ^^^
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: zlw (dyq)
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         final Map&lt;String, _any_&gt; _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable RECEIVED_SNAP_PAYLOAD_MAP = new HookVariable(
             "RECEIVED_SNAP_PAYLOAD_MAP",
             "a"
-
-            /** CLASS: dyq ===============================================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * final Map<String, rbl> a;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#STORY_SNAP_PAYLOAD_BUILDER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         private final List&lt;_any_&gt; _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable STORY_UPDATE_METADATA_LIST = new HookVariable(
             "STORY_UPDATE_METADATA_LIST",
             "b"
-
-            /** CLASS: {@link HookClassDef.STORY_SNAP_PAYLOAD_BUILDER} ===================*/
-            // CODE CHUNK ================================================================
-            /**
-             * private final List<qtg> b;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: ankr (qtg)
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final _any_ _var_ = new _any_();
+     *     </code>
+     * </p>
+     */
     public static final HookVariable STORY_UPDATE_METADATA = new HookVariable(
             "STORY_UPDATE_METADATA",
-            "a"
-
-            /** CLASS: qjg ===============================================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * public final xig a = new xig();
-             */
-    ); // TODO: DONE
+            "b"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: aunb (xig)
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         &#64;SerializedName("flushable_story_id")
+     *         protected String _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable STORY_UPDATE_METADATA_ID = new HookVariable(
             "STORY_UPDATE_METADATA_ID",
             "a"
-
-            /** CLASS: xig ===============================================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * @SerializedName("id")
-             * protected String a;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
@@ -390,85 +486,71 @@ public class HookVariableDef extends ConstantDefiner<HookVariable> {
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#CHAT_V10_BUILDER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         this._var_ = ((ViewStub) this._any_._any_(R.id.top_panel_stub)).inflate();
+     *     </code>
+     * </p>
+     */
     public static final HookVariable CHAT_TOP_PANEL_VIEW = new HookVariable(
             "CHAT_TOP_PANEL_VIEW",
             "o"
-
-            /** CLASS: {@link HookClassDef.CHAT_V10_BUILDER}==============================*/
-            // CODE CHUNK ================================================================
-            /**
-             * this.o = ((ViewStub) this.b.e_(R.id.top_panel_stub)).inflate();
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
-    public static final HookVariable UI_MODE_NAME = new HookVariable(
-            "UI_MODE_NAME",
-            "d"
-
-            /** CLASS: {@link HookClassDef.CHEETAH_ALLOCATOR}=============================*/
-            // CODE CHUNK ================================================================
-            /**
-             * private volatile String d = null;
-             */
-    ); // TODO: DONE
-
-    // ===========================================================================
-
-    public static final HookVariable UI_MODE_ENUM = new HookVariable(
-            "UI_MODE_ENUM",
-            "b"
-
-            /** CLASS: {@link HookClassDef.CHEETAH_ALLOCATOR}=============================*/
-            // CODE CHUNK ================================================================
-            /**
-             * private volatile dzk$a$a b = dzk$a$a.OLD_DESIGN;
-             */
-    ); // TODO: DONE
-
-    // ===========================================================================
-
+    /**
+     * Class: {@link HookClassDef#STORY_MANAGER}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         protected final Map&lt;String, _cls_&gt; = new ConcurrentHashMap();
+     *     </code><br>
+     *     <strong>To find _cls_ search for '"StoryCollection"'</strong>
+     * </p>
+     */
     public static final HookVariable STORY_COLLECTION_MAP = new HookVariable(
             "STORY_COLLECTION_MAP",
-            "d"
-
-            /** CLASS: {@link HookClassDef.STORY_MANAGER}=================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * protected final Map<String, qsj> d = new ConcurrentHashMap();
-             * qsj -> Search for "StoryCollection"
-             */
-    ); // TODO: DONE
+            "c"
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: {@link HookClassDef#FILTER_METADATA_CREATOR}
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         private /* synthetic &#42;/ _any_ _var_;
+     *     </code>
+     * </p>
+     */
     public static final HookVariable FILTER_METADATA_CACHE = new HookVariable(
             "FILTER_METADATA_CACHE",
             "a"
-
-            /** CLASS: {@link HookClassDef.FILTER_METADATA_CREATOR}=======================*/
-            // CODE CHUNK ================================================================
-            /**
-             * private /* synthetic / qvs a;
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
+    /**
+     * Class: annh (qvs)
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         private /* synthetic &#42;/ _cls_ _var_;
+     *     </code><br>
+     *     Also (hashCode()):
+     *     <code>return this._var_._any_.hashCode();</code><br>
+     *     <strong>_cls_ = {@link HookClassDef#SERIALIZABLE_FILTER_METADATA}</strong>
+     * </p>
+     */
     public static final HookVariable FILTER_SERIALIZABLE_METADATA = new HookVariable(
             "FILTER_SERIALIZABLE_METADATA",
             "a"
-
-            /** CLASS: qvs ===============================================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * qvs -> Search for "EncryptedGeoLoggingData is null: server returned empty response for"
-             *
-             * public final wsa a;
-             * wsa -> {@link HookClassDef.SERIALIZABLE_FILTER_METADATA}
-             */
-    ); // TODO: DONE
+    );
 
     // ===========================================================================
 
@@ -481,16 +563,16 @@ public class HookVariableDef extends ConstantDefiner<HookVariable> {
      * about the name of
      * ===========================================================================
      */
-    public static final HookVariable STORY_DATA_IS_SUBSCRIBED = new HookVariable(
-            "STORY_DATA_IS_SUBSCRIBED",
-            "s"
-
-            /** CLASS: {@link HookClassDef.STORY_MANAGER}=================================*/
-            // CODE CHUNK ================================================================
-            /**
-             * Find function that returns variable: ", isSubscribed=" + this.s
-             */
-    ); // TODO: DONE
+//    public static final HookVariable STORY_DATA_IS_SUBSCRIBED = new HookVariable(
+//            "STORY_DATA_IS_SUBSCRIBED",
+//            "s"
+//
+//            /** CLASS: {@link HookClassDef.STORY_MANAGER}=================================*/
+//             CODE CHUNK ================================================================
+//            /**
+//             * Find function that returns variable: ", isSubscribed=" + this.s
+//             */
+//    ); // TODO: DONE
     // ===========================================================================
 
 

@@ -168,8 +168,8 @@ public class StoryBlocker extends ModuleHelper {
                 new ST_MethodHook() {
                     @Override
                     protected void before(MethodHookParam param) throws Throwable {
-                        Map<Object, Object> map = (Map) param.args[4];
-                        Map<Object, Object> map2 = (Map) param.args[5];
+                        Map<Object, Object> map = (Map) param.args[3];
+                        Map<Object, Object> map2 = (Map) param.args[4];
 
                         HashSet<String> blockedStories = getPref(BLOCKED_STORIES);
 

@@ -93,9 +93,12 @@ public class WebResponse {
         if (exception instanceof VolleyError) {
             VolleyError volleyError = (VolleyError) exception;
             if (volleyError.networkResponse != null && volleyError.networkResponse.data != null) {
+                String str = new String(volleyError.networkResponse.data);
+                if (str.length() > 1000)
+                    str = "Data exceeds 1000 characters. Probably contains raw HTML";
                 return new VolleyError(
                         "Url: " + failedUrl + " | Status: " + volleyError.networkResponse.statusCode
-                                + " | " + new String(volleyError.networkResponse.data),
+                                + " | " + str,
                         exception
                 );
             }

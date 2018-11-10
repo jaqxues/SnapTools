@@ -94,17 +94,17 @@ public class SupportFragment extends FragmentHelper {
                             public void clicked(ThemedDialog themedDialog) {
                                 themedDialog.dismiss();
 
-                                Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://snaptools.org/discord"));
+                                Intent linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RemoteConfig.getConfig().getString("support_discord_link")));
                                 startActivity(linkIntent);
                             }
                         }
                 ).show();
                 return;
             case R.id.layout_server:
-                linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://snaptools.io"));
+                linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RemoteConfig.getConfig().getString("support_website_link")));
                 break;
             case R.id.layout_reddit:
-                linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.reddit.com/r/SnapTools/"));
+                linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RemoteConfig.getConfig().getString("support_reddit_link")));
                 break;
             case R.id.layout_xda:
                 linkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RemoteConfig.getConfig().getString("support_xda_link")));

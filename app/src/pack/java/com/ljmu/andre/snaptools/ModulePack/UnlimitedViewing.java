@@ -43,7 +43,7 @@ public class UnlimitedViewing extends ModuleHelper {
     // ===========================================================================
 
     @Override
-    public void loadHooks(ClassLoader snapClassLoader, Context snapCntext) {
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
         boolean unlimitedViewingImages = getPref(UNLIMITED_VIEWING_IMAGES);
         boolean unlimitedViewingVideos = getPref(UNLIMITED_VIEWING_VIDEOS);
 

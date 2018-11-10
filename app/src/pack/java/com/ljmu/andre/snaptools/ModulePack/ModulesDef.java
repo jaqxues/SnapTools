@@ -104,21 +104,21 @@ class ModulesDef extends ConstantDefiner<Modules> {
 
     // ===========================================================================
 
-    public static final Modules CUSTOM_FILTERS = new Modules(
-            11,
-            "Custom Filters",
-            CustomFilters.class,
-            "Allows for custom images and a Now Playing filter to be loaded alongside Snapchat filters"
-    );
+//    public static final Modules CUSTOM_FILTERS = new Modules(
+//            11,
+//            "Custom Filters",
+//            CustomFilters.class,
+//            "Allows for custom images and a Now Playing filter to be loaded alongside Snapchat filters"
+//    );
 
     // ===========================================================================
 
-    public static final Modules STEALTH_VIEWING = new Modules(
-            12,
-            "Stealth Viewing",
-            StealthViewing.class,
-            "Allows you to view chats and snaps without marking them as viewed"
-    );
+//    public static final Modules STEALTH_VIEWING = new Modules(
+//            12,
+//            "Stealth Viewing",
+//            StealthViewing.class,
+//            "Allows you to view chats and snaps without marking them as viewed"
+//    );
 
     // ===========================================================================
 

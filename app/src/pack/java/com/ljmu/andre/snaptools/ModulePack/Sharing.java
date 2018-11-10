@@ -36,9 +36,6 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BATC
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHARING_AUTO_ROTATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SHARING_TUTORIAL;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
-
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
@@ -140,7 +137,7 @@ public class Sharing extends ModuleHelper {
                     protected void before(MethodHookParam param) throws Throwable {
                         Intent intent = ContextHelper.getActivity().getIntent();
 
-                        Timber.d("Called camera a(bitmap, bool, bool)");
+                        Timber.d("Called camera REPLACE_SHARED_IMAGE");
 
                         if (intent == null) {
                             Timber.d("Null Intent");
@@ -228,12 +225,6 @@ public class Sharing extends ModuleHelper {
                                             ContextHelper.getActivity(),
                                             "Shared video path not found"
                                     );
-
-//									Answers.safeLogEvent(
-//											new CustomEvent("SharedMedia")
-//													.putCustomAttribute("Type", "Video")
-//													.putCustomAttribute("Success", "FALSE")
-//									);
                                     return;
                                 }
                                 File sourceFile = new File(videoPath);
@@ -243,12 +234,6 @@ public class Sharing extends ModuleHelper {
                                             ContextHelper.getActivity(),
                                             "Shared video doesn't exist"
                                     );
-
-//									Answers.safeLogEvent(
-//											new CustomEvent("SharedMedia")
-//													.putCustomAttribute("Type", "Video")
-//													.putCustomAttribute("Success", "FALSE")
-//									);
                                     return;
                                 }
 
@@ -259,12 +244,6 @@ public class Sharing extends ModuleHelper {
                                             ContextHelper.getActivity(),
                                             "Recorded video path not found"
                                     );
-
-//									Answers.safeLogEvent(
-//											new CustomEvent("SharedMedia")
-//													.putCustomAttribute("Type", "Video")
-//													.putCustomAttribute("Success", "FALSE")
-//									);
                                     return;
                                 }
 
@@ -272,11 +251,6 @@ public class Sharing extends ModuleHelper {
                                 File snapFile = new File(snapPath.getPath());
                                 Files.copy(sharedVideoFile, snapFile);
 
-//								Answers.safeLogEvent(
-//										new CustomEvent("SharedMedia")
-//												.putCustomAttribute("Type", "Video")
-//												.putCustomAttribute("Success", "TRUE")
-//								);
                             }
                         } catch (Throwable t) {
                             Timber.e(t, "Error with shared video");

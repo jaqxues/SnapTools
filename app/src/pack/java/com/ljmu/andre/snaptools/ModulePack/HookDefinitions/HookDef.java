@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.ljmu.andre.ConstantDefiner.Constant;
@@ -40,15 +39,9 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.D
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENCRYPTED_STREAM_BUILDER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENCRYPTION_ALGORITHM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.EXPERIMENT_BASE;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA_CREATOR;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA_LOADER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FONT_CLASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FRIEND_PROFILE_POPUP_FRAGMENT;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GEOFILTER_VIEW;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GEOFILTER_VIEW_CREATOR;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GROUP_SNAP_METADATA;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.IMAGE_GEOFILTER_VIEW;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_AUTHENTICATION;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_CATEGORY_RESOLVER;
@@ -65,6 +58,8 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.S
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SENT_BATCHED_VIDEO;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SENT_SNAP_BASE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SENT_VIDEO;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SHARE_IMAGE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SHARE_VIDEO;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAP_BASE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAP_COUNTDOWN_CONTROLLER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAP_STATUS;
@@ -119,7 +114,7 @@ public class HookDef extends ConstantDefiner<Hook> {
     );
     public static final Hook GROUP_GET_ALGORITHM = new Hook(
             "GROUP_GET_ALGORITHM",
-            GROUP_SNAP_METADATA, "d", "mpi"
+            GROUP_SNAP_METADATA, "a", "aisw"
     ); // TODO: REDO GROUP GET ALGORITHM
     public static final Hook SENT_SNAP = new Hook(
             "SENT_SNAP",
@@ -157,12 +152,12 @@ public class HookDef extends ConstantDefiner<Hook> {
     // SHARING ===================================================================
     public static final Hook REPLACE_SHARED_IMAGE = new Hook(
             "REPLACE_SHARED_IMAGE",
-            CAMERA_FRAGMENT, "a", Bitmap.class, Integer.class, String.class, long.class, boolean.class, int.class, "sbr$b"
-    ); // TODO: FIX SHARING
+            SHARE_IMAGE, "a", Bitmap.class, Integer.class, String.class, long.class, boolean.class, int.class, "fno$b"
+    ); // TODO: CHECK SHARING
     public static final Hook REPLACE_SHARED_VIDEO = new Hook(
             "REPLACE_SHARED_VIDEO",
-            CAMERA_FRAGMENT, "a", Uri.class, int.class, boolean.class, "trq", long.class
-    ); // TODO: FIX SHARING
+            SHARE_VIDEO, "a", Uri.class, int.class, boolean.class, "aqmy", long.class, long.class
+    ); // TODO: CHECK SHARING
     public static final Hook BATCHED_MEDIA_LIMITER = new Hook(
             "BATCHED_MEDIA_LIMITER",
             SENT_VIDEO, "aV"
@@ -208,8 +203,8 @@ public class HookDef extends ConstantDefiner<Hook> {
     );
     public static final Hook FRIEND_STORY_TILE_USERNAME = new Hook(
             "FRIEND_STORY_TILE_USERNAME",
-            STORY_FRIEND_VIEWED, "F_"
-    ); // TODO: FIX STORY BLOCKING
+            STORY_FRIEND_VIEWED, "a"
+    ); // TODO: CHECK
     public static final Hook FRIEND_PROFILE_POPUP_CREATED = new Hook(
             "FRIEND_PROFILE_POPUP_CREATED",
             FRIEND_PROFILE_POPUP_FRAGMENT, "onViewCreated", View.class, Bundle.class
@@ -283,31 +278,31 @@ public class HookDef extends ConstantDefiner<Hook> {
     // ===========================================================================
 
     // CUSTOM FILTERS ============================================================
-    public static final Hook GEOFILTER_SHOULD_SUBSAMPLE = new Hook(
-            "GEOFILTER_SHOULD_SUBSAMPLE",
-            IMAGE_GEOFILTER_VIEW, "a", boolean.class
-    ); // TODO: REDO
-    public static final Hook FILTER_LOAD_METADATA = new Hook(
-            "FILTER_LOAD_METADATA",
-            FILTER_METADATA_LOADER, "a", List.class, Context.class
-    ); // TODO: REDO
-    public static final Hook CREATE_FILTER_METADATA = new Hook(
-            "CREATE_FILTER_METADATA",
-            FILTER_METADATA_CREATOR, "d"
-    );
-    public static final Hook GET_GEOFILTER_CONTENT_VIEW = new Hook(
-            "GET_GEOFILTER_CONTENT_VIEW",
-            GEOFILTER_VIEW, "c"
-    ); // TODO: REDO
-    public static final Hook CREATE_GEOFILTER_VIEW = new Hook(
-            "CREATE_GEOFILTER_VIEW",
-            GEOFILTER_VIEW_CREATOR, "a", FILTER_METADATA.getStrClass(), Context.class, "bee"
-    ); // TODO: REDO
-    public static final Hook GEOFILTER_TAPPED = new Hook(
-            "GEOFILTER_TAPPED",
-            IMAGE_GEOFILTER_VIEW, "a", MotionEvent.class
-    ); // TODO: REDO
-    // ===========================================================================
+//    public static final Hook GEOFILTER_SHOULD_SUBSAMPLE = new Hook(
+//            "GEOFILTER_SHOULD_SUBSAMPLE",
+//            GEOFILTER_VIEW, "a", GEOFILTER_VIEW.getStrClass(), boolean.class
+//    ); // TODO: CHECK
+//    public static final Hook FILTER_LOAD_METADATA = new Hook(
+//            "FILTER_LOAD_METADATA",
+//            FILTER_METADATA_LOADER, "a", "absz", Comparator.class
+//    ); // TODO: CHECK
+//    public static final Hook CREATE_FILTER_METADATA = new Hook(
+//            "CREATE_FILTER_METADATA",
+//            FILTER_METADATA_CREATOR, "d"
+//    );
+//    public static final Hook GET_GEOFILTER_CONTENT_VIEW = new Hook(
+//            "GET_GEOFILTER_CONTENT_VIEW",
+//            GEOFILTER_VIEW, "c"
+//    ); // TODO: REDO
+//    public static final Hook CREATE_GEOFILTER_VIEW = new Hook(
+//            "CREATE_GEOFILTER_VIEW",
+//            GEOFILTER_VIEW_CREATOR, "a", FILTER_METADATA.getStrClass(), Context.class, "bee"
+//    ); // TODO: REDO
+//    public static final Hook GEOFILTER_TAPPED = new Hook(
+//            "GEOFILTER_TAPPED",
+//            GEOFILTER_VIEW, "a", MotionEvent.class
+//    ); // TODO Check
+//     ===========================================================================
 
     // MISC HOOKS ================================================================
     public static final Hook FONT_HOOK = new Hook(
@@ -408,7 +403,7 @@ public class HookDef extends ConstantDefiner<Hook> {
     public static final Hook ERROR_SUPPRESS_DOWNLOADER_RUNNABLE = new Hook(
             "ERROR_SUPPRESS_DOWNLOADER_RUNNABLE",
             DOWNLOADER_RUNNABLE, "run"
-    ); // TODO: DONE
+    );
     // ===========================================================================
 
     public static final Hook SNAP_GET_USERNAME = new Hook(

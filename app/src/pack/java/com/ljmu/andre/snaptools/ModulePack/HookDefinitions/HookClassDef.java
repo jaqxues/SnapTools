@@ -177,8 +177,8 @@ public class HookClassDef extends ConstantDefiner<HookClass> {
     ); // dux // TODO: NOT FOUND
     public static final HookClass STORY_FRIEND_VIEWED = new HookClass(
             "STORY_FRIEND_VIEWED",
-            "eqj"
-    ); // dud // TODO NOT FOUND
+            "aafy"
+    ); // dud // TODO CHECK
     public static final HookClass STORY_SNAP_AD_LOADER = new HookClass(
             "STORY_SNAP_AD_LOADER",
             "zwf"
@@ -195,6 +195,14 @@ public class HookClassDef extends ConstantDefiner<HookClass> {
             "CAMERA_FRAGMENT",
             "com.snapchat.android.app.feature.camera.CameraFragmentV2"
     ); // com.snapchat.android.app.main.camera.CameraFragmentV1
+    public static final HookClass SHARE_IMAGE = new HookClass(
+            "SHARE_IMAGE",
+            "aavx"
+    ); // CAMERA_FRAGMENT
+    public static final HookClass SHARE_VIDEO = new HookClass(
+            "SHARE_VIDEO",
+            "aawc"
+    ); // CAMERA_FRAGMENT
     public static final HookClass ENUM_LENS_TYPE = new HookClass(
             "ENUM_LENS_TYPE",
             "afmk$c"
@@ -271,34 +279,34 @@ public class HookClassDef extends ConstantDefiner<HookClass> {
             "CHAT_BODY_METADATA",
             "auuq"
     ); // wxa
-    public static final HookClass GEOFILTER_VIEW = new HookClass(
-            "GEOFILTER_VIEW",
-            "com.snapchat.android.app.shared.feature.preview.ui.smartfilters.GeofilterView"
-    ); // com.snapchat.android.app.shared.feature.preview.ui.smartfilters.GeofilterView // TODO: DONE
-    public static final HookClass IMAGE_GEOFILTER_VIEW = new HookClass(
-            "IMAGE_GEOFILTER_VIEW",
-            "com.snapchat.android.app.shared.feature.preview.ui.smartfilters.ImageGeofilterView"
-    ); // com.snapchat.android.app.shared.feature.preview.ui.smartfilters.ImageGeofilterView // TODO: DONE
-    public static final HookClass FILTER_METADATA = new HookClass(
-            "FILTER_METADATA",
-            "anlt"
-    ); // quj
-    public static final HookClass SERIALIZABLE_FILTER_METADATA = new HookClass(
-            "SERIALIZABLE_FILTER_METADATA",
-            "aups"
-    ); // wsa
-    public static final HookClass FILTER_METADATA_LOADER = new HookClass(
-            "FILTER_METADATA_LOADER",
-            "abtu"
-    ); // ghu
-    public static final HookClass FILTER_METADATA_CREATOR = new HookClass(
-            "FILTER_METADATA_CREATOR",
-            "annh$2"
-    ); // qvs$2
-    public static final HookClass GEOFILTER_VIEW_CREATOR = new HookClass(
-            "GEOFILTER_VIEW_CREATOR",
-            "ghb"
-    ); // fdr // TODO: DONE
+    //    public static final HookClass GEOFILTER_VIEW = new HookClass(
+//            "GEOFILTER_VIEW",
+//            "com.snapchat.android.app.shared.feature.preview.ui.smartfilters.geofilterview.GeofilterView2"
+//    ); // com.snapchat.android.app.shared.feature.preview.ui.smartfilters.GeofilterView
+//    public static final HookClass FILTER_LOADER = new HookClass(
+//            "FILTER_LOADER",
+//            "anhf"
+//    );
+//    public static final HookClass FILTER_METADATA = new HookClass(
+//            "FILTER_METADATA",
+//            "anlt"
+//    ); // quj
+//    public static final HookClass SERIALIZABLE_FILTER_METADATA = new HookClass(
+//            "SERIALIZABLE_FILTER_METADATA",
+//            "aups"
+//    ); // wsa
+//    public static final HookClass FILTER_METADATA_LOADER = new HookClass(
+//            "FILTER_METADATA_LOADER",
+//            "abtu"
+//    ); // ghu
+//    public static final HookClass FILTER_METADATA_CREATOR = new HookClass(
+//            "FILTER_METADATA_CREATOR",
+//            "annh$2"
+//    ); // qvs$2
+//    public static final HookClass GEOFILTER_VIEW_CREATOR = new HookClass(
+//            "GEOFILTER_VIEW_CREATOR",
+//            "ghb"
+//    ); // fdr // TODO: DONE
     public static final HookClass CHAT_NOTIFICATION_CREATOR = new HookClass(
             "CHAT_NOTIFICATION_CREATOR",
             "ahnj"

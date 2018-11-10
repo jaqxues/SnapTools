@@ -1,5 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.ljmu.andre.CBIDatabase.CBITable;
@@ -106,8 +107,6 @@ public class ChatSaving extends ModuleHelper {
 
         if (getPref(STORE_CHAT_MESSAGES)) {
             try {
-                yourUsername = callStaticHook(GET_USERNAME);
-
                 ChatDatabase.init(snapContext);
 
                 chatTable = ChatDatabase.getTable(ChatObject.class);
@@ -319,5 +318,16 @@ public class ChatSaving extends ModuleHelper {
             Timber.w("Chat object not inserted");
 
         Timber.d("Created new chat object: " + newChatObject.toString());
+    }
+
+    @Override
+    public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+        // Giving time Snapchat time to initialize
+        try {
+            yourUsername = callStaticHook(GET_USERNAME);
+        } catch (Exception e) {
+            Timber.e(e, "Unable to get UserName");
+            moduleLoadState.fail();
+        }
     }
 }

@@ -7,7 +7,6 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
-import de.robv.android.xposed.XC_MethodReplacement;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
@@ -43,16 +42,6 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
  */
 
 public class ForcedHooks extends ModuleHelper {
-    private static final String DEVICE_ID;
-
-    static {
-        StringBuilder deviceIdBuilder = new StringBuilder();
-
-        for (int i = 0; i < 16; i++)
-            deviceIdBuilder.append((int) Math.floor(Math.random() * 10));
-
-        DEVICE_ID = deviceIdBuilder.toString();
-    }
 
     private boolean miscChangesEnabled;
 
@@ -77,21 +66,10 @@ public class ForcedHooks extends ModuleHelper {
          * Returns TRUE to mark SC as DEBUG build
          * ===========================================================================
          */
-        findAndHookMethod(
-                "tqw", snapClassLoader,
-                "j", XC_MethodReplacement.returnConstant(true)
-        );
-
-        /**Device ID Spoofing, not needed since my support team are a bunch of cunts**/
-//		findAndHookMethod(
-//				Secure.class,
-//				"getString", ContentResolver.class, String.class,
-//				new HookWrapper((HookBefore) param -> {
-//					if (param.args[1].equals(Secure.ANDROID_ID)) {
-//						param.setResult(DEVICE_ID);
-//					}
-//				})
-//		);
+//        findAndHookMethod(
+//                "aqly", snapClassLoader,
+//                "p", XC_MethodReplacement.returnConstant(true)
+//        );
 
 
 //		findAndHookMethod(
@@ -119,9 +97,9 @@ public class ForcedHooks extends ModuleHelper {
 //				new HookWrapper((HookBefore) param -> XposedHelpers.setObjectField(param.thisObject, "a", null))
 //		);
 
-
-//        String cheetahMode = transformOtherString(FORCE_CHEETAH_STATE);
-//		Boolean chatV10Mode = transformBoolean(FORCE_CHEETAH_CHAT_STATE);
+        /*
+        Snapchat Experiments
+         */
         Boolean insightsMode = transformBoolean(FORCE_INSIGHTS_STATE);
         String multiSnapMode = transformOverwrite(FORCE_MULTI_SNAP_STATE);
         Boolean videoChatMode = transformBoolean(FORCE_CHAT_VIDEO_STATE);
@@ -141,8 +119,8 @@ public class ForcedHooks extends ModuleHelper {
 //			experimentDebugHook = this::handleExperimentPrinting;
 
         findAndHookMethod(
-                "tpl", snapClassLoader,
-                "a", findClass("tpm", snapClassLoader), Object.class,
+                "aqkk", snapClassLoader,
+                "a", findClass("aqkl", snapClassLoader), Object.class,
                 new HookWrapper(
                         param -> {
                             String key = (String) callMethod(param.args[0], "a");
@@ -384,7 +362,9 @@ public class ForcedHooks extends ModuleHelper {
                 }
         );
 
-        // Error suppression methods =================================================
+        /**
+         * Caused by the code above: Attempt to block Snapchat analytics
+         */
         hookMethod(
                 ERROR_SUPPRESS_DOWNLOADER_RUNNABLE,
                 new HookWrapper((HookAfter) param -> {
@@ -394,8 +374,6 @@ public class ForcedHooks extends ModuleHelper {
                     }
                 })
         );
-
-
         /**
          * ===========================================================================
          * Just used as a fatal crash prevention... Likely just moves the issue

@@ -218,8 +218,7 @@ public class Saving extends ModuleHelper {
                                 else if (media.getClass().equals(sentVideo))
                                     sentSnap = handleSentSnap(ContextHelper.getActivity(), media, true);
                                 else {
-                                    Timber.e("Unhandled Sent Snap Type: "
-                                            + media.getClass());
+                                    Timber.e("Unhandled Sent Snap Type: %s", media.getClass());
                                 }
                             } catch (Throwable t) {
                                 Timber.e(t);

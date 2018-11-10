@@ -33,7 +33,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.S
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.STORY_SNAP;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CONSTRUCTOR_OPERA_PAGE_VIEW;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CREATE_CHEETAH_PROFILE_SETTINGS_VIEW;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CREATE_PROFILE_SETTINGS_VIEW;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.DISPATCH_CHAT_UPDATE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_RECEIVED_SNAP_PAYLOAD;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_SNAP_ID;
@@ -414,6 +413,11 @@ public class StealthViewing extends ModuleHelper {
             );
         }
 
+        /**
+         * ===========================================================================
+         * Profile Navigation Buttons hook
+         * ===========================================================================
+         */
         hookConstructor(
                 CREATE_CHEETAH_PROFILE_SETTINGS_VIEW,
                 new ST_MethodHook() {
@@ -425,23 +429,6 @@ public class StealthViewing extends ModuleHelper {
                     }
                 }
         );
-
-        /**
-         * ===========================================================================
-         * Profile Navigation Buttons hook
-         * ===========================================================================
-         */
-        hookMethod(
-                CREATE_PROFILE_SETTINGS_VIEW,
-                new ST_MethodHook() {
-                    @Override
-                    protected void after(MethodHookParam param) throws Throwable {
-                        ViewGroup contentView = (ViewGroup) param.getResult();
-                        LinearLayout buttonsLayout = getView(contentView, getId(ContextHelper.getActivity(), "profile_navigation_buttons"));
-
-                        buttonsLayout.addView(detach(stealthContainer));
-                    }
-                });
     }
 
 
@@ -460,7 +447,7 @@ public class StealthViewing extends ModuleHelper {
             FrameLayout activeLayout = activeLayoutIterator.next();
 
             Timber.d("Testing layout: " + activeLayout);
-            Timber.d("WindowVis: " + (int) activeLayout.getWindowVisibility());
+            Timber.d("WindowVis: %s", activeLayout.getWindowVisibility());
 
             if (activeLayout.getWindowVisibility() == View.GONE) {
                 Timber.d("Active layout is dead... removing from list");
@@ -477,7 +464,7 @@ public class StealthViewing extends ModuleHelper {
     }
 
     private boolean handleStealthCheck(String snapId) {
-        Timber.d("BypassActive: " + bypassNextStealthView);
+        Timber.d("BypassActive: %s", bypassNextStealthView);
 
         if (bypassNextStealthView) {
             Timber.d("Not using stealth for snap");

@@ -206,28 +206,6 @@ class MiscChangesViewProvider(
                             gravity = Gravity.CENTER
                         }.lparams(matchParent)
 
-                        labelledSpinner(
-                                label = "Cheetah UI: ",
-                                initialItem = getPref<String>(FORCE_CHEETAH_STATE),
-                                items = arrayListOf(
-                                        "Default",
-                                        "OLD_DESIGN",
-                                        "FULL_CHEETAH",
-                                        "CHEETAH_OLD_SEND_TO",
-                                        "CHEETAH_UP_NEXT_DISABLED",
-                                        "CHEETAH_WITHOUT_ADDED_TO_STORY_SUBTEXT",
-                                        "CHEETAH_RIGHT_ALIGN_ALL_MSG_ICONS",
-                                        "CHEETAH_BIG_RIGHT_FRIEND_EMOJIS",
-                                        "CHEETAH_NO_BITMOJIS_FF"
-                                ),
-                                id = "spinner_cheetah",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
-                                        { newItem, _, _ ->
-                                            putAndKill(FORCE_CHEETAH_STATE, newItem, activity)
-                                        },
-                                        { getPref<String>(FORCE_CHEETAH_STATE) }
-                                ))
-
 //                        labelledSpinner(
 //                                label = "Cheetah Chat UI: ",
 //                                initialItem = getPref<String>(FORCE_CHEETAH_CHAT_STATE),

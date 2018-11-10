@@ -81,7 +81,8 @@ public class Sharing extends ModuleHelper {
                                             "Shared Image Detected",
                                             "Found an image that has been shared to Snapchat"
                                                     + "\nPress No to cancel the share" +
-                                                    "\nPress Yes to continue, then take a regular snap for the media to be replaced"
+                                                    "\nPress Yes to continue, then take a regular snap for the media to be replaced" +
+                                                    "\n\nImportant: If you experience Image Rotation while sharing, activate the \"Prevent Image Rotation Bug\" in Sharing Settings"
                                             ,
                                             new ThemedClickListener() {
                                                 @Override

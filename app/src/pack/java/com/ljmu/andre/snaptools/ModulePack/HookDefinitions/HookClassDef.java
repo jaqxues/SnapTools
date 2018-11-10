@@ -375,10 +375,6 @@ public class HookClassDef extends ConstantDefiner<HookClass> {
             "STORY_DATA_MOMENT",
             "ivr"
     ); // aazu
-    public static final HookClass DOWNLOADER_RUNNABLE = new HookClass(
-            "DOWNLOADER_RUNNABLE",
-            "apeh$2"
-    ); // smd$2
 
     public static class HookClass extends Constant {
         private String strClass;

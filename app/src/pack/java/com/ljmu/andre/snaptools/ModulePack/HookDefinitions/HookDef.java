@@ -35,7 +35,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.C
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_VIDEO_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHEETAH_PROFILE_SETTINGS_CREATOR;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.COUNTDOWNTIMER_VIEW;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.DOWNLOADER_RUNNABLE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENCRYPTED_STREAM_BUILDER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENCRYPTION_ALGORITHM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.EXPERIMENT_BASE;
@@ -395,14 +394,6 @@ public class HookDef extends ConstantDefiner<Hook> {
     public static final Hook AB_TEST_CHECK_FLOAT = new Hook(
             "AB_TEST_CHECK_FLOAT",
             AB_TEST_MANAGER, "a", String.class, String.class, float.class
-    );
-
-    // ===========================================================================
-
-    // ERROR SUPPRESSION (FORCED HOOKS) ==========================================
-    public static final Hook ERROR_SUPPRESS_DOWNLOADER_RUNNABLE = new Hook(
-            "ERROR_SUPPRESS_DOWNLOADER_RUNNABLE",
-            DOWNLOADER_RUNNABLE, "run"
     );
     // ===========================================================================
 

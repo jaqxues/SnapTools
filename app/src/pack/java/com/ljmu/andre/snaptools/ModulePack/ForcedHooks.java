@@ -15,7 +15,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TES
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_INT;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_LONG;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_STRING;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.ERROR_SUPPRESS_DOWNLOADER_RUNNABLE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.NETWORK_EXECUTE_SYNC;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_ANIMATED_CONTENT_STATE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAMERA2_STATE;
@@ -351,28 +350,12 @@ public class ForcedHooks extends ModuleHelper {
 
                         Timber.d("Network URL: " + url);
 
-                        if (url.contains("analytics")) {
-                            Timber.d("Blocking analytics");
-                            param.setResult(null);
-                        } else if (url.endsWith("logout")) {
+                        if (url.endsWith("logout")) {
                             Timber.d("Blocking logout");
                             param.setResult(null);
                         }
                     }
                 }
-        );
-
-        /**
-         * Caused by the code above: Attempt to block Snapchat analytics
-         */
-        hookMethod(
-                ERROR_SUPPRESS_DOWNLOADER_RUNNABLE,
-                new HookWrapper((HookAfter) param -> {
-                    if (param.getThrowable() != null) {
-                        Timber.e(param.getThrowable());
-                        param.setThrowable(null);
-                    }
-                })
         );
         /**
          * ===========================================================================

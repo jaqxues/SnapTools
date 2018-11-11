@@ -164,16 +164,6 @@ public class ModulePreferenceDef extends ConstantDefiner<Preference> {
      * Experimental Feature States
      * ===========================================================================
      */
-    public static final Preference FORCE_CHEETAH_STATE = new Preference(
-            "FORCE_CHEETAH_STATE",
-            "Default", String.class
-    );// developerOptionCheetahMode
-
-    public static final Preference FORCE_CHEETAH_CHAT_STATE = new Preference(
-            "FORCE_CHEETAH_CHAT_STATE",
-            "Default", String.class
-    ); // chat_v10
-    /*true, false*/
 
     public static final Preference FORCE_INSIGHTS_STATE = new Preference(
             "FORCE_INSIGHTS_STATE",

@@ -113,12 +113,12 @@ class ModulesDef extends ConstantDefiner<Modules> {
 
     // ===========================================================================
 
-//    public static final Modules STEALTH_VIEWING = new Modules(
-//            12,
-//            "Stealth Viewing",
-//            StealthViewing.class,
-//            "Allows you to view chats and snaps without marking them as viewed"
-//    );
+    public static final Modules STEALTH_VIEWING = new Modules(
+            12,
+            "Stealth Viewing",
+            StealthViewing.class,
+            "Allows you to view chats and snaps without marking them as viewed"
+    );
 
     // ===========================================================================
 

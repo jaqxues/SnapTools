@@ -402,11 +402,6 @@ public class ModulePreferenceDef extends ConstantDefiner<Preference> {
             true, Boolean.class
     );
 
-    public static final Preference FORCE_CHEETAH = new Preference(
-            "FORCE_CHEETAH",
-            false, Boolean.class
-    );
-
     public static final Preference BLOCK_TYPING_NOTIFICATIONS = new Preference(
             "BLOCK_TYPING_NOTIFICATIONS",
             false, Boolean.class

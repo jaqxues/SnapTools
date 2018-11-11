@@ -315,6 +315,14 @@ public class HookClassDef extends ConstantDefiner<HookClass> {
             "NETWORK_MANAGER",
             "apbv"
     ); // sjv
+    /**
+     * Hooking the {@link HookDef#NETWORK_EXECUTE_SYNC} method leads to an Exception in this
+     * Runnable. We hook and suppress this exception
+     */
+    public static final HookClass DOWNLOADER_RUNNABLE = new HookClass(
+            "DOWNLOADER_RUNNABLE",
+            "apeh$2"
+    );
     public static final HookClass NETWORK_DISPATCHER = new HookClass(
             "NETWORK_DISPATCHER",
             "ahql"

@@ -165,14 +165,6 @@ class MiscChangesViewProvider(
                             setOnCheckedChangeListener({ _, isChecked -> putAndKill(PASTE_BUTTON, isChecked, activity) })
                         }.lparams(matchParent)
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
-                            text = "Force new Snapchat UI (Cheetah)"
-                            verticalPadding = dip(10)
-                            id = ResourceUtils.getIdFromString("switch_viewing_videos")
-                            isChecked = getPref(FORCE_CHEETAH)
-                            setOnCheckedChangeListener({ _, isChecked -> putAndKill(FORCE_CHEETAH, isChecked, activity) })
-                        }.lparams(matchParent)
-
                         generalUICallable.call(this)
                     }.lparams(matchParent, wrapContent) {
                         margin = 16.toDp()
@@ -205,28 +197,6 @@ class MiscChangesViewProvider(
                             textColor = ContextCompat.getColor(activity, getColor(activity, "errorLight"))
                             gravity = Gravity.CENTER
                         }.lparams(matchParent)
-
-                        labelledSpinner(
-                                label = "Cheetah UI: ",
-                                initialItem = getPref<String>(FORCE_CHEETAH_STATE),
-                                items = arrayListOf(
-                                        "Default",
-                                        "OLD_DESIGN",
-                                        "FULL_CHEETAH",
-                                        "CHEETAH_OLD_SEND_TO",
-                                        "CHEETAH_UP_NEXT_DISABLED",
-                                        "CHEETAH_WITHOUT_ADDED_TO_STORY_SUBTEXT",
-                                        "CHEETAH_RIGHT_ALIGN_ALL_MSG_ICONS",
-                                        "CHEETAH_BIG_RIGHT_FRIEND_EMOJIS",
-                                        "CHEETAH_NO_BITMOJIS_FF"
-                                ),
-                                id = "spinner_cheetah",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
-                                        { newItem, _, _ ->
-                                            putAndKill(FORCE_CHEETAH_STATE, newItem, activity)
-                                        },
-                                        { getPref<String>(FORCE_CHEETAH_STATE) }
-                                ))
 
 //                        labelledSpinner(
 //                                label = "Cheetah Chat UI: ",

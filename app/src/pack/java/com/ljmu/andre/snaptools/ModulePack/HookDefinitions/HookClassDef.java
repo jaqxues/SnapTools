@@ -71,6 +71,10 @@ public class HookClassDef extends ConstantDefiner<HookClass> {
             "GROUP_SNAP_METADATA",
             "aicy"
     ); // mai
+    public static final HookClass GROUP_SNAP_WRAPPER = new HookClass(
+            "GROUP_SNAP_WRAPPER",
+            "svq"
+    ); // Parent of result type of HookDef#GROUP_GET_ALGORITHM
     public static final HookClass STORY_SNAP = new HookClass(
             "STORY_SNAP",
             "ankl"

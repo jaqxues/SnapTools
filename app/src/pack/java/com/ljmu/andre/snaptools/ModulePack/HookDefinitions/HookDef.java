@@ -42,6 +42,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.E
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FONT_CLASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FRIEND_PROFILE_POPUP_FRAGMENT;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GROUP_SNAP_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GROUP_SNAP_WRAPPER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_AUTHENTICATION;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_CATEGORY_RESOLVER;
@@ -115,7 +116,11 @@ public class HookDef extends ConstantDefiner<Hook> {
     public static final Hook GROUP_GET_ALGORITHM = new Hook(
             "GROUP_GET_ALGORITHM",
             GROUP_SNAP_METADATA, "a", "aisw"
-    ); // TODO: REDO GROUP GET ALGORITHM
+    );
+    public static final Hook GROUP_ALGORITHM_UNWRAPPED = new Hook(
+            "GROUP_ALGORITHM_UNWRAPPED",
+            GROUP_SNAP_WRAPPER, "a", String.class
+    );
     public static final Hook SENT_SNAP = new Hook(
             "SENT_SNAP",
             META_DATA_BUILDER, "a", SENT_SNAP_BASE.getStrClass()

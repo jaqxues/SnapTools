@@ -61,6 +61,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CONSTR
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.DIRECT_GET_ALGORITHM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.ENCRYPTION_ALGORITHM_STREAM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GET_USERNAME;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GROUP_ALGORITHM_UNWRAPPED;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.GROUP_GET_ALGORITHM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.OPENED_SNAP;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SENT_BATCHED_SNAP;
@@ -75,6 +76,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STORY_METADATA_INSERT_OBJECT;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.STREAM_TYPE_CHECK_BYPASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.CHAT_METADATA_MEDIA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.GROUP_ALGORITHM_WRAPPER_FIELD;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.SENT_BATCHED_VIDEO_MEDIAHOLDER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.SENT_MEDIA_BATCH_DATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.SENT_MEDIA_BITMAP;
@@ -446,6 +448,12 @@ public class Saving extends ModuleHelper {
                         boolean isVideo = callHook(SNAP_GET_MEDIA_TYPE, groupMetaData);
                         String fileExtension = isVideo ? ".mp4" : ".jpg";
 
+                        Object encryptionWrapper;
+                        if (isVideo)
+                            encryptionWrapper = callHook(GROUP_ALGORITHM_UNWRAPPED, param.getResult(), "video_first_frame_media_info");
+                        else
+                            encryptionWrapper = callHook(GROUP_ALGORITHM_UNWRAPPED, param.getResult(), "image_media_info");
+
                         Long timestamp = callHook(SNAP_GET_TIMESTAMP, groupMetaData);
                         String username = callHook(SNAP_GET_USERNAME, groupMetaData);
 
@@ -458,7 +466,7 @@ public class Saving extends ModuleHelper {
                                 .setFileExtension(fileExtension)
                                 .build(GroupSnap.class);
 
-                        setAdditionalInstanceField(param.getResult(), KEY_HEADER, key);
+                        setAdditionalInstanceField(getObjectField(GROUP_ALGORITHM_WRAPPER_FIELD, encryptionWrapper), KEY_HEADER, key);
                     }
                 }
         );

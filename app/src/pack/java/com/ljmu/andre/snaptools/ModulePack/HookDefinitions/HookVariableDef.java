@@ -168,6 +168,20 @@ public class HookVariableDef extends ConstantDefiner<HookVariable> {
             "c"
     );
 
+    /**
+     * Class: smu
+     * <p>
+     *     Code Chunk:
+     *     <code>
+     *         public final EncryptionAlgorithm _var_;
+     *     </code>
+     * </p>
+     */
+    public static final HookVariable GROUP_ALGORITHM_WRAPPER_FIELD = new HookVariable(
+            "GROUP_ALGORITHM_WRAPPER_FIELD",
+            "b"
+    );
+
     // ===========================================================================
 
     public static final HookVariable NO_AUTO_ADVANCE = new HookVariable(

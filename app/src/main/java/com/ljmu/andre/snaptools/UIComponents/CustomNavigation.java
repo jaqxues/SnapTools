@@ -15,7 +15,6 @@ import com.ljmu.andre.snaptools.Fragments.FeaturesFragment;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Fragments.HomeFragment;
 import com.ljmu.andre.snaptools.Fragments.LegalFragment;
-import com.ljmu.andre.snaptools.Fragments.PackManagerFragment;
 import com.ljmu.andre.snaptools.Fragments.SettingsFragment;
 import com.ljmu.andre.snaptools.Fragments.ShopFragment;
 import com.ljmu.andre.snaptools.Fragments.SupportFragment;
@@ -57,7 +56,6 @@ public class CustomNavigation extends NavigationView implements NavigationView.O
         this.setNavigationItemSelectedListener(this);
 
         addFragment(new HomeFragment());
-        addFragment(new PackManagerFragment());
         addFragment(new SettingsFragment());
         addFragment(new SupportFragment());
         addFragment(new FAQFragment());

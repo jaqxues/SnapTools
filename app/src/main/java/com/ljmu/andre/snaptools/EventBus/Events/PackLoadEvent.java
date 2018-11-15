@@ -12,30 +12,18 @@ import java.io.File;
 
 public class PackLoadEvent {
     private ModulePack modulePack;
-    private String packName;
     private String failReason;
-    private File packFile;
 
-    public PackLoadEvent(String packName, String failReason) {
-        this.packName = packName;
+    public PackLoadEvent(String failReason) {
         this.failReason = failReason;
     }
 
-    public PackLoadEvent(ModulePack modulePack, File packFile) {
-        this.packFile = packFile;
+    public PackLoadEvent(ModulePack modulePack) {
         this.modulePack = modulePack;
-    }
-
-    public String getPackName() {
-        return packName;
     }
 
     public String getFailReason() {
         return failReason;
-    }
-
-    public File getPackFile() {
-        return packFile;
     }
 
     public ModulePack getModulePack() {
@@ -47,7 +35,6 @@ public class PackLoadEvent {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("modulePack", modulePack)
-                .add("packFile", packFile)
                 .toString();
     }
 }

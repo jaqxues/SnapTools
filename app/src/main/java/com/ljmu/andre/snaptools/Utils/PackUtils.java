@@ -12,21 +12,12 @@ import android.widget.Toast;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import com.ljmu.andre.snaptools.Exceptions.NullObjectException;
-import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData;
-import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
-import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +27,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
@@ -54,7 +44,6 @@ import static com.ljmu.andre.snaptools.Utils.MiscUtils.calcTimeDiff;
 public class PackUtils {
     private static final Object PACK_CHECKSUM_LOCK = new Object();
     private static File[] jarFileCache;
-    private static Map<String, LocalPackMetaData> metaDataCache;
     private static long lastKilledSC;
 
     public static void killSCService(Activity activity) {
@@ -111,77 +100,6 @@ public class PackUtils {
         }
     }
 
-    public static boolean isPackInstalled(String packName) {
-        Map<String, LocalPackMetaData> installedDataMap = getInstalledMetaData();
-
-        return !(installedDataMap == null || installedDataMap.isEmpty())
-                && installedDataMap.get(packName) != null;
-
-    }
-
-    @Nullable
-    public static Map<String, LocalPackMetaData> getInstalledMetaData() {
-        try {
-            File packDirectory = new File((String) getPref(MODULES_PATH));
-
-            File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
-
-            if (jarFileList == null || jarFileList.length <= 0)
-                return null;
-
-            if (Arrays.equals(jarFileCache, jarFileList)) {
-                Timber.d("They are equal");
-                return metaDataCache;
-            }
-
-            Timber.d("They are NOT equal");
-
-            Map<String, LocalPackMetaData> packMetaDataMap = new HashMap<>();
-
-            for (File file : jarFileList) {
-                try {
-                    LocalPackMetaData packMetaData = getPackMetaData(file);
-                    packMetaDataMap.put(packMetaData.getName(), packMetaData);
-                } catch (Throwable t) {
-                    Timber.e(t);
-                }
-            }
-
-            metaDataCache = packMetaDataMap;
-            jarFileCache = jarFileList;
-
-            return packMetaDataMap;
-        } catch (Throwable t) {
-            Timber.e(t);
-        }
-
-        return null;
-    }
-
-    public static LocalPackMetaData getPackMetaData(File file) throws NullObjectException {
-        LocalPackMetaData packMetaData = new LocalPackMetaData();
-        bindPackMetaData(packMetaData, file);
-        return packMetaData;
-    }
-
-    private static void bindPackMetaData(PackMetaData metaData, File file) throws NullObjectException {
-        if (!file.getName().endsWith(".jar"))
-            throw new IllegalArgumentException("Supplied Non Jar File");
-
-        Attributes attributes = JarUtils.getAttributesFromJar(file);
-
-        if (attributes == null)
-            throw new NullObjectException("Module Pack Built Incorrectly!", "Attributes");
-
-        metaData.setName(file.getName().replace(".jar", ""))
-                .setType(attributes.getValue("Type"))
-                .setPackVersion(attributes.getValue("PackVersion"))
-                .setScVersion(attributes.getValue("SCVersion"))
-                .setDevelopment(Boolean.valueOf(attributes.getValue("Development")))
-                .setFlavour(getFlavourFromAttributes(attributes, file))
-                .completedBinding();
-    }
-
     public static String getFlavourFromAttributes(Attributes attributes, File file) {
         String flavour = attributes.getValue("Flavour");
 
@@ -189,52 +107,6 @@ public class PackUtils {
             flavour = file.getName().contains("Beta") ? "beta" : "prod";
 
         return flavour;
-    }
-
-    public static Observable<Map<String, LocalPackMetaData>> getAllMetaData() {
-        Callable<Map<String, LocalPackMetaData>> callable = () -> {
-            File packDirectory = new File((String) getPref(MODULES_PATH));
-
-            File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
-
-            if (jarFileList == null || jarFileList.length <= 0)
-                return Collections.emptyMap();
-
-            Map<String, LocalPackMetaData> packMetaDataMap = new HashMap<>();
-
-            for (File file : jarFileList) {
-                LocalPackMetaData metaData;
-                try {
-                    metaData = getPackMetaData(file);
-                } catch (Throwable t) {
-                    metaData = (LocalPackMetaData) new FailedPackMetaData()
-                            .setReason(t.getMessage())
-                            .setName(file.getName().replace(".jar", ""))
-                            .completedBinding();
-                }
-
-                packMetaDataMap.put(metaData.getName(), metaData);
-            }
-
-            Set<String> selectedPacks = getPref(SELECTED_PACKS);
-
-            for (String packName : selectedPacks) {
-                if (!packMetaDataMap.containsKey(packName)) {
-                    FailedPackMetaData metaData = (FailedPackMetaData) new FailedPackMetaData()
-                            .setReason("Pack is enabled but cannot be found in the installed list")
-                            .setName(packName)
-                            .completedBinding();
-
-                    packMetaDataMap.put(metaData.getName(), metaData);
-                }
-            }
-
-            return packMetaDataMap;
-        };
-
-        return Observable.fromCallable(callable)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static Long timeSinceLastPackCheck() {

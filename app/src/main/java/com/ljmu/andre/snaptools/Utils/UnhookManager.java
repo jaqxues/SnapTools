@@ -50,7 +50,6 @@ public class UnhookManager {
         synchronized (UNHOOK_LOCK) {
             unhookAll();
             abort = true;
-            FrameworkManager.getModulePackList().clear();
         }
     }
 

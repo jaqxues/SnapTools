@@ -6,20 +6,18 @@ import android.util.Pair;
 
 import com.ljmu.andre.snaptools.Exceptions.ModulePackLoadAborted;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
-import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Framework.Module;
 import com.ljmu.andre.snaptools.Framework.ModulePack;
 import com.ljmu.andre.snaptools.Framework.Utils.LoadState.State;
 import com.ljmu.andre.snaptools.Framework.Utils.ModuleLoadState;
-import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
 import com.ljmu.andre.snaptools.ModulePack.Caching.SnapDiskCache;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.GeneralSettingsFragment;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KnownBugsFragment;
 import com.ljmu.andre.snaptools.ModulePack.ModulesDef.Modules;
-import com.ljmu.andre.snaptools.Utils.Constants;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,17 +38,11 @@ import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContain
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ModulePackImpl extends ModulePack {
-    private static final int MINIMUM_FRAMEWORK_VERSION = 56;
+    private static final String SC_VERSION = "10.26.5.0";
+    private static final int MINIMUM_FRAMEWORK_VERSION = 108;
 
-    public ModulePackImpl(LocalPackMetaData packMetaData, PackLoadState loadState) throws ModulePackLoadAborted {
-        super(packMetaData, loadState);
-
-        checkFrameworkVersion();
-    }
-
-    private void checkFrameworkVersion() throws ModulePackLoadAborted {
-        if (Constants.getApkVersionCode() < MINIMUM_FRAMEWORK_VERSION)
-            throw new ModulePackLoadAborted("Pack requires newer APK version");
+    public ModulePackImpl() {
+        super();
     }
 
     /**
@@ -188,7 +180,6 @@ public class ModulePackImpl extends ModulePack {
         SnapDiskCache.getInstance().destroyTempDir();
 
         List<ModuleLoadState> hookResults = new ArrayList<>();
-        Map<String, ModuleLoadState> moduleLoadStateMap = getPackLoadState().getModuleLoadStates();
 
         for (ModuleLoadState moduleLoadState : moduleLoadStateMap.values()) {
             hookResults.add(moduleLoadState);
@@ -210,15 +201,12 @@ public class ModulePackImpl extends ModulePack {
             }
         }
 
-        packLoadState.refreshPackLoadState();
-
         hasInjected = true;
         return hookResults;
     }
 
     @Override
     public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
-        Map<String, ModuleLoadState> moduleLoadStateMap = getPackLoadState().getModuleLoadStates();
 
         for (ModuleLoadState state : moduleLoadStateMap.values()) {
             if (state.getState() != State.SUCCESS)
@@ -242,5 +230,10 @@ public class ModulePackImpl extends ModulePack {
     @Override
     public String isPremiumCheck() {
         return "A SnapTools Pack";
+    }
+
+    @Override
+    protected String getPackSCVersion() {
+        return SC_VERSION;
     }
 }

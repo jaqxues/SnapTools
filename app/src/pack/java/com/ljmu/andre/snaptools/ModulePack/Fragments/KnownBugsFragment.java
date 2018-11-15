@@ -249,8 +249,6 @@ public class KnownBugsFragment extends FragmentHelper {
     }
 
     public KnownBugsFragment buildMetaData(ModulePack modulePack) {
-        scVersion = modulePack.getPackMetaData().getScVersion();
-        packVersion = modulePack.getPackMetaData().getPackVersion();
         return this;
     }
 

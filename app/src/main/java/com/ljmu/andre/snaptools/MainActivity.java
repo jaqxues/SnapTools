@@ -19,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
@@ -33,7 +32,6 @@ import com.google.common.eventbus.Subscribe;
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
-import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
@@ -43,7 +41,6 @@ import com.ljmu.andre.snaptools.EventBus.Events.LoadPackSettingsEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.MasterSwitchEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.ModuleEventRequest;
 import com.ljmu.andre.snaptools.EventBus.Events.PackLoadEvent;
-import com.ljmu.andre.snaptools.EventBus.Events.PackUnloadEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.ReqCheckApkUpdateEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.ReqLoadFragmentEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.ShopPurchaseEvent;
@@ -51,10 +48,8 @@ import com.ljmu.andre.snaptools.EventBus.Events.TutorialFinishedEvent;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Fragments.HomeFragment;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
-import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Framework.Module;
 import com.ljmu.andre.snaptools.Framework.ModulePack;
-import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckAPKUpdate;
 import com.ljmu.andre.snaptools.RedactedClasses.Answers;
 import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
@@ -116,9 +111,6 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
 import static com.ljmu.andre.snaptools.Utils.TranslationDef.DEFAULT_TRANSLATION_FOUND_MESSAGE;
 import static com.ljmu.andre.snaptools.Utils.TranslationDef.DEFAULT_TRANSLATION_FOUND_TITLE;
-import static com.ljmu.andre.snaptools.Utils.TranslationDef.FRAMEWORK_LOAD_ERROR_TITLE;
-import static com.ljmu.andre.snaptools.Utils.TranslationDef.PACK_LOAD_FATAL_ERROR_MSG;
-import static com.ljmu.andre.snaptools.Utils.TranslationDef.PACK_LOAD_FATAL_ERROR_TITLE;
 
 public class MainActivity
         extends AppCompatActivity
@@ -454,36 +446,8 @@ public class MainActivity
          * Initialise Security and Load Module Packs
          * ===========================================================================
          */
-        try {
-//			Security.init(getResources());
 
-            // ===========================================================================
-            List<PackLoadState> packLoadStates = FrameworkManager.loadAllModulePacks(this);
-            // ===========================================================================
-
-            boolean hasFailed = false;
-            for (PackLoadState loadState : packLoadStates) {
-                if (loadState.hasFailed())
-                    hasFailed = true;
-            }
-
-            if (hasFailed) {
-                new ThemedDialog(this)
-                        .setTitle(translate(FRAMEWORK_LOAD_ERROR_TITLE))
-                        .setHeaderDrawable(R.drawable.error_header)
-                        .setExtension(new FrameworkLoadError(packLoadStates))
-                        .show();
-            }
-        } catch (Throwable t) {
-            Timber.wtf(t, "Fatal error loading packs");
-            DialogFactory.createErrorDialog(
-                    this,
-                    translate(PACK_LOAD_FATAL_ERROR_TITLE),
-                    translate(PACK_LOAD_FATAL_ERROR_MSG)
-                            + "\n\n" + t.getMessage()
-            ).show();
-        }
-
+        FrameworkManager.loadAllModulePacks(this);
         FrameworkManager.checkPacksForUpdate(this);
 
         // ===========================================================================
@@ -895,24 +859,6 @@ public class MainActivity
 
     @SuppressWarnings("unused")
     @Subscribe
-    public void handlePackUnloadEvent(PackUnloadEvent packUnloadEvent) {
-        LocalPackMetaData packMetaData = packUnloadEvent.getPackMetaData();
-
-        Menu menu = navigationView.getMenu();
-
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-
-            if (item.getTitle().equals("Pack: "
-                    + packMetaData.getDisplayName())) {
-                item.getSubMenu().clear();
-                navigationView.removeFragment(item.getItemId());
-            }
-        }
-    }
-
-    @SuppressWarnings("unused")
-    @Subscribe
     public void handleModuleEventRequest(ModuleEventRequest eventRequest) {
         Menu navMenu = navigationView.getMenu();
 
@@ -921,7 +867,7 @@ public class MainActivity
             return;
         }
 
-        ModulePack pack = FrameworkManager.getModulePack(eventRequest.getPackName());
+        ModulePack pack = FrameworkManager.getModulePack();
         if (pack == null) {
             Timber.w("Pack not found... Not scanning fragments");
             return;
@@ -952,15 +898,6 @@ public class MainActivity
             return;
 
         switch (eventRequest.getEventRequest()) {
-            case UNLOAD:
-                for (FragmentHelper fragment : moduleFragments) {
-                    if (fragment == null)
-                        continue;
-
-                    packSubMenu.removeItem(fragment.getMenuId());
-                    navigationView.removeFragment(fragment.getMenuId());
-                }
-                break;
             case LOAD:
 
                 for (FragmentHelper fragment : moduleFragments) {
@@ -986,7 +923,7 @@ public class MainActivity
     @Subscribe
     public void handleLoadPackSettingsEvent(LoadPackSettingsEvent loadEvent) {
         String packName = loadEvent.getPackName();
-        ModulePack pack = FrameworkManager.getModulePack(packName);
+        ModulePack pack = FrameworkManager.getModulePack();
 
         if (pack == null) {
             Timber.e("No pack found");

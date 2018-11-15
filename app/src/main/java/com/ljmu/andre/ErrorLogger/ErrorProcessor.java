@@ -181,18 +181,6 @@ class ErrorProcessor implements Runnable {
             if (System.currentTimeMillis() - lastWriteTime >= TimeUnit.MINUTES.toMillis(10)) {
                 output.append("Framework Version: ").append(Constants.getApkVersionName()).append("\n");
                 output.append("OS Version: ").append(VERSION.SDK_INT).append("\n");
-
-                if (Preferences.getIsInitialised().get()) {
-                    HashSet<String> selectedPacks = getPref(SELECTED_PACKS);
-
-                    for (String packName : selectedPacks) {
-                        output.append("Pack: ").append(packName).append("\n");
-
-                        ModulePack pack = FrameworkManager.getModulePack(packName);
-                        if (pack != null)
-                            output.append("\tVersion: ").append(pack.getPackVersion()).append("\n");
-                    }
-                }
             }
 
             output.append("[")

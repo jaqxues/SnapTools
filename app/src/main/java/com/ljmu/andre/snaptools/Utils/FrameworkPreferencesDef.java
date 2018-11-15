@@ -324,10 +324,6 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "IGNORED_UPDATE_VERSION_CODE",
             0, Integer.class
     );
-    public static final Preference TRIAL_MODE = new Preference(
-            "TRIAL_MODE",
-            TrialUtils.TRIAL_UNKNOWN, Integer.class
-    );
     public static final Preference COMPRESSION_QUALITY = new Preference(
             "COMPRESSION_QUALITY",
             3000, Integer.class

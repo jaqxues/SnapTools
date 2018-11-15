@@ -12,12 +12,10 @@ import android.view.ContextThemeWrapper;
 import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
-import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
-import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
 import com.ljmu.andre.snaptools.Networking.VolleyHandler;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.ModuleChecker;
@@ -25,7 +23,6 @@ import com.ljmu.andre.snaptools.Utils.TimberUtils;
 import com.ljmu.andre.snaptools.Utils.UnhookManager;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -42,7 +39,6 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.NOTIFY_ON_L
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SYSTEM_ENABLED;
 import static com.ljmu.andre.snaptools.Utils.NotificationUtils.showLoadedNotification;
-import static com.ljmu.andre.snaptools.Utils.ResourceMapper.getResId;
 import static com.ljmu.andre.snaptools.Utils.UnhookManager.addUnhook;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
@@ -140,8 +136,6 @@ public class HookManager implements IXposedHookLoadPackage {
          */
 
         Context[] moduleContext = new Context[1];
-        //noinspection unchecked
-        List<PackLoadState>[] packLoadStates = new List[1];
         Throwable[] throwables = new Throwable[1];
         addUnhook("System",
                 findAndHookMethod(
@@ -176,16 +170,7 @@ public class HookManager implements IXposedHookLoadPackage {
 
                                     // Load the certificate required to validate the ModulePack ==================
                                     // Security.init(ContextHelper.getModuleResources(snapActivity));
-
-                                    long packLoadStart = System.currentTimeMillis();
-                                    packLoadStates[0] = FrameworkManager.loadAllModulePacks(snapContext);
-                                    long packLoadEnd = System.currentTimeMillis();
-
-                                    Timber.d("Starting Inject");
-                                    FrameworkManager.injectAllHooks(packLoadStates[0], lpparam.classLoader, snapContext);
-                                    long packInjectEnd = System.currentTimeMillis();
-
-                                    Timber.d("Load Times [Load: %s][Inject: %s]", (packLoadEnd - packLoadStart), (packInjectEnd - packLoadEnd));
+                                    FrameworkManager.injectAllHooks(lpparam.classLoader, snapContext);
 
                                     Timber.d("Framework loaded successfully");
 
@@ -210,7 +195,6 @@ public class HookManager implements IXposedHookLoadPackage {
                                 ContextHelper.setActivity(snapActivity);
                                 UnhookManager.unhookAll("System");
                                 FrameworkManager.prepareActivityAll(
-                                        packLoadStates[0],
                                         lpparam.classLoader,
                                         snapActivity
                                 );
@@ -234,27 +218,6 @@ public class HookManager implements IXposedHookLoadPackage {
                                 if (!initTOS())
                                     return;
 
-                                boolean hasFailed = false;
-                                for (PackLoadState loadState : packLoadStates[0]) {
-                                    if (loadState.hasFailed())
-                                        hasFailed = true;
-                                }
-
-                                if (hasFailed) {
-                                    new ThemedDialog(snapActivity)
-                                            .setTitle("Framework Load Error")
-                                            .setHeaderDrawable(
-                                                    getResId(
-                                                            moduleContext[0],
-                                                            "error_header",
-                                                            "drawable"
-                                                    )
-                                            )
-                                            .setExtension(new FrameworkLoadError(packLoadStates[0]))
-                                            .show();
-                                    return;
-                                }
-
                                 if (throwables[0] != null) {
                                     if (throwables[0] instanceof NoSuchMethodError
                                             || throwables[0] instanceof NoClassDefFoundError)
@@ -277,7 +240,7 @@ public class HookManager implements IXposedHookLoadPackage {
 //                                BackgroundAuthVerifier.spoolVerifierThread();
 
 
-                                if ((boolean) getPref(NOTIFY_ON_LOAD) && packLoadStates[0].size() > 0)
+                                if (getPref(NOTIFY_ON_LOAD))
                                     showLoadedNotification(snapActivity);
 
                                 if (getPref(CHECK_PACK_UPDATES_SC))

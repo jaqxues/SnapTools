@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.ljmu.andre.ConstantDefiner.Constant;
@@ -16,6 +17,7 @@ import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.HookClas
 import com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.Hook;
 
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,8 +41,13 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.D
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENCRYPTED_STREAM_BUILDER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENCRYPTION_ALGORITHM;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.EXPERIMENT_BASE;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA_CREATOR;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FILTER_METADATA_LOADER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FONT_CLASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.FRIEND_PROFILE_POPUP_FRAGMENT;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GEOFILTER_VIEW;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GEOFILTER_VIEW_CREATOR;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GROUP_SNAP_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.GROUP_SNAP_WRAPPER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS;
@@ -283,30 +290,30 @@ public class HookDef extends ConstantDefiner<Hook> {
     // ===========================================================================
 
     // CUSTOM FILTERS ============================================================
-//    public static final Hook GEOFILTER_SHOULD_SUBSAMPLE = new Hook(
-//            "GEOFILTER_SHOULD_SUBSAMPLE",
-//            GEOFILTER_VIEW, "a", GEOFILTER_VIEW.getStrClass(), boolean.class
-//    ); // TODO: CHECK
-//    public static final Hook FILTER_LOAD_METADATA = new Hook(
-//            "FILTER_LOAD_METADATA",
-//            FILTER_METADATA_LOADER, "a", "absz", Comparator.class
-//    ); // TODO: CHECK
-//    public static final Hook CREATE_FILTER_METADATA = new Hook(
-//            "CREATE_FILTER_METADATA",
-//            FILTER_METADATA_CREATOR, "d"
-//    );
-//    public static final Hook GET_GEOFILTER_CONTENT_VIEW = new Hook(
-//            "GET_GEOFILTER_CONTENT_VIEW",
-//            GEOFILTER_VIEW, "c"
-//    ); // TODO: REDO
-//    public static final Hook CREATE_GEOFILTER_VIEW = new Hook(
-//            "CREATE_GEOFILTER_VIEW",
-//            GEOFILTER_VIEW_CREATOR, "a", FILTER_METADATA.getStrClass(), Context.class, "bee"
-//    ); // TODO: REDO
-//    public static final Hook GEOFILTER_TAPPED = new Hook(
-//            "GEOFILTER_TAPPED",
-//            GEOFILTER_VIEW, "a", MotionEvent.class
-//    ); // TODO Check
+    public static final Hook GEOFILTER_SHOULD_SUBSAMPLE = new Hook(
+            "GEOFILTER_SHOULD_SUBSAMPLE",
+            GEOFILTER_VIEW, "a", GEOFILTER_VIEW.getStrClass(), boolean.class
+    ); // TODO: CHECK
+    public static final Hook FILTER_LOAD_METADATA = new Hook(
+            "FILTER_LOAD_METADATA",
+            FILTER_METADATA_LOADER, "a", "absz", Comparator.class
+    ); // TODO: CHECK
+    public static final Hook CREATE_FILTER_METADATA = new Hook(
+            "CREATE_FILTER_METADATA",
+            FILTER_METADATA_CREATOR, "d"
+    );
+    public static final Hook GET_GEOFILTER_CONTENT_VIEW = new Hook(
+            "GET_GEOFILTER_CONTENT_VIEW",
+            GEOFILTER_VIEW, "c"
+    ); // TODO: REDO
+    public static final Hook CREATE_GEOFILTER_VIEW = new Hook(
+            "CREATE_GEOFILTER_VIEW",
+            GEOFILTER_VIEW_CREATOR, "a", FILTER_METADATA.getStrClass(), Context.class, "bee"
+    ); // TODO: REDO
+    public static final Hook GEOFILTER_TAPPED = new Hook(
+            "GEOFILTER_TAPPED",
+            GEOFILTER_VIEW, "a", MotionEvent.class
+    ); // TODO Check
 //     ===========================================================================
 
     // MISC HOOKS ================================================================

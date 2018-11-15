@@ -43,13 +43,6 @@ import static com.ljmu.andre.snaptools.Utils.PackUtils.getFlavourFromAttributes;
 
 public abstract class ModulePack {
     public static final String VERSION_MISMATCH_ERROR = "Current Snapchat version not supported by this pack";
-    /**
-     * ===========================================================================
-     * A hardcoded path to the ModulePackImpl class (That should extend this class)
-     * is required as reflection will need to be used to instantiate it
-     * ===========================================================================
-     */
-    private static final String PACK_CLASSNAME = "com.ljmu.andre.snaptools.ModulePack.ModulePackImpl";
 
     // ===========================================================================
 

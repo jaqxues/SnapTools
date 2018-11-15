@@ -116,15 +116,56 @@ public class ModulePackImpl extends ModulePack {
             // ===========================================================================
 
             try {
-                Class<? extends Module> moduleClass = moduleData.getModuleClass();
-                Constructor<? extends Module> constructor = moduleClass.getConstructor(String.class, boolean.class);
-                Module module = constructor.newInstance(moduleData.getModuleName(), moduleData.canBeDisabled());
-                modules.add(module);
+                switch (moduleData.getModuleName()) {
+                    case "Hook Resolver":
+                        modules.add(new HookResolver("Hook Resolver", false));
+                        break;
+                    case "Saving":
+                        modules.add(new Saving("Saving", true));
+                        break;
+                    case "Lens Collector":
+                        modules.add(new LensCollector("Lens Collector", true));
+                        break;
+                    case "Chat Manager":
+                        modules.add(new ChatSaving("Chat Manager", true));
+                        break;
+                    case "Misc Changes":
+                        modules.add(new MiscChanges("Misc Changes", true));
+                        break;
+                    case "Remove Snap Timer":
+                        modules.add(new RemoveSnapTimer("Remove Snap Timer", true));
+                        break;
+                    case "Screenshot Bypass":
+                        modules.add(new ScreenshotBypass("Screenshot Bypass", true));
+                        break;
+                    case "Story Blocker":
+                        modules.add(new StoryBlocker("Story Blocker", true));
+                        break;
+                    case "Unlimited Viewing":
+                        modules.add(new UnlimitedViewing("Unlimited Viewing", true));
+                        break;
+                    case "Sharing":
+                        modules.add(new Sharing("Sharing", true));
+                        break;
+                    case "Custom Filters":
+                        modules.add(new CustomFilters("Custom Filters", true));
+                        break;
+                    case "Stealth Viewing":
+                        modules.add(new StealthViewing("Stealth Viewing", true));
+                        break;
+                    case "Account Manager":
+                        modules.add(new AccountManager("Account Manager", true));
+                        break;
+                    case "Forced Hooks":
+                        modules.add(new ForcedHooks("Forced Hooks", false));
+                        break;
+                    default:
+                        throw new ModulePackLoadAborted("Someone did a typo");
+                }
 
                 loadState.setState(State.SUCCESS);
             } catch (Throwable e) {
-                Timber.e(e, "Failed loading module: "
-                        + moduleData.getClassName());
+                Timber.e(e, "Failed loading module: %s", moduleData.getClassName());
                 loadState.setState(State.FAILED);
             }
         }

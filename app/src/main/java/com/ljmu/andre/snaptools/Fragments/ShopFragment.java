@@ -29,8 +29,6 @@ import com.ljmu.andre.snaptools.Fragments.Tutorials.ShopTutorial;
 import com.ljmu.andre.snaptools.Networking.Helpers.GetShopItems;
 import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.R;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
@@ -401,13 +399,5 @@ public class ShopFragment extends FragmentHelper {
             default:
                 throw new IllegalArgumentException("Couldn't find requested payment type: " + paymentType);
         }
-
-        Answers.safeLogEvent(
-                new CustomEvent("Shop Item Viewed")
-                        .putCustomAttribute("Payment Type", paymentType.name())
-                        .putCustomAttribute("Item Type", item.type)
-                        .putCustomAttribute("Item Identifier", item.identifier)
-                        .putCustomAttribute("Price", item.price)
-        );
     }
 }

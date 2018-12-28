@@ -12,8 +12,6 @@ import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent.DownloadState;
 import com.ljmu.andre.snaptools.Exceptions.NullObjectException;
 import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
 import com.ljmu.andre.snaptools.Networking.Helpers.DownloadFile.DownloadListener;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
@@ -122,16 +120,5 @@ public class DownloadModulePack implements DownloadListener {
                         .setOutputFile(outputFile)
                         .setResponseCode(responseCode)
         );
-
-        if (state) {
-            Answers.safeLogEvent(
-                    new CustomEvent("Pack Download")
-                            .putCustomAttribute("Snap Version", snapVersion)
-                            .putCustomAttribute("Pack Type", packType)
-                            .putCustomAttribute("Pack Version", packVersion)
-                            .putCustomAttribute("Development", String.valueOf(development))
-                            .putCustomAttribute("Flavour", flavour)
-            );
-        }
     }
 }

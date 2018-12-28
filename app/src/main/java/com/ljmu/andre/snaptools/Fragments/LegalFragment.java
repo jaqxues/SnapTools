@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ljmu.andre.snaptools.R;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,10 +34,6 @@ public class LegalFragment extends FragmentHelper {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layoutContainer = inflater.inflate(R.layout.frag_legal, container, false);
         unbinder = ButterKnife.bind(this, layoutContainer);
-
-        Answers.safeLogEvent(
-                new CustomEvent("Viewed Legal")
-        );
 
         return layoutContainer;
     }

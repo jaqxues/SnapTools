@@ -32,8 +32,6 @@ import com.ljmu.andre.snaptools.MainActivity;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckAPKUpdate;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
 import com.ljmu.andre.snaptools.R;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Repackaging.RepackageManager;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.CenteredArrayAdapter;
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
@@ -153,11 +151,6 @@ public class SettingsFragment extends FragmentHelper {
         masterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             putAndKill(SYSTEM_ENABLED, isChecked, getActivity());
             EventBus.getInstance().post(new MasterSwitchEvent());
-
-            Answers.safeLogEvent(
-                    new CustomEvent("Master Switch Toggle")
-                            .putCustomAttribute("Enabled", String.valueOf(isChecked))
-            );
         });
     }
 
@@ -167,13 +160,7 @@ public class SettingsFragment extends FragmentHelper {
 
         switchCheckApkUpdates.setOnCheckedChangeListener(
                 (buttonView, isChecked)
-                        -> {
-                    putAndKill(CHECK_APK_UPDATES, isChecked, getActivity());
-                    Answers.safeLogEvent(
-                            new CustomEvent("Apk Update Checking")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
+                        -> putAndKill(CHECK_APK_UPDATES, isChecked, getActivity())
         );
 
         boolean packCheckEnabled = getPref(CHECK_PACK_UPDATES);
@@ -181,14 +168,7 @@ public class SettingsFragment extends FragmentHelper {
 
         switchCheckPackUpdates.setOnCheckedChangeListener(
                 (buttonView, isChecked)
-                        -> {
-                    putAndKill(CHECK_PACK_UPDATES, isChecked, getActivity());
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("Pack Update Checking")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
+                        -> putAndKill(CHECK_PACK_UPDATES, isChecked, getActivity())
         );
 
         boolean packCheckSCEnabled = getPref(CHECK_PACK_UPDATES_SC);
@@ -196,21 +176,14 @@ public class SettingsFragment extends FragmentHelper {
 
         switchCheckPackUpdatesSC.setOnCheckedChangeListener(
                 (buttonView, isChecked)
-                        -> {
-                    putAndKill(CHECK_PACK_UPDATES_SC, isChecked, getActivity());
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("Pack Update Checking SC")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
+                        -> putAndKill(CHECK_PACK_UPDATES_SC, isChecked, getActivity())
         );
     }
 
     private void initUpdateChannel() {
         SpinnerAdapter spinnerAdapter = spinnerUpdateChannel.getAdapter();
 
-        int selectedIndex = 0;
+        int selectedIndex = -1;
         for (int i = 0; i < spinnerAdapter.getCount(); i++) {
             String item = (String) spinnerAdapter.getItem(i);
             if (item.equalsIgnoreCase(BuildConfig.FLAVOR))
@@ -301,11 +274,6 @@ public class SettingsFragment extends FragmentHelper {
 
                     if (isChecked)
                         ShellUtils.sendCommand("").subscribe();
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("SC Killswitch")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
                 }
         );
     }
@@ -316,14 +284,7 @@ public class SettingsFragment extends FragmentHelper {
 
         switchEnableLoadNotify.setOnCheckedChangeListener(
                 (buttonView, isChecked)
-                        -> {
-                    putAndKill(NOTIFY_ON_LOAD, isChecked, getActivity());
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("Load Notifying")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
+                        -> putAndKill(NOTIFY_ON_LOAD, isChecked, getActivity())
         );
     }
 
@@ -333,14 +294,7 @@ public class SettingsFragment extends FragmentHelper {
 
         switchBackOpensMenu.setOnCheckedChangeListener(
                 (buttonView, isChecked)
-                        -> {
-                    putPref(BACK_OPENS_MENU, isChecked);
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("Back Opens Menu")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
+                        -> putPref(BACK_OPENS_MENU, isChecked)
         );
     }
 
@@ -350,14 +304,7 @@ public class SettingsFragment extends FragmentHelper {
 
         switchTransitionAnimations.setOnCheckedChangeListener(
                 (buttonView, isChecked)
-                        -> {
-                    putPref(SHOW_TRANSITION_ANIMATIONS, isChecked);
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("Transition Animations")
-                                    .putCustomAttribute("Enabled", String.valueOf(isChecked))
-                    );
-                }
+                        -> putPref(SHOW_TRANSITION_ANIMATIONS, isChecked)
         );
     }
 
@@ -385,11 +332,6 @@ public class SettingsFragment extends FragmentHelper {
                 ThemeUtils.changeToTheme(
                         getActivity(),
                         selectedTheme.getTheme()
-                );
-
-                Answers.safeLogEvent(
-                        new CustomEvent("Theme Changed")
-                                .putCustomAttribute("Theme", selectedTheme.getName())
                 );
             }
 

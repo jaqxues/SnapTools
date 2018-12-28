@@ -11,8 +11,6 @@ import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 
 import java.lang.reflect.Method;
@@ -59,15 +57,7 @@ public class DeviceIdManager {
         try {
             setSystemIdWReflection(systemId);
             return true;
-        } catch (Throwable ignored) {
-            Answers.safeLogEvent(
-                    new CustomEvent("SetSystemID")
-                            .putCustomAttribute(
-                                    "Success",
-                                    "ReflectFail"
-                            )
-            );
-        }
+        } catch (Throwable ignored) { }
 
         // If reflection fails, ask user for root ====================================
         DialogFactory.createConfirmation(
@@ -134,14 +124,6 @@ public class DeviceIdManager {
                 PERSIST_ID_KEY,
                 systemId.substring(0, Math.min(systemId.length(), 90))
         );
-
-        Answers.safeLogEvent(
-                new CustomEvent("SetSystemID")
-                        .putCustomAttribute(
-                                "Success",
-                                "ReflectSuccess"
-                        )
-        );
     }
 
     /**
@@ -181,13 +163,6 @@ public class DeviceIdManager {
 
                         // Check if SystemID has successfully assigned ===============================
                         if (aBoolean && isSystemIdAssigned()) {
-                            Answers.safeLogEvent(
-                                    new CustomEvent("SetSystemID")
-                                            .putCustomAttribute(
-                                                    "Success",
-                                                    "RootSuccess"
-                                            )
-                            );
 
                             // Dialog to confirm app restart =============================================
                             DialogFactory.createBasicMessage(
@@ -205,14 +180,6 @@ public class DeviceIdManager {
                                     }
                             ).setDismissable(false).show();
                         } else {
-                            Answers.safeLogEvent(
-                                    new CustomEvent("SetSystemID")
-                                            .putCustomAttribute(
-                                                    "Success",
-                                                    "RootFail"
-                                            )
-                            );
-
                             // Dialog to confirm app ending ==============================================
                             DialogFactory.createErrorDialog(
                                     activity,
@@ -330,9 +297,6 @@ public class DeviceIdManager {
      * ===========================================================================
      */
     private static String getDeviceIdOldMethod(Context context) {
-        Answers.safeLogEvent(
-                new CustomEvent("OldDeviceIDMethod")
-        );
 
         // Hash the ID to make it harder to spoof/guess ==============================
         Hasher hasher = Hashing.murmur3_128(8435809).newHasher();

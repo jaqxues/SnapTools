@@ -15,8 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ljmu.andre.GsonPreferences.Preferences.Preference;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
@@ -126,10 +124,6 @@ public class ThemedDialog extends AlertDialog {
 
                 if (!activity.isFinishing()) {
                     SafeToast.show(activity, "Problems loading dialog... Issue will be reported", Toast.LENGTH_LONG, true);
-
-                    Answers.safeLogEvent(
-                            new CustomEvent("FailedDialogWarning")
-                    );
                 }
             }
         } catch (Throwable t2) {

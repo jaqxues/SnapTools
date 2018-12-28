@@ -56,8 +56,6 @@ import com.ljmu.andre.snaptools.Framework.Module;
 import com.ljmu.andre.snaptools.Framework.ModulePack;
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckAPKUpdate;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.Repackaging.RepackageManager;
 import com.ljmu.andre.snaptools.UIComponents.CustomNavigation;
 import com.ljmu.andre.snaptools.UIComponents.CustomNavigation.NavigationFragmentListener;
@@ -1062,10 +1060,6 @@ public class MainActivity
                             }, 250
                     ));
                 }).build().show();
-
-                Answers.safeLogEvent(
-                        new CustomEvent("Finished Full Tutorial")
-                );
             }
         }
     }
@@ -1112,12 +1106,6 @@ public class MainActivity
             drawerLayout.closeDrawers();
 
         activeFragment.triggerTutorial(false);
-
-        Answers.safeLogEvent(
-                new CustomEvent("Manual Tutorial")
-                        .putCustomAttribute("Active Fragment",
-                                activeFragment.getName())
-        );
     }
 
     @OnLongClick(R.id.btn_tutorial)

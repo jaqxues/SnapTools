@@ -19,4 +19,9 @@ public class ModulePackBase extends ModulePack {
                 "baseTest='" + baseTest + '\'' +
                 "} " + super.toString();
     }
+
+    @Override
+    public void loadModules() {
+
+    }
 }

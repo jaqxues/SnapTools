@@ -12,11 +12,14 @@ import com.ljmu.andre.modulepackloader.Utils.Assert;
 import com.ljmu.andre.modulepackloader.Utils.JarUtils;
 import com.ljmu.andre.modulepackloader.Utils.Logger;
 import com.ljmu.andre.modulepackloader.Utils.Logger.DefaultLogger;
+import com.ljmu.andre.modulepackloader.Utils.Module;
+import com.ljmu.andre.modulepackloader.Utils.PackLoadState;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -30,6 +33,8 @@ import dalvik.system.DexClassLoader;
 public abstract class ModulePack {
     @Nullable
     private PackAttributes packAttributes;
+    protected PackLoadState packLoadState = new PackLoadState();
+    protected final List<Module> modules = new ArrayList<>();
 
     @Nullable
     public <T extends PackAttributes> T getPackAttributes() {
@@ -41,8 +46,59 @@ public abstract class ModulePack {
         return (T) this;
     }
 
+    /**
+     * This method should be called after initializing the ModulePack and before its first "Hooks".
+     * It loads the (user-) chosen Modules and <strong>must call
+     * {@link ModulePack#addModules(Module...)} or {@link ModulePack#addModule(Module)} to add the
+     * Modules to the Modules List!</strong>
+     */
+    public abstract void loadModules();
+
+    protected void addModule(Module module) {
+        packLoadState.addModuleLoadState(module.getModuleLoadState());
+        modules.add(module);
+    }
+
+    protected void addModules(Module... modules) {
+        for (Module module : modules) {
+            packLoadState.addModuleLoadState(module.getModuleLoadState());
+        }
+        this.modules.addAll(Arrays.asList(modules));
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public Module getModule(String name) {
+        for (Module module : modules) {
+            if (module.getName().equalsIgnoreCase(name))
+                return module;
+        }
+
+        return null;
+    }
+
+    public PackLoadState getPackLoadState() {
+        return packLoadState;
+    }
+
+    /**
+     * Method called by {@link Builder#build()}
+     *
+     * @param packFile The .jar file that should be loaded by the ClassLoader
+     * @param dexFileDir An optimized CodeCacheDir to call {@link DexClassLoader#DexClassLoader(String, String, String, ClassLoader)})}
+     * @param packClassPath Name of a Subclass of this Class that should be instantiated
+     * @param classLoader The Parent ClassLoader of the Pack. Optional, only use in special Cases
+     * @param constructorArguments Values that can be instantiated to the custom constructor to
+     *                             instantiate the ModulePack
+     * @param packAttributes PackAttributes that will be set for the target ModulePack (optional)
+     * @param <T> Given Type Parameter that the ModulePack should be casted to.
+     * @return Instance of <code>T</code> where T is a subclass of this class.
+     * @throws PackLoadException Wraps every exception that can occur to instantiate a Pack
+     */
     private static <T extends ModulePack> T getInstance(File packFile, File dexFileDir, String packClassPath,
-                                                        ClassLoader classLoader, @Nullable List<Object> constructorArguments,
+                                                        @Nullable ClassLoader classLoader, @Nullable List<Object> constructorArguments,
                                                         @Nullable PackAttributes packAttributes)
             throws PackLoadException {
         DexClassLoader packClassLoader = createClassLoader(packFile, dexFileDir, classLoader);
@@ -52,15 +108,17 @@ public abstract class ModulePack {
     }
 
     /**
-     * ===========================================================================
+     *
      * Create a classloader that will be used to instantiate the implemented
      * version of this ModulePack class using {@param packClassPath}
-     * ===========================================================================
      *
-     * @param dexFileDir - A directory that is optimised for .dex files.
+     * @param packFile .jar File from where the Classes will be loaded
+     * @param dexFileDir A directory that is optimised for .dex files.
      *                   Usually a code optimised directory {@link Activity#getCodeCacheDir()}
-     * @return
-     * @throws PackLoadException
+     * @param classLoader Optional ClassLoader (just in case someone would ever need that)
+     * @return ClassLoader instance that should be able to load the ModulePack Classes
+     * @throws PackLoadException In case the CodeCacheDir does not exist or the ClassLoader could not
+     * be created
      */
     private static DexClassLoader createClassLoader(File packFile, File dexFileDir, @Nullable ClassLoader classLoader)
             throws PackLoadException {
@@ -86,32 +144,30 @@ public abstract class ModulePack {
     }
 
     /**
-     * ===========================================================================
      * Constructor has just been called and the ModulePack is ready to be used.
-     * ===========================================================================
      *
-     * @param <T>
-     * @return
+     * @param <T> Given Type Parameter that the ModulePack should be casted to.
+     * @return The ModulePack instance
      */
     public <T extends ModulePack> T onInitialised() {
         return (T) this;
     }
 
     /**
-     * ===========================================================================
      * The final function in the getInstance stack.
      * <p>
-     * Attempt to reflectively create a new instance of the {@param }
-     * class on the DexClassLoader.
+     *     Attempt to reflectively create a new instance of the {@param } class on the DexClassLoader.
      * <p>
      * Note: Error messages should be customised based on requirement.
-     * ===========================================================================
      *
-     * @param dexClassLoader
-     * @param packClassPath
-     * @param constructorArguments
-     * @return
-     * @throws PackLoadException
+     * @param dexClassLoader The ClassLoader of the Module so that the Pack can use all of its classes
+     *                       and methods seamlessly (with a CacheDirectory that can be chosen by the user)
+     * @param packClassPath Subclass of this class that is instantiated by calling its constructor.
+     * @param constructorArguments Arguments to invoke a matching constructor in the Class <code>packClassPath</code>.
+     * @param <T> Given Type Parameter that the ModulePack should be casted to.
+     * @return The instance of <code>T</code> returned by invoking the given constructor.
+     * @throws PackLoadException Wrapper for various exception that can occur during this
+     * reflection-based method.
      */
     @SuppressWarnings("unchecked")
     private static <T extends ModulePack> T instantiatePack(@NonNull DexClassLoader dexClassLoader,
@@ -213,6 +269,17 @@ public abstract class ModulePack {
             this.logger = logger;
         }
 
+        /**
+         * Build Method that creates the instance of <code>T</code> with the given properties of the
+         * Builder instance.
+         *
+         * @param <T> Given Type Parameter that the ModulePack should be casted to.
+         * @return The created ModulePack if successful
+         * @throws PackBuildException In case the Pack Attributes are not supplied and could not be built by the builder
+         * @throws PackSecurityException Can be caused by {@link PackSecurityListener#onSecurityCheck(JarFile)}
+         * @throws PackLoadException Wrapper for every exception that could occur during the actual
+         * instantiation of the ModulePack
+         */
         public <T extends ModulePack> T build() throws PackBuildException, PackSecurityException, PackLoadException {
             logger.d("Building ModulePack");
 

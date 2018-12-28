@@ -13,8 +13,8 @@ public class PackLoadState extends LoadState {
     private int failedModules;
     private int successfulModules;
     
-    public PackLoadState(String name) {
-        super(name);
+    public PackLoadState() {
+        super(null);
     }
 
     public Map<String, ModuleLoadState> getModuleLoadStates() {
@@ -61,6 +61,15 @@ public class PackLoadState extends LoadState {
 
     }
 
+    public PackLoadState addModuleLoadStates(ModuleLoadState... loadStates) {
+        for (ModuleLoadState loadState : loadStates)
+            moduleLoadStates.put(loadState.getName(), loadState);
+
+        refreshPackLoadState();
+
+        return this;
+    }
+
     public PackLoadState addModuleLoadState(ModuleLoadState loadState) {
         moduleLoadStates.put(loadState.getName(), loadState);
 
@@ -79,6 +88,14 @@ public class PackLoadState extends LoadState {
 
     public void fail() {
         setState(State.FAILED);
+    }
+
+    public int getFailedModules() {
+        return failedModules;
+    }
+
+    public int getSuccessfulModules() {
+        return successfulModules;
     }
 
     @Override

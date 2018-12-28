@@ -12,13 +12,14 @@ public abstract class Module {
     private final Logger logger;
 
     public Module(String name, boolean canBeDisabled, Logger logger) {
+        this.moduleLoadState = new ModuleLoadState(name);
         this.name = name;
         this.canBeDisabled = canBeDisabled;
         this.logger = logger;
     }
 
-    public Logger getLogger() {
-        return logger;
+    public ModuleLoadState getModuleLoadState() {
+        return moduleLoadState;
     }
 
     public String getName() {
@@ -27,5 +28,9 @@ public abstract class Module {
 
     protected boolean canBeDisabled() {
         return canBeDisabled;
+    }
+
+    protected Logger getLogger() {
+        return logger;
     }
 }

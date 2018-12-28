@@ -17,7 +17,7 @@ import java.util.jar.Manifest;
  * It and its contents are free to use by all
  */
 public interface PackSecurityListener {
-    public void onSecurityCheck(JarFile jarFile) throws PackSecurityException, IOException;
+    void onSecurityCheck(JarFile jarFile) throws PackSecurityException, IOException;
 
     /**
      * ===========================================================================

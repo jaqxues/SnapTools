@@ -10,6 +10,7 @@ import com.ljmu.andre.modulepackloader.Exceptions.PackSecurityException;
 import com.ljmu.andre.modulepackloader.Listeners.PackSecurityListener;
 import com.ljmu.andre.modulepackloader.Utils.Assert;
 import com.ljmu.andre.modulepackloader.Utils.JarUtils;
+import com.ljmu.andre.modulepackloader.Utils.LoadState;
 import com.ljmu.andre.modulepackloader.Utils.Logger;
 import com.ljmu.andre.modulepackloader.Utils.Logger.DefaultLogger;
 import com.ljmu.andre.modulepackloader.Utils.Module;
@@ -22,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 
 import dalvik.system.DexClassLoader;
@@ -93,12 +95,35 @@ public abstract class ModulePack {
     }
 
     /**
-     * This method should be called after initializing the ModulePack and before its first "Hooks".
-     * It loads the (user-) chosen Modules and <strong>must call
-     * {@link ModulePack#addModules(Module...)} or {@link ModulePack#addModule(Module)} to add the
-     * Modules to the Modules List!</strong>
+     * Abstract method that should return the Modules with their LoadState in a HashMap. Here is
+     * some advice which LoadState you should use for this HashMap
+     * <ul>
+     *     <li>
+     *         If the Module is disabled by the user, {@link LoadState.State#SKIPPED} should be used.<br>
+     *         (Make use of {@link Module#canBeDisabled()} to determine if the user is allowed to disable it)
+     *     </li>
+     *     <li>
+     *         Use {@link LoadState.State#SUCCESS} if the Module is enabled and has been loaded successfully
+     *     </li>
+     *     <li>
+     *         Use {@link LoadState.State#FAILED} if the Module is enabled but did not load successfully
+     *     </li>
+     * </ul>
+     *
+     * @return HashMap that will be used to in {@link #loadModules()}.
      */
-    public abstract void loadModules();
+    public abstract Map<Module, LoadState.State> getModules();
+
+    /**
+     * Called immediately after instantiation of the ModulePack. You can use {@link #getModules()}
+     * as hook point if you want to perform certain action just before this action.
+     */
+    public void loadModules() {
+        Map<Module, LoadState.State> moduleMap = getModules();
+        for (Map.Entry<Module, LoadState.State> entry : moduleMap.entrySet())
+            entry.getKey().getModuleLoadState().setState(entry.getValue());
+        addModules(moduleMap.keySet().toArray(new Module[0]));
+    }
 
     /**
      * Add a Module to the List of active Modules.
@@ -127,7 +152,7 @@ public abstract class ModulePack {
     /**
      * @return List of the loaded Modules in this Pack
      */
-    public List<Module> getModules() {
+    public List<Module> getModuleList() {
         return modules;
     }
 

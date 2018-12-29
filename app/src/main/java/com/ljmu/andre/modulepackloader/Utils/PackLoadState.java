@@ -23,17 +23,12 @@ public class PackLoadState extends LoadState {
 
     public PackLoadState setModuleLoadStates(Map<String, ModuleLoadState> moduleLoadStates) {
         this.moduleLoadStates = moduleLoadStates;
-        refreshPackLoadState();
         return this;
     }
 
     /**
-     * ===========================================================================
      * Refresh the load state of the object to ensure that it accurately reflects
      * the states of the child ModuleLoadStates.
-     * This should be performed whenever an item in {@link this#moduleLoadStates}
-     * is added, removed, or altered.
-     * ===========================================================================
      */
     public PackLoadState refreshPackLoadState() {
         int moduleIssues = 0;
@@ -64,25 +59,16 @@ public class PackLoadState extends LoadState {
     public PackLoadState addModuleLoadStates(ModuleLoadState... loadStates) {
         for (ModuleLoadState loadState : loadStates)
             moduleLoadStates.put(loadState.getName(), loadState);
-
-        refreshPackLoadState();
-
         return this;
     }
 
     public PackLoadState addModuleLoadState(ModuleLoadState loadState) {
         moduleLoadStates.put(loadState.getName(), loadState);
-
-        refreshPackLoadState();
-
         return this;
     }
 
     public PackLoadState removeModuleLoadState(ModuleLoadState loadState) {
         moduleLoadStates.remove(loadState.getName());
-
-        refreshPackLoadState();
-
         return this;
     }
 
@@ -99,7 +85,14 @@ public class PackLoadState extends LoadState {
     }
 
     @Override
+    public State getState() {
+        return refreshPackLoadState().getState();
+    }
+
+    @Override
     public String getBasicBreakdown() {
+        refreshPackLoadState();
+
         if (failedModules > 0)
             return String.format("[%s/%s]", failedModules, moduleLoadStates.size());
 
@@ -108,6 +101,7 @@ public class PackLoadState extends LoadState {
 
     @Override
     public boolean hasFailed() {
+        refreshPackLoadState();
         return getState() == State.FAILED || getState() == State.ISSUES || failedModules > 0;
     }
 }

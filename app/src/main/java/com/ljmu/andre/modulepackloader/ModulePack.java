@@ -29,18 +29,59 @@ import dalvik.system.DexClassLoader;
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
+ *
+ * <h1>Structure of a ModulePack</h1>
+ * <p>
+ *     A ModulePack contains different Modules. These Modules are where the actual actions take
+ *     place. The ModulePack's only charge is to load these Modules in and allow manipulating all
+ *     these Modules at once. This can reduce the amount of code significantly while still providing
+ *     great structure and readability.
+ * </p>
+ * <h1>Usage of a ModulePack</h1>
+ * <p>
+ *     This class is only the very basic structure of a ModulePack. You should override this class
+ *     to allow your app-specific Actions (Load Hooks or even load Resource Hooks). The code that
+ *     you will use in your Xposed-Class (which you specify in the <i>xposed_init</i> file) will be
+ *     very simple:
+ *     <ol>
+ *         <li>Use the Builder class to instantiate the Module Pack</li>
+ *         <li>Call the {@link #loadModules()} Method to initialize the Modules</li>
+ *         <li>Call your own methods that allow you to do anything you want</li>
+ *     </ol>
+ * </p>
  */
 public abstract class ModulePack {
+    /** @hide */
     @Nullable
     private PackAttributes packAttributes;
+    /**
+     * {@link PackLoadState} which allows easy access to get Load Issues etc
+     */
     protected PackLoadState packLoadState = new PackLoadState();
+    /**
+     * Contains the {@link Module} instances of this Pack
+     */
     protected final List<Module> modules = new ArrayList<>();
 
+    /**
+     * Allows simple access to ModulePack information.
+     *
+     * @param <T> Implementation of the <code>PackAttributes</code> class.
+     * @return The PackAttributes associated with this ModulePack.
+     */
     @Nullable
     public <T extends PackAttributes> T getPackAttributes() {
         return (T) packAttributes;
     }
 
+    /**
+     * Allows setting an implementation of {@link PackAttributes} for this Pack in order to easier
+     * access information about the ModulePack
+     *
+     * @param packAttributes PackAttributes to be set.
+     * @param <T> Implementation of this ModulePack class.
+     * @return Current ModulePack implementation
+     */
     private <T extends ModulePack> T setPackAttributes(PackAttributes packAttributes) {
         this.packAttributes = packAttributes;
         return (T) this;
@@ -54,11 +95,23 @@ public abstract class ModulePack {
      */
     public abstract void loadModules();
 
+    /**
+     * Add a Module to the List of active Modules.
+     *
+     * @param module Module to be added
+     * @see #loadModules()
+     */
     protected void addModule(Module module) {
         packLoadState.addModuleLoadState(module.getModuleLoadState());
         modules.add(module);
     }
 
+    /**
+     * Adds multiple Modules to the List of active Modules.
+     *
+     * @param modules Modules to be added
+     * @see #loadModules()
+     */
     protected void addModules(Module... modules) {
         for (Module module : modules) {
             packLoadState.addModuleLoadState(module.getModuleLoadState());
@@ -66,10 +119,19 @@ public abstract class ModulePack {
         this.modules.addAll(Arrays.asList(modules));
     }
 
+    /**
+     * @return List of the loaded Modules in this Pack
+     */
     public List<Module> getModules() {
         return modules;
     }
 
+    /**
+     * Get a specific Module of a ModulePack by its name.
+     *
+     * @param name Name of the Module
+     * @return THe requested module if present - else null.
+     */
     public Module getModule(String name) {
         for (Module module : modules) {
             if (module.getName().equalsIgnoreCase(name))
@@ -79,6 +141,9 @@ public abstract class ModulePack {
         return null;
     }
 
+    /**
+     * @return The {@link PackLoadState} of this Module Pack
+     */
     public PackLoadState getPackLoadState() {
         return packLoadState;
     }
@@ -156,7 +221,8 @@ public abstract class ModulePack {
     /**
      * The final function in the getInstance stack.
      * <p>
-     *     Attempt to reflectively create a new instance of the {@param } class on the DexClassLoader.
+     *     Attempt to reflectively create a new instance of the <code>T</code> class on the
+     *     DexClassLoader.
      * <p>
      * Note: Error messages should be customised based on requirement.
      *
@@ -230,6 +296,10 @@ public abstract class ModulePack {
         }
     }
 
+    /**
+     * Builder Class as instantiating the Module Pack Implementation Class takes quite a few
+     * parameters
+     */
     @SuppressWarnings("NullableProblems")
     public static class Builder {
         @NonNull

@@ -39,14 +39,19 @@ import dalvik.system.DexClassLoader;
  * </p>
  * <h1>Usage of a ModulePack</h1>
  * <p>
- *     This class is only the very basic structure of a ModulePack. You should override this class
+ *     This class is only the very basic structure of a ModulePack. You should extend this BaseClass
  *     to allow your app-specific Actions (Load Hooks or even load Resource Hooks). The code that
  *     you will use in your Xposed-Class (which you specify in the <i>xposed_init</i> file) will be
  *     very simple:
  *     <ol>
  *         <li>Use the Builder class to instantiate the Module Pack</li>
  *         <li>Call the {@link #loadModules()} Method to initialize the Modules</li>
- *         <li>Call your own methods that allow you to do anything you want</li>
+ *         <li>Call your own methods that allow you to perform the actions you (possibly) need:</li>
+ *         <ul>
+ *             <li>Loading Hooks</li>
+ *             <li>Loading Resource Hooks</li>
+ *             <li>Perform some actions once the Activity of the Target Application has been loaded</li>
+ *         </ul>
  *     </ol>
  * </p>
  */

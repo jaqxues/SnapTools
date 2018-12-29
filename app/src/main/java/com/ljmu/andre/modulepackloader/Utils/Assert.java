@@ -3,6 +3,7 @@ package com.ljmu.andre.modulepackloader.Utils;
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
+ * <hr>
  */
 public class Assert {
     public static String stringExists(String errorMsg, String string) throws IllegalArgumentException {

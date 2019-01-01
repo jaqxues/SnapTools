@@ -5,13 +5,19 @@ import android.util.Log;
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
+ *
+ * <p>
+ *     Allows to log Messages of any priority (Debug to WTF) to a file, Analytics or just normally
+ *     to Logcat.
+ * </p>
  */
 public abstract class Logger {
+
+    public abstract void v(String verbose);
+
     public abstract void d(String debug);
 
     public abstract void i(String info);
-
-    public abstract void v(String verbose);
 
     public abstract void w(String warning);
 
@@ -27,6 +33,9 @@ public abstract class Logger {
 
     public abstract void wtf(Throwable throwable);
 
+    /**
+     * Default Logger Implementation by using Androids {@link Log} Class.
+     */
     public static class DefaultLogger extends Logger {
         private static final String DEFAULT_TAG = "ModulePack Loader";
 

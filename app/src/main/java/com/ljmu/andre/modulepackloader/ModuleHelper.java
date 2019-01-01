@@ -25,8 +25,8 @@ import static de.robv.android.xposed.XposedHelpers.findMethodExact;
  * <p>
  *     A more extended version of what your Module Class could look like. This class implements the
  *     ModuleLoadState features and combines them with very easy Helper Methods. This also takes care
- *     of every Exception that might occur during Hooking (<code>***NotFoundException...</code>) and
- *     logs it with the <code>logger</code>.<br>
+ *     of every Exception that might occur during Hooking ({@code ***NotFoundException...}) and
+ *     logs it with the {@code logger}.<br>
  * </p>
  */
 
@@ -80,7 +80,7 @@ public abstract class ModuleHelper extends Module {
      * @param methodName Name of the Method that should be hooked
      * @param parameterTypesAndCallback ParameterTypes of the Method or Constructor and Callback
      *      *                                  as last argument
-     * @return Unhook object as a result of <code>XposedBridge.hookMethod(Member, XC_MethodHook)</code>
+     * @return Unhook object as a result of {@code XposedBridge.hookMethod(Member, XC_MethodHook)}
      */
     protected XC_MethodHook.Unhook hookMethod(String className, ClassLoader classLoader, String methodName, Object... parameterTypesAndCallback) {
         try {
@@ -97,7 +97,7 @@ public abstract class ModuleHelper extends Module {
      * @param methodName Name of the Method or Null in case of Constructor
      * @param parameterTypesAndCallback ParameterTypes of the Method or Constructor and Callback
      *                                  as last argument
-     * @return Unhook object as a result of <code>XposedBridge.hookMethod(Member, XC_MethodHook)</code>
+     * @return Unhook object as a result of {@code XposedBridge.hookMethod(Member, XC_MethodHook)}
      */
     protected XC_MethodHook.Unhook hookMethod(Class<?> clazz, @Nullable String methodName, Object... parameterTypesAndCallback) {
         try {

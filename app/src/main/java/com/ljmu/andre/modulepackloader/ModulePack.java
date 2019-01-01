@@ -73,7 +73,7 @@ public abstract class ModulePack {
     /**
      * Allows simple access to ModulePack information.
      *
-     * @param <T> Implementation of the <code>PackAttributes</code> class.
+     * @param <T> Implementation of the {@code PackAttributes} class.
      * @return The PackAttributes associated with this ModulePack.
      */
     @Nullable
@@ -106,7 +106,7 @@ public abstract class ModulePack {
      *         Use {@link LoadState.State#SUCCESS} if the Module is enabled and has been loaded successfully
      *     </li>
      *     <li>
-     *         Use {@link LoadState.State#FAILED} if the Module is enabled but did not load successfully
+     *         Use {@link LoadState.State#FAILED} if the Module is enabled but did not load successfully (For some strange reason)
      *     </li>
      * </ul>
      *
@@ -115,14 +115,17 @@ public abstract class ModulePack {
     public abstract Map<Module, LoadState.State> getModules();
 
     /**
-     * Called immediately after instantiation of the ModulePack. You can use {@link #getModules()}
-     * as hook point if you want to perform certain action just before this action.
+     * Called immediately after instantiation of the ModulePack. You can use {@link #onInitialised()}
+     * to perform actions before loading modules or. This method calls {@link #getModules()} to get
+     * a list of the available Modules.
      */
-    public void loadModules() {
+    private <T extends ModulePack> T loadModules() {
         Map<Module, LoadState.State> moduleMap = getModules();
         for (Map.Entry<Module, LoadState.State> entry : moduleMap.entrySet())
             entry.getKey().getModuleLoadState().setState(entry.getValue());
         addModules(moduleMap.keySet().toArray(new Module[0]));
+        //noinspection unchecked
+        return (T) this;
     }
 
     /**
@@ -189,7 +192,7 @@ public abstract class ModulePack {
      *                             instantiate the ModulePack
      * @param packAttributes PackAttributes that will be set for the target ModulePack (optional)
      * @param <T> Given Type Parameter that the ModulePack should be casted to.
-     * @return Instance of <code>T</code> where T is a subclass of this class.
+     * @return Instance of {@code T} where T is a subclass of this class.
      * @throws PackLoadException Wraps every exception that can occur to instantiate a Pack
      */
     private static <T extends ModulePack> T getInstance(File packFile, File dexFileDir, String packClassPath,
@@ -199,7 +202,8 @@ public abstract class ModulePack {
         DexClassLoader packClassLoader = createClassLoader(packFile, dexFileDir, classLoader);
         return instantiatePack(packClassLoader, packClassPath, constructorArguments)
                 .setPackAttributes(packAttributes)
-                .onInitialised();
+                .onInitialised()
+                .loadModules();
     }
 
     /**
@@ -251,7 +255,7 @@ public abstract class ModulePack {
     /**
      * The final function in the getInstance stack.
      * <p>
-     *     Attempt to reflectively create a new instance of the <code>T</code> class on the
+     *     Attempt to reflectively create a new instance of the {@code T} class on the
      *     DexClassLoader.
      * <p>
      * Note: Error messages should be customised based on requirement.
@@ -259,9 +263,9 @@ public abstract class ModulePack {
      * @param dexClassLoader The ClassLoader of the Module so that the Pack can use all of its classes
      *                       and methods seamlessly (with a CacheDirectory that can be chosen by the user)
      * @param packClassPath Subclass of this class that is instantiated by calling its constructor.
-     * @param constructorArguments Arguments to invoke a matching constructor in the Class <code>packClassPath</code>.
+     * @param constructorArguments Arguments to invoke a matching constructor in the Class {@code packClassPath}.
      * @param <T> Given Type Parameter that the ModulePack should be casted to.
-     * @return The instance of <code>T</code> returned by invoking the given constructor.
+     * @return The instance of {@code T} returned by invoking the given constructor.
      * @throws PackLoadException Wrapper for various exception that can occur during this
      * reflection-based method.
      */
@@ -370,7 +374,7 @@ public abstract class ModulePack {
         }
 
         /**
-         * Build Method that creates the instance of <code>T</code> with the given properties of the
+         * Build Method that creates the instance of {@code T} with the given properties of the
          * Builder instance.
          *
          * @param <T> Given Type Parameter that the ModulePack should be casted to.

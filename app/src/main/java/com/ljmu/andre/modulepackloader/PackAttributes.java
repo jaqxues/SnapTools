@@ -22,7 +22,7 @@ public interface PackAttributes {
      *
      * @param attributes Attributes read from the jar
      * @param <T> Type of your own PackAttributes Implementation
-     * @return The Build instance of <code>T</code> with any information you need
+     * @return The Built instance of {@code T} with any information you need
      */
     <T extends PackAttributes> T onBuild(Attributes attributes);
 

@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.StealthViewProvider;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.StealthViewingFragment;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import java.util.ArrayList;
@@ -92,7 +94,8 @@ public class StealthViewing extends ModuleHelper {
 		};
 	}
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+    @Override
+    public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		bypassNextStealthView = !(boolean) getPref(DEFAULT_SNAP_STEALTH);
 
 		hookConstructor(
@@ -112,9 +115,9 @@ public class StealthViewing extends ModuleHelper {
 						Timber.d("Direct snap displayed... Binding stealth to active layout");
 
 						if (Looper.myLooper() != Looper.getMainLooper()) {
-							new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(snapActivity));
+                            new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(ContextHelper.getActivity()));
 						} else
-							assignStealthToActiveLayout(snapActivity);
+                            assignStealthToActiveLayout(ContextHelper.getActivity());
 					}
 				}
 		);
@@ -161,9 +164,9 @@ public class StealthViewing extends ModuleHelper {
 						Timber.d("Story snap displayed... Binding stealth to active layout");
 
 						if (Looper.myLooper() != Looper.getMainLooper()) {
-							new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(snapActivity));
+                            new Handler(Looper.getMainLooper()).post(() -> assignStealthToActiveLayout(ContextHelper.getActivity()));
 						} else
-							assignStealthToActiveLayout(snapActivity);
+                            assignStealthToActiveLayout(ContextHelper.getActivity());
 					}
 				}
 		);
@@ -342,8 +345,8 @@ public class StealthViewing extends ModuleHelper {
 				new ST_MethodHook() {
 					@Override protected void after(MethodHookParam param) throws Throwable {
 						View contentView = getObjectField(SNAPCHAT_FRAGMENT_CONTENT_VIEW, param.thisObject);
-						RelativeLayout headerTitle = getView(contentView, getId(snapActivity, "chat_header_title"));
-						headerTitle.addView(viewProvider.getStealthChatButton(snapActivity, getModuleContext(snapActivity)));
+                        RelativeLayout headerTitle = getView(contentView, getId(ContextHelper.getActivity(), "chat_header_title"));
+                        headerTitle.addView(viewProvider.getStealthChatButton(ContextHelper.getActivity(), getModuleContext(ContextHelper.getActivity())));
 					}
 				});
 
@@ -357,8 +360,8 @@ public class StealthViewing extends ModuleHelper {
 				new ST_MethodHook() {
 					@Override protected void after(MethodHookParam param) throws Throwable {
 						ViewGroup contentView = (ViewGroup) param.getResult();
-						LinearLayout buttonsLayout = getView(contentView, getId(snapActivity, "profile_navigation_buttons"));
-						buttonsLayout.addView(viewProvider.getProfileContainer(snapActivity, getModuleContext(snapActivity)));
+                        LinearLayout buttonsLayout = getView(contentView, getId(ContextHelper.getActivity(), "profile_navigation_buttons"));
+                        buttonsLayout.addView(viewProvider.getProfileContainer(ContextHelper.getActivity(), getModuleContext(ContextHelper.getActivity())));
 					}
 				});
 	}

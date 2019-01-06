@@ -1,6 +1,5 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +14,7 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.StoryBlockingSettingsFragment;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
@@ -62,7 +62,8 @@ public class StoryBlocker extends ModuleHelper {
 
 	// ===========================================================================
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		if (getPref(STORY_BLOCKER_ADVERTS_BLOCKED)) {
 			hookMethod(
 					LOAD_STORY_SNAP_ADVERT,
@@ -87,10 +88,10 @@ public class StoryBlocker extends ModuleHelper {
 						boolean isUserBlocked = collectionContains(BLOCKED_STORIES, username);
 
 						RelativeLayout relativeView = getView((View) param.args[0], /*mini_profile_view*/ decryptMsg(new byte[]{125, 29, 88, -75, -43, 105, -44, 84, 68, 80, -113, -47, -65, -26, -44, -31, -12, 33, -64, 126, 27, 24, 73, 88, -27, 44, 75, 23, -48, 46, -115, 103}));
-						Context modContext = getModuleContext(snapActivity);
+						Context modContext = getModuleContext(snapContext);
 
-						int horizontalPadding = dp(20, snapActivity);
-						int verticalPadding = dp(7, snapActivity);
+						int horizontalPadding = dp(20, snapContext);
+						int verticalPadding = dp(7, snapContext);
 
 						Button blockerButton = new Button(modContext);
 						blockerButton.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
@@ -98,7 +99,7 @@ public class StoryBlocker extends ModuleHelper {
 						RelativeLayout.LayoutParams buttonparams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 						buttonparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 						buttonparams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-						buttonparams.bottomMargin = dp(20, snapActivity);
+						buttonparams.bottomMargin = dp(20, snapContext);
 						blockerButton.setLayoutParams(buttonparams);
 						relativeView.addView(blockerButton);
 
@@ -117,7 +118,7 @@ public class StoryBlocker extends ModuleHelper {
 							updateBlockerButtonState(modContext, blockerButton, !isUserBlocked1);
 
 							SafeToastAdapter.showDefaultToast(
-									snapActivity,
+									ContextHelper.getActivity(),
 									/*Refresh Stories for changes to take effect*/ decryptMsg(new byte[]{-90, -20, -81, -104, 111, -94, 125, 127, -109, -32, 85, 83, -78, -59, 60, 105, -102, -14, 115, 44, 9, 44, -44, 122, -115, 3, -110, -122, 98, 39, 40, 56, -79, -113, -50, -123, 62, 122, -62, -89, -21, -64, 68, -68, 85, -2, -120, 34})
 							);
 						});

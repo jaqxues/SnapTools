@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Framework;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,7 +14,6 @@ import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef;
 
 import java.util.List;
-
 
 import timber.log.Timber;
 
@@ -56,11 +56,10 @@ public abstract class Module implements StatefulListable<Void> {
 	 */
 	@SuppressWarnings({"unused", "WeakerAccess"})
 
-	public ModuleLoadState injectHooks(ClassLoader snapClassLoader, Activity snapActivity,
-	                                   ModuleLoadState moduleLoadState) {
+	public ModuleLoadState injectHooks(ClassLoader snapClassLoader, Context snapContext,
+									   ModuleLoadState moduleLoadState) {
 		if (hasInjected) {
-			Timber.d("Tried to reapply hook: "
-					+ name());
+			Timber.d("Tried to reapply hook: %s", name());
 			return null;
 		}
 
@@ -74,7 +73,7 @@ public abstract class Module implements StatefulListable<Void> {
 			return moduleLoadState;
 		}
 
-		loadHooks(snapClassLoader, snapActivity);
+		loadHooks(snapClassLoader, snapContext);
 
 		if (moduleLoadState.getFailedHooks() <= 0 &&
 				moduleLoadState.getSuccessfulHooks() > 0) {
@@ -99,27 +98,40 @@ public abstract class Module implements StatefulListable<Void> {
 	 * Signal to the implementation of this class that we wish to load our hooks
 	 * into the application. This function should generally not be called unless
 	 * we have performed checks on whether the Module is able to hook.
-	 * Instead use {@link this#injectHooks(ClassLoader, Activity, ModuleLoadState)}
+	 * Instead use {@link this#injectHooks(ClassLoader, Context, ModuleLoadState)}
 	 * ===========================================================================
 	 */
-	public abstract void loadHooks(ClassLoader snapClassLoader, Activity snapActivity);
+	public abstract void loadHooks(ClassLoader snapClassLoader, Context snapContext);
+
+	/**
+	 * ===========================================================================
+	 * Additional Hook Point for some modules that require initializing its fields etc with an
+	 * activity that cannot be provided at {@link this#loadHooks(ClassLoader, Context)}
+	 * ===========================================================================
+	 */
+	public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+	}
 
 	public ModuleLoadState getModuleLoadState() {
 		return moduleLoadState;
 	}
 
-	@Override public List<Void> getChildren() {
+	@Override
+	public List<Void> getChildren() {
 		return null;
 	}
 
-	@Override public void updateHeaderText(View container, TextView headerHolder) {
+	@Override
+	public void updateHeaderText(View container, TextView headerHolder) {
 		headerHolder.setText(name());
 	}
 
-	@Override public void updateMessageText(View container, TextView messageHolder, Void child) {
+	@Override
+	public void updateMessageText(View container, TextView messageHolder, Void child) {
 	}
 
-	@Override public void updateHeaderStateHolder(TextView stateHolder) {
+	@Override
+	public void updateHeaderStateHolder(TextView stateHolder) {
 		boolean isActive = !collectionContains(DISABLED_MODULES, name());
 
 		if (isActive) {
@@ -135,7 +147,8 @@ public abstract class Module implements StatefulListable<Void> {
 		}
 	}
 
-	@Override public void updateMessageStateHolder(TextView stateHolder, Void child) {
+	@Override
+	public void updateMessageStateHolder(TextView stateHolder, Void child) {
 		stateHolder.setVisibility(GONE);
 	}
 }

@@ -1,9 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
-//import com.crashlytics.android.answers.Answers;
-//import com.crashlytics.android.answers.CustomEvent;
 import com.ljmu.andre.CBIDatabase.CBITable;
 import com.ljmu.andre.CBIDatabase.Utils.QueryBuilder;
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
@@ -25,7 +23,6 @@ import java.util.Map;
 
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
-
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
@@ -42,6 +39,9 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookResolver.resolveHookClass;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_AUTO_ENABLE;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
+
+//import com.crashlytics.android.answers.Answers;
+//import com.crashlytics.android.answers.CustomEvent;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -64,8 +64,9 @@ public class LensCollector extends ModuleHelper {
 
 	// ===========================================================================
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
-		LensDatabase.init(snapActivity);
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
+		LensDatabase.init(snapContext);
 
 		/**
 		 * ===========================================================================

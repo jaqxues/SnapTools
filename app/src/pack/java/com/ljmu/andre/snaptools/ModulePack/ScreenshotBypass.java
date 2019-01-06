@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
@@ -9,8 +9,8 @@ import de.robv.android.xposed.XC_MethodReplacement;
 
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SCREENSHOT_BYPASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SET_SCREENSHOT_COUNT;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SET_VIDEO_SCREENSHOT_COUNT;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SET_SCREENSHOT_COUNT3;
+import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SET_VIDEO_SCREENSHOT_COUNT;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -30,7 +30,8 @@ public class ScreenshotBypass extends ModuleHelper {
 
 	// ===========================================================================
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		hookMethod(
 				SCREENSHOT_BYPASS,
 				XC_MethodReplacement.DO_NOTHING);

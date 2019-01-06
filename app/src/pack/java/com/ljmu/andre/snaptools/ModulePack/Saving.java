@@ -1,17 +1,14 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.google.common.io.ByteStreams;
@@ -35,6 +32,7 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapTypeDef;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.StorySnap;
 import com.ljmu.andre.snaptools.ModulePack.Utils.SavingLayout;
 import com.ljmu.andre.snaptools.ModulePack.Utils.SavingViewPool;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
@@ -89,7 +87,6 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
-import static com.ljmu.andre.snaptools.Utils.XposedUtils.logStackTrace;
 import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
@@ -117,15 +114,9 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 	// ===========================================================================
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		SaveTriggerManager.init();
-
-		try {
-			yourUsername = callStaticHook(GET_USERNAME);
-		} catch (HookNotFoundException e) {
-			Timber.e(e);
-			moduleLoadState.fail();
-		}
 
 		/*findAndHookMethod(
 				"inw", snapClassLoader,
@@ -160,9 +151,9 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 				new ST_MethodHook() {
 					@Override protected void after(MethodHookParam param) throws Throwable {
 						try {
-							checkIsChatLayout(snapActivity, (ViewGroup) param.thisObject);
+							checkIsChatLayout(ContextHelper.getActivity(), (ViewGroup) param.thisObject);
 							FrameLayout operaLayout = (FrameLayout) param.thisObject;
-							SavingLayout savingLayout = SavingViewPool.requestLayout(snapActivity);
+							SavingLayout savingLayout = SavingViewPool.requestLayout(ContextHelper.getActivity());
 
 							operaLayout.addView(savingLayout);
 						} catch (Throwable t) {
@@ -235,9 +226,9 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 								Class sentVideo = HookResolver.resolveHookClass(SENT_VIDEO);
 
 								if (media.getClass().equals(sentImage))
-									sentSnap = handleSentSnap(snapActivity, media, false);
+									sentSnap = handleSentSnap(ContextHelper.getActivity(), media, false);
 								else if (media.getClass().equals(sentVideo))
-									sentSnap = handleSentSnap(snapActivity, media, true);
+									sentSnap = handleSentSnap(ContextHelper.getActivity(), media, true);
 								else {
 									Timber.e(/*Unhandled Sent Snap Type: */ decryptMsg(new byte[]{-59, -105, -107, -71, -108, -94, 96, -119, 96, -114, -2, 48, -107, 2, -70, 19, 87, 99, -62, 67, -53, -28, -71, 77, 118, -30, 25, -89, 70, -41, 124, -93})
 											+ media.getClass());
@@ -247,7 +238,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 							}
 
 							SaveNotification.show(
-									snapActivity,
+									ContextHelper.getActivity(),
 									sentSnap != null ? SaveNotification.ToastType.GOOD : SaveNotification.ToastType.BAD,
 									Toast.LENGTH_LONG,
 									sentSnap
@@ -290,7 +281,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 						// Build the snap ============================================================
 						new Builder()
-								.setContext(snapActivity)
+								.setContext(ContextHelper.getActivity())
 								.setKey(key)
 								.setUsername(username)
 								.setDateTime(timestamp)
@@ -343,7 +334,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 						String username = callHook(SNAP_GET_USERNAME, snapMetaData);
 
 						new Builder()
-								.setContext(snapActivity)
+								.setContext(ContextHelper.getActivity())
 								.setKey(key)
 								.setUsername(username)
 								.setDateTime(timestamp)
@@ -393,7 +384,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 						String username = callHook(SNAP_GET_USERNAME, chatMetaData);
 
 						new Snap.Builder()
-								.setContext(snapActivity)
+								.setContext(ContextHelper.getActivity())
 								.setKey(key)
 								.setUsername(username)
 								.setDateTime(timestamp)
@@ -429,7 +420,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 						ChatVideoSnap snap = new ChatVideoSnap.Builder()
 								.setVideoPath(videoPath)
-								.setContext(snapActivity)
+								.setContext(ContextHelper.getActivity())
 								.setKey(key)
 								.setUsername(username)
 								.setDateTime(timestamp)
@@ -478,7 +469,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 						String username = callHook(SNAP_GET_USERNAME, groupMetaData);
 
 						new Builder()
-								.setContext(snapActivity)
+								.setContext(ContextHelper.getActivity())
 								.setKey(key)
 								.setUsername(username)
 								.setDateTime(timestamp)
@@ -550,7 +541,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 							}
 
 							SaveNotification.show(
-									snapActivity,
+									ContextHelper.getActivity(),
 									toastType,
 									Toast.LENGTH_LONG,
 									snap
@@ -611,7 +602,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 						if (snap == null) {
 							Timber.e("Null Snap from Cache");
 							SaveNotification.show(
-									snapActivity,
+									ContextHelper.getActivity(),
 									SaveNotification.ToastType.BAD,
 									Toast.LENGTH_LONG
 							);
@@ -648,7 +639,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 						}
 
 						SaveNotification.show(
-								snapActivity,
+								ContextHelper.getActivity(),
 								toastType,
 								Toast.LENGTH_LONG,
 								snap
@@ -679,7 +670,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 
 						if (snap == null) {
 							Timber.e("Null Snap from Cache");
-							SaveNotification.show(snapActivity, SaveNotification.ToastType.BAD, Toast.LENGTH_LONG);
+							SaveNotification.show(ContextHelper.getActivity(), SaveNotification.ToastType.BAD, Toast.LENGTH_LONG);
 							return;
 						}
 
@@ -718,7 +709,7 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 						}
 
 						SaveNotification.show(
-								snapActivity,
+								ContextHelper.getActivity(),
 								toastType,
 								Toast.LENGTH_LONG,
 								snap
@@ -737,6 +728,16 @@ import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 		);
 
 		hasLoadedHooks = true;
+	}
+
+	@Override
+	public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+		try {
+			yourUsername = callStaticHook(GET_USERNAME);
+		} catch (HookNotFoundException e) {
+			Timber.e(e);
+			moduleLoadState.fail();
+		}
 	}
 
 	// ===========================================================================

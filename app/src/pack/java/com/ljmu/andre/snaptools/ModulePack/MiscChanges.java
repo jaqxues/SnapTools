@@ -25,6 +25,7 @@ import com.ljmu.andre.snaptools.ModulePack.Fragments.MiscChangesFragment;
 import com.ljmu.andre.snaptools.ModulePack.Utils.FontUtils;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Utils.Callable;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.ResourceMapper;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
@@ -69,7 +70,8 @@ public class MiscChanges extends ModuleHelper {
 		return new FragmentHelper[]{new MiscChangesFragment()};
 	}
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 
 		hookMethod(FONT_HOOK, new ST_MethodHook() {
 			@Override protected void before(MethodHookParam param) throws Throwable {
@@ -98,13 +100,13 @@ public class MiscChanges extends ModuleHelper {
 				ActionMode actionMode = (ActionMode) param.args[0];
 				Menu menu = (Menu) param.args[1];
 				menu.clear();
-				actionMode.getMenuInflater().inflate(ResourceMapper.getResId(snapActivity, "caption_context_menu", "menu"), menu);
+				actionMode.getMenuInflater().inflate(ResourceMapper.getResId(ContextHelper.getActivity(), "caption_context_menu", "menu"), menu);
 
 				EditText text = getObjectField(SNAPCAPTIONVIEW_CONTEXT, param.thisObject);
 
-				int paste = ResourceUtils.getId(snapActivity, "menu_item_paste");
-				int cut = ResourceUtils.getId(snapActivity, "menu_item_cut");
-				int copy = ResourceUtils.getId(snapActivity, "menu_item_copy");
+				int paste = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_paste");
+				int cut = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_cut");
+				int copy = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_copy");
 				/*if (text.getSelectionStart() == text.getSelectionEnd()) {
 					menu.findItem(paste).setVisible(true);
 					menu.findItem(copy).setVisible(false);
@@ -121,7 +123,7 @@ public class MiscChanges extends ModuleHelper {
 					menu.findItem(cut).setVisible(true);
 				}
 				//TODO: check if something is on the clipboard
-				ClipboardManager clipboardManager = (ClipboardManager) snapActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipboardManager clipboardManager = (ClipboardManager) snapContext.getSystemService(Context.CLIPBOARD_SERVICE);
 				if ((Boolean) getPref(PASTE_BUTTON)) {
 					if (clipboardManager != null) {
 						if (!clipboardManager.hasPrimaryClip()) {
@@ -134,9 +136,9 @@ public class MiscChanges extends ModuleHelper {
 						menu.findItem(paste).setVisible(true);
 					}
 				}
-				int bold = ResourceUtils.getId(snapActivity, "menu_item_bold");
-				int italic = ResourceUtils.getId(snapActivity, "menu_item_italic");
-				int underline = ResourceUtils.getId(snapActivity, "menu_item_underline");
+				int bold = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_bold");
+				int italic = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_italic");
+				int underline = ResourceUtils.getId(ContextHelper.getActivity(), "menu_item_underline");
 				menu.findItem(bold).setVisible(true);
 				menu.findItem(italic).setVisible(true);
 				menu.findItem(underline).setVisible(true);
@@ -175,9 +177,9 @@ public class MiscChanges extends ModuleHelper {
 					sub.add("Test4");
 
 					//TODO: Attach HSLColorPicker to ThemedDialog
-					ThemedDialog prompt = new ThemedDialog(snapActivity);
+					ThemedDialog prompt = new ThemedDialog(ContextHelper.getActivity());
 					Integer color;
-					ColorPickerExtension dialog = new ColorPickerExtension(snapActivity);
+					ColorPickerExtension dialog = new ColorPickerExtension(ContextHelper.getActivity());
 					dialog.setCallback(new Callable<Integer>() {
 						@Override public void call(Integer integer) {
 							if (integer == -5 || integer == -1) {
@@ -222,7 +224,7 @@ public class MiscChanges extends ModuleHelper {
 							}));
 						}
 						OptionsButtonData[] b = buttons.toArray(new OptionsButtonData[buttons.size()]);
-						DialogFactory.createOptions(snapActivity, "Choose Font", b).show();
+						DialogFactory.createOptions(ContextHelper.getActivity(), "Choose Font", b).show();
 						return true;
 					}
 				});
@@ -231,7 +233,7 @@ public class MiscChanges extends ModuleHelper {
 				MenuItem size = menu.add("Size");
 				size.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 					@Override public boolean onMenuItemClick(MenuItem item) {
-						DialogFactory.createBasicTextInputDialog(snapActivity, "Font Size", "What size should the text be set to?", null, null, InputType.TYPE_CLASS_NUMBER, new ThemedClickListener() {
+						DialogFactory.createBasicTextInputDialog(ContextHelper.getActivity(), "Font Size", "What size should the text be set to?", null, null, InputType.TYPE_CLASS_NUMBER, new ThemedClickListener() {
 							@Override public void clicked(ThemedDialog themedDialog) {
 								TextInputBasic input = themedDialog.getExtension();
 								String inputs = input.getInputMessage();

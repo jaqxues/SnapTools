@@ -244,12 +244,12 @@ public class FileUtils {
 		return "ReadMe-" + tag + ".txt";
 	}
 
-	public static File getCodeCacheDir(Activity activity) {
+	public static File getCodeCacheDir(Context context) {
 		File codeCacheDir;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
-			codeCacheDir = activity.getCodeCacheDir();
+			codeCacheDir = context.getCodeCacheDir();
 		else
-			codeCacheDir = new File(activity.getApplicationInfo().dataDir + "/code_cache");
+			codeCacheDir = new File(context.getApplicationInfo().dataDir + "/code_cache");
 
 		return codeCacheDir;
 	}

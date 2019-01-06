@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.ljmu.andre.snaptools.Exceptions.HookNotFoundException;
@@ -51,7 +51,8 @@ public class HookResolver extends ModuleHelper {
 	 * Begins Hook loading and Load State Updating
 	 * ===========================================================================
 	 */
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		if (hookReferenceMap.size() > 0) {
 			Timber.w(/*Tried to resolve hooks more than once!*/ decryptMsg(new byte[]{-74, 18, 61, 118, 82, 96, -87, -79, 28, 92, -66, 98, -78, 26, 126, -85, -64, -8, 45, 86, 61, 59, -35, -22, -18, 43, 2, -37, -22, -5, -86, -83, -52, -43, 103, -70, 112, -24, 99, -61, 84, 57, -92, 30, 40, 26, 28, 114}));
 			return;

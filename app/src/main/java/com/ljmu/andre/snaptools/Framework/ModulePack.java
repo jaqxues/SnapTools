@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.Framework;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.ljmu.andre.snaptools.Exceptions.ModuleCertificateException;
 import com.ljmu.andre.snaptools.Exceptions.ModulePackFatalError;
@@ -32,7 +33,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import dalvik.system.DexClassLoader;
-
 
 import static com.ljmu.andre.snaptools.Utils.PackUtils.getFlavourFromAttributes;
 
@@ -74,20 +74,94 @@ public abstract class ModulePack {
 
 	/**
 	 * ===========================================================================
-	 * An abstract function to allow the {@link this#PACK_CLASSNAME} class to
+     * Instantiate an implementation of this ModulePack class from within
+     * a .jar file. This function will always return a valid ModulePack
+     * object, otherwise it will throw a categorised exception.
+     * <p>
+     * This is a fairly heavy function (~200ms) and should be used sparingly
+     * or asynchronously when possible (However when used for injecting hooks,
+     * it is likely best done synchronously to not miss hooks on methods called
+     * early)
+     * <p>
+     * The .jar file is required to be signed by either the release or debug
+     * keystore (Based on the corresponding app build variant) so as to not
+     * allow malicious code to be loaded by third party apps
+     * ===========================================================================
+     *
+     * @param context
+     * @param modulePackFile
+     * @param packLoadState  - An object that will be updated to reflect the load state of this object
+     * @return
+     * @throws ModuleCertificateException
+     * @throws ModulePackFatalError
+     * @throws ModulePackNotFound
+     * @throws ModulePackLoadAborted
+     */
+    public static ModulePack getInstance(
+            Context context,
+            File modulePackFile,
+            PackLoadState packLoadState) throws ModuleCertificateException, ModulePackFatalError, ModulePackNotFound, ModulePackLoadAborted {
+        Attributes mainAttributes = getAttributesAndVerify(modulePackFile);
+
+        if (mainAttributes == null)
+            throw new ModulePackFatalError("Module pack doesn't contain meta-data");
+
+        // Load the metadata embedded into the manifest ==============================
+        LocalPackMetaData packMetaData = (LocalPackMetaData) new LocalPackMetaData()
+                .setName(modulePackFile.getName().replace(".jar", ""))
+                .setType(mainAttributes.getValue("Type"))
+                .setPackVersion(mainAttributes.getValue("PackVersion"))
+                .setScVersion(mainAttributes.getValue("SCVersion"))
+                .setDevelopment(Boolean.valueOf(mainAttributes.getValue("Development")))
+                .setFlavour(getFlavourFromAttributes(mainAttributes, modulePackFile));
+
+        // Ensure the installed SC version matches the packs =========================
+        String installedVersion = MiscUtils.getInstalledSCVer(context);
+
+        if (installedVersion == null || !packMetaData.getScVersion().equals(installedVersion))
+            throw new ModulePackLoadAborted(VERSION_MISMATCH_ERROR);
+
+        DexClassLoader dexClassLoader = createClassLoader(FileUtils.getCodeCacheDir(context), modulePackFile);
+        return instantiatePack(dexClassLoader, packMetaData, packLoadState);
+    }
+
+    /**
+     * ===========================================================================
+     * Create a classloader that will be used to instantiate the implemented
+     * version of this ModulePack class using {@link this#PACK_CLASSNAME}
+     * ===========================================================================
+     *
+     * @param codeCacheDir   - A directory that is optimised for .dex files
+     *                       see {@link FileUtils#getCodeCacheDir(Context)}
+     * @param modulePackFile
+     * @return
+     * @throws ModulePackFatalError
+     */
+    private static DexClassLoader createClassLoader(File codeCacheDir, File modulePackFile)
+            throws ModulePackFatalError {
+        if (!codeCacheDir.exists() && !codeCacheDir.mkdirs())
+            throw new ModulePackFatalError("Couldn't create optimised Code Cache");
+
+        try {
+            return new DexClassLoader(
+                    modulePackFile.getAbsolutePath(),
+                    codeCacheDir.getAbsolutePath(),
+                    null,
+                    MainActivity.class.getClassLoader());
+        } catch (Throwable t) {
+            throw new ModulePackFatalError("Issue loading ClassLoader",
+                    t
+            );
+        }
+    }
+
+    /**
+     * ===========================================================================
+     * An abstract function to allow the {@link ModulePack#PACK_CLASSNAME} class to
 	 * perform the loading phase of its contained modules.
 	 * ===========================================================================
 	 */
 	public abstract Map<String, ModuleLoadState> loadModules();
-
-	/**
-	 * ===========================================================================
-	 * An abstract function to allow the {@link this#PACK_CLASSNAME} class to
-	 * perform the hook injection phase of the previously loaded {@link this#modules}
-	 * ===========================================================================
-	 */
-	public abstract List<ModuleLoadState> injectAllHooks(ClassLoader snapClassLoader, Activity snapActivity);
-
 	// ===========================================================================
 
 	public List<Module> getModules() {
@@ -201,56 +275,11 @@ public abstract class ModulePack {
 
 	/**
 	 * ===========================================================================
-	 * Instantiate an implementation of this ModulePack class from within
-	 * a .jar file. This function will always return a valid ModulePack
-	 * object, otherwise it will throw a categorised exception.
-	 * <p>
-	 * This is a fairly heavy function (~200ms) and should be used sparingly
-	 * or asynchronously when possible (However when used for injecting hooks,
-	 * it is likely best done synchronously to not miss hooks on methods called
-	 * early)
-	 * <p>
-	 * The .jar file is required to be signed by either the release or debug
-	 * keystore (Based on the corresponding app build variant) so as to not
-	 * allow malicious code to be loaded by third party apps
+     * An abstract function to allow the {@link this#PACK_CLASSNAME} class to
+     * perform the hook injection phase of the previously loaded {@link this#modules}
 	 * ===========================================================================
-	 *
-	 * @param activity
-	 * @param modulePackFile
-	 * @param packLoadState  - An object that will be updated to reflect the load state of this object
-	 * @return
-	 * @throws ModuleCertificateException
-	 * @throws ModulePackFatalError
-	 * @throws ModulePackNotFound
-	 * @throws ModulePackLoadAborted
-	 */
-	public static ModulePack getInstance(
-			Activity activity,
-			File modulePackFile,
-			PackLoadState packLoadState) throws ModuleCertificateException, ModulePackFatalError, ModulePackNotFound, ModulePackLoadAborted {
-		Attributes mainAttributes = getAttributesAndVerify(modulePackFile);
-
-		if (mainAttributes == null)
-			throw new ModulePackFatalError("Module pack doesn't contain meta-data");
-
-		// Load the metadata embedded into the manifest ==============================
-		LocalPackMetaData packMetaData = (LocalPackMetaData) new LocalPackMetaData()
-				.setName(modulePackFile.getName().replace(".jar", ""))
-				.setType(mainAttributes.getValue("Type"))
-				.setPackVersion(mainAttributes.getValue("PackVersion"))
-				.setScVersion(mainAttributes.getValue("SCVersion"))
-				.setDevelopment(Boolean.valueOf(mainAttributes.getValue("Development")))
-				.setFlavour(getFlavourFromAttributes(mainAttributes, modulePackFile));
-
-		// Ensure the installed SC version matches the packs =========================
-		String installedVersion = MiscUtils.getInstalledSCVer(activity);
-
-		if (installedVersion == null || !packMetaData.getScVersion().equals(installedVersion))
-			throw new ModulePackLoadAborted(VERSION_MISMATCH_ERROR);
-
-		DexClassLoader dexClassLoader = createClassLoader(FileUtils.getCodeCacheDir(activity), modulePackFile);
-		return instantiatePack(dexClassLoader, packMetaData, packLoadState);
-	}
+     */
+    public abstract List<ModuleLoadState> injectAllHooks(ClassLoader snapClassLoader, Context snapContext);
 
 	/**
 	 * ===========================================================================
@@ -288,33 +317,12 @@ public abstract class ModulePack {
 
 	/**
 	 * ===========================================================================
-	 * Create a classloader that will be used to instantiate the implemented
-	 * version of this ModulePack class using {@link this#PACK_CLASSNAME}
+     * To avoid the Hangs for Snapchat, we hook as early as possible. Since we cannot provide an
+     * activity at this point, it makes sense to provide an "Activity Hook" to the Modules to
+     * initialize and prepare Fields etc.
 	 * ===========================================================================
-	 *
-	 * @param codeCacheDir   - A directory that is optimised for .dex files
-	 *                       see {@link FileUtils#getCodeCacheDir(Activity)}
-	 * @param modulePackFile
-	 * @return
-	 * @throws ModulePackFatalError
-	 */
-	private static DexClassLoader createClassLoader(File codeCacheDir, File modulePackFile)
-			throws ModulePackFatalError {
-		if (!codeCacheDir.exists() && !codeCacheDir.mkdirs())
-			throw new ModulePackFatalError("Couldn't create optimised Code Cache");
-
-		try {
-			return new DexClassLoader(
-					modulePackFile.getAbsolutePath(),
-					codeCacheDir.getAbsolutePath(),
-					null,
-					MainActivity.class.getClassLoader());
-		} catch (Throwable t) {
-			throw new ModulePackFatalError("Issue loading ClassLoader",
-					t
-			);
-		}
-	}
+     */
+    public abstract void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity);
 
 	/**
 	 * ===========================================================================

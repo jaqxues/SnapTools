@@ -125,22 +125,22 @@ dependencies {
     }
 }
 
-task exportModulePackClasses(type: JavaExec) {
-    println "EXPORTING MODULE PACK CLASSES"
-    main = "Main"
-    classpath = files('C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter')
-
-    // arg0 = Source Mapping Path
-    // arg1 = Proguard Jar Path
-    // arg2 = Export Path
-    // arg3 = Delay after completing
-    args(
-            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/outputs/mapping/pack/release/mapping.txt",
-            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/intermediates/transforms/proguard/pack/release/0.jar",
-            "C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter/ExportedModulePackClasses",
-            0
-    )
-}
+//task exportModulePackClasses(type: JavaExec) {
+//    println "EXPORTING MODULE PACK CLASSES"
+//    main = "Main"
+//    classpath = files('C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter')
+//
+//    // arg0 = Source Mapping Path
+//    // arg1 = Proguard Jar Path
+//    // arg2 = Export Path
+//    // arg3 = Delay after completing
+//    args(
+//            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/outputs/mapping/pack/release/mapping.txt",
+//            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/intermediates/transforms/proguard/pack/release/0.jar",
+//            "C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter/ExportedModulePackClasses",
+//            0
+//    )
+//}
 
 /**
  * ===========================================================================
@@ -264,14 +264,14 @@ task postProdMappingMerger(type: JavaExec) {
     )
 }*/
 
-afterEvaluate() {
+//afterEvaluate() {
     /*transformClassesAndResourcesWithProguardForPackRelease.dependsOn(preProguardPackMappingMerge)
     transformClassesAndResourcesWithProguardForPackRelease.finalizedBy(postProguardPackMappingMerge)*/
-    assemblePackRelease.finalizedBy(exportModulePackClasses)
+//    assemblePackRelease.finalizedBy(exportModulePackClasses)
 
     /*transformClassesAndResourcesWithProguardForBetaRelease.dependsOn(preBetaMappingMerger)
     transformClassesAndResourcesWithProguardForBetaRelease.finalizedBy(postBetaMappingMerger)
 
     transformClassesAndResourcesWithProguardForProdRelease.dependsOn(preProdMappingMerger)
     transformClassesAndResourcesWithProguardForProdRelease.finalizedBy(postProdMappingMerger)*/
-}
+//}

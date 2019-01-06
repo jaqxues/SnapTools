@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +15,15 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.ChatObject;
 import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.ConversationObject;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.ChatManagerFragment;
 import com.ljmu.andre.snaptools.ModulePack.Utils.FieldMapper;
+import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedHelpers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
@@ -34,7 +31,6 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.C
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_HEADER_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_METADATA_JSON_PARSER;
-import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAP_BASE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_ISSAVED_INAPP;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_MESSAGE_VIEW_MEASURE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CHAT_METADATA_READ;
@@ -50,9 +46,6 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORE_CHAT_MESSAGES;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
 import static com.ljmu.andre.snaptools.Utils.StringEncryptor.decryptMsg;
-import static com.ljmu.andre.snaptools.Utils.XposedUtils.hookAllMethods;
-import static com.ljmu.andre.snaptools.Utils.XposedUtils.logStackTrace;
-import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
@@ -77,7 +70,8 @@ public class ChatSaving extends ModuleHelper {
 		return new ChatManagerFragment[]{new ChatManagerFragment()};
 	}
 
-	@Override public void loadHooks(ClassLoader snapClassLoader, Activity snapActivity) {
+	@Override
+	public void loadHooks(ClassLoader snapClassLoader, Context snapContext) {
 		findAndHookMethod(
 				"ify", snapClassLoader,
 				"a", findClass("com.snapchat.android.core.structure.fragment.SnapchatFragment", snapClassLoader),
@@ -278,7 +272,7 @@ public class ChatSaving extends ModuleHelper {
 			try {
 				yourUsername = callStaticHook(GET_USERNAME);
 
-				ChatDatabase.init(snapActivity);
+				ChatDatabase.init(snapContext);
 
 				chatTable = ChatDatabase.getTable(ChatObject.class);
 				conversationTable = ChatDatabase.getTable(ConversationObject.class);
@@ -352,7 +346,7 @@ public class ChatSaving extends ModuleHelper {
 					CHAT_MESSAGE_VIEW_MEASURE,
 					new ST_MethodHook() {
 						@Override protected void after(MethodHookParam param) throws Throwable {
-							snapActivity.runOnUiThread(new Runnable() {
+							ContextHelper.getActivity().runOnUiThread(new Runnable() {
 								@Override public void run() {
 									try {
 										Object chatLinker = getObjectField(CHAT_SAVING_LINKER, param.thisObject);

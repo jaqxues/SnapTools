@@ -215,9 +215,9 @@ public class MiscChanges extends ModuleHelper {
 							buttons.add(new OptionsButtonData(s, new ThemedClickListener() {
 								@Override public void clicked(ThemedDialog themedDialog) {
 									if (!s.equalsIgnoreCase("Default")) {
-										swipSwapBippityBop();
+										fontOverride = !fontOverride;
 										text.setTypeface(Typeface.createFromFile(new File(getPref(FONTS_PATH) + s)));
-										swipSwapBippityBop();
+										fontOverride = !fontOverride;
 									}
 									themedDialog.dismiss();
 								}
@@ -273,14 +273,6 @@ public class MiscChanges extends ModuleHelper {
 				}
 			}
 		});
-	}
-
-	void swipSwapBippityBop() {
-		if (fontOverride) {
-			fontOverride = false;
-		} else {
-			fontOverride = true;
-		}
 	}
 
 	int getOpacity(Activity snapActivity) {

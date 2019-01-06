@@ -139,6 +139,13 @@ class ModulesDef extends ConstantDefiner<Modules> {
 			/*Allows for safely and securely swapping between Snapchat accounts, along with other account management features*/ decryptMsg(new byte[]{-115, -52, 0, -71, -32, -113, 85, 18, -1, 43, -46, -74, 17, -44, 97, -1, -16, -78, -70, 24, -88, 62, -88, 102, 27, 29, -34, -42, -125, -35, -47, 69, 36, -29, 111, -8, -50, 9, 55, 69, -83, -24, -21, -36, -105, -10, 102, -38, 111, 3, 53, 73, -41, -23, -1, 69, -14, -61, -46, -45, 56, -74, 0, 9, 112, 21, 26, -10, 103, -92, -84, 89, 94, -69, 96, 67, 102, 72, -104, 40, -77, -57, -118, -96, -46, 33, 86, -26, -49, 111, 71, 9, 11, -111, 41, 58, -21, -19, 63, -51, -95, 43, 30, 32, -8, 21, -86, 65, 20, 54, 121, -96})
 	);
 
+	public static final Modules FORCED_HOOKS = new Modules(
+			14,
+			"Forced Hooks",
+			ForcedHooks.class,
+			false
+	);
+
 	public static class Modules extends Constant {
 		private final Class<? extends Module> moduleClass;
 		private final boolean canBeDisabled;

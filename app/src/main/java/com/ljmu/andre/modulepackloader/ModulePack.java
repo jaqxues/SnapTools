@@ -243,7 +243,8 @@ public abstract class ModulePack {
     }
 
     /**
-     * Constructor has just been called and the ModulePack is ready to be used.
+     * Constructor has just been called and the ModulePack is ready to be used. The next action that
+     * will be performed just after this is {@link #loadModules()}.
      *
      * @param <T> Given Type Parameter that the ModulePack should be casted to.
      * @return The ModulePack instance

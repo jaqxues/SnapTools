@@ -1,5 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -270,8 +271,6 @@ public class ChatSaving extends ModuleHelper {
 
 		if (getPref(STORE_CHAT_MESSAGES)) {
 			try {
-				yourUsername = callStaticHook(GET_USERNAME);
-
 				ChatDatabase.init(snapContext);
 
 				chatTable = ChatDatabase.getTable(ChatObject.class);
@@ -390,7 +389,18 @@ public class ChatSaving extends ModuleHelper {
 		}
 	}
 
+	@Override
+	public void prepareActivity(ClassLoader snapClassLoader, Activity snapActivity) {
+		try {
+			yourUsername = callStaticHook(GET_USERNAME);
+		} catch (Throwable t) {
+			Timber.e(t);
+		}
+	}
+
 	private void handleChatLogging(Object chat) {
+		if (yourUsername == null)
+			return;
 		FieldMapper chatMapper = FieldMapper.getMapper("Chat");
 		FieldMapper chatSuperMapper = FieldMapper.getMapper("ChatSuper");
 		FieldMapper headerMapper = FieldMapper.getMapper("Header");

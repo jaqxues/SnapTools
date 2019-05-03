@@ -338,6 +338,18 @@ class MiscChangesViewProvider(
                                         { getPref<String>(FORCE_EMOJIBRUSH_STATE) }
                                 ))
 
+                        labelledSpinner(
+                                label = "MultiSnap Recording: ",
+                                initialItem = getPref<String>(FORCE_MULTI_SNAP_STATE),
+                                items = onOffDefaultList,
+                                id = "spinner_multisnap",
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                        { newItem, _, _ ->
+                                            putAndKill(FORCE_MULTI_SNAP_STATE, newItem, activity)
+                                        },
+                                        { getPref<String>(FORCE_MULTI_SNAP_STATE) }
+                                ))
+
                         experiemtnsUICallable.call(this)
                     }.lparams(matchParent)
                 }

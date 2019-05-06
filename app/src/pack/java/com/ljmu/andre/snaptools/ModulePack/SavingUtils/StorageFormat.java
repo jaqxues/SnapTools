@@ -248,15 +248,14 @@ public abstract class StorageFormat {
             storageFormats.add(getFormatFromKey(formatKey));
 
         // Create an iterator to traverse through all files in the media dir =========
-        FluentIterable<File> mediaFilesIterator = Files.fileTreeTraverser().preOrderTraversal(mediaDirPath);
+        Iterable<File> mediaFilesIterator = Files.fileTraverser().depthFirstPreOrder(mediaDirPath);
 
         /**
          * ===========================================================================
          * Counters for the Progress Dialog
          * ===========================================================================
          */
-        // Get the total files in the iterator =======================================
-        double totalCount = mediaFilesIterator.size();
+        double totalCount = FileUtils.getDirSize(mediaDirPath);
 
         // Get how many items to update the progress dialog after (10% of totalCount)
         int updateOffset = (int) Math.ceil(totalCount * 0.1);

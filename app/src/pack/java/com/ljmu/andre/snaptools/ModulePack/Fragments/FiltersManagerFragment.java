@@ -34,8 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.common.collect.FluentIterable;
 import com.google.common.io.Files;
 import com.kekstudio.dachshundtablayout.DachshundTabLayout;
 import com.ljmu.andre.CBIDatabase.CBITable;
@@ -559,7 +559,7 @@ public class FiltersManagerFragment extends FragmentHelper {
         );
 
         Observable.fromCallable(() -> {
-            FluentIterable<File> filtersIterator = Files.fileTreeTraverser().breadthFirstTraversal(filtersDir);
+            Iterable<File> filtersIterator = Files.fileTraverser().breadthFirst(filtersDir);
 
             List<FilterObject> filterObjects = new ArrayList<>();
             totalFilters = 0;

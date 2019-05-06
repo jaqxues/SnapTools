@@ -255,7 +255,10 @@ public abstract class StorageFormat {
          * Counters for the Progress Dialog
          * ===========================================================================
          */
-        double totalCount = FileUtils.getDirSize(mediaDirPath);
+        double totalCount = 0;
+        for (File file : mediaFilesIterator)
+            if (file.isFile())
+                ++totalCount;
 
         // Get how many items to update the progress dialog after (10% of totalCount)
         int updateOffset = (int) Math.ceil(totalCount * 0.1);

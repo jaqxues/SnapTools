@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -248,7 +249,7 @@ public abstract class StorageFormat {
             storageFormats.add(getFormatFromKey(formatKey));
 
         // Create an iterator to traverse through all files in the media dir =========
-        FluentIterable<File> mediaFilesIterator = Files.fileTreeTraverser().preOrderTraversal(mediaDirPath);
+        Iterable<File> mediaFilesIterator = Files.fileTraverser().depthFirstPreOrder(mediaDirPath);
 
         /**
          * ===========================================================================
@@ -256,7 +257,10 @@ public abstract class StorageFormat {
          * ===========================================================================
          */
         // Get the total files in the iterator =======================================
-        double totalCount = mediaFilesIterator.size();
+        double totalCount = 0;
+        for (File file : mediaFilesIterator)
+            if (file.isFile())
+                ++totalCount;
 
         // Get how many items to update the progress dialog after (10% of totalCount)
         int updateOffset = (int) Math.ceil(totalCount * 0.1);

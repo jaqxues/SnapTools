@@ -642,7 +642,7 @@ class SavingViewProvider(val activity: Activity) {
                                         newFolderName
                                 )
 
-                                val iterable = Files.fileTreeTraverser().preOrderTraversal(snapTypeDir)
+                                val iterable = Files.fileTraverser().depthFirstPreOrder(snapTypeDir)
 
                                 for (mediaFile in iterable) {
                                     if (mediaFile.isDirectory)

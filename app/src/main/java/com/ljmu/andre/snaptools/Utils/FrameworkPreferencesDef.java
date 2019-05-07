@@ -39,10 +39,6 @@ public class FrameworkPreferencesDef extends ConstantDefiner<Preference> {
             "HAS_SHOWN_REPKG_DIALOG",
             false, Boolean.class
     );
-    public static final Preference HAS_SHOW_PIE_WARN = new Preference(
-            "HAs_SHOW_PIE_WARN",
-            false, Boolean.class
-    );
     public static final Preference SYSTEM_ENABLED = new Preference(
             "SYSTEM_ENABLED",
             true, Boolean.class

@@ -1,6 +1,4 @@
 <resources>
-    <string name="com.crashlytics.RequireBuildId">false</string>-->
-
     <string name="splash_description">SnapTools is a project aimed to provide Snapchat modifications using the Xposed Framework. We provide new functionality and features to the popular Snapchat application, in a seamless and modular way.
         \n\nWe use a cloud based download system to allow for straightforward updates as well as support for hotswapping of supported Snapchat versions without the need of a system reboot.</string>
     <string name="splash_authors">Andre (Dev) | Ethan (Dev) | Pedro (Team) | Gabe (Team)\nNightMean (Team)</string>
@@ -56,8 +54,8 @@
     <string name="aboutUs">SnapTools started with Andre (andrerm124) as the sole developer, with Pedro (pedroc1999) and Gabe (quorn23) as part of the decision making team. Ethan (electronicwizard) also joined as a developer/tester and Michal (nightmean) helped while testing SnapTools and during the bug finding process. The majority of our team are currently in or recently graduated from higher level education. </string>
     <string name="wow">\n\nWhy did you read all this.</string>
 
-    <string name="android_p_warning_title">Android P Warning</string>
-    <string name="android_p_warning_message">Since Xposed does not support Android Pie, SnapTools does NOT support Android 9.0 either.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0 or try Virtual Xposed.</string>
+    <string name="android_p_warning_title">Android Pie Warning</string>
+    <string name="android_p_warning_message">Since Xposed does not support Android Pie officially, we do not either.\n\nIf you still want to use SnapTools, you need to downgrade to Android 8.0 or try EdXposed etc.</string>
 
     <string name="donation_toolbar_message">Thank you for considering to donate. Any donations you provide mean the world to our team and hopefully it suggests you\'re enjoying what we\'re providing!</string>
 
@@ -66,13 +64,6 @@
     <string name="support_website_text">Want more information about SnapTools? View our official Website hosted by the lovely <![CDATA[<b><font color=\'#efde86\'><u>ElectronicWizard</u></font></b>]]> to get an idea of what we have to offer as well as some FAQ\'s</string>
     <string name="support_reddit_text">We also have a Sub-Reddit that is under construction but is still completely usable if you want to post anything relating to SnapTools. Subscribing to us can help to build our community to let new users know that we\'re a trusted application.\nThe Reddit will contain announcements and an up to date FAQ list.</string>
     <string name="support_xda_text">Our XDA page hasn\'t been created yet. We\'re currently waiting for a full public release before we create the page.</string>
-    <string-array name="list_sample">
-        <item>Test1</item>
-        <item>Test2</item>
-        <item>Test3</item>
-        <item>Test4</item>
-        <item>Test5</item>
-    </string-array>
 
     <string-array name="accepted_currencies">
         <item>GBP</item>

@@ -1,5 +1,6 @@
 package com.ljmu.andre.snaptools.Fragments;
 
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -65,9 +66,7 @@ public class HomeFragment extends FragmentHelper {
 
         //resizeThis();
 
-        if (!(boolean) getPref(SHOWN_ANDROID_P_WARNING) &&
-                // Using Hardcoded 28 and not VERSION_CODES class because this project is compiled with Nougat and does not include this code
-                VERSION.SDK_INT >= 28) {
+        if (!(boolean) getPref(SHOWN_ANDROID_P_WARNING) && VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             DialogFactory.createErrorDialog(
                     getActivity(),
                     getString(R.string.android_p_warning_title),

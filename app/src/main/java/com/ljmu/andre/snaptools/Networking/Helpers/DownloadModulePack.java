@@ -100,9 +100,6 @@ public class DownloadModulePack implements DownloadListener {
         if (outputFile != null) {
             try {
                 metaData = PackUtils.getPackMetaData(outputFile);
-
-                if (getPref(KILL_SC_ON_CHANGE))
-                    PackUtils.killSCService(activity);
             } catch (NullObjectException e) {
                 state = false;
                 message = e.getMessage();

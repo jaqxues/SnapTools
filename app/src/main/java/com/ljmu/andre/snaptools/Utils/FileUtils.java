@@ -302,7 +302,7 @@ public class FileUtils {
 		if (!dir.exists())
 			return -1;
 
-		FluentIterable<File> filesIterable = Files.fileTreeTraverser().preOrderTraversal(dir);
+		Iterable<File> filesIterable = Files.fileTraverser().depthFirstPreOrder(dir);
 
 		for (File file : filesIterable) {
 			if (file.isDirectory())
@@ -448,7 +448,7 @@ public class FileUtils {
 		boolean isEmpty = true;
 
 		int iterations = 0;
-		for (File testingEmptiness : Files.fileTreeTraverser().preOrderTraversal(root)) {
+		for (File testingEmptiness : Files.fileTraverser().depthFirstPreOrder(root)) {
 			Timber.d("Testing emptiness: " + (++iterations));
 
 			if (!testingEmptiness.equals(root)) {

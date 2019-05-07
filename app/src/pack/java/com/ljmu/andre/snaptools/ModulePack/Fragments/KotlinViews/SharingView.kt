@@ -66,41 +66,6 @@ class SharingView {
                         horizontalMargin = dip(15)
                     }
 
-                    themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
-                        text = "Fix Rotation Bug"
-                        verticalPadding = dip(10)
-                        id = getIdFromString("switch_sharing_auto_rotate")
-                        isChecked = getPref(SHARING_AUTO_ROTATE)
-                        setOnCheckedChangeListener { btn, isChecked ->
-                            run {
-                                if (isChecked)
-                                    DialogFactory.createConfirmation(
-                                            activity,
-                                            "Prevent Rotation Bug",
-                                            "This Setting is not a feature you usually want to use.\n\nThis fixes a bug where your image gets rotated 270 degrees when sharing to Snapchat. Automatically rotating these images is impossible, hence why you need to manually check this.\n\nDo " + htmlHighlight("NOT") + " activate in case you do not experience this bug.",
-                                            object : ThemedDialog.ThemedClickListener() {
-                                                override fun clicked(themedDialog: ThemedDialog) {
-                                                    themedDialog.dismiss()
-                                                    putAndKill(SHARING_AUTO_ROTATE, true, activity)
-                                                    btn.isChecked = true
-                                                }
-                                            },
-                                            object : ThemedDialog.ThemedClickListener() {
-                                                override fun clicked(themedDialog: ThemedDialog) {
-                                                    themedDialog.dismiss()
-                                                    putAndKill(SHARING_AUTO_ROTATE, false, activity)
-                                                    btn.isChecked = false
-                                                }
-                                            }
-                                    ).show()
-                                else
-                                    putAndKill(SHARING_AUTO_ROTATE, false, activity)
-                            }
-                        }
-                    }.lparams(width = matchParent, height = wrapContent) {
-                        horizontalMargin = dip(15)
-                    }
-
                     textView("Batched Media Cap") {
                         setTextAppearance(activity, getStyle(activity, "HeaderText"))
                     }.lparams {

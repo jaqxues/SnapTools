@@ -165,11 +165,9 @@ class StealthViewProvider {
                         )
 
                         themedButton(getStyle(activity, "NeutralButton")) {
-                            text = "Assign Location"
+                            id = "button_stealth_snap_location".toId()
 
-                            setOnClickListener {
-                                SafeToastAdapter.showDefaultToast(activity, "Show dialog boy")
-                            }
+                            text = "Assign Location"
                         }
 
                         frameLayout {

@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
+import com.bumptech.glide.request.target.ThumbnailImageViewTarget;
+import com.google.common.io.Files;
 import com.ljmu.andre.snaptools.STApplication;
 
 import java.io.File;
+
+import timber.log.Timber;
 
 /**
  * This file was created by Jacques (jaqxues) in the Project SnapTools.<br>
@@ -17,8 +21,14 @@ import java.io.File;
 public class InstallUtils {
     public static void install(Activity activity, File file, boolean shouldTryRoot) {
         if (shouldTryRoot) {
-            ShellUtils.sendCommandSync("pm install -t " + file);
-            return;
+            try {
+                File target = new File(activity.getCodeCacheDir(), "tmp.apk");
+                Files.copy(file, target);
+                ShellUtils.sendCommandSync("pm install -t " + target);
+                return;
+            } catch (Throwable t) {
+                Timber.e(t, "Could not install update with root");
+            }
         }
         Intent intent;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {

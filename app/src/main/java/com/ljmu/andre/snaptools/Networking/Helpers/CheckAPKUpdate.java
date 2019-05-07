@@ -97,11 +97,11 @@ public class CheckAPKUpdate {
                 .start();
     }
 
-    public static void updateApk(Activity activity, String url, String directory, String filename, ThemedDialog themedDialog) {
-        updateApk(activity, url, directory, filename, themedDialog, null);
+    public static void updateApk(Activity activity, String url, String directory, String filename) {
+        updateApk(activity, url, directory, filename, null);
     }
 
-    public static void updateApk(Activity activity, String url, String directory, String filename, ThemedDialog themedDialog,
+    public static void updateApk(Activity activity, String url, String directory, String filename,
                                  @Nullable ObjectResultListener<Boolean> resultListener) {
         ThemedDialog progressDialog = DialogFactory.createProgressDialog(
                 activity,
@@ -132,7 +132,7 @@ public class CheckAPKUpdate {
                             progressDialog.dismiss();
 
                             if (hasCancelled[0]) {
-                                CheckAPKUpdate.failedDownload(activity, "User Cancelled Download", themedDialog, responseCode);
+                                CheckAPKUpdate.failedDownload(activity, "User Cancelled Download", responseCode);
 
                                 if (resultListener != null)
                                     resultListener.success(null, false);
@@ -140,7 +140,7 @@ public class CheckAPKUpdate {
                             }
 
                             if (!state || outputFile == null) {
-                                CheckAPKUpdate.failedDownload(activity, message, themedDialog, responseCode);
+                                CheckAPKUpdate.failedDownload(activity, message, responseCode);
 
                                 if (resultListener != null)
                                     resultListener.success(null, false);
@@ -157,10 +157,7 @@ public class CheckAPKUpdate {
                 .download();
     }
 
-    private static void failedDownload(Activity activity, String reason, ThemedDialog themedDialog,
-                                       int responseCode) {
-        themedDialog.dismiss();
-
+    private static void failedDownload(Activity activity, String reason, int responseCode) {
         if (activity != null && !activity.isFinishing()) {
             DialogFactory.createErrorDialog(
                     activity,

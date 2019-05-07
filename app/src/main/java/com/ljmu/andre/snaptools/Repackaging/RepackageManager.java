@@ -196,6 +196,8 @@ public class RepackageManager {
 
             Timber.d("Repackage success");
             emitter.onNext("Successfully signed apk!");
+            codePathStream.close();
+            apk.close();
         } catch (IOException e) {
             throw new RepackageException("Couldn't access file");
         } catch (GeneralSecurityException e) {

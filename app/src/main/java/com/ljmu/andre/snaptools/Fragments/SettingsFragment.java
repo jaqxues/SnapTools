@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.ljmu.andre.snaptools.Utils.ShellUtils;
+import com.ljmu.andre.snaptools.Utils.StringUtils;
 import com.ljmu.andre.snaptools.Utils.ThemeUtils;
 
 import java.io.File;
@@ -186,7 +188,7 @@ public class SettingsFragment extends FragmentHelper {
         int selectedIndex = -1;
         for (int i = 0; i < spinnerAdapter.getCount(); i++) {
             String item = (String) spinnerAdapter.getItem(i);
-            if (item.equalsIgnoreCase(BuildConfig.FLAVOR))
+            if (item.equalsIgnoreCase(StringUtils.getFlavourText(BuildConfig.FLAVOR)))
                 selectedIndex = i;
         }
 
@@ -238,12 +240,12 @@ public class SettingsFragment extends FragmentHelper {
                         new ThemedClickListener() {
                             @Override
                             public void clicked(ThemedDialog themedDialog) {
+                                themedDialog.dismiss();
                                 CheckAPKUpdate.updateApk(
                                         getActivity(),
                                         "https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Apks/Files/SnapTools-" + selection + ".apk?raw=true",
                                         getPref(TEMP_PATH),
                                         "SnapTools_" + selection + ".apk",
-                                        themedDialog,
                                         selectionResultListener
                                 );
                             }

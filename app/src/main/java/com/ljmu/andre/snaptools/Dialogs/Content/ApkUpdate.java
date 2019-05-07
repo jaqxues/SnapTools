@@ -62,13 +62,15 @@ public class ApkUpdate implements ThemedDialog.ThemedDialogExtension {
         );
 
         btnUpdate.setOnClickListener(
-                v -> CheckAPKUpdate.updateApk(
-                        activity,
-                        update.getUrlToDownload().toString(),
-                        getPref(TEMP_PATH),
-                        "SnapTools_" + update.getLatestVersion() + ".apk",
-                        themedDialog
-                )
+                v -> {
+                    themedDialog.dismiss();
+                    CheckAPKUpdate.updateApk(
+                            activity,
+                            update.getUrlToDownload().toString(),
+                            getPref(TEMP_PATH),
+                            "SnapTools_" + update.getLatestVersion() + ".apk"
+                    );
+                }
         );
     }
 

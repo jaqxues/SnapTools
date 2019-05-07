@@ -19,145 +19,131 @@ import timber.log.Timber.Tree;
  */
 
 public class TimberUtils {
-	public static void plantAppropriateXposedTree() {
-		if (STApplication.DEBUG)
-			plantCheck(new XposedDebugTree(), "XposeDebug");
-		else
-			plantCheck(new XposedReleaseTree(), "XposeRelease");
-	}
+    public static void plantAppropriateXposedTree() {
+        if (STApplication.DEBUG)
+            plantCheck(new XposedDebugTree(), "XposedDebug");
+        else
+            plantCheck(new XposedReleaseTree(), "XposedRelease");
+    }
 
-	private static void plantCheck(Tree tree, String treeName) {
-		Timber.plant(tree);
-		Timber.d("Planted [Tree:%s]", treeName);
-	}
+    private static void plantCheck(Tree tree, String treeName) {
+        Timber.plant(tree);
+        Timber.d("Planted [Tree:%s]", treeName);
+    }
 
-	public static void plantAppropriateTree() {
-		if (STApplication.DEBUG) {
-			plantCheck(new DebugTree() {
-				@Override
-				protected String createStackElementTag(@NonNull StackTraceElement element) {
-					return String.format(
-							"%s-[%s ⇢ %s:%s]",
-							STApplication.MODULE_TAG,
-							super.createStackElementTag(element),
-							element.getMethodName(),
-							element.getLineNumber());
-				}
+    public static void plantAppropriateTree() {
+        if (STApplication.DEBUG) {
+            plantCheck(new DebugTree() {
+                @Override
+                protected String createStackElementTag(@NonNull StackTraceElement element) {
+                    return String.format(
+                            "%s-[%s ⇢ %s:%s]",
+                            STApplication.MODULE_TAG,
+                            super.createStackElementTag(element),
+                            element.getMethodName(),
+                            element.getLineNumber());
+                }
 
-			}, "Debug");
-		} else {
-			plantCheck(new ReleaseTree(), "Release");
-			Timber.plant(new ReporterTree());
-		}
-	}
+            }, "Debug");
+        } else {
+            plantCheck(new ReleaseTree(), "Release");
+            Timber.plant(new ReporterTree());
+        }
+    }
 
-	private static class ReporterTree extends ReleaseTree {
-		private static final HashSet<Integer> priorityWhitelist;
+    private static class ReporterTree extends ReleaseTree {
+        private static final HashSet<Integer> priorityWhitelist;
 
-		static {
-			priorityWhitelist = new HashSet<>();
-			priorityWhitelist.add(Log.WARN);
-			priorityWhitelist.add(Log.ERROR);
-			priorityWhitelist.add(Log.ASSERT);
-		}
+        static {
+            priorityWhitelist = new HashSet<>();
+            priorityWhitelist.add(Log.WARN);
+            priorityWhitelist.add(Log.ERROR);
+            priorityWhitelist.add(Log.ASSERT);
+        }
 
-		@Override
-		protected boolean isLoggable(String tag, int priority) {
-			return priority >= Log.WARN;
-		}
+        @Override
+        protected boolean isLoggable(String tag, int priority) {
+            return priority >= Log.WARN;
+        }
 
-		@Override protected void log(int priority, String tag, String message, Throwable t) {
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
 //			if (message != null && priority >= Log.INFO
 //					&& Fabric.isInitialized() && Crashlytics.getInstance() != null) {
 //				Crashlytics.doLog(priority, tag, message);
 //			}
 
-			if (isLoggable(tag, priority)) {
-				ErrorLogger errorLogger = ErrorLogger.getInstance();
+            if (isLoggable(tag, priority)) {
+                ErrorLogger errorLogger = ErrorLogger.getInstance();
 
-				if (message != null && errorLogger != null) {
-					errorLogger.addError(priority, message);
-				}
+                if (message != null && errorLogger != null) {
+                    errorLogger.addError(priority, message);
+                }
 
 //				if (t != null && priority == Log.ERROR && Fabric.isInitialized() && Crashlytics.getInstance() != null) {
 //					Crashlytics.logException(t);
 //				}
-			}
-		}
-	}
+            }
+        }
+    }
 
-	private static class ReleaseTree extends DebugTree {
-		private static final HashSet<Integer> priorityWhitelist;
+    private static class ReleaseTree extends DebugTree {
 
-		static {
-			priorityWhitelist = new HashSet<>();
-			priorityWhitelist.add(Log.ERROR);
-			priorityWhitelist.add(Log.ASSERT);
-			priorityWhitelist.add(Log.WARN);
-			priorityWhitelist.add(Log.INFO);
-		}
+        @Override
+        protected boolean isLoggable(String tag, int priority) {
+            return priority >= Log.INFO;
+        }
 
-		@Override
-		protected boolean isLoggable(String tag, int priority) {
-//			return priorityWhitelist.contains(priority);
-			return priority >= Log.INFO;
-		}
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
+            if (isLoggable(tag, priority)) {
+                super.log(priority, tag, message, t);
+            }
+        }
 
-		@Override protected void log(int priority, String tag, String message, Throwable t) {
-			if (isLoggable(tag, priority)) {
-				super.log(priority, tag, message, t);
-			}
-		}
+        @Override
+        protected String createStackElementTag(StackTraceElement element) {
+            return String.format(
+                    "%s-[%s ⇢ %s:%s]",
+                    STApplication.MODULE_TAG,
+                    super.createStackElementTag(element),
+                    element.getMethodName(),
+                    element.getLineNumber());
+        }
+    }
 
-		@Override
-		protected String createStackElementTag(StackTraceElement element) {
-			return String.format(
-					"%s-[%s ⇢ %s:%s]",
-					STApplication.MODULE_TAG,
-					super.createStackElementTag(element),
-					element.getMethodName(),
-					element.getLineNumber());
-		}
-	}
+    private static class XposedReleaseTree extends ReleaseTree {
 
-	private static class XposedReleaseTree extends ReleaseTree {
-		static final HashSet<Integer> priorityWhitelist;
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
+            if (isLoggable(tag, priority)) {
+                super.log(priority, tag, message, t);
 
-		static {
-			priorityWhitelist = new HashSet<>();
-			priorityWhitelist.add(Log.ERROR);
-			priorityWhitelist.add(Log.ASSERT);
-			priorityWhitelist.add(Log.WARN);
-		}
+                XposedBridge.log(tag + ": " + message);
+                if (t != null)
+                    XposedBridge.log(t);
+            }
+        }
+    }
 
-		@Override protected void log(int priority, String tag, String message, Throwable t) {
-			if (isLoggable(tag, priority)) {
-				super.log(priority, tag, message, t);
+    private static class XposedDebugTree extends DebugTree {
+        @Override
+        protected String createStackElementTag(@NonNull StackTraceElement element) {
+            return String.format(
+                    "%s-[%s ⇢ %s:%s]",
+                    STApplication.MODULE_TAG,
+                    super.createStackElementTag(element),
+                    element.getMethodName(),
+                    element.getLineNumber());
+        }
 
-				XposedBridge.log(tag + ": " + message);
-				if (t != null)
-					XposedBridge.log(t);
-			}
-		}
-	}
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
+            super.log(priority, tag, message, t);
 
-	private static class XposedDebugTree extends DebugTree {
-		@Override
-		protected String createStackElementTag(@NonNull StackTraceElement element) {
-			return String.format(
-					"%s-[%s ⇢ %s:%s]",
-					STApplication.MODULE_TAG,
-					super.createStackElementTag(element),
-					element.getMethodName(),
-					element.getLineNumber());
-		}
-
-		@Override protected void log(int priority, String tag, String message, Throwable t) {
-			super.log(priority, tag, message, t);
-
-			XposedBridge.log(tag + ": " + message);
-			if (t != null)
-				XposedBridge.log(t);
-		}
-	}
+            XposedBridge.log(tag + ": " + message);
+            if (t != null)
+                XposedBridge.log(t);
+        }
+    }
 }

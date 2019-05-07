@@ -21,119 +21,119 @@ import timber.log.Timber;
  */
 
 public class UnhookManager {
-	private static final Object UNHOOK_LOCK = new Object();
-	private static Map<String, List<Unhook>> unhookMap = new HashMap<>();
-	private static boolean abort;
+    private static final Object UNHOOK_LOCK = new Object();
+    private static Map<String, List<Unhook>> unhookMap = new HashMap<>();
+    private static boolean abort;
 
-	public static void addUnhook(Unhook unhook) {
-		addUnhook("Default", unhook);
-	}
+    public static void addUnhook(Unhook unhook) {
+        addUnhook("Default", unhook);
+    }
 
-	public static void addUnhook(String tag, Unhook unhook) {
-		synchronized (UNHOOK_LOCK) {
-			if (abort) {
-				unhook.unhook();
-				return;
-			}
+    public static void addUnhook(String tag, Unhook unhook) {
+        synchronized (UNHOOK_LOCK) {
+            if (abort) {
+                unhook.unhook();
+                return;
+            }
 
-			List<Unhook> unhooks = unhookMap.get(tag);
+            List<Unhook> unhooks = unhookMap.get(tag);
 
-			if (unhooks == null)
-				unhooks = new ArrayList<>();
+            if (unhooks == null)
+                unhooks = new ArrayList<>();
 
-			unhooks.add(unhook);
-			unhookMap.put(tag, unhooks);
-		}
-	}
+            unhooks.add(unhook);
+            unhookMap.put(tag, unhooks);
+        }
+    }
 
-	public static void abortSystem() {
-		synchronized (UNHOOK_LOCK) {
-			unhookAll();
-			abort = true;
-			FrameworkManager.getModulePackList().clear();
-		}
-	}
+    public static void abortSystem() {
+        synchronized (UNHOOK_LOCK) {
+            unhookAll();
+            abort = true;
+            FrameworkManager.getModulePackList().clear();
+        }
+    }
 
-	public static void unhookAll() {
-		unhookAll(null);
-	}
+    public static void unhookAll() {
+        unhookAll(null);
+    }
 
-	@RequiresFramework(77)
-	public static void unhookAll(@Nullable String ignoredKey) {
-		Timber.d("Performing unhook all");
+    @RequiresFramework(77)
+    public static void unhookAll(@Nullable String key) {
+        Timber.d("Performing unhook all");
 
-		synchronized (UNHOOK_LOCK) {
-			Timber.d("Entered lock");
+        synchronized (UNHOOK_LOCK) {
+            Timber.d("Entered lock");
 
-			Iterator<Entry<String, List<Unhook>>> unhookIterator = unhookMap.entrySet().iterator();
+            Iterator<Entry<String, List<Unhook>>> unhookIterator = unhookMap.entrySet().iterator();
 
-			while (unhookIterator.hasNext()) {
-				Entry<String, List<Unhook>> unhookEntry = unhookIterator.next();
-				if (unhookEntry.getKey().equals(ignoredKey))
-					continue;
+            while (unhookIterator.hasNext()) {
+                Entry<String, List<Unhook>> unhookEntry = unhookIterator.next();
+                if (!unhookEntry.getKey().equals(key) && key != null)
+                    continue;
 
-				List<Unhook> unhooks = unhookEntry.getValue();
-				Timber.d("found unhook list of: " + unhooks.size());
+                List<Unhook> unhooks = unhookEntry.getValue();
+                Timber.d("Unhooking Unhook List %s (Size: %s)", key, unhooks.size());
 
-				for (Unhook unhook : unhooks) {
-					if (unhook == null)
-						continue;
+                for (Unhook unhook : unhooks) {
+                    if (unhook == null)
+                        continue;
 
-					unhook.unhook();
-				}
+                    unhook.unhook();
+                }
 
-				unhookIterator.remove();
-			}
+                unhookIterator.remove();
+            }
 
-			Timber.d("Done unhooking items");
-		}
+            Timber.d("Done unhooking items");
+        }
 
-		Timber.d("Exiting unhook");
-	}
+        Timber.d("Exiting unhook");
+    }
 
-	public static void unhook(String tag) {
-		List<Unhook> unhooks = unhookMap.get(tag);
+    public static void unhook(String tag) {
+        List<Unhook> unhooks = unhookMap.get(tag);
 
-		if (unhooks != null) {
-			Timber.d("Found %s hooks to unhook", unhooks.size());
+        if (unhooks != null) {
+            Timber.d("Found %s hooks to unhook", unhooks.size());
 
-			for (Unhook unhook : unhooks)
-				unhook.unhook();
+            for (Unhook unhook : unhooks)
+                unhook.unhook();
 
-			unhookMap.remove(tag);
-		}
+            unhookMap.remove(tag);
+        }
 
-		Timber.d("Done with unhook: " + tag);
-	}
+        Timber.d("Done with unhook: " + tag);
+    }
 
-	public static void debugAllHooks() {
-		Timber.d("HookMapSize: " + unhookMap.size());
+    public static void debugAllHooks() {
+        Timber.d("HookMapSize: " + unhookMap.size());
 
-		for (Entry<String, List<Unhook>> entry : unhookMap.entrySet()) {
-			Timber.d("Entry [Key: %s][Size: %s]", entry.getKey(), entry.getValue().size());
-		}
-	}
+        for (Entry<String, List<Unhook>> entry : unhookMap.entrySet()) {
+            Timber.d("Entry [Key: %s][Size: %s]", entry.getKey(), entry.getValue().size());
+        }
+    }
 
-	public static void addUnhook(Set<Unhook> unhookSet) {
-		addUnhook("Default", unhookSet);
-	}
+    public static void addUnhook(Set<Unhook> unhookSet) {
+        addUnhook("Default", unhookSet);
+    }
 
-	public static void addUnhook(String tag, Set<Unhook> unhookSet) {
-		synchronized (UNHOOK_LOCK) {
-			if (abort) {
-				for (Unhook unhook : unhookSet)
-					unhook.unhook();
+    public static void addUnhook(String tag, Set<Unhook> unhookSet) {
+        synchronized (UNHOOK_LOCK) {
+            if (abort) {
+                for (Unhook unhook : unhookSet)
+                    unhook.unhook();
 
-				return;
-			}
+                return;
+            }
 
-			List<Unhook> unhooks = unhookMap.get(tag);
+            List<Unhook> unhooks = unhookMap.get(tag);
 
-			if (unhooks == null)
-				unhooks = new ArrayList<>();
+            if (unhooks == null)
+                unhooks = new ArrayList<>();
 
-			unhooks.addAll(unhookSet);
-			unhookMap.put(tag, unhooks);
-		}
-	}
+            unhooks.addAll(unhookSet);
+            unhookMap.put(tag, unhooks);
+        }
+    }
 }

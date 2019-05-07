@@ -22,138 +22,143 @@ import timber.log.Timber;
  */
 
 public class WebResponse {
-	private final String message;
-	private final String failedUrl;
-	private Object result;
-	private Throwable exception;
-	private int responseCode = 0;
-	private int webStatusCode;
+    private final String message;
+    private final String failedUrl;
+    private Object result;
+    private Throwable exception;
+    private int responseCode = 0;
+    private int webStatusCode;
 
-	WebResponse(Object result, String failedUrl) {
-		this(result, "SUCCESS", failedUrl);
-	}
+    WebResponse(Object result, String failedUrl) {
+        this(result, "SUCCESS", failedUrl);
+    }
 
-	private WebResponse(Object result, String message, String failedUrl) {
-		this.message = message;
-		this.result = result;
-		this.failedUrl = failedUrl;
-		Timber.d("Web Response [Msg: %s]", message);
-	}
+    private WebResponse(Object result, String message, String failedUrl) {
+        this.message = message;
+        this.result = result;
+        this.failedUrl = failedUrl;
+        Timber.d("Web Response [Msg: %s]", message);
+    }
 
-	WebResponse(String message, Throwable exception, String failedUrl) {
-		this(message, exception, -1, failedUrl);
-	}
+    WebResponse(String message, Throwable exception, String failedUrl) {
+        this(message, exception, -1, failedUrl);
+    }
 
-	WebResponse(String message, Throwable exception, int errorCode, String failedUrl) {
-		this.message = message;
-		this.exception = exception;
-		this.responseCode = errorCode;
-		this.failedUrl = failedUrl;
+    WebResponse(String message, Throwable exception, int errorCode, String failedUrl) {
+        this.message = message;
+        this.exception = exception;
+        this.responseCode = errorCode;
+        this.failedUrl = failedUrl;
 
-		if (exception == null)
-			return;
+        if (exception == null)
+            return;
 
-		if(exception instanceof VolleyError) {
-			VolleyError volleyError = (VolleyError) exception;
-			if (volleyError.networkResponse != null) {
-				webStatusCode = volleyError.networkResponse.statusCode;
-			}
-		}
+        if (exception instanceof VolleyError) {
+            VolleyError volleyError = (VolleyError) exception;
+            if (volleyError.networkResponse != null) {
+                webStatusCode = volleyError.networkResponse.statusCode;
+            }
+        }
 
-		if (isNetworkProblem(exception) || isCronetError(exception)) {
-			Timber.w(exception, message);
+        if (isNetworkProblem(exception) || isCronetError(exception)) {
+            Timber.w(exception, message);
 
-			this.exception = null;
-			if (responseCode == -1 || responseCode == 0)
-				responseCode = 1;
-		} else if (isServerProblem(exception)) {
-			this.exception = transformServerException(exception);
+            this.exception = null;
+            if (responseCode == -1 || responseCode == 0)
+                responseCode = 1;
+        } else if (isServerProblem(exception)) {
+            this.exception = transformServerException(exception);
 
-			if (responseCode == -1 || responseCode == 0)
-				responseCode = 2;
-		}
-	}
+            if (responseCode == -1 || responseCode == 0)
+                responseCode = 2;
+        }
+    }
 
-	private static boolean isNetworkProblem(Object error) {
-		return error instanceof NetworkError || error instanceof TimeoutError
-				|| error instanceof UnknownHostException || error instanceof SSLException;
-	}
+    private static boolean isNetworkProblem(Object error) {
+        return error instanceof NetworkError || error instanceof TimeoutError
+                || error instanceof UnknownHostException || error instanceof SSLException;
+    }
 
-	private static boolean isCronetError(Object error) {
-		String errorClassName = error.getClass().getSimpleName();
-		return errorClassName.equals("QuicException") ||
-				errorClassName.equals("UrlRequestException");
-	}
+    private static boolean isCronetError(Object error) {
+        String errorClassName = error.getClass().getSimpleName();
+        return errorClassName.equals("QuicException") ||
+                errorClassName.equals("UrlRequestException");
+    }
 
-	private static boolean isServerProblem(Object error) {
-		return (error instanceof ServerError || error instanceof AuthFailureError);
-	}
+    private static boolean isServerProblem(Object error) {
+        return (error instanceof ServerError || error instanceof AuthFailureError);
+    }
 
-	private Throwable transformServerException(Throwable exception) {
-		if (exception instanceof VolleyError) {
-			VolleyError volleyError = (VolleyError) exception;
-			if (volleyError.networkResponse != null && volleyError.networkResponse.data != null) {
-				return new VolleyError(
-						"Url: " + failedUrl + " | Status: " + volleyError.networkResponse.statusCode
-								+ " | " + new String(volleyError.networkResponse.data),
-						exception
-				);
-			}
-		}
+    private Throwable transformServerException(Throwable exception) {
+        if (exception instanceof VolleyError) {
+            VolleyError volleyError = (VolleyError) exception;
+            if (volleyError.networkResponse != null && volleyError.networkResponse.data != null) {
+                String str = new String(volleyError.networkResponse.data);
+                if (str.length() > 1000)
+                    str = "Data exceeds 1000 characters. Probably contains raw HTML";
+                return new VolleyError(
+                        "Url: " + failedUrl + " | Status: " + volleyError.networkResponse.statusCode
+                                + " | " + str,
+                        exception
+                );
+            }
+        }
 
-		return exception;
-	}
+        return exception;
+    }
 
-	public <T> T getResult() {
-		return (T) result;
-	}
+    public <T> T getResult() {
+        return (T) result;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public int getResponseCode() {
-		return responseCode;
-	}
+    public int getResponseCode() {
+        return responseCode;
+    }
 
-	public Throwable getException() {
-		return exception;
-	}
+    public Throwable getException() {
+        return exception;
+    }
 
-	public int getWebStatusCode() {
-		return webStatusCode;
-	}
+    public int getWebStatusCode() {
+        return webStatusCode;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("message", message)
-				.add("success", result)
-				.add("exception", exception)
-				.add("responseCode", responseCode)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("message", message)
+                .add("success", result)
+                .add("exception", exception)
+                .add("responseCode", responseCode)
+                .toString();
+    }
 
-	public interface ServerListResultListener<T> {
-		void success(List<T> list);
+    public interface ServerListResultListener<T> {
+        void success(List<T> list);
 
-		void error(String message, Throwable t, int errorCode);
-	}
+        void error(String message, Throwable t, int errorCode);
+    }
 
-	public interface PacketResultListener<T extends Packet> {
-		void success(String message, T packet);
+    public interface PacketResultListener<T extends Packet> {
+        void success(String message, T packet);
 
-		void error(String message, Throwable t, int errorCode);
-	}
+        void error(String message, Throwable t, int errorCode);
+    }
 
-	public interface ObjectResultListener<T> {
-		void success(String message, T object);
+    public interface ObjectResultListener<T> {
+        void success(String message, T object);
 
-		void error(String message, Throwable t, int errorCode);
+        void error(String message, Throwable t, int errorCode);
 
-		abstract class ErrorObjectResultListener<T> implements ObjectResultListener<T> {
-			@Override public void success(String message, Object object) {
-			}
-		}
-	}
+        abstract class ErrorObjectResultListener<T> implements ObjectResultListener<T> {
+            @Override
+            public void success(String message, Object object) {
+            }
+        }
+    }
 }

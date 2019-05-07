@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_marginBottom="@dimen/activity_vertical_margin"
-              android:layout_marginLeft="@dimen/activity_horizontal_margin"
-              android:layout_marginRight="@dimen/activity_horizontal_margin"
-              android:layout_marginTop="@dimen/activity_vertical_margin"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
 
 
     <ScrollView
@@ -29,13 +29,13 @@
                 android:gravity="center"
                 android:text="Discord"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/txt_discord"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="5dp"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
 
             <LinearLayout
                 android:id="@+id/layout_discord"
@@ -61,7 +61,7 @@
                     android:layout_gravity="center"
                     android:padding="10dp"
                     android:tint="#7289DA"
-                    app:srcCompat="@drawable/discord_filled_96"/>
+                    app:srcCompat="@drawable/discord_filled_96" />
 
                 <TextView
                     android:id="@+id/textView41"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Join Discord"
-                    android:textColor="@color/primaryWashed"/>
+                    android:textColor="@color/primaryWashed" />
 
             </LinearLayout>
 
@@ -83,20 +83,20 @@
                 android:gravity="center"
                 android:text="Twitter"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view6"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/txt_twitter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
 
             <LinearLayout
                 android:id="@+id/layout_twitter"
@@ -113,7 +113,7 @@
                     android:layout_height="75dp"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    app:srcCompat="@drawable/twitter_squared_96"/>
+                    app:srcCompat="@drawable/twitter_squared_96" />
 
                 <TextView
                     android:id="@+id/textView24"
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="View Twitter"
-                    android:textColor="@color/primaryWashed"/>
+                    android:textColor="@color/primaryWashed" />
 
             </LinearLayout>
 
@@ -135,13 +135,13 @@
                 android:gravity="center"
                 android:text="SnapTools Website"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/txt_server"
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="5dp"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
 
             <LinearLayout
                 android:id="@+id/layout_server"
@@ -166,7 +166,7 @@
                     android:layout_height="75dp"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    app:srcCompat="@drawable/snaptools_logo"/>
+                    app:srcCompat="@drawable/snaptools_logo" />
 
                 <TextView
                     android:id="@+id/textView31"
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Open Website"
-                    android:textColor="@color/primaryWashed"/>
+                    android:textColor="@color/primaryWashed" />
 
             </LinearLayout>
 
@@ -188,13 +188,13 @@
                 android:gravity="center"
                 android:text="SnapTools Reddit"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:id="@+id/view25"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/txt_reddit"
@@ -202,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="5dp"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
 
             <LinearLayout
                 android:id="@+id/layout_reddit"
@@ -219,7 +219,7 @@
                     android:layout_height="75dp"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    app:srcCompat="@drawable/reddit_96"/>
+                    app:srcCompat="@drawable/reddit_96" />
 
                 <TextView
                     android:id="@+id/textView23"
@@ -227,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="View Reddit"
-                    android:textColor="@color/primaryWashed"/>
+                    android:textColor="@color/primaryWashed" />
 
             </LinearLayout>
 
@@ -240,19 +240,19 @@
                 android:gravity="center"
                 android:text="XDA"
                 android:textAppearance="@style/HeaderText"
-                android:textColor="@color/primaryLight"/>
+                android:textColor="@color/primaryLight" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/txt_xda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/placeholder"/>
+                android:text="@string/placeholder" />
 
             <LinearLayout
                 android:id="@+id/layout_xda"
@@ -268,14 +268,14 @@
                     android:layout_height="75dp"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    app:srcCompat="@drawable/xda_logo"/>
+                    app:srcCompat="@drawable/xda_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="View XDA"
-                    android:textColor="@color/primaryWashed"/>
+                    android:textColor="@color/primaryWashed" />
 
             </LinearLayout>
 

@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import timber.log.Timber;
 
 /**
@@ -18,72 +17,73 @@ import timber.log.Timber;
 
 @Deprecated
 public class SettingBasedLayout<T> extends LinearLayout {
-	protected Activity activity;
-	private T settingKey;
-	private LinearLayout headerLayout;
-	private Map<T, SettingContainer<T>> settingContainerMap = new HashMap<>();
+    protected Activity activity;
+    private T settingKey;
+    private LinearLayout headerLayout;
+    private Map<T, SettingContainer<T>> settingContainerMap = new HashMap<>();
 
-	public SettingBasedLayout(Activity activity, @Nullable T initialSettingKey) {
-		super(activity);
-		this.activity = activity;
+    public SettingBasedLayout(Activity activity, @Nullable T initialSettingKey) {
+        super(activity);
+        this.activity = activity;
 
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		setOrientation(VERTICAL);
-		setLayoutParams(params);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        setOrientation(VERTICAL);
+        setLayoutParams(params);
 
-		headerLayout = new LinearLayout(getContext());
-		headerLayout.setOrientation(VERTICAL);
-		headerLayout.setLayoutParams(params);
-		addView(headerLayout);
+        headerLayout = new LinearLayout(getContext());
+        headerLayout.setOrientation(VERTICAL);
+        headerLayout.setLayoutParams(params);
+        addView(headerLayout);
 
-		settingKey = initialSettingKey;
-	}
+        settingKey = initialSettingKey;
+    }
 
-	public void setHeader(View header) {
-		Timber.d("Setting header: " + header);
+    public void setHeader(View header) {
+        Timber.d("Setting header: " + header);
 
-		headerLayout.removeAllViews();
-		headerLayout.addView(header);
-	}
+        headerLayout.removeAllViews();
+        headerLayout.addView(header);
+    }
 
-	public void addSettingContainer(SettingContainer<T> settingContainer) {
-		getSettingContainerMap().put(settingContainer.getKey(), settingContainer);
-	}
+    public void addSettingContainer(SettingContainer<T> settingContainer) {
+        getSettingContainerMap().put(settingContainer.getKey(), settingContainer);
+    }
 
-	protected Map<T, SettingContainer<T>> getSettingContainerMap() {
-		return settingContainerMap;
-	}
+    protected Map<T, SettingContainer<T>> getSettingContainerMap() {
+        return settingContainerMap;
+    }
 
-	public T getSettingKey() {
-		return settingKey;
-	}
+    public T getSettingKey() {
+        return settingKey;
+    }
 
-	public void setSettingKey(T settingKey) {
-		this.settingKey = settingKey;
-		update();
-	}
+    public void setSettingKey(T settingKey) {
+        this.settingKey = settingKey;
+        update();
+    }
 
-	private void clearChildren() {
-		for( int i = 0; i < getChildCount(); i++) {
-			View child = getChildAt(i);
+    private void clearChildren() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
 
-			if(child == headerLayout)
-				continue;
+            if (child == headerLayout)
+                continue;
 
-			removeView(child);
-		}
-	}
-	public void update() {
-		clearChildren();
-		//removeAllViews();
-		//addView(headerLayout);
+            removeView(child);
+        }
+    }
 
-		T settingKey = getSettingKey();
-		SettingContainer activeSettingContainer = getSettingContainerMap().get(settingKey);
+    public void update() {
+        clearChildren();
+        //removeAllViews();
+        //addView(headerLayout);
 
-		if (activeSettingContainer != null) {
-			addView(activeSettingContainer);
-			activeSettingContainer.activatedBy(settingKey);
-		}
-	}
+        T settingKey = getSettingKey();
+        SettingContainer activeSettingContainer = getSettingContainerMap().get(settingKey);
+
+        if (activeSettingContainer != null) {
+            addView(activeSettingContainer);
+            activeSettingContainer.activatedBy(settingKey);
+        }
+    }
 }

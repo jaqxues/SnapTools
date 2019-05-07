@@ -8,23 +8,24 @@ import android.support.annotation.IdRes;
  */
 
 public class TutorialFinishedEvent {
-	@IdRes private int menuId;
-	private boolean fullTutorial;
+    @IdRes
+    private int menuId;
+    private boolean fullTutorial;
 
-	public TutorialFinishedEvent(int menuId) {
-		this.menuId = menuId;
-	}
+    public TutorialFinishedEvent(int menuId) {
+        this.menuId = menuId;
+    }
 
-	public TutorialFinishedEvent(int menuId, boolean triggerNext) {
-		this.menuId = menuId;
-		this.fullTutorial = triggerNext;
-	}
+    public TutorialFinishedEvent(int menuId, boolean triggerNext) {
+        this.menuId = menuId;
+        this.fullTutorial = triggerNext;
+    }
 
-	public int getMenuId() {
-		return menuId;
-	}
+    public int getMenuId() {
+        return menuId;
+    }
 
-	public boolean isFullTutorial() {
-		return fullTutorial;
-	}
+    public boolean isFullTutorial() {
+        return fullTutorial;
+    }
 }

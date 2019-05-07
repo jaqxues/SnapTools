@@ -4,5 +4,5 @@
     <item
         android:id="@+id/quick_nav_tutorial"
         android:icon="@drawable/help_filled_96"
-        android:showAsAction="always"/>
+        android:showAsAction="always" />
 </menu>

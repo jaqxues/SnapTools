@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:paddingBottom="10dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:paddingBottom="10dp">
 
 
     <ImageButton
@@ -19,7 +19,7 @@
         android:scaleX="0.75"
         android:scaleY="0.75"
         android:tint="@color/textPrimary"
-        app:srcCompat="@drawable/past_96"/>
+        app:srcCompat="@drawable/past_96" />
 
     <Space
         android:id="@+id/spacer_left"
@@ -28,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_toStartOf="@id/btn_download"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="15dp" />
 
     <ImageButton
         android:id="@+id/btn_download"
@@ -40,7 +40,7 @@
         android:scaleX="0.75"
         android:scaleY="0.75"
         android:tint="@color/textPrimary"
-        app:srcCompat="@drawable/download_96"/>
+        app:srcCompat="@drawable/download_96" />
 
 
     <Space
@@ -50,7 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_toEndOf="@id/btn_download"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="15dp" />
 
     <ImageButton
         android:id="@+id/btn_changelog"
@@ -62,7 +62,7 @@
         android:scaleX="0.75"
         android:scaleY="0.75"
         android:tint="@color/textPrimary"
-        app:srcCompat="@drawable/history_96"/>
+        app:srcCompat="@drawable/history_96" />
 
     <View
         android:id="@+id/splitter"
@@ -73,5 +73,5 @@
         android:layout_below="@id/btn_download"
         android:layout_marginLeft="-20dp"
         android:layout_marginRight="-20dp"
-        android:background="@color/primaryWashed"/>
+        android:background="@color/primaryWashed" />
 </RelativeLayout>

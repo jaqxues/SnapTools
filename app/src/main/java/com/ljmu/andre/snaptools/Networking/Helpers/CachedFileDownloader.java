@@ -26,166 +26,172 @@ import timber.log.Timber;
  * ===========================================================================
  */
 public abstract class CachedFileDownloader {
-	private boolean bypassCache;
-	private boolean prioritiseCache;
+    private boolean bypassCache;
+    private boolean prioritiseCache;
 
-	/**
-	 * ===========================================================================
-	 * Uses the best method to fetch the file result
-	 * ===========================================================================
-	 */
-	public void smartFetch(Activity activity, ObjectResultListener<byte[]> resultListener) {
-		Timber.d("Using smart fetch for cached file");
+    /**
+     * ===========================================================================
+     * Uses the best method to fetch the file result
+     * ===========================================================================
+     */
+    public void smartFetch(Activity activity, ObjectResultListener<byte[]> resultListener) {
+        Timber.d("Using smart fetch for cached file");
 
-		if (prioritiseCache || (!bypassCache && shouldUseCache())) {
-			readFromCache(activity, new ObjectResultListener<byte[]>() {
-				@Override public void success(String message, byte[] object) {
-					resultListener.success(message, object);
-				}
+        if (prioritiseCache || (!bypassCache && shouldUseCache())) {
+            readFromCache(activity, new ObjectResultListener<byte[]>() {
+                @Override
+                public void success(String message, byte[] object) {
+                    resultListener.success(message, object);
+                }
 
-				@Override public void error(String message, Throwable t, int errorCode) {
-					getFromServer(activity, resultListener);
-				}
-			});
+                @Override
+                public void error(String message, Throwable t, int errorCode) {
+                    getFromServer(activity, resultListener);
+                }
+            });
 
-			return;
-		}
+            return;
+        }
 
-		// ===========================================================================
+        // ===========================================================================
 
-		getFromServer(activity, new ObjectResultListener<byte[]>() {
-			@Override public void success(String message, byte[] object) {
-				resultListener.success(message, object);
-			}
+        getFromServer(activity, new ObjectResultListener<byte[]>() {
+            @Override
+            public void success(String message, byte[] object) {
+                resultListener.success(message, object);
+            }
 
-			@Override public void error(String message, Throwable t, int errorCode) {
-				readFromCache(activity, resultListener);
-			}
-		});
-	}
+            @Override
+            public void error(String message, Throwable t, int errorCode) {
+                readFromCache(activity, resultListener);
+            }
+        });
+    }
 
-	protected abstract boolean shouldUseCache();
+    protected abstract boolean shouldUseCache();
 
-	public void readFromCache(Activity activity, ObjectResultListener<byte[]> resultListener) {
-		Timber.d("Fetching file from disk cache");
+    public void readFromCache(Activity activity, ObjectResultListener<byte[]> resultListener) {
+        Timber.d("Fetching file from disk cache");
 
-		File cacheDir = getCacheDir(activity);
-		File cachedFile = new File(cacheDir, getCachedFilename());
+        File cacheDir = getCacheDir(activity);
+        File cachedFile = new File(cacheDir, getCachedFilename());
 
-		if (!cachedFile.exists()) {
-			Timber.d("Cached file doesn't exist");
-			resultListener.error("Cached file doesn't exist",
-					null,
-					-1
-			);
+        if (!cachedFile.exists()) {
+            Timber.d("Cached file doesn't exist");
+            resultListener.error("Cached file doesn't exist",
+                    null,
+                    -1
+            );
 
-			return;
-		}
+            return;
+        }
 
-		try {
-			ByteSource cachedByteSource = Files.asByteSource(cachedFile);
-			byte[] cachedFileBytes = cachedByteSource.read();
+        try {
+            ByteSource cachedByteSource = Files.asByteSource(cachedFile);
+            byte[] cachedFileBytes = cachedByteSource.read();
 
-			Timber.d("Successfully fetched file from cache");
-			resultListener.success(null, cachedFileBytes);
-		} catch (IOException e) {
-			Timber.e(e);
+            Timber.d("Successfully fetched file from cache");
+            resultListener.success(null, cachedFileBytes);
+        } catch (IOException e) {
+            Timber.e(e);
 
-			resultListener.error(
-					"Failed to read from cache",
-					e,
-					-1
-			);
-		}
-	}
+            resultListener.error(
+                    "Failed to read from cache",
+                    e,
+                    -1
+            );
+        }
+    }
 
-	public void getFromServer(Activity activity, ObjectResultListener<byte[]> resultListener) {
-		Timber.d("Fetching file from server");
+    public void getFromServer(Activity activity, ObjectResultListener<byte[]> resultListener) {
+        Timber.d("Fetching file from server");
 
-		new WebRequest.Builder()
-				.setUrl(getURL())
-				.setContext(activity)
-				.setMethod(Method.GET)
-				.setType(RequestType.STREAM)
-				.setCallback(new WebResponseListener() {
-					@Override public void success(WebResponse webResponse) {
-						if (webResponse.getResult() == null) {
-							Timber.d("Failed to fetch file from server.");
+        new WebRequest.Builder()
+                .setUrl(getURL())
+                .setContext(activity)
+                .setMethod(Method.GET)
+                .setType(RequestType.STREAM)
+                .setCallback(new WebResponseListener() {
+                    @Override
+                    public void success(WebResponse webResponse) {
+                        if (webResponse.getResult() == null) {
+                            Timber.d("Failed to fetch file from server.");
 
-							resultListener.error(
-									null,
-									null,
-									-1
-							);
-							return;
-						}
+                            resultListener.error(
+                                    null,
+                                    null,
+                                    -1
+                            );
+                            return;
+                        }
 
-						Timber.d("Successfully fetched file from server");
+                        Timber.d("Successfully fetched file from server");
 
-						byte[] responsePayload = webResponse.getResult();
+                        byte[] responsePayload = webResponse.getResult();
 
-						if (writeToCache(activity, responsePayload)) {
-							Timber.d("Successfully cached file");
-							updateCacheTime();
-						} else {
-							Timber.e("Failed to write cache file %s",
-									getCachedFilename());
-						}
+                        if (writeToCache(activity, responsePayload)) {
+                            Timber.d("Successfully cached file");
+                            updateCacheTime();
+                        } else {
+                            Timber.e("Failed to write cache file %s",
+                                    getCachedFilename());
+                        }
 
-						resultListener.success(null, responsePayload);
-					}
+                        resultListener.success(null, responsePayload);
+                    }
 
-					@Override public void error(WebResponse webResponse) {
-						Timber.d("Failed to fetch file from server.");
+                    @Override
+                    public void error(WebResponse webResponse) {
+                        Timber.d("Failed to fetch file from server.");
 
-						if (webResponse.getException() != null)
-							Timber.e(webResponse.getException(), webResponse.getMessage());
-						else
-							Timber.w(webResponse.getMessage());
+                        if (webResponse.getException() != null)
+                            Timber.e(webResponse.getException(), webResponse.getMessage());
+                        else
+                            Timber.w(webResponse.getMessage());
 
-						resultListener.error(
-								webResponse.getMessage(),
-								webResponse.getException(),
-								webResponse.getResponseCode()
-						);
-					}
-				})
-				.performRequest();
-	}
+                        resultListener.error(
+                                webResponse.getMessage(),
+                                webResponse.getException(),
+                                webResponse.getResponseCode()
+                        );
+                    }
+                })
+                .performRequest();
+    }
 
-	protected File getCacheDir(Context context) {
-		return context.getCacheDir();
-	}
+    protected File getCacheDir(Context context) {
+        return context.getCacheDir();
+    }
 
-	protected abstract String getCachedFilename();
+    protected abstract String getCachedFilename();
 
-	protected abstract String getURL();
+    protected abstract String getURL();
 
-	private boolean writeToCache(Context context, byte[] cachedPayload) {
-		File cacheDir = getCacheDir(context);
-		File cachedFile = new File(cacheDir, getCachedFilename());
+    private boolean writeToCache(Context context, byte[] cachedPayload) {
+        File cacheDir = getCacheDir(context);
+        File cachedFile = new File(cacheDir, getCachedFilename());
 
-		return FileUtils.tryCreate(cachedFile) &&
-				FileUtils.tryWrite(cachedPayload, cachedFile);
+        return FileUtils.tryCreate(cachedFile) &&
+                FileUtils.tryWrite(cachedPayload, cachedFile);
 
-	}
+    }
 
-	protected abstract void updateCacheTime();
+    protected abstract void updateCacheTime();
 
-	public CachedFileDownloader setBypassCache(boolean bypassCache) {
-		if (prioritiseCache)
-			throw new RuntimeException("Cannot bypass cache while prioritising cache too");
+    public CachedFileDownloader setBypassCache(boolean bypassCache) {
+        if (prioritiseCache)
+            throw new RuntimeException("Cannot bypass cache while prioritising cache too");
 
-		this.bypassCache = bypassCache;
-		return this;
-	}
+        this.bypassCache = bypassCache;
+        return this;
+    }
 
-	@RequiresFramework(73)
-	public CachedFileDownloader setShouldPrioritiseCache(boolean prioritiseCache) {
-		if (this.bypassCache)
-			throw new RuntimeException("Cannot prioritise cache while bypassing cache too");
+    @RequiresFramework(73)
+    public CachedFileDownloader setShouldPrioritiseCache(boolean prioritiseCache) {
+        if (this.bypassCache)
+            throw new RuntimeException("Cannot prioritise cache while bypassing cache too");
 
-		this.prioritiseCache = prioritiseCache;
-		return this;
-	}
+        this.prioritiseCache = prioritiseCache;
+        return this;
+    }
 }

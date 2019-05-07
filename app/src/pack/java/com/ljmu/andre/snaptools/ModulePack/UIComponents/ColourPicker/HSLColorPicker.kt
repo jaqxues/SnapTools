@@ -166,7 +166,8 @@ open class HSLColorPicker @JvmOverloads constructor(context: Context, attrs: Att
         }
 
         companion object {
-            @JvmField val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
                 override fun createFromParcel(source: Parcel): SavedState = SavedState(source)
                 override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
             }

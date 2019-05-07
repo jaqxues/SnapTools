@@ -11,27 +11,30 @@ import com.google.common.base.MoreObjects;
  */
 
 public class BasicConstant<T> extends Constant {
-	@NonNull private final T value;
+    @NonNull
+    private final T value;
 
-	public BasicConstant(int index, @Nullable String name, @NonNull T value) {
-		super(index, name);
-		this.value = value;
-	}
+    public BasicConstant(int index, @Nullable String name, @NonNull T value) {
+        super(index, name);
+        this.value = value;
+    }
 
-	public BasicConstant(@Nullable String name, @NonNull T value) {
-		super(name);
-		this.value = value;
-	}
+    public BasicConstant(@Nullable String name, @NonNull T value) {
+        super(name);
+        this.value = value;
+    }
 
-	@NonNull public T get() {
-		return value;
-	}
+    @NonNull
+    public T get() {
+        return value;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("value", value)
-				.add("", super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("value", value)
+                .add("", super.toString())
+                .toString();
+    }
 }

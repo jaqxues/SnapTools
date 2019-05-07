@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-        android:src="@drawable/spinner_96"
-        android:tint="@color/primary">
+    android:src="@drawable/spinner_96"
+    android:tint="@color/primary">
 
 </bitmap>

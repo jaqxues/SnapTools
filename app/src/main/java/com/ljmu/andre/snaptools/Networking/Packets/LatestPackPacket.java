@@ -10,23 +10,24 @@ import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData;
  */
 
 public class LatestPackPacket extends Packet {
-	@SerializedName("latest_pack")
-	private ServerPackMetaData latestPack;
+    @SerializedName("latest_pack")
+    private ServerPackMetaData latestPack;
 
-	public ServerPackMetaData getLatestPack() {
-		return latestPack;
-	}
+    public ServerPackMetaData getLatestPack() {
+        return latestPack;
+    }
 
-	public LatestPackPacket setLatestPack(ServerPackMetaData latestPack) {
-		this.latestPack = latestPack;
-		return this;
-	}
+    public LatestPackPacket setLatestPack(ServerPackMetaData latestPack) {
+        this.latestPack = latestPack;
+        return this;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("latestPack", latestPack)
-				.add("", super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("latestPack", latestPack)
+                .add("", super.toString())
+                .toString();
+    }
 }

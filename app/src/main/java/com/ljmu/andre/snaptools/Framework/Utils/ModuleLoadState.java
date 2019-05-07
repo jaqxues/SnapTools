@@ -8,57 +8,60 @@ import com.google.common.base.MoreObjects;
  */
 
 public class ModuleLoadState extends LoadState {
-	private int failedHooks;
-	private int successfulHooks;
+    private int failedHooks;
+    private int successfulHooks;
 
-	public ModuleLoadState(String name) {
-		super(name);
-	}
+    public ModuleLoadState(String name) {
+        super(name);
+    }
 
-	public ModuleLoadState fail() {
-		setState(State.FAILED);
+    public ModuleLoadState fail() {
+        setState(State.FAILED);
 
-		failedHooks++;
-		return this;
-	}
+        failedHooks++;
+        return this;
+    }
 
-	public ModuleLoadState success() {
-		successfulHooks++;
-		return this;
-	}
+    public ModuleLoadState success() {
+        successfulHooks++;
+        return this;
+    }
 
-	public int getFailedHooks() {
-		return failedHooks;
-	}
+    public int getFailedHooks() {
+        return failedHooks;
+    }
 
-	public int getSuccessfulHooks() {
-		return successfulHooks;
-	}
+    public int getSuccessfulHooks() {
+        return successfulHooks;
+    }
 
-	/**
-	 * ===========================================================================
-	 * A breakdown of the LoadState that can be displayed to the user
-	 * to explain the reasoning.
-	 * ===========================================================================
-	 */
-	@Override public String getBasicBreakdown() {
-		if (failedHooks > 0)
-			return String.format("[%s/%s]", failedHooks, failedHooks + successfulHooks);
+    /**
+     * ===========================================================================
+     * A breakdown of the LoadState that can be displayed to the user
+     * to explain the reasoning.
+     * ===========================================================================
+     */
+    @Override
+    public String getBasicBreakdown() {
+        if (failedHooks > 0)
+            return String.format("[%s/%s]", failedHooks, failedHooks + successfulHooks);
 
-		return getState().getDisplay();
-	}
+        return getState().getDisplay();
+    }
 
-	@Override public boolean hasFailed() {
-		return getState() == State.FAILED || getState() == State.ISSUES || failedHooks > 0;
-	}
+    @Override
+    public boolean hasFailed() {
+        return getState() == State.FAILED || getState() == State.ISSUES || failedHooks > 0;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("name", super.getName())
-				.add("state", super.getState())
-				.add("failedHooks", failedHooks)
-				.add("successfulHooks", successfulHooks)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("name", super.getName())
+                .add("state", super.getState())
+                .add("failedHooks", failedHooks)
+                .add("successfulHooks", successfulHooks)
+                .toString();
+    }
 }

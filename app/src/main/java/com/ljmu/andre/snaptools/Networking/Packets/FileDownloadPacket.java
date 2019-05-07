@@ -9,18 +9,19 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class FileDownloadPacket extends AuthResultPacket {
-	@SerializedName("pack_bytes")
-	private byte[] pack_bytes;
+    @SerializedName("pack_bytes")
+    private byte[] pack_bytes;
 
-	public byte[] getPackBytes() {
-		return pack_bytes;
-	}
+    public byte[] getPackBytes() {
+        return pack_bytes;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("pack_bytes", pack_bytes)
-				.add("", super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("pack_bytes", pack_bytes)
+                .add("", super.toString())
+                .toString();
+    }
 }

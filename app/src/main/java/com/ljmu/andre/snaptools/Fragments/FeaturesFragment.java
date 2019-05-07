@@ -34,175 +34,182 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
  */
 
 public class FeaturesFragment extends FragmentHelper {
-	private FeaturesViewProvider viewProvider;
+    private FeaturesViewProvider viewProvider;
 
-	// ===========================================================================
-	private ViewGroup mainContainer;
-	private ViewGroup basicContent;
-	private ViewGroup premiumContent;
-	private List<SwipeRefreshLayout> refreshLayouts;
-	// ===========================================================================
+    // ===========================================================================
+    private ViewGroup mainContainer;
+    private ViewGroup basicContent;
+    private ViewGroup premiumContent;
+    private List<SwipeRefreshLayout> refreshLayouts;
+    // ===========================================================================
 
-	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		EventBus.soleRegister(this);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        EventBus.soleRegister(this);
 
-		viewProvider = new FeaturesViewProvider(
-				getActivity(),
-				viewGroup -> basicContent = viewGroup,
-				viewGroup -> premiumContent = viewGroup
-		);
+        viewProvider = new FeaturesViewProvider(
+                getActivity(),
+                viewGroup -> basicContent = viewGroup,
+                viewGroup -> premiumContent = viewGroup
+        );
 
-		mainContainer = viewProvider.getMainContainer();
+        mainContainer = viewProvider.getMainContainer();
 
-		refreshLayouts = new ArrayList<>(2);
-		refreshLayouts.add(getDSLView(basicContent, "basic_refresh"));
-		refreshLayouts.add(getDSLView(premiumContent, "premium_refresh"));
-		assignRefreshListeners();
+        refreshLayouts = new ArrayList<>(2);
+        refreshLayouts.add(getDSLView(basicContent, "basic_refresh"));
+        refreshLayouts.add(getDSLView(premiumContent, "premium_refresh"));
+        assignRefreshListeners();
 
-		// Super lazy code practice here =============================================
-		basicContent = getDSLView(basicContent, "content_basic");
-		premiumContent = getDSLView(premiumContent, "content_premium");
+        // Super lazy code practice here =============================================
+        basicContent = getDSLView(basicContent, "content_basic");
+        premiumContent = getDSLView(premiumContent, "content_premium");
 
-		buildFeaturesContent(false);
+        buildFeaturesContent(false);
 
-		return mainContainer;
-	}
+        return mainContainer;
+    }
 
-	@Override public void onDestroyView() {
-		super.onDestroyView();
-		refreshLayouts.clear();
-	}
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        refreshLayouts.clear();
+    }
 
-	private void assignRefreshListeners() {
-		for (SwipeRefreshLayout refreshLayout : refreshLayouts) {
-			refreshLayout.setOnRefreshListener(() -> {
-				setRefreshing(true);
-				buildFeaturesContent(true);
-			});
-		}
-	}
+    private void assignRefreshListeners() {
+        for (SwipeRefreshLayout refreshLayout : refreshLayouts) {
+            refreshLayout.setOnRefreshListener(() -> {
+                setRefreshing(true);
+                buildFeaturesContent(true);
+            });
+        }
+    }
 
-	private void setRefreshing(boolean isRefreshing) {
-		for (SwipeRefreshLayout refreshLayout : refreshLayouts) {
-			refreshLayout.setRefreshing(isRefreshing);
-		}
-	}
+    private void setRefreshing(boolean isRefreshing) {
+        for (SwipeRefreshLayout refreshLayout : refreshLayouts) {
+            refreshLayout.setRefreshing(isRefreshing);
+        }
+    }
 
-	private void buildFeaturesContent(boolean bypassCache) {
-		setRefreshing(true);
+    private void buildFeaturesContent(boolean bypassCache) {
+        setRefreshing(true);
 
-		new GetFeatures()
-				.setBypassCache(bypassCache)
-				.smartFetch(
-						getActivity(),
-						new ObjectResultListener<byte[]>() {
-							@Override public void success(String message, byte[] object) {
-								setRefreshing(false);
+        new GetFeatures()
+                .setBypassCache(bypassCache)
+                .smartFetch(
+                        getActivity(),
+                        new ObjectResultListener<byte[]>() {
+                            @Override
+                            public void success(String message, byte[] object) {
+                                setRefreshing(false);
 
-								String cachedFileContent = new String(object, Charset.defaultCharset());
+                                String cachedFileContent = new String(object, Charset.defaultCharset());
 
-								try {
-									String[] splitString = cachedFileContent.split("\n");
-									Timber.d("Split: " + Arrays.toString(splitString));
+                                try {
+                                    String[] splitString = cachedFileContent.split("\n");
+                                    Timber.d("Split: " + Arrays.toString(splitString));
 
-									handleFeaturesResult(splitString);
-								} catch (Exception e) {
-									Timber.e(e);
-								}
-							}
+                                    handleFeaturesResult(splitString);
+                                } catch (Exception e) {
+                                    Timber.e(e);
+                                }
+                            }
 
-							@Override public void error(String message, Throwable t, int errorCode) {
-								setRefreshing(false);
+                            @Override
+                            public void error(String message, Throwable t, int errorCode) {
+                                setRefreshing(false);
 
-								DialogFactory.createErrorDialog(
-										getActivity(),
-										"Error fetching features list",
-										"Failed to fetch the Features List"
-								).show();
-							}
-						}
-				);
-	}
+                                DialogFactory.createErrorDialog(
+                                        getActivity(),
+                                        "Error fetching features list",
+                                        "Failed to fetch the Features List"
+                                ).show();
+                            }
+                        }
+                );
+    }
 
-	private void handleFeaturesResult(String[] featuresArray) {
-		premiumContent.removeAllViews();
-		basicContent.removeAllViews();
+    private void handleFeaturesResult(String[] featuresArray) {
+        premiumContent.removeAllViews();
+        basicContent.removeAllViews();
 
-		ViewGroup currentBasicHeader = null;
-		ViewGroup currentPremiumHeader = null;
+        ViewGroup currentBasicHeader = null;
+        ViewGroup currentPremiumHeader = null;
 
-		for (String featuresItem : featuresArray) {
-			if (featuresItem == null || featuresItem.isEmpty())
-				continue;
+        for (String featuresItem : featuresArray) {
+            if (featuresItem == null || featuresItem.isEmpty())
+                continue;
 
-			Timber.d("Working on item: " + featuresItem);
+            Timber.d("Working on item: " + featuresItem);
 
-			String item = featuresItem.substring(1);
+            String item = featuresItem.substring(1);
 
-			if (item.startsWith("--")) {
-				item = item.substring(2);
-				boolean attachToRoot = false;
+            if (item.startsWith("--")) {
+                item = item.substring(2);
+                boolean attachToRoot = false;
 
-				if (item.startsWith("<root>")) {
-					attachToRoot = true;
-					item = item.substring(6);
-				}
+                if (item.startsWith("<root>")) {
+                    attachToRoot = true;
+                    item = item.substring(6);
+                }
 
-				TextView itemText = new TextView(getActivity());
-				itemText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-				itemText.setTextAppearance(getActivity(), R.style.DefaultText);
-				itemText.setText(getSpannedHtml(item));
+                TextView itemText = new TextView(getActivity());
+                itemText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                itemText.setTextAppearance(getActivity(), R.style.DefaultText);
+                itemText.setText(getSpannedHtml(item));
 
-				if (item.startsWith("<center>")) {
-					item = item.substring(8);
-					itemText.setGravity(Gravity.CENTER);
-				}
+                if (item.startsWith("<center>")) {
+                    item = item.substring(8);
+                    itemText.setGravity(Gravity.CENTER);
+                }
 
-				if (featuresItem.startsWith("/")) {
-					if (attachToRoot) {
-						premiumContent.addView(itemText);
-						continue;
-					}
+                if (featuresItem.startsWith("/")) {
+                    if (attachToRoot) {
+                        premiumContent.addView(itemText);
+                        continue;
+                    }
 
-					if (currentPremiumHeader == null)
-						throw new IllegalStateException("No premium header defined");
+                    if (currentPremiumHeader == null)
+                        throw new IllegalStateException("No premium header defined");
 
-					currentPremiumHeader.addView(itemText);
-				} else if (featuresItem.startsWith("\\")) {
-					if (attachToRoot) {
-						basicContent.addView(itemText);
-						continue;
-					}
+                    currentPremiumHeader.addView(itemText);
+                } else if (featuresItem.startsWith("\\")) {
+                    if (attachToRoot) {
+                        basicContent.addView(itemText);
+                        continue;
+                    }
 
-					if (currentBasicHeader == null)
-						throw new IllegalStateException("No basic header defined");
+                    if (currentBasicHeader == null)
+                        throw new IllegalStateException("No basic header defined");
 
-					currentBasicHeader.addView(itemText);
-				}
-			} else if (item.startsWith("-")) {
-				item = item.substring(1);
+                    currentBasicHeader.addView(itemText);
+                }
+            } else if (item.startsWith("-")) {
+                item = item.substring(1);
 
-				ViewGroup headerItem = viewProvider.getHeader(item);
+                ViewGroup headerItem = viewProvider.getHeader(item);
 
-				if (featuresItem.startsWith("/")) {
-					currentPremiumHeader = getDSLView(headerItem, "header_feature_container");
-					premiumContent.addView(headerItem);
-				} else if (featuresItem.startsWith("\\")) {
-					currentBasicHeader = getDSLView(headerItem, "header_feature_container");
-					basicContent.addView(headerItem);
-				}
-			}
-		}
+                if (featuresItem.startsWith("/")) {
+                    currentPremiumHeader = getDSLView(headerItem, "header_feature_container");
+                    premiumContent.addView(headerItem);
+                } else if (featuresItem.startsWith("\\")) {
+                    currentBasicHeader = getDSLView(headerItem, "header_feature_container");
+                    basicContent.addView(headerItem);
+                }
+            }
+        }
 
-		AnimationUtils.sequentGroup(basicContent);
-		AnimationUtils.sequentGroup(premiumContent);
-	}
+        AnimationUtils.sequentGroup(basicContent);
+        AnimationUtils.sequentGroup(premiumContent);
+    }
 
-	@Override public String getName() {
-		return "Features";
-	}
+    @Override
+    public String getName() {
+        return "Features";
+    }
 
-	@Override public Integer getMenuId() {
-		return R.id.nav_features;
-	}
+    @Override
+    public Integer getMenuId() {
+        return R.id.nav_features;
+    }
 }

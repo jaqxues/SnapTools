@@ -3,8 +3,10 @@
     <!--<item android:drawable="@color/primary"/>-->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/primary"/>
-            <stroke android:color="@color/textSecondary" android:width="2dp"/>
+            <solid android:color="@color/primary" />
+            <stroke
+                android:color="@color/textSecondary"
+                android:width="2dp" />
         </shape>
     </item>
 
@@ -12,6 +14,6 @@
         <bitmap
             android:antialias="true"
             android:gravity="center"
-            android:src="@drawable/high_priority_96"/>
+            android:src="@drawable/high_priority_96" />
     </item>
 </layer-list>

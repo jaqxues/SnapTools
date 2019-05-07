@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,13 +20,13 @@
             android:text="@string/app_name"
             style="@style/HeaderText"
             android:gravity="center"
-            android:textSize="30sp"/>
+            android:textSize="30sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/snaptools_logo"
-            android:id="@+id/imageView3"/>
+            android:id="@+id/imageView3" />
     </LinearLayout>
 
 
@@ -47,7 +47,7 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:background="@color/error"
-            android:textColor="@color/textSecondary"/>
+            android:textColor="@color/textSecondary" />
 
         <TextView
             android:text="It seems that there was an application hang, however no details have been forwarded"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txt_message"
             android:layout_margin="10dp"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <Button
             android:id="@+id/hang_force_kill"
@@ -65,7 +65,7 @@
             android:layout_marginBottom="10dp"
             android:paddingBottom="10dp"
             android:text="Force Kill Snapchat (root)"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,19 +79,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Hang Watchdog Timeout"/>
+                android:text="Hang Watchdog Timeout" />
 
             <SeekBar
                 android:id="@+id/seek_timeout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/label_timeout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="x Seconds"/>
+                android:text="x Seconds" />
         </LinearLayout>
 
     </LinearLayout>

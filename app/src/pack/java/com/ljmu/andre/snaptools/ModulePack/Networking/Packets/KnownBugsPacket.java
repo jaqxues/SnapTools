@@ -15,25 +15,26 @@ import timber.log.Timber;
  */
 
 public class KnownBugsPacket extends Packet {
-	@SerializedName("bugs")
-	public List<KnownBugObject> bugs;
+    @SerializedName("bugs")
+    public List<KnownBugObject> bugs;
 
-	public void assignChildrensKeys(String scVersion, String packVersion) {
-		if(bugs == null) {
-			Timber.w("Couldn't assign keys to null bug list");
-			return;
-		}
+    public void assignChildrensKeys(String scVersion, String packVersion) {
+        if (bugs == null) {
+            Timber.w("Couldn't assign keys to null bug list");
+            return;
+        }
 
-		for(KnownBugObject bugObject : bugs)
-			bugObject.key = KnownBugObject.createKey(scVersion, packVersion);
-	}
+        for (KnownBugObject bugObject : bugs)
+            bugObject.key = KnownBugObject.createKey(scVersion, packVersion);
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("error", error)
-				.add("errorCode", getErrorCode())
-				.add("bugs", bugs)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("error", error)
+                .add("errorCode", getErrorCode())
+                .add("bugs", bugs)
+                .toString();
+    }
 }

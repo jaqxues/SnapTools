@@ -16,53 +16,55 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDI
  */
 
 public class TypeAllSnaps extends StorageFormat {
-	@Override public List<File> getSnapTypeFolders(SnapType snapType) {
-		List<File> typeFolderList = new ArrayList<>();
-		typeFolderList.add(
-				new File(
-						getPref(MEDIA_PATH)
-								+ File.separator
-								+ snapType.getFolderName()
-				)
-		);
+    @Override
+    public List<File> getSnapTypeFolders(SnapType snapType) {
+        List<File> typeFolderList = new ArrayList<>();
+        typeFolderList.add(
+                new File(
+                        getPref(MEDIA_PATH)
+                                + File.separator
+                                + snapType.getFolderName()
+                )
+        );
 
-		return typeFolderList;
-	}
+        return typeFolderList;
+    }
 
-	/**
-	 * ===========================================================================
-	 * Build an appropriate outputfile based on this StorageFormat
-	 * ===========================================================================
-	 */
-	@Override public File getOutputFile(SnapType snapType, String username, String filename) {
-		File parentDir = new File(
-				getPref(MEDIA_PATH)
-						+ File.separator
-						+ snapType.getFolderName()
-		);
+    /**
+     * ===========================================================================
+     * Build an appropriate outputfile based on this StorageFormat
+     * ===========================================================================
+     */
+    @Override
+    public File getOutputFile(SnapType snapType, String username, String filename) {
+        File parentDir = new File(
+                getPref(MEDIA_PATH)
+                        + File.separator
+                        + snapType.getFolderName()
+        );
 
-		//noinspection ResultOfMethodCallIgnored
-		parentDir.mkdirs();
+        //noinspection ResultOfMethodCallIgnored
+        parentDir.mkdirs();
 
-		return new File(
-				parentDir,
-				filename
-		);
-	}
+        return new File(
+                parentDir,
+                filename
+        );
+    }
 
-	/**
-	 * ===========================================================================
-	 * Attempt to determine if a file was using the
-	 * {@link #getOutputFile(SnapType, String, String)} from this StorageFormat
-	 * <p>
-	 * The method used isn't efficient or elegant however it works for now
-	 * ===========================================================================
-	 */
-	public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
-		File snapTypeDir = snapFile.getParentFile();
-		boolean namesMatch = snapTypeDir.getName().equals(snapType.getFolderName());
-		boolean hierarchyMatch = snapFile.getParentFile().getParentFile().getName().contains("Media");
+    /**
+     * ===========================================================================
+     * Attempt to determine if a file was using the
+     * {@link #getOutputFile(SnapType, String, String)} from this StorageFormat
+     * <p>
+     * The method used isn't efficient or elegant however it works for now
+     * ===========================================================================
+     */
+    public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
+        File snapTypeDir = snapFile.getParentFile();
+        boolean namesMatch = snapTypeDir.getName().equals(snapType.getFolderName());
+        boolean hierarchyMatch = snapFile.getParentFile().getParentFile().getName().contains("Media");
 
-		return namesMatch && hierarchyMatch;
-	}
+        return namesMatch && hierarchyMatch;
+    }
 }

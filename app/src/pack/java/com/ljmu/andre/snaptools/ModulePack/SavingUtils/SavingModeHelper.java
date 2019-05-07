@@ -12,11 +12,11 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVI
  */
 
 public class SavingModeHelper {
-	public static SavingMode getSavingModeForType(SnapType snapType) {
-		String savingModeName = PreferenceHelpers.getFromMap(SAVING_MODES, snapType.getName());
-		if (savingModeName == null)
-			return SavingMode.AUTO;
+    public static SavingMode getSavingModeForType(SnapType snapType) {
+        String savingModeName = PreferenceHelpers.getFromMap(SAVING_MODES, snapType.getName());
+        if (savingModeName == null)
+            return SavingMode.AUTO;
 
-		return SavingMode.fromNameOptional(savingModeName);
-	}
+        return SavingMode.fromNameOptional(savingModeName);
+    }
 }

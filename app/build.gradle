@@ -8,14 +8,36 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+def keystorePropertiesFile = file("..\\KeysCertificates\\KeyStore\\keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+
+    signingConfigs {
+        release {
+            // "MKey..." --> MasterKey
+            keyAlias keystoreProperties['MKeyAlias']
+            keyPassword keystoreProperties['MKeyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+        debug {
+            // "DKey..." --> DebugKey
+            keyAlias keystoreProperties['DKeyAlias']
+            keyPassword keystoreProperties['DKeyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     flavorDimensions "defaultConfig"
 
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
 
-    compileSdkVersion 25
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
     android {
         lintOptions {
@@ -26,63 +48,87 @@ android {
     defaultConfig {
         applicationId "com.ljmu.andre.snaptools"
         minSdkVersion 21
-        targetSdkVersion 25
-        versionCode 100
-        versionName "2.0.0.0"
+        targetSdkVersion 28
+        versionCode 0
+        versionName "0.0.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        resValue "string", "app_name", "SnopTells"
-        
+        resValue "string", "app_name", "SnapTools"
+
         applicationVariants.all { variant ->
 
-            if(variant.flavorName == "pack") {
+            if (variant.flavorName == "pack") {
                 variant.outputs.all { output ->
-                    outputFileName = "CHANGE_BUILD_FLAVOR-PACK_CODE_COMPILED.apk"
+                    // This apk is not intended to be installed. It is only used to compile
+                    // the necessary sources for the ModulePackCompiler.
+                    outputFileName = "SnapTools-Pack_CODE_COMPILED.apk"
                 }
-            } else {
+            } else if (variant.flavorName == "beta") {
                 variant.outputs.all { output ->
-                    outputFileName = "SnopTells-Unlocked.apk"
+                    outputFileName = "SnapTools-Beta.apk"
+                }
+            } else if (variant.flavorName == "prod") {
+                variant.outputs.all { output ->
+                    outputFileName = "SnapTools-Release.apk"
                 }
             }
         }
     }
 
     buildTypes {
-        debug{}
-        release{}
+        debug {
+            signingConfig signingConfigs.debug
+            debuggable true
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     productFlavors {
-        staging {
+        prod {
+            versionName '2.0.0.8'
+            versionCode 108
+        }
+        beta {
+            resValue 'string', 'app_name', 'SnapTools Beta'
+            versionName '2.0.0.10b'
+            versionCode 110
         }
         pack {
+            // "Pack" Flavour should not be installed as APK
+            resValue 'string', 'app_name', 'SnapTools Pack Compiled'
+            versionName '0.0.0.0'
+            versionCode 0
         }
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:support-v4:25.4.0'
-    implementation 'com.android.support:appcompat-v7:25.4.0'
-    implementation 'com.android.support:design:25.4.0'
-    implementation 'com.android.support:recyclerview-v7:25.4.0'
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.android.support:exifinterface:28.0.0"
+    testImplementation 'junit:junit:4.12'
     // SU library
     implementation 'com.jaredrummler:android-shell:1.0.0'
     // Xposed
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
     // Logging
-    implementation 'com.jakewharton.timber:timber:4.4.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     // UI Components
     implementation 'com.wang.avi:library:2.1.3'
     implementation 'com.isseiaoki:simplecropview:1.1.4'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.27'
-    implementation 'com.github.bumptech.glide:glide:4.0.0-RC1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'com.github.Andy671:Dachshund-Tab-Layout:v0.2.0'
     implementation 'com.fujiyuu75:sequent:0.2.1'
     // View Injection
@@ -97,11 +143,11 @@ dependencies {
     implementation 'com.github.javiersantos:AppUpdater:2.6.3'
     // ### Googles own API's ### \\
     // Network Request
-    implementation 'com.android.volley:volley:1.0.0'
+    implementation 'com.android.volley:volley:1.1.0'
     // JSON Parsing
-    implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     // Guava
-    implementation 'com.google.guava:guava:20.0'
+    api 'com.google.guava:guava:27.1-android'
     //Tutorial lib for overview
     implementation 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
     //Confetti lib because this is important andre dammit
@@ -125,22 +171,22 @@ dependencies {
     }
 }
 
-//task exportModulePackClasses(type: JavaExec) {
-//    println "EXPORTING MODULE PACK CLASSES"
-//    main = "Main"
-//    classpath = files('C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter')
-//
-//    // arg0 = Source Mapping Path
-//    // arg1 = Proguard Jar Path
-//    // arg2 = Export Path
-//    // arg3 = Delay after completing
-//    args(
-//            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/outputs/mapping/pack/release/mapping.txt",
-//            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/intermediates/transforms/proguard/pack/release/0.jar",
-//            "C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter/ExportedModulePackClasses",
-//            0
-//    )
-//}
+/*task exportModulePackClasses(type: JavaExec) {
+    println "EXPORTING MODULE PACK CLASSES"
+    main = "Main"
+    classpath = files('C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter')
+
+    // arg0 = Source Mapping Path
+    // arg1 = Proguard Jar Path
+    // arg2 = Export Path
+    // arg3 = Delay after completing
+    args(
+            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/outputs/mapping/pack/release/mapping.txt",
+            "C:/Users/Andre/Documents/GitHub/SnapTools/app/build/intermediates/transforms/proguard/pack/release/0.jar",
+            "C:/Users/Andre/Documents/GitHub/SnapTools/app/pack_exporter/ExportedModulePackClasses",
+            0
+    )
+}*/
 
 /**
  * ===========================================================================

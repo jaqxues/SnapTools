@@ -14,7 +14,7 @@
         android:propertyName="scaleX"
         android:valueFrom="0.0"
         android:valueTo="1.0"
-        android:valueType="floatType"/>
+        android:valueType="floatType" />
 
     <objectAnimator
         android:duration="@android:integer/config_longAnimTime"
@@ -22,5 +22,5 @@
         android:propertyName="scaleY"
         android:valueFrom="0.0"
         android:valueTo="1.0"
-        android:valueType="floatType"/>
+        android:valueType="floatType" />
 </set>

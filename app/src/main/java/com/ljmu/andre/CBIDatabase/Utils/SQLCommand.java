@@ -8,39 +8,40 @@ import com.google.common.base.MoreObjects;
  */
 
 public class SQLCommand {
-	private CommandAction commandAction;
-	private String query;
+    private CommandAction commandAction;
+    private String query;
 
-	public SQLCommand(CommandAction commandAction) {
-		this.commandAction = commandAction;
-	}
+    public SQLCommand(CommandAction commandAction) {
+        this.commandAction = commandAction;
+    }
 
-	public SQLCommand(String query) {
-		this(CommandAction.QUERY, query);
-	}
+    public SQLCommand(String query) {
+        this(CommandAction.QUERY, query);
+    }
 
-	public SQLCommand(CommandAction commandAction, String query) {
-		this.commandAction = commandAction;
-		this.query = query;
-	}
+    public SQLCommand(CommandAction commandAction, String query) {
+        this.commandAction = commandAction;
+        this.query = query;
+    }
 
-	public CommandAction getCommandAction() {
-		return commandAction;
-	}
+    public CommandAction getCommandAction() {
+        return commandAction;
+    }
 
-	public String getQuery() {
-		return query;
-	}
+    public String getQuery() {
+        return query;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("commandAction", commandAction)
-				.add("query", query)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("commandAction", commandAction)
+                .add("query", query)
+                .toString();
+    }
 
-	public enum CommandAction {
-		QUERY, RECYCLE
-	}
+    public enum CommandAction {
+        QUERY, RECYCLE
+    }
 }

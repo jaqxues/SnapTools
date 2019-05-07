@@ -13,7 +13,6 @@ import com.ljmu.andre.GsonPreferences.Preferences.getPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef
 import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_SNAP_BUTTON_LOCATION
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.detach

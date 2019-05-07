@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="5dp"
-                android:background="@color/backgroundTertiary"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/backgroundTertiary"
+    android:orientation="vertical">
 
     <View
         android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentTop="true"
-        android:background="@color/primaryLight"/>
+        android:background="@color/primaryLight" />
 
     <FrameLayout
         android:id="@+id/button_container"
@@ -27,7 +27,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/back_arrow"/>
+            app:srcCompat="@drawable/back_arrow" />
     </FrameLayout>
 
 
@@ -52,14 +52,14 @@
         android:gravity="center"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="@string/placeholder"/>
+        android:text="@string/placeholder" />
 
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/primaryWashed"/>
+        android:background="@color/primaryWashed" />
 
 
     <EditText
@@ -74,7 +74,7 @@
         android:hint="Message Search"
         android:maxLines="1"
         android:singleLine="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/btn_search"
@@ -86,7 +86,6 @@
         android:padding="3dp"
         android:scaleType="fitCenter"
         android:tint="@color/primaryLight"
-        app:srcCompat="@drawable/search_96">
-    </ImageButton>
+        app:srcCompat="@drawable/search_96"></ImageButton>
 
 </RelativeLayout>

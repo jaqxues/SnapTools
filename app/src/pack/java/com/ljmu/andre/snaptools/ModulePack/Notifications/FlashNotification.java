@@ -18,22 +18,23 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
  */
 
 public class FlashNotification extends SaveNotification {
-	@Override protected void showNotification(Activity activity, ToastType type, int duration, @Nullable Snap snap) {
-		View screenFiller = createFlashView(activity, type);
-		ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-		decor.addView(screenFiller, -1);
-		AnimationUtils.pulseWRemove(screenFiller, 300);
-	}
+    @Override
+    protected void showNotification(Activity activity, ToastType type, int duration, @Nullable Snap snap) {
+        View screenFiller = createFlashView(activity, type);
+        ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+        decor.addView(screenFiller, -1);
+        AnimationUtils.pulseWRemove(screenFiller, 300);
+    }
 
-	private View createFlashView(Activity activity, ToastType toastType) {
-		View screenFiller = new View(activity);
-		screenFiller.setLayoutParams(
-				new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-		);
-		String colorString = toastType == ToastType.BAD ? "#88FF0000" : "#88FFFFFF";
-		screenFiller.setBackgroundColor(Color.parseColor(colorString));
-		screenFiller.setVisibility(View.GONE);
-		screenFiller.setId(getIdFromString("SCREEN_FLASH"));
-		return screenFiller;
-	}
+    private View createFlashView(Activity activity, ToastType toastType) {
+        View screenFiller = new View(activity);
+        screenFiller.setLayoutParams(
+                new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        );
+        String colorString = toastType == ToastType.BAD ? "#88FF0000" : "#88FFFFFF";
+        screenFiller.setBackgroundColor(Color.parseColor(colorString));
+        screenFiller.setVisibility(View.GONE);
+        screenFiller.setId(getIdFromString("SCREEN_FLASH"));
+        return screenFiller;
+    }
 }

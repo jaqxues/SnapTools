@@ -15,35 +15,37 @@ import com.ljmu.andre.snaptools.Networking.WebResponse;
  */
 
 public class SlackUtils {
-	public static void uploadToSlack(String username, String message) {
-		new WebRequest.Builder()
-				.setMethod(Method.POST)
-				.addParam("payload", new WebhookHolder().getJson(username, message))
-				.setType(RequestType.STRING)
-				.setUrl("https://discordapp.com/api/webhooks/373887141828100097/wQQxWKvnQVu-V5swMemxABNUvkWoajqZDk87pJVL9NSN2ODkmVuCraOwB9Qnj6oUZwQL/slack")
-				.setCallback(new WebResponseListener() {
-					@Override public void success(WebResponse webResponse) {
-					}
+    public static void uploadToSlack(String username, String message) {
+        new WebRequest.Builder()
+                .setMethod(Method.POST)
+                .addParam("payload", new WebhookHolder().getJson(username, message))
+                .setType(RequestType.STRING)
+                .setUrl("https://discordapp.com/api/webhooks/373887141828100097/wQQxWKvnQVu-V5swMemxABNUvkWoajqZDk87pJVL9NSN2ODkmVuCraOwB9Qnj6oUZwQL/slack")
+                .setCallback(new WebResponseListener() {
+                    @Override
+                    public void success(WebResponse webResponse) {
+                    }
 
-					@Override public void error(WebResponse webResponse) {
-					}
-				})
-				.performRequest();
-	}
+                    @Override
+                    public void error(WebResponse webResponse) {
+                    }
+                })
+                .performRequest();
+    }
 
-	private static class WebhookHolder {
-		String channel = "#crashlogs";
-		String username = "CrashLog";
-		String text;
-		String icon_emoji = ":bangbang:";
+    private static class WebhookHolder {
+        String channel = "#crashlogs";
+        String username = "CrashLog";
+        String text;
+        String icon_emoji = ":bangbang:";
 
-		String getJson(@Nullable String username, String message) {
-			if (username != null)
-				this.username = username;
+        String getJson(@Nullable String username, String message) {
+            if (username != null)
+                this.username = username;
 
-			text = "```" + message + "```";
+            text = "```" + message + "```";
 
-			return new Gson().toJson(this);
-		}
-	}
+            return new Gson().toJson(this);
+        }
+    }
 }

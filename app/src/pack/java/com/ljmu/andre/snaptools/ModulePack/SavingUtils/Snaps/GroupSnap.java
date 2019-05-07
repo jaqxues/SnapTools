@@ -16,33 +16,39 @@ import timber.log.Timber;
  */
 
 public class GroupSnap extends Snap {
-	GroupSnap() {
-	}
+    GroupSnap() {
+    }
 
-	@Nullable @Override public SaveState providingAlgorithm() {
-		synchronized (PROCESSING_LOCK) {
-			return null;
-		}
-	}
+    @Nullable
+    @Override
+    public SaveState providingAlgorithm() {
+        synchronized (PROCESSING_LOCK) {
+            return null;
+        }
+    }
 
-	@Nullable @Override public SaveState copyStream(ByteArrayOutputStream outputStream) {
-		synchronized (PROCESSING_LOCK) {
+    @Nullable
+    @Override
+    public SaveState copyStream(ByteArrayOutputStream outputStream) {
+        synchronized (PROCESSING_LOCK) {
 
-			try {
-				SnapDiskCache.getInstance().writeToCache(this, outputStream);
-				finished();
-				return SaveTriggerManager.getTrigger(getSnapType()).setReadySnap(this);
-			} catch (IOException e) {
-				Timber.e(e);
-			}
+            try {
+                SnapDiskCache.getInstance().writeToCache(this, outputStream);
+                finished();
+                return SaveTriggerManager.getTrigger(getSnapType()).setReadySnap(this);
+            } catch (IOException e) {
+                Timber.e(e);
+            }
 
-			return SaveState.FAILED;
-		}
-	}
+            return SaveState.FAILED;
+        }
+    }
 
-	@Nullable @Override public SaveState finalDisplayEvent() {
-		synchronized (PROCESSING_LOCK) {
-			return null;
-		}
-	}
+    @Nullable
+    @Override
+    public SaveState finalDisplayEvent() {
+        synchronized (PROCESSING_LOCK) {
+            return null;
+        }
+    }
 }

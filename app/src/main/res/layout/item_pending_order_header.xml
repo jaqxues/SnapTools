@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="vertical"
-                android:theme="@style/AppTheme">
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <ImageView
         android:id="@+id/img_arrow"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:padding="10dp"
-        android:tint="@color/errorLight"/>
+        android:tint="@color/errorLight" />
 
     <ImageView
         android:id="@+id/img_icon"
@@ -22,7 +22,7 @@
         android:layout_toEndOf="@id/img_arrow"
         android:scaleX="0.75"
         android:scaleY="0.75"
-        android:tint="@color/errorLight"/>
+        android:tint="@color/errorLight" />
 
     <TextView
         android:id="@+id/txt_listable"
@@ -36,7 +36,7 @@
         android:textColor="@color/errorLight"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme" />
 
     <View
         android:id="@+id/splitter"
@@ -44,5 +44,5 @@
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="@color/errorWashed"
-        android:elevation="4dp"/>
+        android:elevation="4dp" />
 </RelativeLayout>

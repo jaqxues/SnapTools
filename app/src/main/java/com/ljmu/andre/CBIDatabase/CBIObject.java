@@ -6,5 +6,5 @@ package com.ljmu.andre.CBIDatabase;
  */
 
 public interface CBIObject {
-	void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion);
+    void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion);
 }

@@ -9,5 +9,6 @@ import android.support.annotation.Nullable;
  * ===========================================================================
  */
 public interface CompatibilityRedirector {
-	@Nullable Object redirect(String id, Object defaultReturn, @Nullable Object... params);
+    @Nullable
+    Object redirect(String id, Object defaultReturn, @Nullable Object... params);
 }

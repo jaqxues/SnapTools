@@ -11,7 +11,8 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;
  */
 
 public class EmptyNotification extends SaveNotification {
-	@Override protected void showNotification(Activity activity, ToastType type, int duration, @Nullable Snap snap) {
-		// Do Nothing
-	}
+    @Override
+    protected void showNotification(Activity activity, ToastType type, int duration, @Nullable Snap snap) {
+        // Do Nothing
+    }
 }

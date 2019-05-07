@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:theme="@style/AppTheme">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:theme="@style/AppTheme">
 
     <TextView
         android:id="@+id/txt_listable"
@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:text="@string/placeholder"
         android:textSize="14sp"
-        android:textStyle="normal|italic"/>
+        android:textStyle="normal|italic" />
 
     <TextView
         android:id="@+id/img_state"
@@ -29,5 +29,5 @@
         android:gravity="center"
         android:paddingBottom="3dp"
         android:paddingTop="3dp"
-        android:text="@string/placeholder"/>
+        android:text="@string/placeholder" />
 </LinearLayout>

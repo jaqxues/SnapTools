@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <translations language="english">
-    <translation key="key1" pack="1.0.0.0" flavour="beta">This is an item1</translation>
+    <translation
+        key="key1"
+        pack="1.0.0.0"
+        flavour="beta">This is an item1
+    </translation>
     <translation key="key2">This is NOT the default text!</translation>
     <translation key="key3">This is an item3</translation>
     <translation key="key4">This is an item4</translation>

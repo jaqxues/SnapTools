@@ -3,12 +3,14 @@
     <!--<item android:drawable="@color/error"/>-->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/error"/>
-            <stroke android:color="@color/textSecondary" android:width="2dp"/>
+            <solid android:color="@color/error" />
+            <stroke
+                android:color="@color/textSecondary"
+                android:width="2dp" />
         </shape>
     </item>
 
     <item
         android:drawable="@drawable/high_priority_96"
-        android:gravity="center"/>
+        android:gravity="center" />
 </layer-list>

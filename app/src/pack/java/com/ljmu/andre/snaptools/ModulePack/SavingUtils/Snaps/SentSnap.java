@@ -8,18 +8,21 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class SentSnap extends Snap {
-	public SentSnap() {
-	}
+    public SentSnap() {
+    }
 
-	@Override public SaveState providingAlgorithm() {
-		return null;
-	}
+    @Override
+    public SaveState providingAlgorithm() {
+        return null;
+    }
 
-	@Override public SaveState copyStream(ByteArrayOutputStream outputStream) {
-		return null;
-	}
+    @Override
+    public SaveState copyStream(ByteArrayOutputStream outputStream) {
+        return null;
+    }
 
-	@Override public SaveState finalDisplayEvent() {
-		return null;
-	}
+    @Override
+    public SaveState finalDisplayEvent() {
+        return null;
+    }
 }

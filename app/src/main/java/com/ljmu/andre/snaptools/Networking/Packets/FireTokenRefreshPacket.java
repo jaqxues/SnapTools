@@ -8,6 +8,6 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class FireTokenRefreshPacket extends Packet {
-	@SerializedName("success")
-	public boolean success;
+    @SerializedName("success")
+    public boolean success;
 }

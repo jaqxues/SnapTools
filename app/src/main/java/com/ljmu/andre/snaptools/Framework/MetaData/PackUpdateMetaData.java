@@ -20,97 +20,103 @@ import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleResources;
  */
 
 public abstract class PackUpdateMetaData extends PackMetaData {
-	private String localVersion;
-	private boolean hasFailed;
-	private boolean hasUpdate;
+    private String localVersion;
+    private boolean hasFailed;
+    private boolean hasUpdate;
 
-	public PackUpdateMetaData(String name) {
-		setName(name);
-	}
+    public PackUpdateMetaData(String name) {
+        setName(name);
+    }
 
-	public abstract void result();
+    public abstract void result();
 
-	public PackUpdateMetaData setHasFailed(boolean hasFailed) {
-		this.hasFailed = hasFailed;
-		return this;
-	}
+    public PackUpdateMetaData setHasFailed(boolean hasFailed) {
+        this.hasFailed = hasFailed;
+        return this;
+    }
 
-	public boolean hasUpdate() {
-		return hasUpdate;
-	}
+    public boolean hasUpdate() {
+        return hasUpdate;
+    }
 
-	public PackUpdateMetaData setHasUpdate(boolean hasUpdate) {
-		this.hasUpdate = hasUpdate;
-		return this;
-	}
+    public PackUpdateMetaData setHasUpdate(boolean hasUpdate) {
+        this.hasUpdate = hasUpdate;
+        return this;
+    }
 
-	@Override public void updateHeaderStateHolder(TextView stateHolder) {
-		Resources moduleResource = getModuleResources(stateHolder.getContext());
+    @Override
+    public void updateHeaderStateHolder(TextView stateHolder) {
+        Resources moduleResource = getModuleResources(stateHolder.getContext());
 
-		if (hasFailed) {
-			stateHolder.setText("Fail");
-			stateHolder.setBackgroundResource(R.color.error);
-			int color = moduleResource.getColor(R.color.textPrimary);
-			stateHolder.setTextColor(color);
-		} else if (hasUpdate) {
-			stateHolder.setText("Update");
-			stateHolder.setBackgroundResource(R.color.success);
-			int color = moduleResource.getColor(R.color.textSecondary);
-			stateHolder.setTextColor(color);
-		} else {
-			stateHolder.setText("Latest");
-			stateHolder.setBackgroundResource(R.color.primary);
-			int color = moduleResource.getColor(R.color.textSecondary);
-			stateHolder.setTextColor(color);
-		}
-	}
+        if (hasFailed) {
+            stateHolder.setText("Fail");
+            stateHolder.setBackgroundResource(R.color.error);
+            int color = moduleResource.getColor(R.color.textPrimary);
+            stateHolder.setTextColor(color);
+        } else if (hasUpdate) {
+            stateHolder.setText("Update");
+            stateHolder.setBackgroundResource(R.color.success);
+            int color = moduleResource.getColor(R.color.textSecondary);
+            stateHolder.setTextColor(color);
+        } else {
+            stateHolder.setText("Latest");
+            stateHolder.setBackgroundResource(R.color.primary);
+            int color = moduleResource.getColor(R.color.textSecondary);
+            stateHolder.setTextColor(color);
+        }
+    }
 
-	@Override public void updateMessageStateHolder(TextView stateHolder, String child) {
-		stateHolder.setVisibility(GONE);
-	}
+    @Override
+    public void updateMessageStateHolder(TextView stateHolder, String child) {
+        stateHolder.setVisibility(GONE);
+    }
 
-	@Override public int getLevel() {
-		return 0;
-	}
+    @Override
+    public int getLevel() {
+        return 0;
+    }
 
-	@Override public int getItemType() {
-		return 0;
-	}
+    @Override
+    public int getItemType() {
+        return 0;
+    }
 
-	@Override public List<String> getChildren() {
-		if (hasFailed())
-			return Collections.singletonList("Connection Fail");
+    @Override
+    public List<String> getChildren() {
+        if (hasFailed())
+            return Collections.singletonList("Connection Fail");
 
-		List<String> messages = new ArrayList<>();
+        List<String> messages = new ArrayList<>();
 
-		if (isDeveloper())
-			messages.add("Developer Pack");
+        if (isDeveloper())
+            messages.add("Developer Pack");
 
-		messages.add("Pack Type: " + getType());
-		messages.add("Current Version: " + getLocalVersion());
+        messages.add("Pack Type: " + getType());
+        messages.add("Current Version: " + getLocalVersion());
 
-		if (hasUpdate)
-			messages.add("Latest Version: " + getPackVersion());
-		else
-			messages.add("Latest Version Installed");
+        if (hasUpdate)
+            messages.add("Latest Version: " + getPackVersion());
+        else
+            messages.add("Latest Version Installed");
 
-		return messages;
-	}
+        return messages;
+    }
 
-	public boolean hasFailed() {
-		return hasFailed;
-	}
+    public boolean hasFailed() {
+        return hasFailed;
+    }
 
-	public String getLocalVersion() {
-		return localVersion;
-	}
+    public String getLocalVersion() {
+        return localVersion;
+    }
 
-	public PackUpdateMetaData setLocalVersion(String localVersion) {
-		this.localVersion = localVersion;
-		return this;
-	}
+    public PackUpdateMetaData setLocalVersion(String localVersion) {
+        this.localVersion = localVersion;
+        return this;
+    }
 
-	@Override public void convert(BaseViewHolder holder, ExpandableItemAdapter adapter) {
+    @Override
+    public void convert(BaseViewHolder holder, ExpandableItemAdapter adapter) {
 
-	}
+    }
 }

@@ -6,13 +6,13 @@ package com.ljmu.andre.snaptools.EventBus.Events;
  */
 
 public class PackDeleteEvent {
-	private String name;
+    private String name;
 
-	public PackDeleteEvent(String name) {
-		this.name = name;
-	}
+    public PackDeleteEvent(String name) {
+        this.name = name;
+    }
 
-	public String getPackName() {
-		return name;
-	}
+    public String getPackName() {
+        return name;
+    }
 }

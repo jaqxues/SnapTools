@@ -17,39 +17,41 @@ import java.util.List;
  */
 
 public class CenteredArrayAdapter<T> extends ArrayAdapter<T> {
-	@RequiresFramework(76)
-	public CenteredArrayAdapter(@NonNull Context context, int resource) {
-		super(context, resource);
-	}
+    @RequiresFramework(76)
+    public CenteredArrayAdapter(@NonNull Context context, int resource) {
+        super(context, resource);
+    }
 
-	@RequiresFramework(76)
-	public CenteredArrayAdapter(@NonNull Context context, int resource, int textViewResourceId) {
-		super(context, resource, textViewResourceId);
-	}
+    @RequiresFramework(76)
+    public CenteredArrayAdapter(@NonNull Context context, int resource, int textViewResourceId) {
+        super(context, resource, textViewResourceId);
+    }
 
-	@RequiresFramework(76)
-	public CenteredArrayAdapter(@NonNull Context context, int resource, @NonNull T[] objects) {
-		super(context, resource, objects);
-	}
+    @RequiresFramework(76)
+    public CenteredArrayAdapter(@NonNull Context context, int resource, @NonNull T[] objects) {
+        super(context, resource, objects);
+    }
 
-	@RequiresFramework(76)
-	public CenteredArrayAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull T[] objects) {
-		super(context, resource, textViewResourceId, objects);
-	}
+    @RequiresFramework(76)
+    public CenteredArrayAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull T[] objects) {
+        super(context, resource, textViewResourceId, objects);
+    }
 
-	@RequiresFramework(76)
-	public CenteredArrayAdapter(@NonNull Context context, int resource, @NonNull List<T> objects) {
-		super(context, resource, objects);
-	}
+    @RequiresFramework(76)
+    public CenteredArrayAdapter(@NonNull Context context, int resource, @NonNull List<T> objects) {
+        super(context, resource, objects);
+    }
 
-	@RequiresFramework(76)
-	public CenteredArrayAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<T> objects) {
-		super(context, resource, textViewResourceId, objects);
-	}
+    @RequiresFramework(76)
+    public CenteredArrayAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<T> objects) {
+        super(context, resource, textViewResourceId, objects);
+    }
 
-	@NonNull @Override public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-		View v = super.getView(position, convertView, parent);
-		v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-		return v;
-	}
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View v = super.getView(position, convertView, parent);
+        v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        return v;
+    }
 }

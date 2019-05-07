@@ -14,34 +14,34 @@ import timber.log.Timber;
  */
 
 public class JarUtils {
-	public static Attributes getAttributesFromJar(File file) {
-		JarFile jarFile = null;
+    public static Attributes getAttributesFromJar(File file) {
+        JarFile jarFile = null;
 
-		try {
-			jarFile = new JarFile(file);
-			return getAttributesFromJar(jarFile);
+        try {
+            jarFile = new JarFile(file);
+            return getAttributesFromJar(jarFile);
 
-		} catch (IOException e) {
-			Timber.e(e);
-		} finally {
-			try {
-				if (jarFile != null)
-					jarFile.close();
-			} catch (IOException ignored) {
-			}
-		}
+        } catch (IOException e) {
+            Timber.e(e);
+        } finally {
+            try {
+                if (jarFile != null)
+                    jarFile.close();
+            } catch (IOException ignored) {
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static Attributes getAttributesFromJar(JarFile jarFile) {
-		try {
-			Manifest manifest = jarFile.getManifest();
-			return manifest.getMainAttributes();
-		} catch (IOException e) {
-			Timber.e(e);
-		}
+    public static Attributes getAttributesFromJar(JarFile jarFile) {
+        try {
+            Manifest manifest = jarFile.getManifest();
+            return manifest.getMainAttributes();
+        } catch (IOException e) {
+            Timber.e(e);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

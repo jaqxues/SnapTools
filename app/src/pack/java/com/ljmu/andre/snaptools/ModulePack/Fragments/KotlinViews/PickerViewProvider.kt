@@ -17,7 +17,7 @@ import org.jetbrains.anko.*
 class PickerViewProvider() {
 
     @SuppressLint("ResourceType")
-            // Use Module Context
+    // Use Module Context
     fun <T : ViewGroup> getMainContainer(context: Context): T =
             context.UI {
                 verticalLayout {

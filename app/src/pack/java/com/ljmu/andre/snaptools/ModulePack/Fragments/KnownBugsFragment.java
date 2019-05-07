@@ -2,7 +2,6 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.format.DateUtils;
 import android.text.style.BulletSpan;
@@ -22,7 +21,7 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.KnownBugObject;
 import com.ljmu.andre.snaptools.ModulePack.Networking.Helpers.GetKnownBugs;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory;
-import com.ljmu.andre.snaptools.Networking.WebResponse.ObjectResultListener;
+import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Constants;
 
@@ -43,126 +42,129 @@ import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
  */
 
 public class KnownBugsFragment extends FragmentHelper {
-	private static String scVersion;
-	private static String packVersion;
-	private LinearLayout bugsContainer;
-	private TextView txtLastChecked;
+    private static String scVersion;
+    private static String packVersion;
+    private LinearLayout bugsContainer;
+    private TextView txtLastChecked;
 
-	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		bugsContainer = new LinearLayout(getContext());
-		bugsContainer.setOrientation(LinearLayout.VERTICAL);
-		setContainerPadding(bugsContainer);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        bugsContainer = new LinearLayout(getContext());
+        bugsContainer.setOrientation(LinearLayout.VERTICAL);
+        setContainerPadding(bugsContainer);
 
-		LinearLayout mainContainer = new LinearLayout(getActivity());
-		mainContainer.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-		mainContainer.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout mainContainer = new LinearLayout(getActivity());
+        mainContainer.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mainContainer.setOrientation(LinearLayout.VERTICAL);
 
-		LayoutParams scrollParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		scrollParams.weight = 1;
-		ScrollView scrollView = new ScrollView(getActivity());
-		scrollView.setLayoutParams(scrollParams);
-		scrollView.addView(bugsContainer);
+        LayoutParams scrollParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        scrollParams.weight = 1;
+        ScrollView scrollView = new ScrollView(getActivity());
+        scrollView.setLayoutParams(scrollParams);
+        scrollView.addView(bugsContainer);
 
-		mainContainer.addView(scrollView);
+        mainContainer.addView(scrollView);
 
-		mainContainer.addView(
-				txtLastChecked = ViewFactory.getDefaultTextView(
-						getActivity(),
-						"",
-						12f,
-						getStyle(getActivity(), "DefaultText"),
-						Gravity.CENTER
-				)
-		);
+        mainContainer.addView(
+                txtLastChecked = ViewFactory.getDefaultTextView(
+                        getActivity(),
+                        "",
+                        12f,
+                        getStyle(getActivity(), "DefaultText"),
+                        Gravity.CENTER
+                )
+        );
 
-		updateLastChecked();
+        updateLastChecked();
 
-		initBugs();
+        initBugs();
 
-		return mainContainer;
-	}
+        return mainContainer;
+    }
 
-	private void initBugs() {
-		GetKnownBugs.getBugs(
-				getActivity(),
-				scVersion,
-				packVersion,
-				new ObjectResultListener<List<KnownBugObject>>() {
-					@Override public void success(String message, List<KnownBugObject> bugObjects) {
-						if(getActivity() == null || getActivity().isFinishing())
-							return;
+    private void initBugs() {
+        GetKnownBugs.getBugs(
+                getActivity(),
+                scVersion,
+                packVersion,
+                new WebResponse.ObjectResultListener<List<KnownBugObject>>() {
+                    @Override
+                    public void success(String message, List<KnownBugObject> bugObjects) {
+                        if (getActivity() == null || getActivity().isFinishing())
+                            return;
 
-						if (bugObjects == null || bugObjects.isEmpty()) {
-							SafeToastAdapter.showErrorToast(
-									getActivity(),
-									"No KnownBugs Found"
-							);
-							return;
-						}
+                        if (bugObjects == null || bugObjects.isEmpty()) {
+                            SafeToastAdapter.showErrorToast(
+                                    getActivity(),
+                                    "No KnownBugs Found"
+                            );
+                            return;
+                        }
 
-						for (KnownBugObject bugObject : bugObjects) {
-							createAndAttachBug(bugObject);
-						}
+                        for (KnownBugObject bugObject : bugObjects) {
+                            createAndAttachBug(bugObject);
+                        }
 
-						if(Constants.getApkVersionCode() >= 66)
-							AnimationUtils.sequentGroup(bugsContainer);
+                        if (Constants.getApkVersionCode() >= 66)
+                            AnimationUtils.sequentGroup(bugsContainer);
 
-						updateLastChecked();
-					}
+                        updateLastChecked();
+                    }
 
-					@Override public void error(String message, Throwable t, int errorCode) {
-						if(getActivity() == null || getActivity().isFinishing())
-							return;
+                    @Override
+                    public void error(String message, Throwable t, int errorCode) {
+                        if (getActivity() == null || getActivity().isFinishing())
+                            return;
 
-						DialogFactory.createErrorDialog(
-								getActivity(),
-								"Known Bug Fetching Failed",
-								message,
-								errorCode
-						).show();
-					}
-				}
+                        DialogFactory.createErrorDialog(
+                                getActivity(),
+                                "Known Bug Fetching Failed",
+                                message,
+                                errorCode
+                        ).show();
+                    }
+                }
+        );
+    }
 
-		);
-	}
+    private void createAndAttachBug(KnownBugObject bugObject) {
+        bugsContainer.addView(
+                ViewFactory.getHeaderLabel(
+                        getActivity(),
+                        bugObject.category
+                )
+        );
 
-	private void createAndAttachBug(KnownBugObject bugObject) {
-		bugsContainer.addView(
-				ViewFactory.getHeaderLabel(
-						getActivity(),
-						bugObject.category
-				)
-		);
+        bugsContainer.addView(generateBugLayout(bugObject.bugs));
+    }
 
-		bugsContainer.addView(generateBugLayout(bugObject.bugs));
-	}
+    private LinearLayout generateBugLayout(List<String> bugs) {
+        int bugContainerMargin = dp(10, getActivity());
+        LayoutParams bugContainerParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bugContainerParams.setMargins(0, bugContainerMargin, 0, bugContainerMargin * 2);
 
-	private LinearLayout generateBugLayout(List<String> bugs) {
-		int bugContainerMargin = dp(10, getActivity());
-		LayoutParams bugContainerParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		bugContainerParams.setMargins(0, bugContainerMargin, 0, bugContainerMargin * 2);
+        int bugMargin = dp(10, getActivity());
+        LayoutParams bugParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bugParams.setMargins(bugMargin, 0, 0, bugMargin);
 
-		int bugMargin = dp(10, getActivity());
-		LayoutParams bugParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		bugParams.setMargins(bugMargin, 0, 0, bugMargin);
+        LinearLayout bugContainer = new LinearLayout(getContext());
+        bugContainer.setOrientation(LinearLayout.VERTICAL);
+        bugContainer.setLayoutParams(bugContainerParams);
 
-		LinearLayout bugContainer = new LinearLayout(getContext());
-		bugContainer.setOrientation(LinearLayout.VERTICAL);
-		bugContainer.setLayoutParams(bugContainerParams);
+        int bulletGap = dp(10, getActivity());
+        for (String bug : bugs) {
+            SpannableString span = new SpannableString(bug);
+            span.setSpan(new BulletSpan(bulletGap), 0, bug.length(), 0);
 
-		int bulletGap = dp(10, getActivity());
-		for (String bug : bugs) {
-			SpannableString span = new SpannableString(bug);
-			span.setSpan(new BulletSpan(bulletGap), 0, bug.length(), 0);
+            TextView txtBug = new TextView(getActivity());
+            txtBug.setLayoutParams(bugParams);
+            txtBug.setText(span);
+            bugContainer.addView(txtBug);
+        }
 
-			TextView txtBug = new TextView(getActivity());
-			txtBug.setLayoutParams(bugParams);
-			txtBug.setText(span);
-			bugContainer.addView(txtBug);
-		}
-
-		return bugContainer;
-	}
+        return bugContainer;
+    }
 
 	/*
 	private void initSavingBugs(LinearLayout layoutContainer) {
@@ -220,43 +222,45 @@ public class KnownBugsFragment extends FragmentHelper {
 		layoutContainer.addView(generateBugLayout(COMPATIBILITY_BUGS));
 	}*/
 
-	private void updateLastChecked() {
-		Long lastCheckedTimestamp = getPref(LAST_CHECK_KNOWN_BUGS);
+    private void updateLastChecked() {
+        Long lastCheckedTimestamp = getPref(LAST_CHECK_KNOWN_BUGS);
 
-		if (lastCheckedTimestamp == 0L) {
-			if(txtLastChecked != null)
-				txtLastChecked.setVisibility(View.GONE);
-			return;
-		}
+        if (lastCheckedTimestamp == 0L) {
+            if (txtLastChecked != null)
+                txtLastChecked.setVisibility(View.GONE);
+            return;
+        }
 
-		if(txtLastChecked == null)
-			return;
+        if (txtLastChecked == null)
+            return;
 
-		String formattedTime = (String) DateUtils.getRelativeDateTimeString(
-				getActivity(),
-				lastCheckedTimestamp,
-				DateUtils.SECOND_IN_MILLIS,
-				DateUtils.WEEK_IN_MILLIS,
-				DateUtils.FORMAT_ABBREV_RELATIVE
-		);
+        String formattedTime = (String) DateUtils.getRelativeDateTimeString(
+                getActivity(),
+                lastCheckedTimestamp,
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.WEEK_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE
+        );
 
-		txtLastChecked.setText(getSpannedHtml(
-				"Last Checked: " + htmlHighlight(formattedTime)
-		));
-		txtLastChecked.setVisibility(View.VISIBLE);
-	}
+        txtLastChecked.setText(getSpannedHtml(
+                "Last Checked: " + htmlHighlight(formattedTime)
+        ));
+        txtLastChecked.setVisibility(View.VISIBLE);
+    }
 
-	public KnownBugsFragment buildMetaData(ModulePack modulePack) {
-		scVersion = modulePack.getPackMetaData().getScVersion();
-		packVersion = modulePack.getPackMetaData().getPackVersion();
-		return this;
-	}
+    public KnownBugsFragment buildMetaData(ModulePack modulePack) {
+        scVersion = modulePack.getPackMetaData().getScVersion();
+        packVersion = modulePack.getPackMetaData().getPackVersion();
+        return this;
+    }
 
-	@Override public String getName() {
-		return "Known Bugs";
-	}
+    @Override
+    public String getName() {
+        return "Known Bugs";
+    }
 
-	@Override public Integer getMenuId() {
-		return getIdFromString(getName());
-	}
+    @Override
+    public Integer getMenuId() {
+        return getIdFromString(getName());
+    }
 }

@@ -8,15 +8,15 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class DevicePacket extends Packet {
-	@SerializedName("device_name")
-	public String device_name;
+    @SerializedName("device_name")
+    public String device_name;
 
-	@SerializedName("device_id")
-	public String device_id;
+    @SerializedName("device_id")
+    public String device_id;
 
-	@SerializedName("banned")
-	public boolean banned;
+    @SerializedName("banned")
+    public boolean banned;
 
-	@SerializedName("ban_reason")
-	private String ban_reason;
+    @SerializedName("ban_reason")
+    private String ban_reason;
 }

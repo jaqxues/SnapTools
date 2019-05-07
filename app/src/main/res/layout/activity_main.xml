@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_activity"
@@ -27,7 +26,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:scaleX="0.6"
             android:scaleY="0.6"
-            app:srcCompat="@drawable/help_filled_96"/>
+            app:srcCompat="@drawable/help_filled_96" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -42,7 +41,19 @@
         android:paddingTop="1dp"
         android:text="@string/module_inactive"
         android:textColor="@color/backgroundPrimary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txt_virtual_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/error"
+        android:gravity="center"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp"
+        android:text="@string/virtual_xposed"
+        android:textColor="@color/backgroundPrimary"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_banner_apk_update"
@@ -54,7 +65,7 @@
         android:paddingTop="1dp"
         android:text="@string/banner_apk_update"
         android:textColor="@color/backgroundPrimary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_banner_pack_update"
@@ -66,7 +77,7 @@
         android:paddingTop="1dp"
         android:text="@string/banner_pack_update"
         android:textColor="@color/backgroundPrimary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_master_switch_disabled"
@@ -78,7 +89,7 @@
         android:paddingTop="1dp"
         android:text="@string/master_switch_disabled"
         android:textColor="@color/backgroundPrimary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -105,7 +116,7 @@
             <nl.dionsegijn.konfetti.KonfettiView
                 android:id="@+id/konfetti"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
         </RelativeLayout>
 
         <com.ljmu.andre.snaptools.UIComponents.CustomNavigation
@@ -114,7 +125,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:theme="@style/NavigationDrawer"
-            app:menu="@menu/menu"/>
+            app:menu="@menu/menu" />
     </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>

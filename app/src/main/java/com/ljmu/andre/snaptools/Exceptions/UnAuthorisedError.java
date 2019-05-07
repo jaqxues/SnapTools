@@ -6,12 +6,12 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class UnAuthorisedError extends Exception {
-	private static final long serialVersionUID = 640836913086298114L;
+    private static final long serialVersionUID = 640836913086298114L;
 
-	public UnAuthorisedError() {
-	}
+    public UnAuthorisedError() {
+    }
 
-	public UnAuthorisedError(String message) {
-		super(message);
-	}
+    public UnAuthorisedError(String message) {
+        super(message);
+    }
 }

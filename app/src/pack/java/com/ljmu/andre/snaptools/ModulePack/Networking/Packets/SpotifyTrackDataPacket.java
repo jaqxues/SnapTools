@@ -9,6 +9,6 @@ import com.ljmu.andre.snaptools.Networking.Packets.Packet;
  */
 
 public class SpotifyTrackDataPacket extends Packet {
-	@SerializedName("thumbnail_url")
-	public String thumbnailUrl;
+    @SerializedName("thumbnail_url")
+    public String thumbnailUrl;
 }

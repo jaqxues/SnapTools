@@ -24,74 +24,78 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
  */
 
 public class Options implements ThemedDialog.ThemedDialogExtension {
-	private ThemedClickListener okayListener;
+    private ThemedClickListener okayListener;
 
-	private List<OptionsButtonData> options = new ArrayList<>();
+    private List<OptionsButtonData> options = new ArrayList<>();
 
-	@Override public void onCreate(LayoutInflater inflater, View parent, ViewGroup content, ThemedDialog themedDialog) {
-		Context moduleContext = ContextHelper.getModuleContext(parent.getContext());
-		LinearLayout container = (LinearLayout) inflater.inflate(getLayout(moduleContext, "dialog_options"), content, true);
+    @Override
+    public void onCreate(LayoutInflater inflater, View parent, ViewGroup content, ThemedDialog themedDialog) {
+        Context moduleContext = ContextHelper.getModuleContext(parent.getContext());
+        LinearLayout container = (LinearLayout) inflater.inflate(getLayout(moduleContext, "dialog_options"), content, true);
 
-		for (OptionsButtonData buttonData : options) {
-			View child = inflater.inflate(getLayout(moduleContext, "item_option"), container, false);
+        for (OptionsButtonData buttonData : options) {
+            View child = inflater.inflate(getLayout(moduleContext, "item_option"), container, false);
 
-			Button optionButton = getView(child, "btn_option");
-			optionButton.setText(buttonData.message);
+            Button optionButton = getView(child, "btn_option");
+            optionButton.setText(buttonData.message);
 
-			if (buttonData.tag != null)
-				optionButton.setTag(buttonData.tag);
+            if (buttonData.tag != null)
+                optionButton.setTag(buttonData.tag);
 
-			if (buttonData.clickListener != null) {
-				buttonData.clickListener.setDialog(themedDialog);
-				optionButton.setOnClickListener(buttonData.clickListener);
-			}
+            if (buttonData.clickListener != null) {
+                buttonData.clickListener.setDialog(themedDialog);
+                optionButton.setOnClickListener(buttonData.clickListener);
+            }
 
-			container.addView(child, 0);
-		}
+            container.addView(child, 0);
+        }
 
-		if (okayListener == null) {
-			okayListener = new ThemedClickListener() {
-				@Override public void clicked(ThemedDialog themedDialog) {
-					themedDialog.dismiss();
-				}
-			};
-		}
-		okayListener.setDialog(themedDialog);
+        if (okayListener == null) {
+            okayListener = new ThemedClickListener() {
+                @Override
+                public void clicked(ThemedDialog themedDialog) {
+                    themedDialog.dismiss();
+                }
+            };
+        }
+        okayListener.setDialog(themedDialog);
 
-		getView(container, "btn_okay").setOnClickListener(okayListener);
-	}
+        getView(container, "btn_okay").setOnClickListener(okayListener);
+    }
 
-	public Options addOption(String message, @Nullable ThemedClickListener clickListener) {
-		return addOption(null, message, clickListener);
-	}
+    public Options addOption(String message, @Nullable ThemedClickListener clickListener) {
+        return addOption(null, message, clickListener);
+    }
 
-	public Options addOption(@Nullable String tag, String message, @Nullable ThemedClickListener clickListener) {
-		return addOption(new OptionsButtonData(tag, message, clickListener));
-	}
+    public Options addOption(@Nullable String tag, String message, @Nullable ThemedClickListener clickListener) {
+        return addOption(new OptionsButtonData(tag, message, clickListener));
+    }
 
-	public Options addOption(OptionsButtonData buttonData) {
-		options.add(buttonData);
-		return this;
-	}
+    public Options addOption(OptionsButtonData buttonData) {
+        options.add(buttonData);
+        return this;
+    }
 
-	public static class OptionsButtonData {
-		@Nullable private String tag;
-		private String message;
-		@Nullable private ThemedClickListener clickListener;
+    public static class OptionsButtonData {
+        @Nullable
+        private String tag;
+        private String message;
+        @Nullable
+        private ThemedClickListener clickListener;
 
-		public OptionsButtonData(@Nullable String tag, String message, @Nullable ThemedClickListener clickListener) {
-			this.tag = tag;
-			this.message = message;
-			this.clickListener = clickListener;
-		}
+        public OptionsButtonData(@Nullable String tag, String message, @Nullable ThemedClickListener clickListener) {
+            this.tag = tag;
+            this.message = message;
+            this.clickListener = clickListener;
+        }
 
-		public OptionsButtonData(String message, @Nullable ThemedClickListener clickListener) {
-			this.message = message;
-			this.clickListener = clickListener;
-		}
+        public OptionsButtonData(String message, @Nullable ThemedClickListener clickListener) {
+            this.message = message;
+            this.clickListener = clickListener;
+        }
 
-		public OptionsButtonData(String message) {
-			this.message = message;
-		}
-	}
+        public OptionsButtonData(String message) {
+            this.message = message;
+        }
+    }
 }

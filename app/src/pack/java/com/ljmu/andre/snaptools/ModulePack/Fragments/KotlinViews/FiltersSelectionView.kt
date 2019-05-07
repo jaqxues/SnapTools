@@ -17,10 +17,10 @@ import com.ljmu.andre.GsonPreferences.Preferences.getPref
 import com.ljmu.andre.GsonPreferences.Preferences.putPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.customTabStrip
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
+import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
 import com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFilterScaleType
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
-import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedSwitchCompat

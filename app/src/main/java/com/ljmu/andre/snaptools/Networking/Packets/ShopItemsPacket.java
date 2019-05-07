@@ -10,14 +10,15 @@ import com.ljmu.andre.snaptools.Databases.Tables.ShopItem;
  */
 
 public class ShopItemsPacket extends AuthResultPacket {
-	@SerializedName("shop_items")
-	public ShopItem[] shopItems;
+    @SerializedName("shop_items")
+    public ShopItem[] shopItems;
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("shopItems", shopItems)
-				.add("", super.toString())
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("shopItems", shopItems)
+                .add("", super.toString())
+                .toString();
+    }
 }

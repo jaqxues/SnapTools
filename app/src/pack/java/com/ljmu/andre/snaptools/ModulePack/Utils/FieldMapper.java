@@ -1,15 +1,11 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
-
 import com.ljmu.andre.snaptools.Utils.Assert;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import timber.log.Timber;
@@ -40,73 +36,73 @@ import static de.robv.android.xposed.XposedHelpers.setObjectField;
  */
 @SuppressWarnings("SerializableHasSerializationMethods")
 public class FieldMapper extends ConcurrentHashMap<String, String> {
-	private static final long serialVersionUID = -4101144694754307740L;
-	private static final Map<String, FieldMapper> classFieldMap = new HashMap<>();
-	private final String linkName;
-	private final Class linkClass;
+    private static final long serialVersionUID = -4101144694754307740L;
+    private static final Map<String, FieldMapper> classFieldMap = new HashMap<>();
+    private final String linkName;
+    private final Class linkClass;
 
-	private FieldMapper(String link, Class linkClass) {
-		this.linkName = link;
-		this.linkClass = linkClass;
-		classFieldMap.put(link, this);
-	}
+    private FieldMapper(String link, Class linkClass) {
+        this.linkName = link;
+        this.linkClass = linkClass;
+        classFieldMap.put(link, this);
+    }
 
-	public String getLinkName() {
-		return linkName;
-	}
+    public String getLinkName() {
+        return linkName;
+    }
 
-	public Class getLinkClass() {
-		return linkClass;
-	}
+    public Class getLinkClass() {
+        return linkClass;
+    }
 
-	public void setField(Object linkInstance, String fieldTag, Object newValue) {
-		String fieldName = get(fieldTag);
-		Assert.notNull("Couldn't find field for " + fieldTag, fieldName);
+    public void setField(Object linkInstance, String fieldTag, Object newValue) {
+        String fieldName = get(fieldTag);
+        Assert.notNull("Couldn't find field for " + fieldTag, fieldName);
 
-		setObjectField(linkInstance, fieldName, newValue);
-	}
+        setObjectField(linkInstance, fieldName, newValue);
+    }
 
-	public <T> T getFieldVal(Object linkInstance, String fieldTag) {
-		String fieldName = get(fieldTag);
-		Assert.notNull("Couldn't find field for " + fieldTag, fieldName);
+    public <T> T getFieldVal(Object linkInstance, String fieldTag) {
+        String fieldName = get(fieldTag);
+        Assert.notNull("Couldn't find field for " + fieldTag, fieldName);
 
-		return (T) getObjectField(linkInstance, fieldName);
-	}
+        return (T) getObjectField(linkInstance, fieldName);
+    }
 
-	public static FieldMapper initMapper(String linkName, Class<?> linkClass) {
-		FieldMapper storedMapper = classFieldMap.get(linkName);
+    public static FieldMapper initMapper(String linkName, Class<?> linkClass) {
+        FieldMapper storedMapper = classFieldMap.get(linkName);
 
-		if (storedMapper == null) {
-			storedMapper = new FieldMapper(linkName, linkClass);
-			storedMapper.buildFieldMap(linkClass);
-		}
+        if (storedMapper == null) {
+            storedMapper = new FieldMapper(linkName, linkClass);
+            storedMapper.buildFieldMap(linkClass);
+        }
 
-		return storedMapper;
-	}
+        return storedMapper;
+    }
 
-	private void buildFieldMap(Class lensClass) {
-		Field[] fields = lensClass.getDeclaredFields();
+    private void buildFieldMap(Class lensClass) {
+        Field[] fields = lensClass.getDeclaredFields();
 
-		for (Field field : fields) {
-			Annotation[] annotations = field.getDeclaredAnnotations();
+        for (Field field : fields) {
+            Annotation[] annotations = field.getDeclaredAnnotations();
 
-			if (annotations.length <= 0)
-				continue;
+            if (annotations.length <= 0)
+                continue;
 
-			String annotationName = (String) callMethod(annotations[0], "value");
+            String annotationName = (String) callMethod(annotations[0], "value");
 
-			Timber.d("AnnotationName: " + annotationName + " FieldName: " + field.getName());
-			put(annotationName, field.getName());
-		}
+            Timber.d("AnnotationName: " + annotationName + " FieldName: " + field.getName());
+            put(annotationName, field.getName());
+        }
 
-		Timber.d("Built %s fields", size());
-	}
+        Timber.d("Built %s fields", size());
+    }
 
-	public static void removeMapper(String linkName) {
-		classFieldMap.remove(linkName);
-	}
+    public static void removeMapper(String linkName) {
+        classFieldMap.remove(linkName);
+    }
 
-	public static FieldMapper getMapper(String linkName) {
-		return classFieldMap.get(linkName);
-	}
+    public static FieldMapper getMapper(String linkName) {
+        return classFieldMap.get(linkName);
+    }
 }

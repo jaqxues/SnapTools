@@ -10,17 +10,17 @@ import timber.log.Timber;
  */
 
 public interface RedirectDispatcher {
-	@SuppressWarnings("unchecked")
-	default <T> T dispatchRedirection(String id, T defaultValue, Object... params) {
-		CompatibilityRedirector redirector = getRedirector();
+    @SuppressWarnings("unchecked")
+    default <T> T dispatchRedirection(String id, T defaultValue, Object... params) {
+        CompatibilityRedirector redirector = getRedirector();
 
-		if (redirector == null) {
-			Timber.w("Tried to redirect with no redirector [Id: %s][Params: %s]", id, Arrays.toString(params));
-			return defaultValue;
-		}
+        if (redirector == null) {
+            Timber.d("Tried to redirect with no redirector [Id: %s][Params: %s]", id, Arrays.toString(params));
+            return defaultValue;
+        }
 
-		return (T) redirector.redirect(id, defaultValue, params);
-	}
+        return (T) redirector.redirect(id, defaultValue, params);
+    }
 
-	CompatibilityRedirector getRedirector();
+    CompatibilityRedirector getRedirector();
 }

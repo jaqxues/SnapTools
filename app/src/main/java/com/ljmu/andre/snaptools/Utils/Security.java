@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
@@ -37,38 +36,38 @@ import timber.log.Timber;
  */
 
 public class Security {
-	private static X509Certificate providedCertificate;
+    private static X509Certificate providedCertificate;
 
-	private static boolean isInitialised;
+    private static boolean isInitialised;
 
-	public static void init(Resources resources) throws IOException, CertificateException {
-		if (isInitialised) {
-			Timber.d("Security already initialised");
-			return;
-		}
+    public static void init(Resources resources) throws IOException, CertificateException {
+        if (isInitialised) {
+            Timber.d("Security already initialised");
+            return;
+        }
 
-		// Load the provided certificate \\
-		InputStream providedCertInputStream = resources.getAssets().open("SnapToolsKeystore_Public.cer");
+        // Load the provided certificate \\
+        InputStream providedCertInputStream = resources.getAssets().open("SnapToolsKeystore_Public.cer");
 
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		providedCertificate = (X509Certificate)
-				cf.generateCertificate(providedCertInputStream);
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        providedCertificate = (X509Certificate)
+                cf.generateCertificate(providedCertInputStream);
 
-		providedCertInputStream.close();
-		// Loaded certificate \\
+        providedCertInputStream.close();
+        // Loaded certificate \\
 
-		isInitialised = true;
-	}
+        isInitialised = true;
+    }
 
-	/**
-	 * ===========================================================================
-	 * Verify that the JarFile and its Manifest have been signed by
-	 * {@link this#providedCertificate}, requires {@link this#init(Resources)}
-	 * to have been called on application start
-	 * ===========================================================================
-	 */
-	public static void verifyJar(Manifest manifest, JarFile jarFile)
-			throws IOException, SecurityException {
+    /**
+     * ===========================================================================
+     * Verify that the JarFile and its Manifest have been signed by
+     * {@link this#providedCertificate}, requires {@link this#init(Resources)}
+     * to have been called on application start
+     * ===========================================================================
+     */
+    public static void verifyJar(Manifest manifest, JarFile jarFile)
+            throws IOException, SecurityException {
 //		Vector<JarEntry> entriesVec = new Vector<>();
 //
 //		// Ensure the jar file is signed.
@@ -140,119 +139,120 @@ public class Security {
 //					throw new SecurityException("Jar Not Certified!");
 //			}
 //		}
-	}
+    }
 
-	/**
-	 * Extracts ONE certificate chain from the specified certificate array
-	 * which may contain multiple certificate chains, starting from index
-	 * 'startIndex'.
-	 */
-	private static X509Certificate[] getAChain(Certificate[] certs,
-	                                           int startIndex) {
-		if (startIndex > certs.length - 1)
-			return null;
+    /**
+     * Extracts ONE certificate chain from the specified certificate array
+     * which may contain multiple certificate chains, starting from index
+     * 'startIndex'.
+     */
+    private static X509Certificate[] getAChain(Certificate[] certs,
+                                               int startIndex) {
+        if (startIndex > certs.length - 1)
+            return null;
 
-		int i;
-		// Keep going until the next certificate is not the
-		// issuer of this certificate.
-		for (i = startIndex; i < certs.length - 1; i++) {
-			if (!((X509Certificate) certs[i + 1]).getSubjectDN().
-					equals(((X509Certificate) certs[i]).getIssuerDN())) {
-				break;
-			}
-		}
-		// Construct and return the found certificate chain.
-		int certChainSize = (i - startIndex) + 1;
-		X509Certificate[] ret = new X509Certificate[certChainSize];
-		for (int j = 0; j < certChainSize; j++) {
-			ret[j] = (X509Certificate) certs[startIndex + j];
-		}
-		return ret;
-	}
+        int i;
+        // Keep going until the next certificate is not the
+        // issuer of this certificate.
+        for (i = startIndex; i < certs.length - 1; i++) {
+            if (!((X509Certificate) certs[i + 1]).getSubjectDN().
+                    equals(((X509Certificate) certs[i]).getIssuerDN())) {
+                break;
+            }
+        }
+        // Construct and return the found certificate chain.
+        int certChainSize = (i - startIndex) + 1;
+        X509Certificate[] ret = new X509Certificate[certChainSize];
+        for (int j = 0; j < certChainSize; j++) {
+            ret[j] = (X509Certificate) certs[startIndex + j];
+        }
+        return ret;
+    }
 
-	public static class ApkCertification {
-		private static String cachedSSH1;
+    public static class ApkCertification {
+        private static String cachedSSH1;
 
-		public static String getApkFingerprint(Context context) {
-			if (cachedSSH1 != null)
-				return cachedSSH1;
+        public static String getApkFingerprint(Context context) {
+            if (cachedSSH1 != null)
+                return cachedSSH1;
 
-			try {
-				if (context == null)
-					return "";
+            try {
+                if (context == null)
+                    return "";
 
-				PackageManager pm = context.getPackageManager();
-				Signature sig = pm.getPackageInfo(STApplication.PACKAGE, PackageManager.GET_SIGNATURES).signatures[0];
-				return cachedSSH1 = doFingerprint(sig.toByteArray(), "SHA1").toUpperCase();
-			} catch (Throwable e) {
-				Timber.e(e);
-			}
+                PackageManager pm = context.getPackageManager();
+                Signature sig = pm.getPackageInfo(STApplication.PACKAGE, PackageManager.GET_SIGNATURES).signatures[0];
+                return cachedSSH1 = doFingerprint(sig.toByteArray(), "SHA1").toUpperCase();
+            } catch (Throwable e) {
+                Timber.e(e);
+            }
 
-			return "";
-		}
+            return "";
+        }
 
-		static String doFingerprint(byte[] certificateBytes, String algorithm)
-				throws Exception {
-			MessageDigest md = MessageDigest.getInstance(algorithm);
-			md.update(certificateBytes);
-			byte[] digest = md.digest();
+        static String doFingerprint(byte[] certificateBytes, String algorithm)
+                throws Exception {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            md.update(certificateBytes);
+            byte[] digest = md.digest();
 
-			StringBuilder toRet = new StringBuilder();
-			for (int i = 0; i < digest.length; i++) {
-				if (i != 0)
-					toRet.append(":");
-				int b = digest[i] & 0xff;
-				String hex = Integer.toHexString(b);
-				if (hex.length() == 1)
-					toRet.append("0");
-				toRet.append(hex);
-			}
-			return toRet.toString();
-		}
-	}
+            StringBuilder toRet = new StringBuilder();
+            for (int i = 0; i < digest.length; i++) {
+                if (i != 0)
+                    toRet.append(":");
+                int b = digest[i] & 0xff;
+                String hex = Integer.toHexString(b);
+                if (hex.length() == 1)
+                    toRet.append("0");
+                toRet.append(hex);
+            }
+            return toRet.toString();
+        }
+    }
 
-	/**
-	 * ===========================================================================
-	 * Certification computation used for ServerSide fingerprint analysis
-	 * ===========================================================================
-	 */
-	public static class PackCertification {
-		private static final Object FINGERPRINT_LOCK = new Object();
-		private static Set<String> cachedSHA1Set = new HashSet<>();
-		private static String cachedFingerprint;
+    /**
+     * ===========================================================================
+     * Certification computation used for ServerSide fingerprint analysis
+     * ===========================================================================
+     */
+    public static class PackCertification {
+        private static final Object FINGERPRINT_LOCK = new Object();
+        private static Set<String> cachedSHA1Set = new HashSet<>();
+        private static String cachedFingerprint;
 
-		public static String getFingerprint() {
-			synchronized (FINGERPRINT_LOCK) {
-				return cachedFingerprint;
-			}
-		}
+        public static String getFingerprint() {
+            synchronized (FINGERPRINT_LOCK) {
+                return cachedFingerprint;
+            }
+        }
 
-		static void putPackSHA1(String sha1) {
-			if (!cachedSHA1Set.contains(sha1)) {
-				cachedSHA1Set.add(sha1);
-				recomputeFingerprint();
-			}
-		}
+        static void putPackSHA1(String sha1) {
+            if (!cachedSHA1Set.contains(sha1)) {
+                cachedSHA1Set.add(sha1);
+                recomputeFingerprint();
+            }
+        }
 
-		private static void recomputeFingerprint() {
-			List<String> fingerprints = new ArrayList<>(cachedSHA1Set);
+        private static void recomputeFingerprint() {
+            List<String> fingerprints = new ArrayList<>(cachedSHA1Set);
 
-			Observable.fromCallable(() -> {
-				Hasher hasher = Hashing.murmur3_128(2407468).newHasher();
+            Observable.fromCallable(() -> {
+                Hasher hasher = Hashing.murmur3_128(2407468).newHasher();
 
-				for (String cachedSHA1 : fingerprints)
-					hasher.putString(cachedSHA1, Charset.defaultCharset());
+                for (String cachedSHA1 : fingerprints)
+                    hasher.putString(cachedSHA1, Charset.defaultCharset());
 
-				return hasher.hash().toString();
-			}).subscribeOn(Schedulers.computation())
-					.observeOn(Schedulers.computation())
-					.subscribe(new SimpleObserver<String>() {
-						@Override public void onNext(@NonNull String s) {
-							synchronized (FINGERPRINT_LOCK) {
-								cachedFingerprint = s;
-							}
-						}
-					});
-		}
-	}
+                return hasher.hash().toString();
+            }).subscribeOn(Schedulers.computation())
+                    .observeOn(Schedulers.computation())
+                    .subscribe(new SimpleObserver<String>() {
+                        @Override
+                        public void onNext(@NonNull String s) {
+                            synchronized (FINGERPRINT_LOCK) {
+                                cachedFingerprint = s;
+                            }
+                        }
+                    });
+        }
+    }
 }

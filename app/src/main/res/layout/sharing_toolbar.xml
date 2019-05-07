@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:app="http://schemas.android.com/apk/res-auto"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/btn_cross"
@@ -20,7 +20,7 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:tint="@color/textPrimary"
-            app:srcCompat="@drawable/delete_96"/>
+            app:srcCompat="@drawable/delete_96" />
     </FrameLayout>
 
 
@@ -39,7 +39,7 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:tint="@color/textPrimary"
-            app:srcCompat="@drawable/rotate_left_96"/>
+            app:srcCompat="@drawable/rotate_left_96" />
     </FrameLayout>
 
 
@@ -59,8 +59,7 @@
             android:background="@drawable/sharing_resize_button"
             android:scaleX="0.5"
             android:scaleY="0.5"
-            android:tint="@color/textPrimary">
-        </ImageView>
+            android:tint="@color/textPrimary"></ImageView>
     </FrameLayout>
 
 
@@ -80,8 +79,7 @@
             android:background="@drawable/sharing_lock_button"
             android:scaleX="0.5"
             android:scaleY="0.5"
-            android:tint="@color/textPrimary">
-        </ImageView>
+            android:tint="@color/textPrimary"></ImageView>
     </FrameLayout>
 
 
@@ -100,7 +98,7 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:tint="@color/textPrimary"
-            app:srcCompat="@drawable/rotate_right_96"/>
+            app:srcCompat="@drawable/rotate_right_96" />
     </FrameLayout>
 
     <FrameLayout
@@ -116,6 +114,6 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:tint="@color/textPrimary"
-            app:srcCompat="@drawable/checkmark_96"/>
+            app:srcCompat="@drawable/checkmark_96" />
     </FrameLayout>
 </TableRow>

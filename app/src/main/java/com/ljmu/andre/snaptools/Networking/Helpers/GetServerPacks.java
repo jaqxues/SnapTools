@@ -2,6 +2,7 @@ package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
 
+import com.android.volley.Request.Method;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ServerPackObject;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
@@ -15,7 +16,6 @@ import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.Networking.WebResponse.ServerListResultListener;
 import com.ljmu.andre.snaptools.STApplication;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import com.ljmu.andre.snaptools.Utils.DeviceIdManager;
 import com.ljmu.andre.snaptools.Utils.MiscUtils;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
 
@@ -32,7 +32,6 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Networking.WebRequest.assertParam;
 import static com.ljmu.andre.snaptools.Utils.Constants.PACK_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_PACKS;
 
@@ -42,229 +41,193 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_
  */
 
 public class GetServerPacks {
-	private static final String GET_PACKS_URL = "https://snaptools.org/SnapTools/Scripts/get_all_packs.php";
+    private static final String GET_PACKS_URL = "https://raw.githubusercontent.com/jaqxues/SnapTools_DataProvider/master/Packs/JSON/ServerPacks.json";
 
-	public static void getServerPacks(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
-		getServerPacks(activity, false, resultListener);
-	}
+    public static void getServerPacks(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
+        getServerPacks(activity, false, resultListener);
+    }
 
-	public static void getServerPacks(Activity activity, boolean invalidateCache, ServerListResultListener<ServerPackMetaData> resultListener) {
-		if (!invalidateCache && shouldUseCache())
-			getPacksFromCache(activity, resultListener);
-		else
-			getPacksFromServer(activity, resultListener);
-	}
+    public static void getServerPacks(Activity activity, boolean invalidateCache, ServerListResultListener<ServerPackMetaData> resultListener) {
+        if (!invalidateCache && shouldUseCache())
+            getPacksFromCache(activity, resultListener);
+        else
+            getPacksFromServer(activity, resultListener);
+    }
 
-	public static boolean shouldUseCache() {
-		return PackUtils.timeSinceLastPackCheck() < PACK_CHECK_COOLDOWN;
-	}
+    public static boolean shouldUseCache() {
+        return PackUtils.timeSinceLastPackCheck() < PACK_CHECK_COOLDOWN;
+    }
 
-	private static void getPacksFromCache(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
-		Observable.fromCallable((Callable<List<ServerPackMetaData>>) () -> {
-			Timber.d("Getting server packs from cache");
+    private static void getPacksFromCache(Activity activity, ServerListResultListener<ServerPackMetaData> resultListener) {
+        Observable.fromCallable((Callable<List<ServerPackMetaData>>) () -> {
+            Timber.d("Getting server packs from cache");
 
-			Collection<ServerPackObject> serverPackObjects = CacheDatabase.getTable(ServerPackObject.class).getAll(
-					serverPackObject -> {
-						if (serverPackObject.flavour == null)
-							serverPackObject.flavour = serverPackObject.isBeta ? "beta" : "prod";
-					}
-			);
+            Collection<ServerPackObject> serverPackObjects = CacheDatabase.getTable(ServerPackObject.class).getAll(
+                    serverPackObject -> {
+                        if (serverPackObject.flavour == null)
+                            serverPackObject.flavour = serverPackObject.isBeta ? "beta" : "prod";
+                    }
+            );
 
-			Timber.d("Pulled %s server packs from cache", serverPackObjects.size());
+            Timber.d("Pulled %s server packs from cache", serverPackObjects.size());
 
-			if (serverPackObjects.isEmpty()) {
-				getPacksFromServer(activity, resultListener);
-				return Collections.emptyList();
-			}
+            if (serverPackObjects.isEmpty()) {
+                getPacksFromServer(activity, resultListener);
+                return Collections.emptyList();
+            }
+            Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
 
-			ArrayList<ServerPackMetaData> serverMetaDataList = new ArrayList<>(serverPackObjects.size());
-			Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
+            return processPacks(serverPackObjects, installedMetaData);
+        }).subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleObserver<List<ServerPackMetaData>>("Couldn't retrieve server packs from cache") {
+                    @Override
+                    public void onNext(List<ServerPackMetaData> serverPackMetaData) {
+                        if (serverPackMetaData.isEmpty()) {
+                            getPacksFromServer(activity, resultListener);
+                            return;
+                        }
 
-			for (ServerPackObject packObject : serverPackObjects) {
-				if (packObject.development != STApplication.DEBUG)
-					continue;
+                        resultListener.success(serverPackMetaData);
+                    }
 
-				ServerPackMetaData serverMetaData = new ServerPackMetaData();
-				packObject.bindMetaData(serverMetaData);
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getPacksFromServer(activity, resultListener);
+                    }
+                });
+    }
 
-				if (installedMetaData != null) {
-					LocalPackMetaData localMetaData = installedMetaData.get(serverMetaData.getName());
+    public static void getPacksFromServer(Activity activity, ServerListResultListener<ServerPackMetaData> serverPackResult) {
+        new WebRequest.Builder()
+                .setUrl(GET_PACKS_URL)
+                .setContext(activity)
+                .setMethod(Method.GET)
+                .setType(RequestType.PACKET)
+                .setPacketClass(ServerPacksPacket.class)
+                // ===========================================================================
+                .shouldClearCache(true)
+                .setCallback(new WebResponseListener() {
+                    @Override
+                    public void success(WebResponse webResponse) {
+                        ServerPacksPacket packsPacket = webResponse.getResult();
 
-					if (localMetaData != null) {
-						serverMetaData.setInstalled(true);
-						serverMetaData.setHasUpdate(MiscUtils.versionCompare(
-								serverMetaData.getPackVersion(), localMetaData.getPackVersion()) > 0
-						);
-					}
-				}
+                        if (packsPacket.banned) {
+                            serverPackResult.error(packsPacket.getBanReason(), null, packsPacket.getErrorCode());
+                            return;
+                        }
 
-				serverMetaData.completedBinding();
-				serverMetaDataList.add(serverMetaData);
-			}
+                        if (packsPacket.getPacks() == null) {
+                            serverPackResult.success(Collections.emptyList());
+                            return;
+                        }
 
-			return serverMetaDataList;
-		}).subscribeOn(Schedulers.computation())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new SimpleObserver<List<ServerPackMetaData>>("Couldn't retrieve server packs from cache") {
-					@Override public void onNext(List<ServerPackMetaData> serverPackMetaData) {
-						if (serverPackMetaData.isEmpty()) {
-							getPacksFromServer(activity, resultListener);
-							return;
-						}
+                        List<ServerPackObject> cacheTableList = new ArrayList<>();
 
-						resultListener.success(serverPackMetaData);
-					}
+                        Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
 
-					@Override public void onError(Throwable e) {
-						super.onError(e);
-						getPacksFromServer(activity, resultListener);
-					}
-				});
-	}
+                        for (ServerPackMetaData metaData : packsPacket.getPacks()) {
+                            String name = PackMetaData.getFileNameFromTemplate(
+                                    metaData.getType(),
+                                    metaData.getScVersion(),
+                                    metaData.getFlavour(),
+                                    metaData.getPackVersion()
+                            );
 
-	public static void getPacksFromServer(Activity activity, ServerListResultListener<ServerPackMetaData> serverPackResult) {
-		Class cls = GetServerPacks.class;
-		String token;
-		String email;
-		String deviceId;
+                            metaData.setName(name);
+                            Timber.d("Name: " + name);
 
-		try {
-			deviceId = assertParam(cls, "Invalid Device ID", DeviceIdManager.getDeviceId(activity));
-		} catch (IllegalArgumentException e) {
-			Timber.e(e);
-			serverPackResult.error(
-					"Missing Authentication Parameters",
-					e,
-					202
-			);
-			return;
-		}
+                            if (installedMetaData != null) {
+                                LocalPackMetaData localMetaData = installedMetaData.get(metaData.getName());
 
-		new WebRequest.Builder()
-				.setUrl(GET_PACKS_URL)
-				.setContext(activity)
-				.setType(RequestType.PACKET)
-				.setPacketClass(ServerPacksPacket.class)
-				// ===========================================================================
-				.addParam("device_id", deviceId)
-				.addParam("developer", String.valueOf(STApplication.DEBUG))
-				// ===========================================================================
-				.shouldClearCache(true)
-				.setCallback(new WebResponseListener() {
-					@Override public void success(WebResponse webResponse) {
-						ServerPacksPacket packsPacket = webResponse.getResult();
+                                if (localMetaData != null) {
+                                    metaData.setInstalled(true);
+                                    metaData.setHasUpdate(MiscUtils.versionCompare(
+                                            metaData.getPackVersion(), localMetaData.getPackVersion()) > 0);
+                                }
+                            }
 
-						if (packsPacket.banned) {
-							serverPackResult.error(packsPacket.getBanReason(), null, packsPacket.getErrorCode());
-							return;
-						}
+                            metaData.completedBinding();
+                            cacheTableList.add(ServerPackObject.fromPackMetaData(metaData));
+                        }
 
-						if (packsPacket.getPacks() == null) {
-							serverPackResult.success(Collections.emptyList());
-							return;
-						}
+                        Timber.d("Fetched %s packs", cacheTableList.size());
 
-						List<ServerPackObject> cacheTableList = new ArrayList<>();
+                        if (cacheTableList.isEmpty()) {
+                            serverPackResult.error(
+                                    "Server replied with empty ModulePacks list",
+                                    null,
+                                    -1
+                            );
 
-						Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
+                            return;
+                        }
 
-						for (ServerPackMetaData metaData : packsPacket.getPacks()) {
-							String name = PackMetaData.getFileNameFromTemplate(
-									metaData.getType(),
-									metaData.getScVersion(),
-									metaData.getFlavour()
-							);
+                        CacheDatabase.getTable(ServerPackObject.class).deleteAll();
+                        CacheDatabase.getTable(ServerPackObject.class).insertAll(cacheTableList);
+                        putPref(LAST_CHECK_PACKS, System.currentTimeMillis());
+                        serverPackResult.success(packsPacket.getPacks());
+                    }
 
-							metaData.setName(name);
-							Timber.d("Name: " + name);
+                    @Override
+                    public void error(WebResponse webResponse) {
+                        if (webResponse.getException() != null)
+                            Timber.e(webResponse.getException(), webResponse.getMessage());
+                        else
+                            Timber.w(webResponse.getMessage());
 
-							if (installedMetaData != null) {
-								LocalPackMetaData localMetaData = installedMetaData.get(metaData.getName());
+                        serverPackResult.error(
+                                webResponse.getMessage(),
+                                webResponse.getException(),
+                                webResponse.getResponseCode()
+                        );
+                    }
+                })
+                .performRequest();
+    }
 
-								if (localMetaData != null) {
-									metaData.setInstalled(true);
-									metaData.setHasUpdate(MiscUtils.versionCompare(
-											metaData.getPackVersion(), localMetaData.getPackVersion()) > 0);
-								}
-							}
+    public static Observable<List<ServerPackMetaData>> getCachedMetaDataObservable() {
+        return Observable.fromCallable(() -> {
+            Collection<ServerPackObject> packObjects = CacheDatabase.getTable(ServerPackObject.class).getAll();
 
-							metaData.completedBinding();
-							cacheTableList.add(ServerPackObject.fromPackMetaData(metaData));
-						}
+            if (packObjects.isEmpty())
+                return Collections.emptyList();
 
-						Timber.d("Fetched %s packs", cacheTableList.size());
+            Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
+            return processPacks(packObjects, installedMetaData);
+        });
+    }
 
-						if (cacheTableList.isEmpty()) {
-							serverPackResult.error(
-									"Server replied with empty ModulePacks list",
-									null,
-									-1
-							);
+    private static List<ServerPackMetaData> processPacks(Collection<ServerPackObject> packObjects, Map<String, LocalPackMetaData> installedMetaData) {
+        List<ServerPackMetaData> serverMetaDataList = new ArrayList<>();
+        for (ServerPackObject packObject : packObjects) {
+            if (packObject.development != STApplication.DEBUG)
+                continue;
 
-							return;
-						}
+            ServerPackMetaData serverMetaData = new ServerPackMetaData();
+            packObject.bindMetaData(serverMetaData);
 
-						CacheDatabase.getTable(ServerPackObject.class).deleteAll();
-						CacheDatabase.getTable(ServerPackObject.class).insertAll(cacheTableList);
-						putPref(LAST_CHECK_PACKS, System.currentTimeMillis());
-						serverPackResult.success(packsPacket.getPacks());
-					}
+            if (installedMetaData != null) {
+                LocalPackMetaData localMetaData = installedMetaData.get(serverMetaData.getName());
 
-					@Override public void error(WebResponse webResponse) {
-						if (webResponse.getException() != null)
-							Timber.e(webResponse.getException(), webResponse.getMessage());
-						else
-							Timber.w(webResponse.getMessage());
+                if (localMetaData != null) {
+                    serverMetaData.setInstalled(true);
+                    serverMetaData.setHasUpdate(MiscUtils.versionCompare(
+                            serverMetaData.getPackVersion(), localMetaData.getPackVersion()) > 0
+                    );
+                }
+            }
 
-						serverPackResult.error(
-								webResponse.getMessage(),
-								webResponse.getException(),
-								webResponse.getResponseCode()
-						);
-					}
-				})
-				.performRequest();
-	}
+            serverMetaData.completedBinding();
+            serverMetaDataList.add(serverMetaData);
+        }
+        return serverMetaDataList;
+    }
 
-	public static Observable<List<ServerPackMetaData>> getCachedMetaDataObservable() {
-		return Observable.fromCallable(() -> {
-			Collection<ServerPackObject> packObjects = CacheDatabase.getTable(ServerPackObject.class).getAll();
+    public interface ServerPackResultListener {
+        void success(List<ServerPackMetaData> metaDataList);
 
-			if (packObjects.isEmpty())
-				return Collections.emptyList();
-
-			Map<String, LocalPackMetaData> installedMetaData = PackUtils.getInstalledMetaData();
-			List<ServerPackMetaData> serverMetaDataList = new ArrayList<>();
-
-			for (ServerPackObject packObject : packObjects) {
-				if (packObject.development != STApplication.DEBUG)
-					continue;
-
-				ServerPackMetaData serverMetaData = new ServerPackMetaData();
-				packObject.bindMetaData(serverMetaData);
-
-				if (installedMetaData != null) {
-					LocalPackMetaData localMetaData = installedMetaData.get(serverMetaData.getName());
-
-					if (localMetaData != null) {
-						serverMetaData.setInstalled(true);
-						serverMetaData.setHasUpdate(MiscUtils.versionCompare(
-								serverMetaData.getPackVersion(), localMetaData.getPackVersion()) > 0
-						);
-					}
-				}
-
-				serverMetaData.completedBinding();
-				serverMetaDataList.add(serverMetaData);
-			}
-
-			return serverMetaDataList;
-		});
-	}
-
-	public interface ServerPackResultListener {
-		void success(List<ServerPackMetaData> metaDataList);
-
-		void error(String message, Throwable t);
-	}
+        void error(String message, Throwable t);
+    }
 }

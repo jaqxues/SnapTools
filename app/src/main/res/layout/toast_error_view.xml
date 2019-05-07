@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:background="@color/backgroundToast"
-             android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundToast"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/border"
@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/high_priority_96"
-                android:tint="@color/error"/>
+                android:tint="@color/error" />
 
             <TextView
                 android:id="@+id/text"
@@ -37,7 +37,7 @@
                 android:gravity="center"
 
                 android:text="#Placeholder#"
-                android:textColor="@color/textPrimary"/>
+                android:textColor="@color/textPrimary" />
         </LinearLayout>
 
 
@@ -51,7 +51,7 @@
             android:text="5"
             android:textColor="@color/textPrimaryWashed"
 
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     </RelativeLayout>

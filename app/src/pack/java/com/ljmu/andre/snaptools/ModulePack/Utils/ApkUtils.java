@@ -8,11 +8,11 @@ import com.ljmu.andre.snaptools.BuildConfig;
  */
 
 public class ApkUtils {
-	public static int getApkVersionCodeCompiledWith() {
-		return BuildConfig.VERSION_CODE;
-	}
+    public static int getApkVersionCodeCompiledWith() {
+        return BuildConfig.VERSION_CODE;
+    }
 
-	public static String getApkVersionNameCompiledWith() {
-		return BuildConfig.VERSION_NAME;
-	}
+    public static String getApkVersionNameCompiledWith() {
+        return BuildConfig.VERSION_NAME;
+    }
 }

@@ -12,31 +12,31 @@ import timber.log.Timber;
  */
 
 public abstract class MethodTimeout<T> implements java.util.concurrent.Callable<T> {
-	public T runWithTimeout(long timeout, TimeUnit timeUnit) throws InterruptedException {
-		ExecutorService executor = Executors.newSingleThreadExecutor();
+    public T runWithTimeout(long timeout, TimeUnit timeUnit) throws InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
-		Object[] arrObjHolder = new Object[1];
+        Object[] arrObjHolder = new Object[1];
 
-		executor.execute(() -> {
-			try {
-				arrObjHolder[0] = call();
-			} catch (Throwable e) {
-				Timber.e(e);
-			}
-		});
-		executor.shutdown(); // This does not cancel the already-scheduled task.
+        executor.execute(() -> {
+            try {
+                arrObjHolder[0] = call();
+            } catch (Throwable e) {
+                Timber.e(e);
+            }
+        });
+        executor.shutdown(); // This does not cancel the already-scheduled task.
 
-		T returnObject;
-		boolean hitTimeout = !executor.awaitTermination(timeout, timeUnit);
+        T returnObject;
+        boolean hitTimeout = !executor.awaitTermination(timeout, timeUnit);
 
-		if (hitTimeout) {
-			throw new InterruptedException(
-					String.format("Timeout Hit [Time: %s][Unit: %s]", timeout, timeUnit.name())
-			);
-		}
+        if (hitTimeout) {
+            throw new InterruptedException(
+                    String.format("Timeout Hit [Time: %s][Unit: %s]", timeout, timeUnit.name())
+            );
+        }
 
-		returnObject = (T) arrObjHolder[0];
+        returnObject = (T) arrObjHolder[0];
 
-		return returnObject;
-	}
+        return returnObject;
+    }
 }

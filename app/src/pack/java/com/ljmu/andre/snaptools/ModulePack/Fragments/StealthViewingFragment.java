@@ -21,56 +21,62 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
  */
 
 public class StealthViewingFragment extends FragmentHelper {
-	private StealthLocationOverlay locationOverlay;
-	private Button btnShowButtonLocation;
+    private StealthLocationOverlay locationOverlay;
+    private Button btnShowButtonLocation;
 
-	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		tutorialDetails = StealthTutorial.getTutorials();
-		locationOverlay = new StealthLocationOverlay(getActivity());
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        tutorialDetails = StealthTutorial.getTutorials();
+        locationOverlay = new StealthLocationOverlay(getActivity());
 
-		redirector = (id, defaultVal, params) -> {
-			switch (id) {
-				case "back_press":
-					return onBackPressed();
-				default:
-					return defaultVal;
-			}
-		};
+        redirector = (id, defaultVal, params) -> {
+            switch (id) {
+                case "back_press":
+                    return onBackPressed();
+                default:
+                    return defaultVal;
+            }
+        };
 
-		ViewGroup mainContainer = new StealthViewProvider().getMainContainer(getActivity());
-		btnShowButtonLocation = getDSLView(mainContainer, "button_stealth_snap_location");
+        ViewGroup mainContainer = new StealthViewProvider().getMainContainer(getActivity());
+        btnShowButtonLocation = getDSLView(mainContainer, "button_stealth_snap_location");
 
-		btnShowButtonLocation.setOnClickListener(v -> locationOverlay.show());
+        btnShowButtonLocation.setOnClickListener(v -> locationOverlay.show());
 
-		return mainContainer;
-	}
+        return mainContainer;
+    }
 
-	private boolean showingOverlay() {
-		return locationOverlay.getVisibility();
-	}
+    private boolean showingOverlay() {
+        return locationOverlay.getVisibility();
+    }
 
-	public boolean onBackPressed() {
-		if (!showingOverlay())
-			return false;
+    public boolean onBackPressed() {
+        if (!showingOverlay())
+            return false;
 
-		locationOverlay.dismiss();
-		return true;
-	}
+        locationOverlay.dismiss();
+        return true;
+    }
 
-	@Override public void onResume() {
-		super.onResume();
-		locationOverlay.refreshStatusUiVisibility();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationOverlay.refreshStatusUiVisibility();
+    }
 
-	@Override public boolean hasTutorial() {
-		return true;
-	}
+    @Override
+    public boolean hasTutorial() {
+        return true;
+    }
 
-	@Override public String getName() {
-		return "Stealth Viewing";
-	}
+    @Override
+    public String getName() {
+        return "Stealth Viewing";
+    }
 
-	@Override public Integer getMenuId() {
-		return getIdFromString(getName());
-	}
+    @Override
+    public Integer getMenuId() {
+        return getIdFromString(getName());
+    }
 }

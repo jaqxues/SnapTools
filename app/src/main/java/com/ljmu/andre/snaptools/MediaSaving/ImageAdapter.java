@@ -20,46 +20,47 @@ import java.io.IOException;
  */
 
 class ImageAdapter implements MediaAdapter<Bitmap> {
-	@Override public void save(
-			Bitmap bitmap,
-			File outputFile,
-			@Nullable Saveable savedListener,
-			@Nullable Object boundData) {
+    @Override
+    public void save(
+            Bitmap bitmap,
+            File outputFile,
+            @Nullable Saveable savedListener,
+            @Nullable Object boundData) {
 
-		if (bitmap.isRecycled()) {
-			if (savedListener != null) {
-				savedListener.mediaSaveFinished(
-						MediaSaveState.FAILED,
-						new MediaNotSavedException("Bitmap has been recycled!"),
-						boundData
-				);
-			}
+        if (bitmap.isRecycled()) {
+            if (savedListener != null) {
+                savedListener.mediaSaveFinished(
+                        MediaSaveState.FAILED,
+                        new MediaNotSavedException("Bitmap has been recycled!"),
+                        boundData
+                );
+            }
 
-			return;
-		}
+            return;
+        }
 
-		Closer closer = Closer.create();
+        Closer closer = Closer.create();
 
-		try {
-			FileOutputStream imageStream = closer.register(new FileOutputStream(outputFile));
-			boolean success = bitmap.compress(CompressFormat.JPEG, 100, imageStream);
+        try {
+            FileOutputStream imageStream = closer.register(new FileOutputStream(outputFile));
+            boolean success = bitmap.compress(CompressFormat.JPEG, 100, imageStream);
 
-			if (!success)
-				throw new Exception("Couldn't compress bitmap!");
+            if (!success)
+                throw new Exception("Couldn't compress bitmap!");
 
-			if (savedListener != null)
-				savedListener.mediaSaveFinished(MediaSaveState.SUCCESS, null, boundData);
-		} catch (Throwable e) { // must catch Throwable
-			MediaNotSavedException mediaNotSavedException =
-					new MediaNotSavedException("Exception saving image outputFile", e);
+            if (savedListener != null)
+                savedListener.mediaSaveFinished(MediaSaveState.SUCCESS, null, boundData);
+        } catch (Throwable e) { // must catch Throwable
+            MediaNotSavedException mediaNotSavedException =
+                    new MediaNotSavedException("Exception saving image outputFile", e);
 
-			if (savedListener != null)
-				savedListener.mediaSaveFinished(MediaSaveState.FAILED, mediaNotSavedException, boundData);
-		} finally {
-			try {
-				closer.close();
-			} catch (IOException ignored) {
-			}
-		}
-	}
+            if (savedListener != null)
+                savedListener.mediaSaveFinished(MediaSaveState.FAILED, mediaNotSavedException, boundData);
+        } finally {
+            try {
+                closer.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
 }

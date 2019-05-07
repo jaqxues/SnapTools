@@ -6,6 +6,6 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class SnapAlreadySavedException extends Exception {
-	private static final String TAG = SnapAlreadySavedException.class.getSimpleName();
-	private static final long serialVersionUID = 7239619879944156143L;
+    private static final String TAG = SnapAlreadySavedException.class.getSimpleName();
+    private static final long serialVersionUID = 7239619879944156143L;
 }

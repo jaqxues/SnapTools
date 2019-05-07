@@ -6,11 +6,11 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class UnassignedException extends Exception {
-	@SuppressWarnings("unused")
-	public static final String TAG = UnassignedException.class.getSimpleName();
-	private static final long serialVersionUID = 6737146204714796106L;
+    @SuppressWarnings("unused")
+    public static final String TAG = UnassignedException.class.getSimpleName();
+    private static final long serialVersionUID = 6737146204714796106L;
 
-	public UnassignedException(String message) {
-		super(message);
-	}
+    public UnassignedException(String message) {
+        super(message);
+    }
 }

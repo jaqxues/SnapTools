@@ -9,13 +9,14 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SaveState;
  */
 
 public class AutoSave extends SavingTrigger {
-	public AutoSave() {
+    public AutoSave() {
 
-	}
+    }
 
-	@Override public SaveState setReadySnap(Snap readySnap) {
-		super.setReadySnap(readySnap);
+    @Override
+    public SaveState setReadySnap(Snap readySnap) {
+        super.setReadySnap(readySnap);
 
-		return triggerSave();
-	}
+        return triggerSave();
+    }
 }

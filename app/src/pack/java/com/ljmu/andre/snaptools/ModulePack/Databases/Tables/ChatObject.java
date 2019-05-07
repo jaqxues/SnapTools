@@ -18,54 +18,56 @@ import java.util.List;
 
 @TableName("ChatMessages")
 public class ChatObject implements CBIObject {
-	@PrimaryKey
-	@TableField("message_id")
-	@SerializedName("message_id")
-	public String chat_message_id;
+    @PrimaryKey
+    @TableField("message_id")
+    @SerializedName("message_id")
+    public String chat_message_id;
 
-	@TableField("conversation_id")
-	@SerializedName("conversation_id")
-	public String conv_id;
+    @TableField("conversation_id")
+    @SerializedName("conversation_id")
+    public String conv_id;
 
-	@TableField("message")
-	@SerializedName("message")
-	public String text;
+    @TableField("message")
+    @SerializedName("message")
+    public String text;
 
-	@TableField("sender")
-	@SerializedName("sender")
-	public String from;
+    @TableField("sender")
+    @SerializedName("sender")
+    public String from;
 
-	@TableField("receivers")
-	@SerializedName("receivers")
-	public List<String> to;
+    @TableField("receivers")
+    @SerializedName("receivers")
+    public List<String> to;
 
-	@TableField("timestamp")
-	@SerializedName("timestamp")
-	public Long timestamp;
+    @TableField("timestamp")
+    @SerializedName("timestamp")
+    public Long timestamp;
 
-	@TableField("sent_by_you")
-	@SerializedName("sent_by_you")
-	public Boolean sentByYou = false;
+    @TableField("sent_by_you")
+    @SerializedName("sent_by_you")
+    public Boolean sentByYou = false;
 
-	@Override public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
+    @Override
+    public void onTableUpgrade(CBIDatabaseCore linkedDBCore, CBITable table, int oldVersion, int newVersion) {
 
-	}
+    }
 
-	public boolean isCompleted() {
-		return chat_message_id != null && conv_id != null && text != null && from != null
-				&& timestamp != null;
+    public boolean isCompleted() {
+        return chat_message_id != null && conv_id != null && text != null && from != null
+                && timestamp != null;
 
-	}
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("chat_message_id", chat_message_id)
-				.add("conv_id", conv_id)
-				.add("text", text)
-				.add("from", from)
-				.add("to", to)
-				.add("timestamp", timestamp)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("chat_message_id", chat_message_id)
+                .add("conv_id", conv_id)
+                .add("text", text)
+                .add("from", from)
+                .add("to", to)
+                .add("timestamp", timestamp)
+                .toString();
+    }
 }

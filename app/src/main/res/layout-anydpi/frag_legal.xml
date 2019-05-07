@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:layout_marginBottom="@dimen/activity_vertical_margin"
-              android:layout_marginLeft="@dimen/activity_horizontal_margin"
-              android:layout_marginRight="@dimen/activity_horizontal_margin"
-              android:layout_marginTop="@dimen/activity_vertical_margin">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin">
 
     <!--<Button
         android:id="@+id/testNotify"
@@ -35,7 +35,7 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -44,14 +44,14 @@
                 android:fontFamily="serif"
                 android:text="@string/legal_snaptools"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="10dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -62,7 +62,7 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -71,13 +71,13 @@
                 android:fontFamily="serif"
                 android:text="@string/snaptools_copyright"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="10dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/textView69"
@@ -88,7 +88,7 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView42"
@@ -97,13 +97,13 @@
                 android:fontFamily="serif"
                 android:text="@string/privacy_policy_text"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="10dp"
-                android:background="@color/primaryLight"/>
+                android:background="@color/primaryLight" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -114,7 +114,7 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView13"
@@ -124,7 +124,7 @@
                 android:text="@string/xposed"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
 
             <TextView
@@ -134,13 +134,13 @@
                 android:fontFamily="serif"
                 android:text="@string/xposed_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="10dp"
-                android:background="@color/primaryWashed"/>
+                android:background="@color/primaryWashed" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -150,7 +150,7 @@
                 android:text="@string/timber"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView17"
@@ -159,7 +159,7 @@
                 android:fontFamily="serif"
                 android:text="@string/timber_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView18"
@@ -169,7 +169,7 @@
                 android:text="@string/wang"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView19"
@@ -178,7 +178,7 @@
                 android:fontFamily="serif"
                 android:text="@string/wang_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView20"
@@ -188,7 +188,7 @@
                 android:text="@string/scv"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -197,7 +197,7 @@
                 android:fontFamily="serif"
                 android:text="@string/scv_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView22"
@@ -207,7 +207,7 @@
                 android:text="@string/brvah"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView23"
@@ -216,7 +216,7 @@
                 android:fontFamily="serif"
                 android:text="@string/brvah_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -226,7 +226,7 @@
                 android:text="@string/bumptech"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView25"
@@ -235,7 +235,7 @@
                 android:fontFamily="serif"
                 android:text="@string/bumptech_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView26"
@@ -245,7 +245,7 @@
                 android:text="@string/nonsense"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView27"
@@ -254,7 +254,7 @@
                 android:fontFamily="serif"
                 android:text="@string/nonsense_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView28"
@@ -264,7 +264,7 @@
                 android:text="@string/butterknife"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView29"
@@ -273,7 +273,7 @@
                 android:fontFamily="serif"
                 android:text="@string/butterknife_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView30"
@@ -283,7 +283,7 @@
                 android:text="@string/reactivex"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView31"
@@ -292,7 +292,7 @@
                 android:fontFamily="serif"
                 android:text="@string/reactivex_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView32"
@@ -302,7 +302,7 @@
                 android:text="@string/konfetti"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView33"
@@ -311,7 +311,7 @@
                 android:fontFamily="serif"
                 android:text="@string/konfetti_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView34"
@@ -321,7 +321,7 @@
                 android:text="@string/appupdater"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView35"
@@ -330,7 +330,7 @@
                 android:fontFamily="serif"
                 android:text="@string/appupdater_licence"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:id="@+id/textView36"
@@ -340,7 +340,7 @@
                 android:text="@string/silicompress"
                 android:textAlignment="center"
                 android:textAppearance="@style/DefaultText"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView37"
@@ -349,7 +349,7 @@
                 android:fontFamily="serif"
                 android:text="@string/silicompress_license"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -357,7 +357,7 @@
                 android:fontFamily="serif"
                 android:text="@string/wow"
                 android:textAlignment="center"
-                android:textAppearance="@style/DefaultText"/>
+                android:textAppearance="@style/DefaultText" />
 
         </LinearLayout>
     </ScrollView>

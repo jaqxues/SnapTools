@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_not_logged_in"
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Not Logged In"
-        android:textSize="@dimen/frag_login_label_text_size"/>
+        android:textSize="@dimen/frag_login_label_text_size" />
 
     <TextView
         android:id="@+id/login_message_reason"
@@ -20,7 +20,7 @@
         android:gravity="center"
         android:textSize="@dimen/frag_login_display_name_text_size"
         android:text="Login is required to use most features"
-        android:textColor="@color/textTertiary"/>
+        android:textColor="@color/textTertiary" />
 
     <Button
         android:id="@+id/btn_login"
@@ -30,5 +30,5 @@
         android:layout_gravity="center"
         android:background="@drawable/flat_button"
         android:textSize="@dimen/frag_login_logout_text_size"
-        android:text="Login With Google"/>
+        android:text="Login With Google" />
 </LinearLayout>

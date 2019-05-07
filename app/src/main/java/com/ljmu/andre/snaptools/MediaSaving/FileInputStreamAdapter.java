@@ -22,38 +22,39 @@ import java.io.OutputStream;
  */
 
 class FileInputStreamAdapter implements MediaAdapter<FileInputStream> {
-	@Override public void save(
-			FileInputStream inputStream,
-			File outputFile,
-			@Nullable Saveable savedListener,
-			@Nullable Object boundData) {
-		Closer closer = Closer.create();
+    @Override
+    public void save(
+            FileInputStream inputStream,
+            File outputFile,
+            @Nullable Saveable savedListener,
+            @Nullable Object boundData) {
+        Closer closer = Closer.create();
 
-		try {
-			InputStream videoInStream = closer.register(inputStream);
-			OutputStream videoOutStream =
-					closer.register(new FileOutputStream(outputFile));
+        try {
+            InputStream videoInStream = closer.register(inputStream);
+            OutputStream videoOutStream =
+                    closer.register(new FileOutputStream(outputFile));
 
-			long transferred = ByteStreams.copy(videoInStream, videoOutStream);
+            long transferred = ByteStreams.copy(videoInStream, videoOutStream);
 
-			videoOutStream.flush();
+            videoOutStream.flush();
 
-			if (transferred <= 0)
-				throw new Exception("Transferred <= 0 bytes!");
+            if (transferred <= 0)
+                throw new Exception("Transferred <= 0 bytes!");
 
-			if (savedListener != null)
-				savedListener.mediaSaveFinished(MediaSaveState.SUCCESS, null, boundData);
-		} catch (Throwable e) {
-			MediaNotSavedException mediaNotSavedException =
-					new MediaNotSavedException("Exception saving video outputFile", e);
+            if (savedListener != null)
+                savedListener.mediaSaveFinished(MediaSaveState.SUCCESS, null, boundData);
+        } catch (Throwable e) {
+            MediaNotSavedException mediaNotSavedException =
+                    new MediaNotSavedException("Exception saving video outputFile", e);
 
-			if (savedListener != null)
-				savedListener.mediaSaveFinished(MediaSaveState.FAILED, mediaNotSavedException, boundData);
-		} finally {
-			try {
-				closer.close();
-			} catch (IOException ignored) {
-			}
-		}
-	}
+            if (savedListener != null)
+                savedListener.mediaSaveFinished(MediaSaveState.FAILED, mediaNotSavedException, boundData);
+        } finally {
+            try {
+                closer.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
 }

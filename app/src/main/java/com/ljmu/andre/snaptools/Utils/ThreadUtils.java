@@ -13,19 +13,19 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class ThreadUtils {
-	private static final ThreadPoolExecutor threadPool =
-			new ThreadPoolExecutor(
-					1,
-					Runtime.getRuntime().availableProcessors() * 2,
-					60L,
-					TimeUnit.SECONDS,
-					new LinkedBlockingQueue<>(),
-					new ThreadFactoryBuilder()
-							.setNameFormat("st-modld-%s")
-							.build()
-			);
+    private static final ThreadPoolExecutor threadPool =
+            new ThreadPoolExecutor(
+                    1,
+                    Runtime.getRuntime().availableProcessors() * 2,
+                    60L,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<>(),
+                    new ThreadFactoryBuilder()
+                            .setNameFormat("st-modld-%s")
+                            .build()
+            );
 
-	public synchronized static ExecutorService getThreadPool() {
-		return threadPool;
-	}
+    public synchronized static ExecutorService getThreadPool() {
+        return threadPool;
+    }
 }

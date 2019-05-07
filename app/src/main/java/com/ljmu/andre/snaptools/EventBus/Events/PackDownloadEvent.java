@@ -11,67 +11,68 @@ import java.io.File;
  */
 
 public class PackDownloadEvent {
-	private DownloadState state;
-	private PackMetaData metaData;
-	private String message;
-	private File outputFile;
-	private int responseCode;
+    private DownloadState state;
+    private PackMetaData metaData;
+    private String message;
+    private File outputFile;
+    private int responseCode;
 
-	public DownloadState getState() {
-		return state;
-	}
+    public DownloadState getState() {
+        return state;
+    }
 
-	public PackDownloadEvent setState(DownloadState state) {
-		this.state = state;
-		return this;
-	}
+    public PackDownloadEvent setState(DownloadState state) {
+        this.state = state;
+        return this;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public PackDownloadEvent setMessage(String message) {
-		this.message = message;
-		return this;
-	}
+    public PackDownloadEvent setMessage(String message) {
+        this.message = message;
+        return this;
+    }
 
-	public PackMetaData getMetaData() {
-		return metaData;
-	}
+    public PackMetaData getMetaData() {
+        return metaData;
+    }
 
-	public PackDownloadEvent setMetaData(PackMetaData metaData) {
-		this.metaData = metaData;
-		return this;
-	}
+    public PackDownloadEvent setMetaData(PackMetaData metaData) {
+        this.metaData = metaData;
+        return this;
+    }
 
-	public File getOutputFile() {
-		return outputFile;
-	}
+    public File getOutputFile() {
+        return outputFile;
+    }
 
-	public PackDownloadEvent setOutputFile(File outputFile) {
-		this.outputFile = outputFile;
-		return this;
-	}
+    public PackDownloadEvent setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
+        return this;
+    }
 
-	public int getResponseCode() {
-		return responseCode;
-	}
+    public int getResponseCode() {
+        return responseCode;
+    }
 
-	public PackDownloadEvent setResponseCode(int responseCode) {
-		this.responseCode = responseCode;
-		return this;
-	}
+    public PackDownloadEvent setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
+        return this;
+    }
 
-	@Override public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.omitNullValues()
-				.add("state", state)
-				.add("metadata", metaData != null ? metaData.toString() : null)
-				.add("message", message)
-				.toString();
-	}
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("state", state)
+                .add("metadata", metaData != null ? metaData.toString() : null)
+                .add("message", message)
+                .toString();
+    }
 
-	public enum DownloadState {
-		SUCCESS, FAIL, SKIP
-	}
+    public enum DownloadState {
+        SUCCESS, FAIL, SKIP
+    }
 }

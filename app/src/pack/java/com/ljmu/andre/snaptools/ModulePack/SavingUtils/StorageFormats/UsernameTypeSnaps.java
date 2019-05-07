@@ -7,8 +7,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDIA_PATH;
 
@@ -19,60 +17,62 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDI
 
 public class UsernameTypeSnaps extends StorageFormat {
 
-	@Override public List<File> getSnapTypeFolders(SnapType snapType) {
-		File mediaDir = new File(
-				(String) getPref(MEDIA_PATH)
-		);
+    @Override
+    public List<File> getSnapTypeFolders(SnapType snapType) {
+        File mediaDir = new File(
+                (String) getPref(MEDIA_PATH)
+        );
 
-		File[] userFolders = mediaDir.listFiles(File::isDirectory);
+        File[] userFolders = mediaDir.listFiles(File::isDirectory);
 
-		if (userFolders == null || userFolders.length <= 0)
-			return new ArrayList<>();
+        if (userFolders == null || userFolders.length <= 0)
+            return new ArrayList<>();
 
-		List<File> typeFolderList = new ArrayList<>();
+        List<File> typeFolderList = new ArrayList<>();
 
-		for (File userFolder : userFolders) {
-			File snapTypeFolder = new File(
-					userFolder,
-					snapType.getFolderName()
-			);
+        for (File userFolder : userFolders) {
+            File snapTypeFolder = new File(
+                    userFolder,
+                    snapType.getFolderName()
+            );
 
-			if (snapTypeFolder.exists())
-				typeFolderList.add(snapTypeFolder);
-		}
+            if (snapTypeFolder.exists())
+                typeFolderList.add(snapTypeFolder);
+        }
 
-		return typeFolderList;
-	}
+        return typeFolderList;
+    }
 
-	/**
-	 * ===========================================================================
-	 * Build an appropriate outputfile based on this StorageFormat
-	 * ===========================================================================
-	 */
-	@Override public File getOutputFile(SnapType snapType, String username, String filename) {
-		File parentDir = new File(
-				getPref(MEDIA_PATH)
-						+ File.separator
-						+ username
-						+ File.separator
-						+ snapType.getFolderName()
-		);
+    /**
+     * ===========================================================================
+     * Build an appropriate outputfile based on this StorageFormat
+     * ===========================================================================
+     */
+    @Override
+    public File getOutputFile(SnapType snapType, String username, String filename) {
+        File parentDir = new File(
+                getPref(MEDIA_PATH)
+                        + File.separator
+                        + username
+                        + File.separator
+                        + snapType.getFolderName()
+        );
 
-		//noinspection ResultOfMethodCallIgnored
-		parentDir.mkdirs();
+        //noinspection ResultOfMethodCallIgnored
+        parentDir.mkdirs();
 
-		return new File(
-				parentDir,
-				filename
-		);
-	}
+        return new File(
+                parentDir,
+                filename
+        );
+    }
 
-	public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
+    public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
 
-		File snapTypeDir = snapFile.getParentFile();
-		boolean namesMatch = snapTypeDir.getName().equals(snapType.getFolderName());
-		boolean hierarchyMatch = snapFile.getParentFile().getParentFile().getParentFile().getName().contains("Media");
+        File snapTypeDir = snapFile.getParentFile();
+        boolean namesMatch = snapTypeDir.getName().equals(snapType.getFolderName());
+        boolean hierarchyMatch = snapFile.getParentFile().getParentFile().getParentFile().getName().contains("Media");
 
-		return namesMatch && hierarchyMatch;
-	}
+        return namesMatch && hierarchyMatch;
+    }
 }

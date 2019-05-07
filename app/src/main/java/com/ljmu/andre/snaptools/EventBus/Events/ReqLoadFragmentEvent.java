@@ -8,28 +8,28 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
  */
 
 public class ReqLoadFragmentEvent {
-	private int fragmentId;
-	private FragmentHelper fragmentHelper;
-	private String name;
+    private int fragmentId;
+    private FragmentHelper fragmentHelper;
+    private String name;
 
-	public ReqLoadFragmentEvent(int fragmentId, String name) {
-		this.fragmentId = fragmentId;
-		this.name = name;
-	}
+    public ReqLoadFragmentEvent(int fragmentId, String name) {
+        this.fragmentId = fragmentId;
+        this.name = name;
+    }
 
-	public ReqLoadFragmentEvent(FragmentHelper fragmentHelper) {
-		this.fragmentHelper = fragmentHelper;
-	}
+    public ReqLoadFragmentEvent(FragmentHelper fragmentHelper) {
+        this.fragmentHelper = fragmentHelper;
+    }
 
-	public int getFragmentId() {
-		return fragmentId;
-	}
+    public int getFragmentId() {
+        return fragmentId;
+    }
 
-	public FragmentHelper getFragmentHelper() {
-		return fragmentHelper;
-	}
+    public FragmentHelper getFragmentHelper() {
+        return fragmentHelper;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 }

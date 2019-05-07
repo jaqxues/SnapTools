@@ -2,19 +2,18 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.support.v4.content.ContextCompat
 import android.view.Gravity
-import android.widget.CompoundButton
 import android.widget.LinearLayout
 import com.ljmu.andre.GsonPreferences.Preferences.getPref
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BATCHED_MEDIA_CAP
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SHARING_TUTORIAL
+import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.getLabelledSeekbar
 import com.ljmu.andre.snaptools.Utils.Constants
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_COMPRESSION_DIALOG
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
+import com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
 
@@ -56,12 +55,47 @@ class SharingView {
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_show_compression_dialog")
 
-                        if(Constants.getApkVersionCode() >= 65) {
+                        if (Constants.getApkVersionCode() >= 65) {
                             isChecked = getPref(SHOW_VIDEO_COMPRESSION_DIALOG)
                             setOnCheckedChangeListener({ _, isChecked -> putAndKill(SHOW_VIDEO_COMPRESSION_DIALOG, isChecked, activity) })
                         } else {
                             text = text as String + "\n(Apk Update Required)"
                             isEnabled = false
+                        }
+                    }.lparams(width = matchParent, height = wrapContent) {
+                        horizontalMargin = dip(15)
+                    }
+
+                    themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                        text = "Fix Rotation Bug"
+                        verticalPadding = dip(10)
+                        id = getIdFromString("switch_sharing_auto_rotate")
+                        isChecked = getPref(SHARING_AUTO_ROTATE)
+                        setOnCheckedChangeListener { btn, isChecked ->
+                            run {
+                                if (isChecked)
+                                    DialogFactory.createConfirmation(
+                                            activity,
+                                            "Prevent Rotation Bug",
+                                            "This Setting is not a feature you usually want to use.\n\nThis fixes a bug where your image gets rotated 270 degrees when sharing to Snapchat. Automatically rotating these images is impossible, hence why you need to manually check this.\n\nDo " + htmlHighlight("NOT") + " activate in case you do not experience this bug.",
+                                            object : ThemedDialog.ThemedClickListener() {
+                                                override fun clicked(themedDialog: ThemedDialog) {
+                                                    themedDialog.dismiss()
+                                                    putAndKill(SHARING_AUTO_ROTATE, true, activity)
+                                                    btn.isChecked = true
+                                                }
+                                            },
+                                            object : ThemedDialog.ThemedClickListener() {
+                                                override fun clicked(themedDialog: ThemedDialog) {
+                                                    themedDialog.dismiss()
+                                                    putAndKill(SHARING_AUTO_ROTATE, false, activity)
+                                                    btn.isChecked = false
+                                                }
+                                            }
+                                    ).show()
+                                else
+                                    putAndKill(SHARING_AUTO_ROTATE, false, activity)
+                            }
                         }
                     }.lparams(width = matchParent, height = wrapContent) {
                         horizontalMargin = dip(15)

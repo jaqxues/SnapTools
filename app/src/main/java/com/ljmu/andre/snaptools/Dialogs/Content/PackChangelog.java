@@ -19,42 +19,43 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
  */
 
 public class PackChangelog implements ThemedDialog.ThemedDialogExtension {
-	private String scVersion;
-	private String packType;
-	private String releaseNotes;
+    private String scVersion;
+    private String packType;
+    private String releaseNotes;
 
-	@Override public void onCreate(LayoutInflater inflater, View parent, ViewGroup content, ThemedDialog themedDialog) {
-		Context modContext = inflater.getContext();
+    @Override
+    public void onCreate(LayoutInflater inflater, View parent, ViewGroup content, ThemedDialog themedDialog) {
+        Context modContext = inflater.getContext();
 
-		inflater.inflate(getLayout(modContext, "dialog_pack_changelog"), content, true);
+        inflater.inflate(getLayout(modContext, "dialog_pack_changelog"), content, true);
 
-		TextView txtMessage = getView(content, getId(modContext, "txt_message"));
+        TextView txtMessage = getView(content, getId(modContext, "txt_message"));
 
-		txtMessage.setText(
-				getSpannedHtml(
-						"Snapchat Version: " + scVersion
-								+ "\nPack Type: " + packType
-								+ "\n\nRelease Notes:\n" + releaseNotes
-				)
-		);
+        txtMessage.setText(
+                getSpannedHtml(
+                        "Snapchat Version: " + scVersion
+                                + "\nPack Type: " + packType
+                                + "\n\nRelease Notes:\n" + releaseNotes
+                )
+        );
 
-		getView(content, getId(modContext, "btn_okay")).setOnClickListener(
-				v -> themedDialog.dismiss()
-		);
-	}
+        getView(content, getId(modContext, "btn_okay")).setOnClickListener(
+                v -> themedDialog.dismiss()
+        );
+    }
 
-	public PackChangelog setSCVersion(String scVersion) {
-		this.scVersion = scVersion;
-		return this;
-	}
+    public PackChangelog setSCVersion(String scVersion) {
+        this.scVersion = scVersion;
+        return this;
+    }
 
-	public PackChangelog setPackType(String packType) {
-		this.packType = packType;
-		return this;
-	}
+    public PackChangelog setPackType(String packType) {
+        this.packType = packType;
+        return this;
+    }
 
-	public PackChangelog setReleaseNotes(String releaseNotes) {
-		this.releaseNotes = releaseNotes;
-		return this;
-	}
+    public PackChangelog setReleaseNotes(String releaseNotes) {
+        this.releaseNotes = releaseNotes;
+        return this;
+    }
 }

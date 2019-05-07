@@ -21,37 +21,38 @@ import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getView;
  */
 
 public class ModularDialog extends AlertDialog {
-	private Activity activity;
-	private List<DialogComponent> componentList = new ArrayList<>();
+    private Activity activity;
+    private List<DialogComponent> componentList = new ArrayList<>();
 
-	public ModularDialog(Activity activity) {
-		super(activity);
-		this.activity = activity;
-	}
+    public ModularDialog(Activity activity) {
+        super(activity);
+        this.activity = activity;
+    }
 
 
-	@Override protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		if (getWindow() != null) {
-			getWindow().setWindowAnimations(R.style.DialogAnimation);
-			getWindow().setBackgroundDrawableResource(R.color.backgroundPrimary);
-		}
+        if (getWindow() != null) {
+            getWindow().setWindowAnimations(R.style.DialogAnimation);
+            getWindow().setBackgroundDrawableResource(R.color.backgroundPrimary);
+        }
 
-		ViewGroup container = (ViewGroup) new ModularDialogContainer().bind(activity, this);
-		setContentView(container);
+        ViewGroup container = (ViewGroup) new ModularDialogContainer().bind(activity, this);
+        setContentView(container);
 
-		LinearLayout componentContainer = getView(container, getIdFromString("ModularDialogContainer"));
+        LinearLayout componentContainer = getView(container, getIdFromString("ModularDialogContainer"));
 
-		for (DialogComponent binder : componentList) {
-			componentContainer.addView(
-					binder.bind(activity, this)
-			);
-		}
-	}
+        for (DialogComponent binder : componentList) {
+            componentContainer.addView(
+                    binder.bind(activity, this)
+            );
+        }
+    }
 
-	public ModularDialog addComponent(DialogComponent component) {
-		componentList.add(component);
-		return this;
-	}
+    public ModularDialog addComponent(DialogComponent component) {
+        componentList.add(component);
+        return this;
+    }
 }

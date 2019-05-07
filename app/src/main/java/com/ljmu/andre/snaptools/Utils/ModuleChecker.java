@@ -10,14 +10,14 @@ import android.support.annotation.Nullable;
 
 @Keep
 public class ModuleChecker {
-	@Keep
-	public static boolean isModuleActive() {
-		return false;
-	}
+    @Keep
+    public static boolean isModuleActive() {
+        return false;
+    }
 
-	@Keep
-	@Nullable
-	public static Integer getXposedVersion() {
-		return null;
-	}
+    @Keep
+    @Nullable
+    public static Integer getXposedVersion() {
+        return null;
+    }
 }

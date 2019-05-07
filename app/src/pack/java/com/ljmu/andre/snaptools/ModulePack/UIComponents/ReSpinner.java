@@ -16,55 +16,57 @@ import android.util.AttributeSet;
  */
 
 public class ReSpinner extends AppCompatSpinner {
-	private OnItemClickListener onItemClickListener;
+    private OnItemClickListener onItemClickListener;
 
-	public ReSpinner(Context context) {
-		super(context);
-	}
+    public ReSpinner(Context context) {
+        super(context);
+    }
 
-	public ReSpinner(Context context, int mode) {
-		super(context, mode);
-	}
+    public ReSpinner(Context context, int mode) {
+        super(context, mode);
+    }
 
-	public ReSpinner(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    public ReSpinner(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-	public ReSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
+    public ReSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
-	public ReSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
-		super(context, attrs, defStyleAttr, mode);
-	}
+    public ReSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode) {
+        super(context, attrs, defStyleAttr, mode);
+    }
 
-	public ReSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode, Theme popupTheme) {
-		super(context, attrs, defStyleAttr, mode, popupTheme);
-	}
+    public ReSpinner(Context context, AttributeSet attrs, int defStyleAttr, int mode, Theme popupTheme) {
+        super(context, attrs, defStyleAttr, mode, popupTheme);
+    }
 
-	/**
-	 * If animate false spinner doesn't trigger click event
-	 * it will just set the selection
-	 */
-	@Override public void setSelection(int position, boolean animate) {
-		super.setSelection(position, animate);
-		if (animate) {
-			performItemClickCustom();
-		}
-	}
+    /**
+     * If animate false spinner doesn't trigger click event
+     * it will just set the selection
+     */
+    @Override
+    public void setSelection(int position, boolean animate) {
+        super.setSelection(position, animate);
+        if (animate) {
+            performItemClickCustom();
+        }
+    }
 
-	@Override public void setSelection(int position) {
-		super.setSelection(position);
-		performItemClickCustom();
-	}
+    @Override
+    public void setSelection(int position) {
+        super.setSelection(position);
+        performItemClickCustom();
+    }
 
-	private void performItemClickCustom() {
-		if (onItemClickListener != null) {
-			onItemClickListener.onItemClick(this, getSelectedView(), getSelectedItemPosition(), getSelectedItemId());
-		}
-	}
+    private void performItemClickCustom() {
+        if (onItemClickListener != null) {
+            onItemClickListener.onItemClick(this, getSelectedView(), getSelectedItemPosition(), getSelectedItemId());
+        }
+    }
 
-	public void setOnItemClickListener(OnItemClickListener l) {
-		onItemClickListener = l;
-	}
+    public void setOnItemClickListener(OnItemClickListener l) {
+        onItemClickListener = l;
+    }
 }

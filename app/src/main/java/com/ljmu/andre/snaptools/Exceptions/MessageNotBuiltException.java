@@ -6,20 +6,20 @@ package com.ljmu.andre.snaptools.Exceptions;
  */
 
 public class MessageNotBuiltException extends Exception {
-	private static final long serialVersionUID = -8438760880213965750L;
+    private static final long serialVersionUID = -8438760880213965750L;
 
-	public MessageNotBuiltException() {
-	}
+    public MessageNotBuiltException() {
+    }
 
-	public MessageNotBuiltException(String message) {
-		super(message);
-	}
+    public MessageNotBuiltException(String message) {
+        super(message);
+    }
 
-	public MessageNotBuiltException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public MessageNotBuiltException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public MessageNotBuiltException(Throwable cause) {
-		super(cause);
-	}
+    public MessageNotBuiltException(Throwable cause) {
+        super(cause);
+    }
 }

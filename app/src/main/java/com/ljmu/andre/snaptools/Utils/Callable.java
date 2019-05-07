@@ -6,9 +6,9 @@ package com.ljmu.andre.snaptools.Utils;
  */
 
 public interface Callable<T> {
-	void call(T t);
+    void call(T t);
 
-	public static interface Provider<O> {
-		O call();
-	}
+    public static interface Provider<O> {
+        O call();
+    }
 }

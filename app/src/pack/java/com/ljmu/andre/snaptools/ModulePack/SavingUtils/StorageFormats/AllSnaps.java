@@ -16,35 +16,38 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDI
  */
 
 public class AllSnaps extends StorageFormat {
-	@Override public List<File> getSnapTypeFolders(SnapType snapType) {
-		List<File> typeFolderList = new ArrayList<>();
-		typeFolderList.add(
-				new File(
-						(String) getPref(MEDIA_PATH)
-				)
-		);
+    @Override
+    public List<File> getSnapTypeFolders(SnapType snapType) {
+        List<File> typeFolderList = new ArrayList<>();
+        typeFolderList.add(
+                new File(
+                        (String) getPref(MEDIA_PATH)
+                )
+        );
 
-		return typeFolderList;
-	}
+        return typeFolderList;
+    }
 
-	@Override public File getOutputFile(SnapType snapType, String username, String filename) {
-		File parentDir = new File(
-				(String) getPref(MEDIA_PATH)
-		);
+    @Override
+    public File getOutputFile(SnapType snapType, String username, String filename) {
+        File parentDir = new File(
+                (String) getPref(MEDIA_PATH)
+        );
 
-		//noinspection ResultOfMethodCallIgnored
-		parentDir.mkdirs();
+        //noinspection ResultOfMethodCallIgnored
+        parentDir.mkdirs();
 
-		return new File(
-				parentDir,
-				filename
-		);
-	}
+        return new File(
+                parentDir,
+                filename
+        );
+    }
 
-	@Override public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
-		File mediaFile = snapFile.getParentFile();
+    @Override
+    public boolean snapUsesThisFormat(File snapFile, SnapType snapType) {
+        File mediaFile = snapFile.getParentFile();
 
-		return mediaFile.getName().contains("Media") &&
-				mediaFile.getParentFile().getName().contains("SnapTools");
-	}
+        return mediaFile.getName().contains("Media") &&
+                mediaFile.getParentFile().getName().contains("SnapTools");
+    }
 }

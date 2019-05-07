@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/pack_selector"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme">
+    android:id="@+id/pack_selector"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_layout"
@@ -18,6 +18,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:overScrollMode="never"/>
+            android:overScrollMode="never" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

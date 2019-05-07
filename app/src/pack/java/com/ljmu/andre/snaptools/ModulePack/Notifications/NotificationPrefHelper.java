@@ -13,21 +13,21 @@ import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STAC
  */
 
 public class NotificationPrefHelper {
-	public static DotLocation getDotLocation() {
-		String locationName = getPref(DOT_LOCATION);
+    public static DotLocation getDotLocation() {
+        String locationName = getPref(DOT_LOCATION);
 
-		if (locationName == null)
-			return DotLocation.BOTTOM_LEFT;
+        if (locationName == null)
+            return DotLocation.BOTTOM_LEFT;
 
-		return DotLocation.getFromDisplayText(locationName);
-	}
+        return DotLocation.getFromDisplayText(locationName);
+    }
 
-	public static StackingOrientation getStackOrientation() {
-		String orientationName = getPref(STACKED_ORIENTATION);
+    public static StackingOrientation getStackOrientation() {
+        String orientationName = getPref(STACKED_ORIENTATION);
 
-		if (orientationName == null)
-			return StackingOrientation.HORIZONTAL;
+        if (orientationName == null)
+            return StackingOrientation.HORIZONTAL;
 
-		return StackingOrientation.getFromDisplayText(orientationName);
-	}
+        return StackingOrientation.getFromDisplayText(orientationName);
+    }
 }

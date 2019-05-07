@@ -18,37 +18,42 @@ import static com.ljmu.andre.snaptools.Utils.MiscUtils.calcTimeDiff;
  */
 
 public class GetTranslations extends CachedFileDownloader {
-	private final String translationUrlRoot;
-	private final String translationFilename;
+    private final String translationUrlRoot;
+    private final String translationFilename;
 
-	public GetTranslations(String translationUrlRoot, String translationFilename) {
-		this.translationUrlRoot = translationUrlRoot;
-		this.translationFilename = translationFilename;
-	}
+    public GetTranslations(String translationUrlRoot, String translationFilename) {
+        this.translationUrlRoot = translationUrlRoot;
+        this.translationFilename = translationFilename;
+    }
 
-	public boolean shouldUseCacheExposed() {
-		return shouldUseCache();
-	}
+    public boolean shouldUseCacheExposed() {
+        return shouldUseCache();
+    }
 
-	@Override protected boolean shouldUseCache() {
-		long lastChecked = getPref(LAST_CHECK_TRANSLATIONS);
+    @Override
+    protected boolean shouldUseCache() {
+        long lastChecked = getPref(LAST_CHECK_TRANSLATIONS);
 
-		return lastChecked == 0 || calcTimeDiff(lastChecked) > TRANSLATIONS_CHECK_COOLDOWN;
-	}
+        return lastChecked == 0 || calcTimeDiff(lastChecked) > TRANSLATIONS_CHECK_COOLDOWN;
+    }
 
-	@Override protected File getCacheDir(Context context) {
-		return getCreateDir(TRANSLATIONS_PATH);
-	}
+    @Override
+    protected File getCacheDir(Context context) {
+        return getCreateDir(TRANSLATIONS_PATH);
+    }
 
-	@Override protected String getCachedFilename() {
-		return translationFilename;
-	}
+    @Override
+    protected String getCachedFilename() {
+        return translationFilename;
+    }
 
-	@Override protected String getURL() {
-		return translationUrlRoot + translationFilename;
-	}
+    @Override
+    protected String getURL() {
+        return translationUrlRoot + translationFilename;
+    }
 
-	@Override protected void updateCacheTime() {
-		putPref(LAST_CHECK_TRANSLATIONS, System.currentTimeMillis());
-	}
+    @Override
+    protected void updateCacheTime() {
+        putPref(LAST_CHECK_TRANSLATIONS, System.currentTimeMillis());
+    }
 }

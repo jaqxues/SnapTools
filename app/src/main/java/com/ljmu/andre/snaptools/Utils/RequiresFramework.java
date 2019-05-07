@@ -6,5 +6,5 @@ package com.ljmu.andre.snaptools.Utils;
  */
 
 public @interface RequiresFramework {
-	int value();
+    int value();
 }

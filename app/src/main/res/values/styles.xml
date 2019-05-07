@@ -4,15 +4,15 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
-		<style name="PickerEditText">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_margin">4dp</item>
-		<item name="android:imeOptions">actionNext</item>
-		<item name="android:singleLine">true</item>
-		<item name="android:textSize">22sp</item>
-	</style>
-	
+    <style name="PickerEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
@@ -152,8 +152,7 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="SwitchMessageText" parent="@style/DefaultText">
-    </style>
+    <style name="SwitchMessageText" parent="@style/DefaultText"></style>
 
     <style name="DefaultSwitch">
         <item name="android:textAppearance">@style/SwitchMessageText</item>

@@ -9,23 +9,23 @@ import com.ljmu.andre.snaptools.Databases.Tables.ShopItem;
  */
 
 public class ReqItemPurchaseEvent {
-	private PaymentType paymentType;
-	private ShopItem shopItem;
+    private PaymentType paymentType;
+    private ShopItem shopItem;
 
-	public ReqItemPurchaseEvent(PaymentType paymentType, ShopItem shopItem) {
-		this.paymentType = paymentType;
-		this.shopItem = shopItem;
-	}
+    public ReqItemPurchaseEvent(PaymentType paymentType, ShopItem shopItem) {
+        this.paymentType = paymentType;
+        this.shopItem = shopItem;
+    }
 
-	public PaymentType getPaymentType() {
-		return paymentType;
-	}
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
 
-	public ShopItem getShopItem() {
-		return shopItem;
-	}
+    public ShopItem getShopItem() {
+        return shopItem;
+    }
 
-	public enum PaymentType {
-		ROCKETR
-	}
+    public enum PaymentType {
+        ROCKETR
+    }
 }

@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,15 +27,12 @@ import com.ljmu.andre.snaptools.EventBus.Events.ReqItemPurchaseEvent.PaymentType
 import com.ljmu.andre.snaptools.EventBus.Events.ShopPurchaseEvent;
 import com.ljmu.andre.snaptools.Fragments.Tutorials.ShopTutorial;
 import com.ljmu.andre.snaptools.Networking.Helpers.GetShopItems;
-import com.ljmu.andre.snaptools.Networking.WebResponse.ServerListResultListener;
+import com.ljmu.andre.snaptools.Networking.WebResponse;
 import com.ljmu.andre.snaptools.R;
-import com.ljmu.andre.snaptools.RedactedClasses.Answers;
-import com.ljmu.andre.snaptools.RedactedClasses.CustomEvent;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import com.ljmu.andre.snaptools.Utils.Constants;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 
@@ -48,7 +46,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DefaultObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -62,97 +59,107 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOWN_P
  * It and its contents are free to use by all
  */
 
-@SuppressWarnings("unused") public class ShopFragment extends FragmentHelper {
+@SuppressWarnings("unused")
+public class ShopFragment extends FragmentHelper {
 
-	Unbinder unbinder;
-	@BindView(R.id.recycler_packs) RecyclerView packRecycler;
-	@BindView(R.id.recycler_donations) RecyclerView donationRecycler;
-	@BindView(R.id.swipe_layout) @Nullable SwipeRefreshLayout swipeRefreshLayout;
+    Unbinder unbinder;
+    @BindView(R.id.recycler_packs)
+    RecyclerView packRecycler;
+    @BindView(R.id.recycler_donations)
+    RecyclerView donationRecycler;
+    @BindView(R.id.swipe_layout)
+    @Nullable
+    SwipeRefreshLayout swipeRefreshLayout;
 
-	private ExpandableItemAdapter<ExpandableItemEntity> packAdapter;
-	private ExpandableItemAdapter<ExpandableItemEntity> donationAdapter;
+    private ExpandableItemAdapter<ExpandableItemEntity> packAdapter;
+    private ExpandableItemAdapter<ExpandableItemEntity> donationAdapter;
 
-	private List<ShopItem> packItems = new ArrayList<>();
-	private List<ShopItem> donationItems = new ArrayList<>();
+    private List<ShopItem> packItems = new ArrayList<>();
+    private List<ShopItem> donationItems = new ArrayList<>();
 
-	@Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		View layoutContainer = inflater.inflate(R.layout.frag_shop, container, false);
-		unbinder = ButterKnife.bind(this, layoutContainer);
-		EventBus.soleRegister(this);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View layoutContainer = inflater.inflate(R.layout.frag_shop, container, false);
+        unbinder = ButterKnife.bind(this, layoutContainer);
+        EventBus.soleRegister(this);
 
-		getActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-		packRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-		donationRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        packRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        donationRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-		// Statement causes issues due to class casting ==============================
-		packAdapter = new ExpandableItemAdapter(packItems);
-		packAdapter.bindToRecyclerView(packRecycler);
-		packAdapter.addType(ShopItem.TYPE, ShopItem.LAYOUT_RES);
-		packAdapter.addType(ShopItemToolbar.TYPE, ShopItemToolbar.LAYOUT_RES);
-		packAdapter.addType(TextItemEntity.type, TextItemEntity.layoutRes);
-		packAdapter.setEmptyView(R.layout.layout_empty_shop_items);
-		packAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-			if (runningTutorial) {
-				progressTutorial();
-			}
-		});
+        // Statement causes issues due to class casting ==============================
+        packAdapter = new ExpandableItemAdapter(packItems);
+        packAdapter.bindToRecyclerView(packRecycler);
+        packAdapter.addType(ShopItem.TYPE, ShopItem.LAYOUT_RES);
+        packAdapter.addType(ShopItemToolbar.TYPE, ShopItemToolbar.LAYOUT_RES);
+        packAdapter.addType(TextItemEntity.type, TextItemEntity.layoutRes);
+        packAdapter.setEmptyView(R.layout.layout_empty_shop_items);
+        packAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (runningTutorial) {
+                progressTutorial();
+            }
+        });
 
-		// Statement causes issues due to class casting ==============================
-		//noinspection unchecked
-		donationAdapter = new ExpandableItemAdapter(donationItems);
-		donationAdapter.bindToRecyclerView(donationRecycler);
-		donationAdapter.addType(ShopItem.TYPE, ShopItem.LAYOUT_RES);
-		donationAdapter.addType(ShopItemToolbar.TYPE, ShopItemToolbar.LAYOUT_RES);
-		donationAdapter.addType(TextItemEntity.type, TextItemEntity.layoutRes);
-		donationAdapter.setEmptyView(R.layout.layout_empty_shop_items);
-		donationAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-			if (runningTutorial) {
-				progressTutorial();
-			}
-		});
+        // Statement causes issues due to class casting ==============================
+        //noinspection unchecked
+        donationAdapter = new ExpandableItemAdapter(donationItems);
+        donationAdapter.bindToRecyclerView(donationRecycler);
+        donationAdapter.addType(ShopItem.TYPE, ShopItem.LAYOUT_RES);
+        donationAdapter.addType(ShopItemToolbar.TYPE, ShopItemToolbar.LAYOUT_RES);
+        donationAdapter.addType(TextItemEntity.type, TextItemEntity.layoutRes);
+        donationAdapter.setEmptyView(R.layout.layout_empty_shop_items);
+        donationAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (runningTutorial) {
+                progressTutorial();
+            }
+        });
 
-		if (swipeRefreshLayout != null) {
-			swipeRefreshLayout.setOnRefreshListener(
-					() -> {
-						if (runningTutorial)
-							generateTutorialItems();
-						else
-							generateShopItems(true);
-					}
-			);
-		}
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setOnRefreshListener(
+                    () -> {
+                        if (runningTutorial)
+                            generateTutorialItems();
+                        else
+                            generateShopItems(true);
+                    }
+            );
+        }
 
-		setTutorialDetails(ShopTutorial.getTutorials(packRecycler, donationRecycler));
+        setTutorialDetails(ShopTutorial.getTutorials(packRecycler, donationRecycler));
 
-		showPaymentModelReasoning();
-		return layoutContainer;
-	}
+        showPaymentModelReasoning();
+        return layoutContainer;
+    }
 
-	@Override public void onResume() {
-		super.onResume();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-		if (runningTutorial)
-			generateTutorialItems();
-		else
-			generateShopItems(false);
-	}
+        if (runningTutorial)
+            generateTutorialItems();
+        else
+            generateShopItems(false);
+    }
 
-	@Override public void onPause() {
-		super.onPause();
-		packItems.clear();
-		donationItems.clear();
-	}
+    @Override
+    public void onPause() {
+        super.onPause();
+        packItems.clear();
+        donationItems.clear();
+    }
 
-	@Override public void onDestroyView() {
-		super.onDestroyView();
-		unbinder.unbind();
-		EventBus.soleUnregister(this);
-		getActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-	}
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+        EventBus.soleUnregister(this);
+        getActivity().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
 
-	// TODO: Create Tutorial Items
-	private void generateTutorialItems() {
+    // TODO: Create Tutorial Items
+    private void generateTutorialItems() {
 //		this.packItems.clear();
 //		this.donationItems.clear();
 //
@@ -182,179 +189,172 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOWN_P
 //
 //		if (pendingOrderAdapter != null)
 //			pendingOrderAdapter.notifyDataSetChanged();
-	}
+    }
 
-	private void generateShopItems(boolean invalidateCache) {
-		if (runningTutorial)
-			return;
+    private void generateShopItems(boolean invalidateCache) {
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(true);
+        WebResponse.ServerListResultListener<ShopItem> resultListener =
+                new WebResponse.ServerListResultListener<ShopItem>() {
+                    @Override
+                    public void success(List<ShopItem> list) {
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
 
-		if (swipeRefreshLayout != null)
-			swipeRefreshLayout.setRefreshing(true);
+                        if (runningTutorial)
+                            return;
 
-		ServerListResultListener<ShopItem> resultListener =
-				new ServerListResultListener<ShopItem>() {
-					@Override public void success(List<ShopItem> list) {
-						if (swipeRefreshLayout != null)
-							swipeRefreshLayout.setRefreshing(false);
+                        if (list == null)
+                            error("There was an unhandled error during Shop Item fetching", null, -1);
 
-						if (runningTutorial)
-							return;
+                        setShopItems(list);
+                    }
 
-						if (list == null)
-							error("There was an unhandled error during Shop Item fetching", null, -1);
+                    @Override
+                    public void error(String message, Throwable t, int responseCode) {
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
 
-						setShopItems(list);
-					}
+                        if (runningTutorial)
+                            return;
 
-					@Override public void error(String message, Throwable t, int responseCode) {
-						if (swipeRefreshLayout != null)
-							swipeRefreshLayout.setRefreshing(false);
+                        if (t != null)
+                            Timber.e(t, message);
 
-						if (runningTutorial)
-							return;
+                        if (getActivity() == null)
+                            return;
 
-						if (t != null)
-							Timber.e(t, message);
+                        DialogFactory.createErrorDialog(
+                                getActivity(),
+                                "Error Fetching Shop Items",
+                                message,
+                                responseCode
+                        ).show();
+                    }
+                };
 
-						if (getActivity() == null)
-							return;
+        if (GetShopItems.shouldUseCache() && !invalidateCache) {
+            GetShopItems.getCacheObservable()
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DefaultObserver<List<ShopItem>>() {
+                        @Override
+                        public void onNext(@NonNull List<ShopItem> shopItems) {
+                            if (shopItems.isEmpty()) {
+                                GetShopItems.getFromServer(
+                                        getActivity(),
+                                        resultListener
+                                );
 
-						DialogFactory.createErrorDialog(
-								getActivity(),
-								"Error Fetching Shop Items",
-								message,
-								responseCode
-						).show();
-					}
-				};
+                                return;
+                            }
 
-		if (GetShopItems.shouldUseCache() && !invalidateCache) {
-			GetShopItems.getCacheObservable()
-					.subscribeOn(Schedulers.computation())
-					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(new DefaultObserver<List<ShopItem>>() {
-						@Override public void onNext(@NonNull List<ShopItem> shopItems) {
-							if (shopItems.isEmpty()) {
-								GetShopItems.getFromServer(
-										getActivity(),
-										resultListener
-								);
+                            if (swipeRefreshLayout != null)
+                                swipeRefreshLayout.setRefreshing(false);
+                            resultListener.success(shopItems);
+                        }
 
-								return;
-							}
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            resultListener.error(e.getMessage(), e, -1);
+                        }
 
-							if (swipeRefreshLayout != null)
-								swipeRefreshLayout.setRefreshing(false);
-							resultListener.success(shopItems);
-						}
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        } else {
+            GetShopItems.getFromServer(
+                    getActivity(),
+                    resultListener
+            );
+        }
+    }
 
-						@Override public void onError(@NonNull Throwable e) {
-							resultListener.error(e.getMessage(), e, -1);
-						}
+    private void showPaymentModelReasoning() {
+        String message = "SnapTools uses a <b><font color='#EFDE86'>Pay Per Version</font></b> model instead of a <font color='#EF8686'>monthly subscription</font> based system so that you only pay when you want to use a newer Snapchat version.\n" +
+                "\n" +
+                "This aims to provide a cheaper method for our users, but still make it worth our time for maintaining the software.\n" +
+                "\n" +
+                "It should be stressed that you are <b><font color='#EFDE86'>NEVER</font></b> forced to update to any version. You are free to use any premium packs you purchased for as long as you are able to use them.\n" +
+                "\n" +
+                "SnapTools also offers a <b><font color='#EFDE86'>7 Day Guarantee</font></b> so that if a pack for a newer Snapchat is released within 7 days of you purchasing a pack, you will automatically be given access to the newer pack as well.";
 
-						@Override public void onComplete() {
-						}
-					});
-		} else {
-			GetShopItems.getFromServer(
-					getActivity(),
-					resultListener
-			);
-		}
-	}
+        if ((boolean) getPref(HAS_SHOWN_PAY_MODEL_REASONING) || message.isEmpty())
+            return;
 
-	private void showPaymentModelReasoning() {
-		String message = "SnapTools uses a <b><font color='#EFDE86'>Pay Per Version</font></b> model instead of a <font color='#EF8686'>monthly subscription</font> based system so that you only pay when you want to use a newer Snapchat version.\n" +
-				"\n" +
-				"This aims to provide a cheaper method for our users, but still make it worth our time for maintaining the software.\n" +
-				"\n" +
-				"It should be stressed that you are <b><font color='#EFDE86'>NEVER</font></b> forced to update to any version. You are free to use any premium packs you purchased for as long as you are able to use them.\n" +
-				"\n" +
-				"SnapTools also offers a <b><font color='#EFDE86'>7 Day Guarantee</font></b> so that if a pack for a newer Snapchat is released within 7 days of you purchasing a pack, you will automatically be given access to the newer pack as well.";
+        DialogFactory.createBasicMessage(
+                getActivity(),
+                "Payment Model",
+                message,
+                new ThemedClickListener() {
+                    @Override
+                    public void clicked(ThemedDialog themedDialog) {
+                        themedDialog.dismiss();
+                        putPref(HAS_SHOWN_PAY_MODEL_REASONING, true);
+                    }
+                }
+        ).setDismissable(false).show();
+    }
 
-		if ((boolean) getPref(HAS_SHOWN_PAY_MODEL_REASONING) || message.isEmpty())
-			return;
+    public void setShopItems(Collection<ShopItem> shopItems) {
+        addGlobalListener(packRecycler);
+        addGlobalListener(donationRecycler);
 
-		DialogFactory.createBasicMessage(
-				getActivity(),
-				"Payment Model",
-				message,
-				new ThemedClickListener() {
-					@Override public void clicked(ThemedDialog themedDialog) {
-						themedDialog.dismiss();
-						putPref(HAS_SHOWN_PAY_MODEL_REASONING, true);
-					}
-				}
-		).setDismissable(false).show();
-	}
+        Timber.d("Setting shop items");
 
-	public void setShopItems(Collection<ShopItem> shopItems) {
-		packRecycler.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			private boolean hasAnimated = false;
+        packItems.clear();
+        donationItems.clear();
 
-			@Override
-			public void onGlobalLayout() {
-				//At this point the layout is complete and the
-				//dimensions of recyclerView and any child views are known.
+        for (ShopItem shopItem : shopItems) {
+            if (shopItem.type.equals("pack"))
+                packItems.add(shopItem);
+            else
+                donationItems.add(shopItem);
 
-				if (!hasAnimated && Constants.getApkVersionCode() >= 66) {
-					hasAnimated = true;
-					AnimationUtils.sequentGroup(packRecycler);
-				}
+            Timber.d("ShopItem: " + shopItem.toString());
+        }
 
-				packRecycler.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-			}
-		});
-		donationRecycler.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			private boolean hasAnimated = false;
+        Collections.sort(packItems);
+        Collections.sort(donationItems);
 
-			@Override
-			public void onGlobalLayout() {
-				//At this point the layout is complete and the
-				//dimensions of recyclerView and any child views are known.
+        if (packAdapter != null) {
+            packAdapter.notifyDataSetChanged();
+        }
 
-				if (!hasAnimated && Constants.getApkVersionCode() >= 66) {
-					hasAnimated = true;
-					AnimationUtils.sequentGroup(donationRecycler);
-				}
+        if (donationAdapter != null) {
+            donationAdapter.notifyDataSetChanged();
+        }
+    }
 
-				donationRecycler.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-			}
-		});
+    private void addGlobalListener(RecyclerView recyclerView) {
+        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            private boolean hasAnimated = false;
 
-		Timber.d("Setting shop items");
+            @Override
+            public void onGlobalLayout() {
+                //At this point the layout is complete and the
+                //dimensions of recyclerView and any child views are known.
 
-		packItems.clear();
-		donationItems.clear();
+                if (!hasAnimated) {
+                    hasAnimated = true;
+                    AnimationUtils.sequentGroup(recyclerView);
+                }
 
-		for (ShopItem shopItem : shopItems) {
-			if (shopItem.type.equals("pack"))
-				packItems.add(shopItem);
-			else
-				donationItems.add(shopItem);
+                recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+    }
 
-			Timber.d("ShopItem: " + shopItem.toString());
-		}
+    @Override
+    public String getName() {
+        return "Shop/Donations";
+    }
 
-		Collections.sort(packItems);
-		Collections.sort(donationItems);
-
-		if (packAdapter != null) {
-			packAdapter.notifyDataSetChanged();
-		}
-
-		if (donationAdapter != null) {
-			donationAdapter.notifyDataSetChanged();
-		}
-	}
-
-	@Override public String getName() {
-		return "Shop/Donations";
-	}
-
-	@Override public Integer getMenuId() {
-		return R.id.nav_shop;
-	}
+    @Override
+    public Integer getMenuId() {
+        return R.id.nav_shop;
+    }
 
 	/*@Override public boolean hasTutorial() {
 		return true;
@@ -366,44 +366,38 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.HAS_SHOWN_P
 	}*/
 
 
-	@Subscribe public void handleShopPurchaseEvent(ShopPurchaseEvent shopPurchaseEvent) {
-		Observable.create(
-				e -> {
-					if (runningTutorial)
-						generateTutorialItems();
-					else
-						generateShopItems(true);
+    @Subscribe
+    public void handleShopPurchaseEvent(ShopPurchaseEvent shopPurchaseEvent) {
+        Observable.create(
+                e -> {
+                    if (runningTutorial)
+                        generateTutorialItems();
+                    else
+                        generateShopItems(true);
 
-					e.onComplete();
-				}
-		).subscribeOn(AndroidSchedulers.mainThread())
-				.subscribe(new ErrorObserver<>());
-	}
+                    e.onComplete();
+                }
+        ).subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ErrorObserver<>());
+    }
 
-	@Subscribe public void handleReqItemPurchaseEvent(ReqItemPurchaseEvent purchaseEvent) {
-		ShopItem item = purchaseEvent.getShopItem();
-		PaymentType paymentType = purchaseEvent.getPaymentType();
+    @Subscribe
+    public void handleReqItemPurchaseEvent(ReqItemPurchaseEvent purchaseEvent) {
+        ShopItem item = purchaseEvent.getShopItem();
+        PaymentType paymentType = purchaseEvent.getPaymentType();
 
-		switch (paymentType) {
-			case ROCKETR:
-				if (item.rocketrLink == null || item.rocketrLink.isEmpty()) {
-					SafeToast.show(getActivity(), "Unknown RocketR link", Toast.LENGTH_LONG, true);
-					return;
-				}
+        switch (paymentType) {
+            case ROCKETR:
+                if (item.rocketrLink == null || item.rocketrLink.isEmpty()) {
+                    SafeToast.show(getActivity(), "Unknown RocketR link", Toast.LENGTH_LONG, true);
+                    return;
+                }
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.rocketrLink));
-				startActivity(browserIntent);
-				break;
-			default:
-				throw new IllegalArgumentException("Couldn't find requested payment type: " + paymentType);
-		}
-
-		Answers.safeLogEvent(
-				new CustomEvent("Shop Item Viewed")
-						.putCustomAttribute("Payment Type", paymentType.name())
-						.putCustomAttribute("Item Type", item.type)
-						.putCustomAttribute("Item Identifier", item.identifier)
-						.putCustomAttribute("Price", item.price)
-		);
-	}
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.rocketrLink));
+                startActivity(browserIntent);
+                break;
+            default:
+                throw new IllegalArgumentException("Couldn't find requested payment type: " + paymentType);
+        }
+    }
 }

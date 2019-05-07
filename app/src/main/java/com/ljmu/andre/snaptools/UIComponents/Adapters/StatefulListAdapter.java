@@ -22,34 +22,36 @@ import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
  */
 
 public class StatefulListAdapter<T extends StatefulListable> extends ArrayAdapter<T> {
-	public StatefulListAdapter(Context context) {
-		super(context, R.layout.item_listable_head_stateful);
-	}
+    public StatefulListAdapter(Context context) {
+        super(context, R.layout.item_listable_head_stateful);
+    }
 
-	public StatefulListAdapter(Context context, T[] objects) {
-		super(context, R.layout.item_listable_head_stateful, objects);
-	}
+    public StatefulListAdapter(Context context, T[] objects) {
+        super(context, R.layout.item_listable_head_stateful, objects);
+    }
 
-	public StatefulListAdapter(Context context, List<T> objects) {
-		super(context, R.layout.item_listable_head_stateful, objects);
-	}
+    public StatefulListAdapter(Context context, List<T> objects) {
+        super(context, R.layout.item_listable_head_stateful, objects);
+    }
 
-	@NonNull @Override public View getView(int position, View convertView, ViewGroup parent) {
-		T object = getItem(position);
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        T object = getItem(position);
 
-		if (convertView == null) {
-			convertView =
-					LayoutInflater.from(
-							getModuleContext(parent.getContext())
-					).inflate(
-							R.layout.item_listable_head_text_stateful, parent, false
-					);
-		}
+        if (convertView == null) {
+            convertView =
+                    LayoutInflater.from(
+                            getModuleContext(parent.getContext())
+                    ).inflate(
+                            R.layout.item_listable_head_text_stateful, parent, false
+                    );
+        }
 
-		convertView.findViewById(R.id.img_arrow).setVisibility(GONE);
+        convertView.findViewById(R.id.img_arrow).setVisibility(GONE);
 
-		object.updateHeaderText(convertView, (TextView) convertView.findViewById(R.id.txt_listable));
-		object.updateHeaderStateHolder((TextView) convertView.findViewById(R.id.txt_state));
-		return convertView;
-	}
+        object.updateHeaderText(convertView, (TextView) convertView.findViewById(R.id.txt_listable));
+        object.updateHeaderStateHolder((TextView) convertView.findViewById(R.id.txt_state));
+        return convertView;
+    }
 }

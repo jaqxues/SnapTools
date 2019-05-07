@@ -32,7 +32,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.jar.Attributes;
 
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -53,239 +52,244 @@ import static com.ljmu.andre.snaptools.Utils.MiscUtils.calcTimeDiff;
  */
 
 public class PackUtils {
-	private static final Object PACK_CHECKSUM_LOCK = new Object();
-	private static File[] jarFileCache;
-	private static Map<String, LocalPackMetaData> metaDataCache;
-	private static long lastKilledSC;
+    private static final Object PACK_CHECKSUM_LOCK = new Object();
+    private static File[] jarFileCache;
+    private static Map<String, LocalPackMetaData> metaDataCache;
+    private static long lastKilledSC;
 
-	public static void killSCService(Activity activity) {
-		Timber.i("Killing SC");
-		if (calcTimeDiff(lastKilledSC) < TimeUnit.SECONDS.toMillis(5))
-			return;
+    public static void killSCService(Activity activity) {
+        Timber.i("Killing SC");
+        if (calcTimeDiff(lastKilledSC) < TimeUnit.SECONDS.toMillis(5))
+            return;
 
-		lastKilledSC = System.currentTimeMillis();
+        lastKilledSC = System.currentTimeMillis();
 
-		ActivityManager activityManager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager activityManager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
 
-		if(VERSION.SDK_INT > VERSION_CODES.N_MR1) {
-			activityManager.killBackgroundProcesses("com.snapchat.android");
-			return;
-		}
+        if (VERSION.SDK_INT > VERSION_CODES.N_MR1) {
+            activityManager.killBackgroundProcesses("com.snapchat.android");
+            return;
+        }
 
-		Timber.i("ActivityManager: " + activityManager);
+        Timber.i("ActivityManager: " + activityManager);
 
-		for (RunningServiceInfo appProcessInfo : activityManager.getRunningServices(Integer.MAX_VALUE)) {
-			String packageName = appProcessInfo.service.getPackageName();
-			Timber.i("Process Name: " + packageName);
+        for (RunningServiceInfo appProcessInfo : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            String packageName = appProcessInfo.service.getPackageName();
+            Timber.i("Process Name: " + packageName);
 
-			if (packageName.equals("com.snapchat.android")) {
+            if (packageName.equals("com.snapchat.android")) {
 
-				Observable<Boolean> commandObservable = ShellUtils.sendCommand("am force-stop com.snapchat.android\n");
+                Observable<Boolean> commandObservable = ShellUtils.sendCommand("am force-stop com.snapchat.android\n");
 
-				commandObservable
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(new DisposableObserver<Boolean>() {
-							@Override public void onNext(@NonNull Boolean aBoolean) {
-								Timber.d("State: " + aBoolean);
+                commandObservable
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableObserver<Boolean>() {
+                            @Override
+                            public void onNext(@NonNull Boolean aBoolean) {
+                                Timber.d("State: " + aBoolean);
 
-								if (aBoolean)
-									SafeToast.show(activity, "Killed Snapchat in the background", Toast.LENGTH_SHORT);
-								else
-									SafeToast.show(activity, "Failed to kill Snapchat in the background", Toast.LENGTH_LONG, true);
-							}
+                                if (aBoolean)
+                                    SafeToast.show(activity, "Killed Snapchat in the background", Toast.LENGTH_SHORT);
+                                else
+                                    SafeToast.show(activity, "Failed to kill Snapchat in the background", Toast.LENGTH_LONG, true);
+                            }
 
-							@Override public void onError(@NonNull Throwable e) {
-								Timber.e(e);
-								SafeToast.show(activity, "Failed to kill Snapchat in the background", Toast.LENGTH_LONG, true);
-							}
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Timber.e(e);
+                                SafeToast.show(activity, "Failed to kill Snapchat in the background", Toast.LENGTH_LONG, true);
+                            }
 
-							@Override public void onComplete() {
+                            @Override
+                            public void onComplete() {
 
-							}
-						});
+                            }
+                        });
 
-				break;
-			}
-		}
-	}
+                break;
+            }
+        }
+    }
 
-	public static boolean isPackInstalled(String packName) {
-		Map<String, LocalPackMetaData> installedDataMap = getInstalledMetaData();
+    public static boolean isPackInstalled(String packName) {
+        Map<String, LocalPackMetaData> installedDataMap = getInstalledMetaData();
 
-		return !(installedDataMap == null || installedDataMap.isEmpty())
-				&& installedDataMap.get(packName) != null;
+        return !(installedDataMap == null || installedDataMap.isEmpty())
+                && installedDataMap.get(packName) != null;
 
-	}
+    }
 
-	@Nullable public static Map<String, LocalPackMetaData> getInstalledMetaData() {
-		try {
-			File packDirectory = new File((String) getPref(MODULES_PATH));
+    @Nullable
+    public static Map<String, LocalPackMetaData> getInstalledMetaData() {
+        try {
+            File packDirectory = new File((String) getPref(MODULES_PATH));
 
-			File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
+            File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
 
-			if (jarFileList == null || jarFileList.length <= 0)
-				return null;
+            if (jarFileList == null || jarFileList.length <= 0)
+                return null;
 
-			if (Arrays.equals(jarFileCache, jarFileList)) {
-				Timber.d("They are equal");
-				return metaDataCache;
-			}
+            if (Arrays.equals(jarFileCache, jarFileList)) {
+                Timber.d("They are equal");
+                return metaDataCache;
+            }
 
-			Timber.d("They are NOT equal");
+            Timber.d("They are NOT equal");
 
-			Map<String, LocalPackMetaData> packMetaDataMap = new HashMap<>();
+            Map<String, LocalPackMetaData> packMetaDataMap = new HashMap<>();
 
-			for (File file : jarFileList) {
-				try {
-					LocalPackMetaData packMetaData = getPackMetaData(file);
-					packMetaDataMap.put(packMetaData.getName(), packMetaData);
-				} catch (Throwable t) {
-					Timber.e(t);
-				}
-			}
+            for (File file : jarFileList) {
+                try {
+                    LocalPackMetaData packMetaData = getPackMetaData(file);
+                    packMetaDataMap.put(packMetaData.getName(), packMetaData);
+                } catch (Throwable t) {
+                    Timber.e(t);
+                }
+            }
 
-			metaDataCache = packMetaDataMap;
-			jarFileCache = jarFileList;
+            metaDataCache = packMetaDataMap;
+            jarFileCache = jarFileList;
 
-			return packMetaDataMap;
-		} catch (Throwable t) {
-			Timber.e(t);
-		}
+            return packMetaDataMap;
+        } catch (Throwable t) {
+            Timber.e(t);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static LocalPackMetaData getPackMetaData(File file) throws NullObjectException {
-		LocalPackMetaData packMetaData = new LocalPackMetaData();
-		bindPackMetaData(packMetaData, file);
-		return packMetaData;
-	}
+    public static LocalPackMetaData getPackMetaData(File file) throws NullObjectException {
+        LocalPackMetaData packMetaData = new LocalPackMetaData();
+        bindPackMetaData(packMetaData, file);
+        return packMetaData;
+    }
 
-	private static void bindPackMetaData(PackMetaData metaData, File file) throws NullObjectException {
-		if (!file.getName().endsWith(".jar"))
-			throw new IllegalArgumentException("Supplied Non Jar File");
+    private static void bindPackMetaData(PackMetaData metaData, File file) throws NullObjectException {
+        if (!file.getName().endsWith(".jar"))
+            throw new IllegalArgumentException("Supplied Non Jar File");
 
-		Attributes attributes = JarUtils.getAttributesFromJar(file);
+        Attributes attributes = JarUtils.getAttributesFromJar(file);
 
-		if (attributes == null)
-			throw new NullObjectException("Module Pack Built Incorrectly!", "Attributes");
+        if (attributes == null)
+            throw new NullObjectException("Module Pack Built Incorrectly!", "Attributes");
 
-		metaData.setName(file.getName().replace(".jar", ""))
-				.setType(attributes.getValue("Type"))
-				.setPackVersion(attributes.getValue("PackVersion"))
-				.setScVersion(attributes.getValue("SCVersion"))
-				.setDevelopment(Boolean.valueOf(attributes.getValue("Development")))
-				.setFlavour(getFlavourFromAttributes(attributes, file))
-				.completedBinding();
-	}
+        metaData.setName(file.getName().replace(".jar", ""))
+                .setType(attributes.getValue("Type"))
+                .setPackVersion(attributes.getValue("PackVersion"))
+                .setScVersion(attributes.getValue("SCVersion"))
+                .setDevelopment(Boolean.valueOf(attributes.getValue("Development")))
+                .setFlavour(getFlavourFromAttributes(attributes, file))
+                .completedBinding();
+    }
 
-	public static String getFlavourFromAttributes(Attributes attributes, File file) {
-		String flavour = attributes.getValue("Flavour");
+    public static String getFlavourFromAttributes(Attributes attributes, File file) {
+        String flavour = attributes.getValue("Flavour");
 
-		if(flavour == null)
-			flavour = file.getName().contains("Beta") ? "beta" : "prod";
+        if (flavour == null)
+            flavour = file.getName().contains("Beta") ? "beta" : "prod";
 
-		return flavour;
-	}
+        return flavour;
+    }
 
-	public static Observable<Map<String, LocalPackMetaData>> getAllMetaData() {
-		Callable<Map<String, LocalPackMetaData>> callable = () -> {
-			File packDirectory = new File((String) getPref(MODULES_PATH));
+    public static Observable<Map<String, LocalPackMetaData>> getAllMetaData() {
+        Callable<Map<String, LocalPackMetaData>> callable = () -> {
+            File packDirectory = new File((String) getPref(MODULES_PATH));
 
-			File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
+            File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
 
-			if (jarFileList == null || jarFileList.length <= 0)
-				return Collections.emptyMap();
+            if (jarFileList == null || jarFileList.length <= 0)
+                return Collections.emptyMap();
 
-			Map<String, LocalPackMetaData> packMetaDataMap = new HashMap<>();
+            Map<String, LocalPackMetaData> packMetaDataMap = new HashMap<>();
 
-			for (File file : jarFileList) {
-				LocalPackMetaData metaData;
-				try {
-					metaData = getPackMetaData(file);
-				} catch (Throwable t) {
-					metaData = (LocalPackMetaData) new FailedPackMetaData()
-							.setReason(t.getMessage())
-							.setName(file.getName().replace(".jar", ""))
-							.completedBinding();
-				}
+            for (File file : jarFileList) {
+                LocalPackMetaData metaData;
+                try {
+                    metaData = getPackMetaData(file);
+                } catch (Throwable t) {
+                    metaData = (LocalPackMetaData) new FailedPackMetaData()
+                            .setReason(t.getMessage())
+                            .setName(file.getName().replace(".jar", ""))
+                            .completedBinding();
+                }
 
-				packMetaDataMap.put(metaData.getName(), metaData);
-			}
+                packMetaDataMap.put(metaData.getName(), metaData);
+            }
 
-			Set<String> selectedPacks = getPref(SELECTED_PACKS);
+            Set<String> selectedPacks = getPref(SELECTED_PACKS);
 
-			for (String packName : selectedPacks) {
-				if (!packMetaDataMap.containsKey(packName)) {
-					FailedPackMetaData metaData = (FailedPackMetaData) new FailedPackMetaData()
-							.setReason("Pack is enabled but cannot be found in the installed list")
-							.setName(packName)
-							.completedBinding();
+            for (String packName : selectedPacks) {
+                if (!packMetaDataMap.containsKey(packName)) {
+                    FailedPackMetaData metaData = (FailedPackMetaData) new FailedPackMetaData()
+                            .setReason("Pack is enabled but cannot be found in the installed list")
+                            .setName(packName)
+                            .completedBinding();
 
-					packMetaDataMap.put(metaData.getName(), metaData);
-				}
-			}
+                    packMetaDataMap.put(metaData.getName(), metaData);
+                }
+            }
 
-			return packMetaDataMap;
-		};
+            return packMetaDataMap;
+        };
 
-		return Observable.fromCallable(callable)
-				.subscribeOn(Schedulers.computation())
-				.observeOn(AndroidSchedulers.mainThread());
-	}
+        return Observable.fromCallable(callable)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
-	public static Long timeSinceLastPackCheck() {
-		return System.currentTimeMillis() - (Long) getPref(LAST_CHECK_PACKS);
-	}
+    public static Long timeSinceLastPackCheck() {
+        return System.currentTimeMillis() - (Long) getPref(LAST_CHECK_PACKS);
+    }
 
-	@Nullable public static String generatePacksChecksum() {
-		Set<String> selectPackSet = getPref(SELECTED_PACKS);
-		if (selectPackSet == null || selectPackSet.isEmpty())
-			return null;
+    @Nullable
+    public static String generatePacksChecksum() {
+        Set<String> selectPackSet = getPref(SELECTED_PACKS);
+        if (selectPackSet == null || selectPackSet.isEmpty())
+            return null;
 
-		List<HashCode> packHashCodeList = new ArrayList<>(selectPackSet.size());
-		ExecutorService executor = Executors.newCachedThreadPool();
+        List<HashCode> packHashCodeList = new ArrayList<>(selectPackSet.size());
+        ExecutorService executor = Executors.newCachedThreadPool();
 
-		for (String selectedPack : selectPackSet) {
-			Timber.d("Hashing Pack: " + selectedPack);
-			File packDir = getCreateDir(MODULES_PATH);
-			File modulePackFile = new File(packDir, selectedPack + ".jar");
+        for (String selectedPack : selectPackSet) {
+            Timber.d("Hashing Pack: " + selectedPack);
+            File packDir = getCreateDir(MODULES_PATH);
+            File modulePackFile = new File(packDir, selectedPack + ".jar");
 
-			if (!modulePackFile.exists()) {
-				Timber.d("Pack file doesn't exist: " + modulePackFile);
-				continue;
-			}
+            if (!modulePackFile.exists()) {
+                Timber.d("Pack file doesn't exist: " + modulePackFile);
+                continue;
+            }
 
-			executor.execute(() -> {
-				try {
-					HashCode packHash = Files.hash(modulePackFile, Hashing.murmur3_128(6782590));
-					Timber.d("Pack Hash: " + packHash);
+            executor.execute(() -> {
+                try {
+                    HashCode packHash = Files.hash(modulePackFile, Hashing.murmur3_128(6782590));
+                    Timber.d("Pack Hash: " + packHash);
 
-					synchronized (PACK_CHECKSUM_LOCK) {
-						packHashCodeList.add(
-								packHash
-						);
-					}
+                    synchronized (PACK_CHECKSUM_LOCK) {
+                        packHashCodeList.add(
+                                packHash
+                        );
+                    }
 
-				} catch (IOException e) {
-					Timber.e(e);
-				}
-			});
-		}
+                } catch (IOException e) {
+                    Timber.e(e);
+                }
+            });
+        }
 
-		executor.shutdown();
+        executor.shutdown();
 
-		try {
-			executor.awaitTermination(5, TimeUnit.SECONDS);
-			Timber.d("Finished");
-		} catch (InterruptedException e) {
-			Timber.e(e);
-			return null;
-		}
+        try {
+            executor.awaitTermination(5, TimeUnit.SECONDS);
+            Timber.d("Finished");
+        } catch (InterruptedException e) {
+            Timber.e(e);
+            return null;
+        }
 
-		if (packHashCodeList.size() <= 0)
-			return null;
+        if (packHashCodeList.size() <= 0)
+            return null;
 
-		return Hashing.combineUnordered(packHashCodeList).toString();
-	}
+        return Hashing.combineUnordered(packHashCodeList).toString();
+    }
 }

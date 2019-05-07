@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Gravity
 import android.view.ViewGroup
+import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable
-import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString
 import org.jetbrains.anko.*
 

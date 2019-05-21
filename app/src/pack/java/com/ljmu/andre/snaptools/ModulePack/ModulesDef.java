@@ -104,12 +104,12 @@ class ModulesDef extends ConstantDefiner<Modules> {
 
     // ===========================================================================
 
-    public static final Modules CUSTOM_FILTERS = new Modules(
-            11,
-            "Custom Filters",
-            CustomFilters.class,
-            "Allows for custom images and a Now Playing filter to be loaded alongside Snapchat filters"
-    );
+//    public static final Modules CUSTOM_FILTERS = new Modules(
+//            11,
+//            "Custom Filters",
+//            CustomFilters.class,
+//            "Allows for custom images and a Now Playing filter to be loaded alongside Snapchat filters"
+//    );
 
     // ===========================================================================
 

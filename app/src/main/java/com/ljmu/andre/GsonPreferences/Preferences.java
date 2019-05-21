@@ -119,7 +119,7 @@ public class Preferences {
 
                 Timber.d("Loaded Preferences: " + preferenceMap);
             } catch (Throwable t) {
-                Timber.e("Failed to load preferences", t);
+                Timber.e(t, "Failed to load preferences");
             } finally {
                 try {
                     closer.close();

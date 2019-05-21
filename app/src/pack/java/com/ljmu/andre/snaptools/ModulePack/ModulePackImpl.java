@@ -40,7 +40,7 @@ import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContain
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ModulePackImpl extends ModulePack {
-    private static final int MINIMUM_FRAMEWORK_VERSION = 108;
+    private static final int MINIMUM_FRAMEWORK_VERSION = 110;
 
     public ModulePackImpl(LocalPackMetaData packMetaData, PackLoadState loadState) throws ModulePackLoadAborted {
         super(packMetaData, loadState);

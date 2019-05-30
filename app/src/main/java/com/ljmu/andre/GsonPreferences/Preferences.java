@@ -269,12 +269,14 @@ public class Preferences {
     @Nullable
     private static String useExternalPathFallback() {
 
-        try {
-            Class<?> environment_cls = Class.forName("android.os.Environment");
-            Method setUserRequiredM = environment_cls.getMethod("setUserRequired", boolean.class);
-            setUserRequiredM.invoke(null, false);
-        } catch (Exception e) {
-            Timber.e(e, "Get external path exception");
+        if (VERSION.SDK_INT < VERSION_CODES.P) {
+            try {
+                Class<?> environment_cls = Class.forName("android.os.Environment");
+                Method setUserRequiredM = environment_cls.getMethod("setUserRequired", boolean.class);
+                setUserRequiredM.invoke(null, false);
+            } catch (Exception e) {
+                Timber.e(e, "Get external path exception");
+            }
         }
 
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))

@@ -49,7 +49,7 @@ android {
         applicationId "com.ljmu.andre.snaptools"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 0
+        versionCode 1
         versionName "0.0.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -157,8 +157,7 @@ dependencies {
     // sdk15, sdk19, sdk21, sdk23 are also available
     implementation 'org.jetbrains.anko:anko-appcompat-v7:0.10.1'
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    // Video Compression
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"    // Video Compression
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
     //Color picker
     //compile 'com.github.QuadFlask:colorpicker:0.0.13'

@@ -52,12 +52,12 @@ internal abstract class ArcComponent(metrics: Metrics, paints: Paints) : ColorCo
             shaderPaint.shader = null
             shaderPaint.color = if (strokeColor == 0) Color.WHITE else strokeColor
             shaderPaint.strokeWidth = strokeWidth + borderWidth * 2
-            canvas.drawArc(innerCircleArcReference, arcStartAngle, arcLength, false, shaderPaint)
+            canvas.drawArc(innerCircleArcReference!!, arcStartAngle, arcLength, false, shaderPaint)
         }
 
         shaderPaint.strokeWidth = strokeWidth
         shaderPaint.shader = getShader()
-        canvas.drawArc(innerCircleArcReference, arcStartAngle, arcLength, false, shaderPaint)
+        canvas.drawArc(innerCircleArcReference!!, arcStartAngle, arcLength, false, shaderPaint)
     }
 
 

@@ -142,7 +142,7 @@ open class HSLColorPicker @JvmOverloads constructor(context: Context, attrs: Att
 
     override fun onSaveInstanceState(): Parcelable {
         val bundle = super.onSaveInstanceState()
-        val savedState = SavedState(bundle)
+        val savedState = SavedState(bundle!!)
         savedState.color = ColorUtils.HSLToColor(metrics.hsl)
         return savedState
     }

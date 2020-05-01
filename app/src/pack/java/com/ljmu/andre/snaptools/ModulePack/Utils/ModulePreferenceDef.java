@@ -432,6 +432,11 @@ public class ModulePreferenceDef extends ConstantDefiner<Preference> {
             false, Boolean.class
     );
 
+    public static final Preference BLOCK_OUTGOING_TYPING_NOTIFICATION = new Preference(
+            "BLOCK_OUTGOING_TYPING_NOTIFICATION",
+            false, Boolean.class
+    );
+
     public static final Preference DEFAULT_SNAP_STEALTH = new Preference(
             "DEFAULT_SNAP_STEALTH",
             false, Boolean.class

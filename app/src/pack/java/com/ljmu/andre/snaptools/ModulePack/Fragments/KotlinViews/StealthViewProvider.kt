@@ -75,6 +75,19 @@ class StealthViewProvider {
                             }
 
                             themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                                id = "switch_stealth_typing".toId()
+
+                                verticalPadding = 5.toDp()
+                                horizontalPadding = 10.toDp()
+                                text = "Hide '... is typing' Notification"
+                                isChecked = Preferences.getPref(BLOCK_OUTGOING_TYPING_NOTIFICATION)
+
+                                setOnCheckedChangeListener { _, isChecked ->
+                                    putAndKill(BLOCK_OUTGOING_TYPING_NOTIFICATION, isChecked, activity)
+                                }
+                            }
+
+                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_show_chat_stealth_message".toId()
 
                                 verticalPadding = 5.toDp()

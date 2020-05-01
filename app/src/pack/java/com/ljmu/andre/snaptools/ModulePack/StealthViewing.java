@@ -56,11 +56,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_UPDATE_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_UPDATE_METADATA_ID;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_UPDATE_METADATA_LIST;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DEFAULT_CHAT_STEALTH;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DEFAULT_SNAP_STEALTH;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_CHAT_STEALTH_BUTTON;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SNAP_STEALTH_BUTTON;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_MARK_STORY_VIEWED;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.detach;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
@@ -311,7 +307,7 @@ public class StealthViewing extends ModuleHelper {
                         String url = (String) callMethod(param.thisObject, "getUrl");
                         Timber.d("ExecAsyncUrl: " + url);
 
-                        if (!(boolean) getPref(DEFAULT_CHAT_STEALTH))
+                        if (!((boolean) getPref(DEFAULT_CHAT_STEALTH) || (boolean) getPref(BLOCK_OUTGOING_TYPING_NOTIFICATION)))
                             return;
 
                         if (url.endsWith("chat_typing")) {

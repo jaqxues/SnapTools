@@ -8,26 +8,30 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-def keystorePropertiesFile = file("../KeysCertificates/KeyStore/keystore.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def shouldSign = file("../KeysCertificates/KeyStore/keystore.properties").exists()
+if (shouldSign) {
+    keystoreProperties.load(new FileInputStream(file("../KeysCertificates/KeyStore/keystore.properties")))
+}
 
 android {
 
     signingConfigs {
-        release {
-            // "MKey..." --> MasterKey
-            keyAlias keystoreProperties['MKeyAlias']
-            keyPassword keystoreProperties['MKeyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-        debug {
-            // "DKey..." --> DebugKey
-            keyAlias keystoreProperties['DKeyAlias']
-            keyPassword keystoreProperties['DKeyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+        if (shouldSign) {
+            release {
+                // "MKey..." --> MasterKey
+                keyAlias keystoreProperties['MKeyAlias']
+                keyPassword keystoreProperties['MKeyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+            debug {
+                // "DKey..." --> DebugKey
+                keyAlias keystoreProperties['DKeyAlias']
+                keyPassword keystoreProperties['DKeyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
@@ -77,11 +81,15 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            if (shouldSign) {
+                signingConfig signingConfigs.debug
+            }
             debuggable true
         }
         release {
-            signingConfig signingConfigs.release
+            if (shouldSign) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {
@@ -165,7 +173,7 @@ dependencies {
 
     implementation 'org.bouncycastle:bcprov-jdk15on:1.58'
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.58'
-    implementation ('com.github.topjohnwu:libsu:1.1.1') {
+    implementation('com.github.topjohnwu:libsu:1.1.1') {
         exclude group: 'android.support.annotation'
     }
 }
@@ -310,13 +318,13 @@ task postProdMappingMerger(type: JavaExec) {
 }*/
 
 //afterEvaluate() {
-    /*transformClassesAndResourcesWithProguardForPackRelease.dependsOn(preProguardPackMappingMerge)
-    transformClassesAndResourcesWithProguardForPackRelease.finalizedBy(postProguardPackMappingMerge)*/
+/*transformClassesAndResourcesWithProguardForPackRelease.dependsOn(preProguardPackMappingMerge)
+transformClassesAndResourcesWithProguardForPackRelease.finalizedBy(postProguardPackMappingMerge)*/
 //    assemblePackRelease.finalizedBy(exportModulePackClasses)
 
-    /*transformClassesAndResourcesWithProguardForBetaRelease.dependsOn(preBetaMappingMerger)
-    transformClassesAndResourcesWithProguardForBetaRelease.finalizedBy(postBetaMappingMerger)
+/*transformClassesAndResourcesWithProguardForBetaRelease.dependsOn(preBetaMappingMerger)
+transformClassesAndResourcesWithProguardForBetaRelease.finalizedBy(postBetaMappingMerger)
 
-    transformClassesAndResourcesWithProguardForProdRelease.dependsOn(preProdMappingMerger)
-    transformClassesAndResourcesWithProguardForProdRelease.finalizedBy(postProdMappingMerger)*/
+transformClassesAndResourcesWithProguardForProdRelease.dependsOn(preProdMappingMerger)
+transformClassesAndResourcesWithProguardForProdRelease.finalizedBy(postProdMappingMerger)*/
 //}

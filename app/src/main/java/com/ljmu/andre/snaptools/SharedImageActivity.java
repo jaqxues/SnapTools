@@ -859,7 +859,7 @@ public class SharedImageActivity extends AppCompatActivity {
             else
                 shareIntent.putExtra("video_url", filePath);
 
-            shareIntent.setComponent(ComponentName.unflattenFromString("com.snapchat.android/.LandingPageActivityv1"));
+            shareIntent.setComponent(ComponentName.unflattenFromString("com.snapchat.android/.LandingPageActivity"));
             startActivity(shareIntent);
             finish();
         } catch (ActivityNotFoundException e) {

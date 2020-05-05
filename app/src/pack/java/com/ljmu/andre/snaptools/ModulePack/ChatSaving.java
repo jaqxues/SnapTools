@@ -106,7 +106,7 @@ public class ChatSaving extends ModuleHelper {
                     }
             );
         }
-
+        // HAYDS SWEARIFY STUFF
         if (getPref(CHANGE_TYPING_NOTIFICATIONS)) {
             hookMethod(
                     CHAT_NOTIFICATION,
@@ -139,7 +139,7 @@ public class ChatSaving extends ModuleHelper {
                     }
             );
         }
-
+        // HAYDS SWEARIFY STUFF
         if (getPref(STORE_CHAT_MESSAGES)) {
             try {
                 ChatDatabase.init(snapContext);

@@ -64,6 +64,17 @@ class ChatSettingsViewProvider {
                             }
                         }
 
+                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            verticalPadding = 5.toDp()
+                            horizontalPadding = 10.toDp()
+                            text = "Swear-ify notifications"
+                            isChecked = getPref(CHANGE_TYPING_NOTIFICATIONS)
+
+                            setOnCheckedChangeListener { _, isChecked ->
+                                putAndKill(CHANGE_TYPING_NOTIFICATIONS, isChecked, activity)
+                            }
+                        }
+
                     }.lparams(matchParent)
                 }
             }.view as T

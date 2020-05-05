@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.robv.android.xposed.XposedHelpers;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
@@ -38,6 +39,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.CHAT_SAVING_LINKER_CHAT_REF;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.NOTIFICATION_TYPE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCK_TYPING_NOTIFICATIONS;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CHANGE_TYPING_NOTIFICATIONS;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_CHAT_IN_SC;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORE_CHAT_MESSAGES;
 
@@ -100,6 +102,39 @@ public class ChatSaving extends ModuleHelper {
 
                             if (name.contains("TYPING"))
                                 param.setResult(null);
+                        }
+                    }
+            );
+        }
+
+        if (getPref(CHANGE_TYPING_NOTIFICATIONS)) {
+            hookMethod(
+                    CHAT_NOTIFICATION,
+                    new ST_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            Enum<?> notificationType = getObjectField(NOTIFICATION_TYPE, param.args[0]);
+                            String name = notificationType.name();
+
+                            Timber.d("Notification inbound: " + notificationType);
+
+                            if (name.contains("TYPING")) {
+                                String user = (String) XposedHelpers.getObjectField(param.args[0], "o");
+                                XposedHelpers.setObjectField(param.args[0],"r", user + " needs to back the fuck off...");
+                            }
+
+                            if (name.contains("CHAT")) {
+                                String user = (String) XposedHelpers.getObjectField(param.args[0], "o");
+                                XposedHelpers.setObjectField(param.args[0],"r", "Great." + user + " went through with it and now you've got a message.");
+                            }
+
+
+                            if (name.contains("SNAP")) {
+                                String user = (String) XposedHelpers.getObjectField(param.args[0], "o");
+                                XposedHelpers.setObjectField(param.args[0],"r", user + " sent you a booty pic for you to screenshot.");
+
+                            }
+
                         }
                     }
             );

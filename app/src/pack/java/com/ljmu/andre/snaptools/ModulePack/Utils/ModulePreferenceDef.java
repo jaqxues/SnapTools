@@ -407,6 +407,11 @@ public class ModulePreferenceDef extends ConstantDefiner<Preference> {
             false, Boolean.class
     );
 
+    public static final Preference CHANGE_TYPING_NOTIFICATIONS = new Preference(
+            "CHANGE_TYPING_NOTIFICATIONS",
+            false, Boolean.class
+    );
+
     public static final Preference SHOW_CHAT_STEALTH_BUTTON = new Preference(
             "SHOW_CHAT_STEALTH_BUTTON",
             true, Boolean.class

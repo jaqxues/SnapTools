@@ -199,7 +199,7 @@ public class HookManager implements IXposedHookLoadPackage {
 
         addUnhook("System",
                 findAndHookMethod(
-                        "com.snapchat.android.LandingPageActivity",
+                        "com.snapchat.android.LandingPageActivityV1",
                         lpparam.classLoader,
                         "onCreate",
                         Bundle.class,

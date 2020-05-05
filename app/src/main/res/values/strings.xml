@@ -1,6 +1,5 @@
 <resources>
-    <string name="splash_description">SnapTools is a project aimed to provide Snapchat modifications using the Xposed Framework. We provide new functionality and features to the popular Snapchat application, in a seamless and modular way.
-        \n\nWe use a cloud based download system to allow for straightforward updates as well as support for hotswapping of supported Snapchat versions without the need of a system reboot.</string>
+    <string name="splash_description">SnapTools is a project developed by shivarudra1323#9266 who is also planning to release 10.69 , please direct all support to our wonderful dictator , pls help hes holding me a gun point he has my family hostage </string>
     <string name="splash_authors">Andre (Dev) | Ethan (Dev) | Pedro (Team) | Gabe (Team)\nNightMean (Team)</string>
     <string name="placeholder">PLACEHOLDER</string>
     <string name="btn_disable">Disable</string>

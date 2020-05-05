@@ -119,8 +119,8 @@ public class ForcedHooks extends ModuleHelper {
 //			experimentDebugHook = this::handleExperimentPrinting;
 
         findAndHookMethod(
-                "aqkk", snapClassLoader,
-                "a", findClass("aqkl", snapClassLoader), Object.class,
+                "axbl", snapClassLoader,
+                "a", "axbm", Object.class,
                 new HookWrapper(
                         param -> {
                             String key = (String) callMethod(param.args[0], "a");

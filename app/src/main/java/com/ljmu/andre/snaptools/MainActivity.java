@@ -492,7 +492,7 @@ public class MainActivity
          * ===========================================================================
          */
         initApkUpdateChecker();
-        checkForSnapchatBeta();
+        //checkForSnapchatBeta();
         initReminders();
         Translator.translateActivity(this);
         initAppRepackaging();

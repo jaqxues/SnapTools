@@ -17,8 +17,8 @@ import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.*
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
 import com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight
+import com.ljmu.andre.snaptools.Utils.themedSwitchCompatX
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
 
 @Suppress("DEPRECATION")
 /**
@@ -45,7 +45,7 @@ class StoryBlockerViewProvider {
                         backgroundResource = ResourceUtils.getColor(activity, "primaryLight")
                     }.lparams(width = matchParent, height = dip(1))
 
-                    themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                    themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                         text = "Block Story Discover Snaps"
                         isChecked = getPref(STORY_BLOCKER_DISCOVER_BLOCKED)
 
@@ -55,7 +55,7 @@ class StoryBlockerViewProvider {
                         }
                     }
 
-                    themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                    themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                         text = "Block Story Video Adverts"
                         isChecked = getPref(STORY_BLOCKER_ADVERTS_BLOCKED)
 
@@ -65,7 +65,7 @@ class StoryBlockerViewProvider {
                         }
                     }
 
-                    themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                    themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                         text = "Show Block Stories button in Snapchat"
                         isChecked = getPref(STORY_BLOCKER_SHOW_BUTTON)
 

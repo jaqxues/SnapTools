@@ -13,13 +13,8 @@ import android.widget.ImageView
 import com.ljmu.andre.snaptools.Fragments.ViewProviders.CustomViews.Companion.customTabStrip
 import com.ljmu.andre.snaptools.R
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ListedViewPageAdapter
-import com.ljmu.andre.snaptools.Utils.AnimationUtils
-import com.ljmu.andre.snaptools.Utils.Callable
-import com.ljmu.andre.snaptools.Utils.FrameworkViewFactory
-import com.ljmu.andre.snaptools.Utils.ResourceUtils
+import com.ljmu.andre.snaptools.Utils.*
 import org.jetbrains.anko.*
-import org.jetbrains.anko.support.v4.swipeRefreshLayout
-import org.jetbrains.anko.support.v4.viewPager
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -44,7 +39,7 @@ class FeaturesViewProvider(
                         horizontalPadding = 32.toDp()
                         topPadding = 16.toDp()
 
-                        val viewPager: ViewPager = viewPager {
+                        val viewPager: ViewPager = viewPagerX {
                             id = ResourceUtils.getIdFromString("view_pager")
                         }.lparams(width = matchParent, height = matchParent)
 
@@ -73,7 +68,7 @@ class FeaturesViewProvider(
                     lparams(matchParent, matchParent)
                     val mainContainer = this
 
-                    swipeRefreshLayout {
+                    swipeRefreshLayoutX {
                         id = "basic_refresh".toId()
                         scrollView {
                             id = "scrollview_basic".toId()
@@ -95,7 +90,7 @@ class FeaturesViewProvider(
                     lparams(matchParent, matchParent)
                     val mainContainer = this
 
-                    swipeRefreshLayout {
+                    swipeRefreshLayoutX {
                         id = "premium_refresh".toId()
 
                         scrollView {

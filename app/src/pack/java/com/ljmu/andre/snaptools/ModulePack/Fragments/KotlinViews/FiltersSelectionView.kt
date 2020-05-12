@@ -22,9 +22,9 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
 import com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFilterScaleType
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
+import com.ljmu.andre.snaptools.Utils.swipeRefreshLayoutX
+import com.ljmu.andre.snaptools.Utils.themedSwitchCompatX
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
-import org.jetbrains.anko.support.v4.swipeRefreshLayout
 
 
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
@@ -155,7 +155,7 @@ class FiltersSelectionView {
 
                             header("Sample Background Settings")
 
-                            themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                                 id = getIdFromString("switch_show_sample")
                                 text = "Toggle Filter Background"
                                 isChecked = getPref(FILTER_SHOW_SAMPLE_BACKGROUND)
@@ -196,7 +196,7 @@ class FiltersSelectionView {
                                 alpha = 0.75f
                             }.lparams(width = matchParent, height = 1.toDp())
 
-                            themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                                 id = getIdFromString("switch_now_playing_enabled")
                                 text = "Filter Enabled"
                                 isChecked = getPref(FILTER_NOW_PLAYING_ENABLED)
@@ -220,7 +220,7 @@ class FiltersSelectionView {
                     isFocusable = true
                     isFocusableInTouchMode = true
 
-                    swipeRefreshLayout {
+                    swipeRefreshLayoutX {
                         id = getIdFromString("filter_container")
                         visibility = View.GONE
                     }.lparams(width = matchParent, height = matchParent) {

@@ -14,8 +14,8 @@ import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_COMPRES
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
 import com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight
+import com.ljmu.andre.snaptools.Utils.themedSwitchCompatX
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
 
 @Suppress("DEPRECATION")
 /**
@@ -40,7 +40,7 @@ class SharingView {
                         backgroundResource = getColor(activity, "primaryLight")
                     }.lparams(width = matchParent, height = dip(1))
 
-                    themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                    themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                         text = "Display tutorial when sharing"
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_show_tutorial")
@@ -50,7 +50,7 @@ class SharingView {
                         horizontalMargin = dip(15)
                     }
 
-                    themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                    themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                         text = "Video Compression Prompt"
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_show_compression_dialog")
@@ -66,7 +66,7 @@ class SharingView {
                         horizontalMargin = dip(15)
                     }
 
-                    themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                    themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                         text = "Fix Rotation Bug"
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_auto_rotate")

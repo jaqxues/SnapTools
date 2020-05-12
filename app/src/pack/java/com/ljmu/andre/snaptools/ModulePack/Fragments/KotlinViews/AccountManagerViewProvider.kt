@@ -26,8 +26,8 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.Result
 import com.ljmu.andre.snaptools.Utils.Callable
 import com.ljmu.andre.snaptools.Utils.FrameworkViewFactory
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
+import com.ljmu.andre.snaptools.Utils.viewPagerX
 import org.jetbrains.anko.*
-import org.jetbrains.anko.support.v4.viewPager
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -46,7 +46,7 @@ class AccountManagerViewProvider(val activity: Activity, private val managerCall
 
                     verticalLayout {
                         horizontalPadding = 16.toDp()
-                        val viewPager: ViewPager = viewPager {
+                        val viewPager: ViewPager = viewPagerX {
                             id = ResourceUtils.getIdFromString("view_pager")
                         }.lparams(width = matchParent, height = wrapContent)
 

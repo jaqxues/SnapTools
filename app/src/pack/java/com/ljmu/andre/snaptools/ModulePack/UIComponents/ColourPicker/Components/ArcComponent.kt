@@ -153,8 +153,8 @@ internal abstract class ArcComponent(metrics: Metrics, paints: Paints) : ColorCo
      */
     private fun calculateAngleInContinuousRange(middle: Float) {
         when (angle) {
-            in arcEndAngle..middle -> angle = arcEndAngle.toDouble()
-            in middle..arcStartAngle -> angle = arcStartAngle.toDouble()
+            in arcEndAngle.toDouble()..middle.toDouble() -> angle = arcEndAngle.toDouble()
+            in middle.toDouble()..arcStartAngle.toDouble() -> angle = arcStartAngle.toDouble()
         }
     }
 
@@ -170,13 +170,13 @@ internal abstract class ArcComponent(metrics: Metrics, paints: Paints) : ColorCo
         if (middle > 360f) {
             val correctedMiddle = middle - 360f
             when (angle) {
-                in arcEndAngle..360f, in 0f..correctedMiddle -> angle = arcEndAngle.toDouble()
-                in correctedMiddle..arcStartAngle -> angle = arcStartAngle.toDouble()
+                in arcEndAngle.toDouble()..360.0, in 0.0..correctedMiddle.toDouble() -> angle = arcEndAngle.toDouble()
+                in correctedMiddle.toDouble()..arcStartAngle.toDouble() -> angle = arcStartAngle.toDouble()
             }
         } else {
             when (angle) {
-                in arcEndAngle..middle -> angle = arcEndAngle.toDouble()
-                in middle..360f, in 0f..arcStartAngle -> angle = arcStartAngle.toDouble()
+                in arcEndAngle.toDouble()..middle.toDouble() -> angle = arcEndAngle.toDouble()
+                in middle.toDouble()..360.0, in 0.0..arcStartAngle.toDouble() -> angle = arcStartAngle.toDouble()
             }
         }
     }

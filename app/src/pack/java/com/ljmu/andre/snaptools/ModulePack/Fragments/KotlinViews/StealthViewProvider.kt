@@ -33,8 +33,8 @@ import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.togglePreference
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
 import com.ljmu.andre.snaptools.Utils.SafeToast
+import com.ljmu.andre.snaptools.Utils.themedSwitchCompatX
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
 
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
 /**
@@ -61,7 +61,7 @@ class StealthViewProvider {
                             chatButtonLocations.add("Right")
 
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_show_chat_stealth".toId()
 
                                 verticalPadding = 5.toDp()
@@ -74,7 +74,7 @@ class StealthViewProvider {
                                 }
                             }
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_stealth_typing".toId()
 
                                 verticalPadding = 5.toDp()
@@ -87,7 +87,7 @@ class StealthViewProvider {
                                 }
                             }
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_show_chat_stealth_message".toId()
 
                                 verticalPadding = 5.toDp()
@@ -192,7 +192,7 @@ class StealthViewProvider {
 
                             header("Snap Stealth Button")
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_show_snap_stealth".toId()
 
                                 verticalPadding = 5.toDp()
@@ -205,7 +205,7 @@ class StealthViewProvider {
                                 }
                             }
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_show_snap_stealth_message".toId()
 
                                 verticalPadding = 5.toDp()
@@ -218,7 +218,7 @@ class StealthViewProvider {
                                 }
                             }
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 id = "switch_mark_story_viewed".toId()
 
                                 verticalPadding = 5.toDp()

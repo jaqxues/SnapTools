@@ -43,7 +43,6 @@ import com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
 import timber.log.Timber
 import java.io.File
 
@@ -132,7 +131,7 @@ class SavingViewProvider(val activity: Activity) {
 
     private fun <T : View> getSavingSentSettings(): T =
             activity.UI {
-                themedSwitchCompat(getStyle(activity, "DefaultSwitch")) {
+                themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                     verticalPadding = 26.toDp()
                     horizontalPadding = 26.toDp()
                     text = "Save Sent Snaps"
@@ -276,7 +275,7 @@ class SavingViewProvider(val activity: Activity) {
                         }
                 )
 
-                themedSwitchCompat(getStyle(context, "DefaultSwitch")) {
+                themedSwitchCompatX(getStyle(context, "DefaultSwitch")) {
                     padding = 10.toDp()
                     text = "Preview Button"
                     isChecked = true
@@ -402,7 +401,7 @@ class SavingViewProvider(val activity: Activity) {
                                 { getPref(STACKED_ORIENTATION) }
                         ))*/
 
-                themedSwitchCompat(getStyle(context, "DefaultSwitch")) {
+                themedSwitchCompatX(getStyle(context, "DefaultSwitch")) {
                     padding = 10.toDp()
                     text = "Vibrate On Save"
                     isChecked = getPref(VIBRATE_ON_SAVE)

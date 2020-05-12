@@ -64,7 +64,7 @@ class LensViewProvider(
 
                     verticalLayout {
                         horizontalPadding = 16.toDp()
-                        val viewPager: ViewPager = viewPager {
+                        val viewPager: ViewPager = viewPagerX {
                             id = ResourceUtils.getIdFromString("view_pager")
                         }.lparams(width = matchParent, height = wrapContent)
 
@@ -99,7 +99,7 @@ class LensViewProvider(
 
                     val layoutInflater = LayoutInflater.from(activity)
 
-                    swipeRefreshLayout {
+                    swipeRefreshLayoutX {
                         id = "swipe_refresh_lenses".toId()
 
                         val recyclerView = layoutInflater.inflate(
@@ -162,7 +162,7 @@ class LensViewProvider(
 
                             splitter(colorId = "primary").lparams(width = matchParent, height = 1.toDp())
 
-                            themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                            themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Show Lens Names"
@@ -327,7 +327,7 @@ class LensViewProvider(
 
                         // ===========================================================================
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                        themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             padding = 10.toDp()
                             text = "Enable lens when collected"
                             isChecked = Preferences.getPref(LENS_AUTO_ENABLE)
@@ -339,7 +339,7 @@ class LensViewProvider(
 
                         // ===========================================================================
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                        themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             padding = 10.toDp()
                             text = "Enable new merged lenses"
                             isChecked = Preferences.getPref(LENS_MERGE_ENABLE)

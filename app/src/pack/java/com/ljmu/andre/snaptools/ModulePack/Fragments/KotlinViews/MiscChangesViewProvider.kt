@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.Typeface
-import androidx.core.content.ContextCompat
-import androidx.viewpager.widget.ViewPager
 import android.util.Pair
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
 import com.ljmu.andre.GsonPreferences.Preferences.getPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.customTabStrip
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
@@ -27,9 +27,9 @@ import com.ljmu.andre.snaptools.Utils.Callable
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor
+import com.ljmu.andre.snaptools.Utils.themedSwitchCompatX
+import com.ljmu.andre.snaptools.Utils.viewPagerX
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.themedSwitchCompat
-import org.jetbrains.anko.support.v4.viewPager
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -59,7 +59,7 @@ class MiscChangesViewProvider(
 
                     verticalLayout {
                         horizontalPadding = 16.toDp()
-                        val viewPager: ViewPager = viewPager {
+                        val viewPager: ViewPager = viewPagerX {
                             id = ResourceUtils.getIdFromString("view_pager")
                         }.lparams(width = matchParent, height = wrapContent)
 
@@ -131,7 +131,7 @@ class MiscChangesViewProvider(
                             }
                         }
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                        themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             text = "Force Caption Multi-Line"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_force_multiline")
@@ -141,7 +141,7 @@ class MiscChangesViewProvider(
 
                         header("Caption Menu Settings")
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                        themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             text = "Cut Button"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_context_cut")
@@ -149,7 +149,7 @@ class MiscChangesViewProvider(
                             setOnCheckedChangeListener({ _, isChecked -> putAndKill(CUT_BUTTON, isChecked, activity) })
                         }.lparams(matchParent)
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                        themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             text = "Copy Option"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_context_copy")
@@ -157,7 +157,7 @@ class MiscChangesViewProvider(
                             setOnCheckedChangeListener({ _, isChecked -> putAndKill(COPY_BUTTON, isChecked, activity) })
                         }.lparams(matchParent)
 
-                        themedSwitchCompat(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
+                        themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             text = "Paste Button"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_context_paste")

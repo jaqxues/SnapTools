@@ -1,7 +1,7 @@
 package com.ljmu.andre.snaptools.ModulePack.Databases.Tables;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.widget.TextView;
 

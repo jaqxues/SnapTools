@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.Utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
 import com.ljmu.andre.GsonPreferences.Preferences.ConditionalCheck;

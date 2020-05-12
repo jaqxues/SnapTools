@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.Dialogs;
 
 import android.app.Activity;
-import android.support.annotation.CheckResult;
-import android.support.annotation.Nullable;
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
 
 import com.ljmu.andre.snaptools.Dialogs.Content.BasicMessage;
 import com.ljmu.andre.snaptools.Dialogs.Content.Confirmation;

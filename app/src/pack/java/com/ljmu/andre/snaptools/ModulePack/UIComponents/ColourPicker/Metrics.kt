@@ -6,7 +6,7 @@ package com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker
  */
 
 import android.graphics.Paint
-import android.support.v4.graphics.ColorUtils
+import androidx.core.graphics.ColorUtils
 
 data class Metrics(var centerX: Float = 0f, var centerY: Float = 0f, var hsl: FloatArray = floatArrayOf(0f, 1f, 0.5f), val density: Float)
 

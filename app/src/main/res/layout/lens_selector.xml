@@ -8,13 +8,13 @@
     android:padding="3dp"
     android:theme="@style/ActivityDialog">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lens_list_holder"
         style="@style/ExpandableList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/lens_toolbar_container"
-        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+        android:scrollbars="vertical"></androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/lens_toolbar_container"
@@ -36,7 +36,7 @@
                 android:layout_height="1dp"
                 android:background="@color/primary" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_show_names"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"

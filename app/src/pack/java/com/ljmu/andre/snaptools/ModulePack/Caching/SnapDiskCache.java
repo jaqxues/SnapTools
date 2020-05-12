@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.Caching;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closer;

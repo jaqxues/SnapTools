@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.ImageView.ScaleType;
 
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;

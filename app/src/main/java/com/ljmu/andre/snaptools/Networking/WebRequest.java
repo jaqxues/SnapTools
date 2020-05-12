@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.Networking;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.widget.ImageView.ScaleType;
 
 import com.android.volley.AuthFailureError;

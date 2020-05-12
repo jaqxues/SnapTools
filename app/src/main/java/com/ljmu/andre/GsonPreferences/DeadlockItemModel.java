@@ -1,6 +1,6 @@
 package com.ljmu.andre.GsonPreferences;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * This class was created by Andre R M (SID: 701439)

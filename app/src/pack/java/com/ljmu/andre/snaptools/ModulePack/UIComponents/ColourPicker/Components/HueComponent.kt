@@ -5,7 +5,7 @@ package com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker.Components
  * It and its contents are free to use by all
  */
 
-import android.support.v4.graphics.ColorUtils
+import androidx.core.graphics.ColorUtils
 import com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker.Metrics
 import com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker.Paints
 

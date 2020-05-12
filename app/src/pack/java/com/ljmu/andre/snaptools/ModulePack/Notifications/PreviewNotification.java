@@ -8,7 +8,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Looper;
 import android.provider.MediaStore.Video.Thumbnails;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.Gravity;

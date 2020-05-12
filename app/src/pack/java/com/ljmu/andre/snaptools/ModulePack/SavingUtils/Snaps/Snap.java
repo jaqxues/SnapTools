@@ -3,7 +3,7 @@ package com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaScannerConnection;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import com.ljmu.andre.ConstantDefiner.Constant;

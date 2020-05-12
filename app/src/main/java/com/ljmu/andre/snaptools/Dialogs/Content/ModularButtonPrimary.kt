@@ -1,7 +1,7 @@
 package com.ljmu.andre.snaptools.Dialogs.Content
 
 import android.app.Activity
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import com.ljmu.andre.snaptools.Dialogs.DialogComponent
 import com.ljmu.andre.snaptools.Dialogs.ModularDialog

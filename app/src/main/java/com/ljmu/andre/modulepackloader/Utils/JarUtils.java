@@ -1,6 +1,6 @@
 package com.ljmu.andre.modulepackloader.Utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.jar.Attributes;

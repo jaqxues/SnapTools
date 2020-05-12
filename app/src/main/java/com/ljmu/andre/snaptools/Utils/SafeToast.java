@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.BaseTransientBottomBar.Duration;
+import com.google.android.material.snackbar.BaseTransientBottomBar.Duration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;

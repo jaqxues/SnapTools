@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.ModulePack.Fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;

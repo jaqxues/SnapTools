@@ -2,7 +2,7 @@ package com.ljmu.andre.snaptools.Fragments
 
 import android.app.Activity
 import android.content.res.Resources
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View

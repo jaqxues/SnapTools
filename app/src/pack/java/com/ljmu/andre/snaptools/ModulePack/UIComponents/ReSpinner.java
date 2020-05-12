@@ -7,7 +7,7 @@ package com.ljmu.andre.snaptools.ModulePack.UIComponents;
 
 import android.content.Context;
 import android.content.res.Resources.Theme;
-import android.support.v7.widget.AppCompatSpinner;
+import androidx.appcompat.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 
 /**

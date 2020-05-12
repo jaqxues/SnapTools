@@ -1,7 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.android.volley.Request;
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
@@ -19,7 +19,6 @@ import com.ljmu.andre.snaptools.Utils.PackUtils;
 import java.io.File;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
 
 /**

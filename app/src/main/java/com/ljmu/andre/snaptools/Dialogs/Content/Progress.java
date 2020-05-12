@@ -2,8 +2,8 @@ package com.ljmu.andre.snaptools.Dialogs.Content;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.IntRange;
-import android.support.annotation.Nullable;
+import androidx.annotation.IntRange;
+import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;

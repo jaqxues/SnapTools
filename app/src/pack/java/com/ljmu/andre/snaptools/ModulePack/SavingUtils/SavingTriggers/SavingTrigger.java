@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.ModulePack.SavingUtils.SavingTriggers;
 
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.ljmu.andre.snaptools.ModulePack.Caching.SnapDiskCache;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap;

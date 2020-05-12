@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.Framework.MetaData;
 
-import android.support.v7.widget.SwitchCompat;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;

@@ -4,7 +4,7 @@ import android.R
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup

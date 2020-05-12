@@ -34,7 +34,7 @@
                 android:layout_height="1dp"
                 android:background="@color/primaryLight" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/master_switch"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:layout_height="1dp"
                 android:background="@color/primaryLight" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_check_apk_updates"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="Check for APK updates" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_check_pack_updates"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="Check for active pack updates" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_check_pack_updates_sc"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -149,7 +149,7 @@
                 android:layout_height="1dp"
                 android:background="@color/primaryLight" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_kill_sc"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -157,7 +157,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="Kill Snapchat On Setting Change" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_enable_load_notify"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -165,7 +165,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="Show Icon on successful launch" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_back_opens_menu"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"
@@ -253,7 +253,7 @@
 
             </LinearLayout>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_transition_animations"
                 style="@style/DefaultSwitch"
                 android:layout_width="match_parent"

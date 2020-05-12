@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.Utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.ljmu.andre.ErrorLogger.ErrorLogger;

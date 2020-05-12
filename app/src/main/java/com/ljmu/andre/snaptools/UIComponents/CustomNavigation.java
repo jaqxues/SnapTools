@@ -2,9 +2,9 @@ package com.ljmu.andre.snaptools.UIComponents;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.MenuItem;

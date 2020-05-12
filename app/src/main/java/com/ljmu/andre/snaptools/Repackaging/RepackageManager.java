@@ -3,7 +3,7 @@ package com.ljmu.andre.snaptools.Repackaging;
 import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.annotation.CheckResult;
+import androidx.annotation.CheckResult;
 
 import com.github.javiersantos.appupdater.objects.Version;
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;

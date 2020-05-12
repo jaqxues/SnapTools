@@ -21,7 +21,7 @@
 
     </com.kekstudio.dachshundtablayout.DachshundTabLayout>
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +31,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:theme="@style/AppTheme">
 
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
         android:layout_width="wrap_content"

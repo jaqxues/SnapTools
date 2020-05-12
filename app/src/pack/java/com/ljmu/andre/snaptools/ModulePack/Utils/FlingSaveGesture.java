@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.Utils;
 
-import android.support.v4.view.VelocityTrackerCompat;
+import androidx.core.view.VelocityTrackerCompat;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;

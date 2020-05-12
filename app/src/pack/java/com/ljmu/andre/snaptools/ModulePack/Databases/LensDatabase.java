@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Point;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 
 import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;

@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.EventBus.Events;
 
-import android.support.annotation.IdRes;
+import androidx.annotation.IdRes;
 
 /**
  * This class was created by Andre R M (SID: 701439)

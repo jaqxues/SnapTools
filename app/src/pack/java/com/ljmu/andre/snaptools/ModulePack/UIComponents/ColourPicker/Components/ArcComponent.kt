@@ -6,7 +6,7 @@ package com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker.Components
  */
 
 import android.graphics.*
-import android.support.v4.graphics.ColorUtils
+import androidx.core.graphics.ColorUtils
 import com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker.Metrics
 import com.ljmu.andre.snaptools.ModulePack.UIComponents.ColourPicker.Paints
 

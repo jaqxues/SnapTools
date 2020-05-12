@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.Fragments.Tutorials;
 
-import android.support.design.widget.TabLayout;
+import com.google.android.material.tabs.TabLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 

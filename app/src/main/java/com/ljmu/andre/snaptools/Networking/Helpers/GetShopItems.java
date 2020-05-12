@@ -1,7 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.android.volley.Request;
 import com.ljmu.andre.CBIDatabase.CBITable;

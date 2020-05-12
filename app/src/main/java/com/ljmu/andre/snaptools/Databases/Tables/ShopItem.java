@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.Databases.Tables;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;

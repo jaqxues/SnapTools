@@ -1,8 +1,8 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
-import android.support.v4.util.LruCache;
+import androidx.annotation.Nullable;
+import androidx.collection.LruCache;
 
 import java.lang.ref.WeakReference;
 

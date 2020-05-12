@@ -1,7 +1,7 @@
 package com.ljmu.andre.snaptools.Utils;
 
-import android.support.annotation.Keep;
-import android.support.annotation.Nullable;
+import androidx.annotation.Keep;
+import androidx.annotation.Nullable;
 
 /**
  * This class was created by Andre R M (SID: 701439)

@@ -10,7 +10,7 @@
     tools:context="com.ljmu.andre.snaptools.MainActivity">
     <!--android:windowSoftInputMode="stateHidden"-->
     <!--Potentially add above to LinearLayout, and uncommand pair in frag_shop.xml-->
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -28,7 +28,7 @@
             android:scaleY="0.6"
             app:srcCompat="@drawable/help_filled_96" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 
     <TextView
@@ -91,7 +91,7 @@
         android:textColor="@color/backgroundPrimary"
         android:visibility="gone" />
 
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -126,6 +126,6 @@
             android:layout_gravity="start"
             android:theme="@style/NavigationDrawer"
             app:menu="@menu/menu" />
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

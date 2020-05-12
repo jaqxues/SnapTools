@@ -1,6 +1,6 @@
 package com.ljmu.andre.GsonPreferences;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.common.io.Closer;
 import com.google.gson.Gson;

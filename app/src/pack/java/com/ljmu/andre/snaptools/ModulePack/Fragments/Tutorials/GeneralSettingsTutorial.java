@@ -1,6 +1,6 @@
 package com.ljmu.andre.snaptools.ModulePack.Fragments.Tutorials;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.collect.ImmutableList;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;

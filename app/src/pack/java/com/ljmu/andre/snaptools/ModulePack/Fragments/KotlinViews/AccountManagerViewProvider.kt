@@ -2,8 +2,8 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 
 import android.app.Activity
 import android.graphics.PorterDuff
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
 import android.util.Pair
 import android.view.Gravity
 import android.view.View

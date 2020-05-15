@@ -10,6 +10,7 @@ import com.g00fy2.versioncompare.Version;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
 import com.ljmu.andre.snaptools.Framework.ModulePack;
 import com.ljmu.andre.snaptools.R;
@@ -21,6 +22,7 @@ import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 
+import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -38,6 +40,11 @@ import static com.ljmu.andre.snaptools.Utils.StringUtils.getFlavourText;
 public abstract class PackMetaData extends ExpandableItemEntity<MultiItemEntity> implements StatefulListable<String>, Comparable<PackMetaData> {
     public static final int layoutRes = R.layout.item_listable_head_stateful;
     public static final int type = 0;
+    protected final Function1<PackEventRequest, Void> eventDispatcher;
+
+    public PackMetaData(Function1<PackEventRequest, Void> dispatcher) {
+        eventDispatcher = dispatcher;
+    }
 
     /**
      * ===========================================================================

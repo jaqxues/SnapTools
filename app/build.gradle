@@ -118,6 +118,16 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.exifinterface:exifinterface:1.2.0'
     testImplementation 'junit:junit:4.12'
+
+
+    def lifecycle_version = "2.2.0"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+
     // SU library
     implementation 'com.jaredrummler:android-shell:1.0.0'
     // Xposed

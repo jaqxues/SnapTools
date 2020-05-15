@@ -17,6 +17,7 @@ import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.ExpandableItemEntity;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
+import kotlin.jvm.functions.Function1;
 
 import static android.view.View.GONE;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleResources;
@@ -27,6 +28,10 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PA
  * It and its contents are free to use by all
  */
 public class LocalPackMetaData extends PackMetaData {
+    public LocalPackMetaData(Function1<PackEventRequest, Void> dispatcher) {
+        super(dispatcher);
+    }
+
     @Override
     public void updateHeaderStateHolder(TextView stateHolder) {
         if (isActive()) {
@@ -83,7 +88,7 @@ public class LocalPackMetaData extends PackMetaData {
     }
 
     public static LocalPackMetaData getTutorialPack(String scVersion) {
-        return (LocalPackMetaData) new LocalPackMetaData()
+        return (LocalPackMetaData) new LocalPackMetaData(null)
                 .setScVersion(scVersion)
                 .setPackVersion("1.0.0.0")
                 .setLatest(true)
@@ -95,8 +100,8 @@ public class LocalPackMetaData extends PackMetaData {
                 .completedBinding();
     }
 
-    public static LocalPackMetaData from(PackMetaData metaData) {
-        LocalPackMetaData localMetaData = new LocalPackMetaData();
+    public LocalPackMetaData from(PackMetaData metaData, Function1<PackEventRequest, Void> dispatcher) {
+        LocalPackMetaData localMetaData = new LocalPackMetaData(dispatcher);
         localMetaData.setName(metaData.getName());
         localMetaData.setDevelopment(metaData.isDeveloper());
         localMetaData.setPackVersion(metaData.getPackVersion());
@@ -107,7 +112,7 @@ public class LocalPackMetaData extends PackMetaData {
         return localMetaData;
     }
 
-    public static class LocalPackToolbarItem extends ExpandableItemEntity {
+    public class LocalPackToolbarItem extends ExpandableItemEntity {
         public static final int layoutRes = R.layout.pack_toolbar_local;
         public static final int type = 2;
         public final int level;
@@ -147,7 +152,7 @@ public class LocalPackMetaData extends PackMetaData {
             ));
 
             delete.setOnClickListener(
-                    v -> EventBus.getInstance().post(
+                    v -> eventDispatcher.invoke(
                             new PackEventRequest(
                                     EventRequest.DELETE,
                                     linkedMeta.getName()
@@ -162,7 +167,8 @@ public class LocalPackMetaData extends PackMetaData {
                     ));
 
             toggle.setOnCheckedChangeListener(
-                    (buttonView, isChecked) -> EventBus.getInstance().post(
+
+                    (buttonView, isChecked) -> eventDispatcher.invoke(
                             new PackEventRequest(
                                     isChecked ? EventRequest.LOAD : EventRequest.UNLOAD,
                                     linkedMeta.getName()

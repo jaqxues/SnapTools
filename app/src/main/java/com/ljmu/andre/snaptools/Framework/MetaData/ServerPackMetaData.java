@@ -21,6 +21,7 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.Html
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.TextItemEntity;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 
+import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleResources;
@@ -45,8 +46,12 @@ public class ServerPackMetaData extends PackMetaData {
     @SerializedName("is_purchased")
     private Boolean isPurchased;
 
+    public ServerPackMetaData(Function1<PackEventRequest, Void> dispatcher) {
+        super(dispatcher);
+    }
+
     public static ServerPackMetaData getTutorialPack(String scVersion) {
-        return (ServerPackMetaData) new ServerPackMetaData()
+        return (ServerPackMetaData) new ServerPackMetaData(null)
                 .setPurchased(false)
                 .setDescription(htmlHighlight("Tutorial Item"))
                 .setHasUpdate(false)
@@ -203,7 +208,7 @@ public class ServerPackMetaData extends PackMetaData {
         return this;
     }
 
-    public static class ServerPackToolbarItem extends ExpandableItemEntity {
+    public class ServerPackToolbarItem extends ExpandableItemEntity {
         public static final int layoutRes = R.layout.pack_toolbar_server;
         public static final int type = 2;
         public final int level;
@@ -236,7 +241,7 @@ public class ServerPackMetaData extends PackMetaData {
                 download.setImageTintList(ContextCompat.getColorStateList(holder.itemView.getContext(), R.color.textPrimary));
 
                 download.setOnClickListener(
-                        v -> EventBus.getInstance().post(
+                        v -> eventDispatcher.invoke(
                                 new PackEventRequest(
                                         eventType,
                                         linkedMeta.getName()
@@ -249,7 +254,7 @@ public class ServerPackMetaData extends PackMetaData {
 
             if (!linkedMeta.isTutorial()) {
                 rollback.setOnClickListener(
-                        v -> EventBus.getInstance().post(
+                        v -> eventDispatcher.invoke(
                                 new PackEventRequest(
                                         EventRequest.SHOW_ROLLBACK,
                                         linkedMeta.getName()
@@ -258,7 +263,7 @@ public class ServerPackMetaData extends PackMetaData {
                 );
 
                 changelog.setOnClickListener(
-                        v -> EventBus.getInstance().post(
+                        v -> eventDispatcher.invoke(
                                 new PackEventRequest(
                                         EventRequest.SHOW_CHANGELOG,
                                         linkedMeta.getName()

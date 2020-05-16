@@ -3,6 +3,7 @@ package com.ljmu.andre.snaptools.Framework;
 import android.app.Activity;
 import android.content.Context;
 
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.Exceptions.ModuleCertificateException;
 import com.ljmu.andre.snaptools.Exceptions.ModulePackFatalError;
 import com.ljmu.andre.snaptools.Exceptions.ModulePackLoadAborted;
@@ -242,7 +243,7 @@ public abstract class ModulePack {
             throw new ModulePackFatalError("Module pack doesn't contain meta-data");
 
         // Load the metadata embedded into the manifest ==============================
-        LocalPackMetaData packMetaData = (LocalPackMetaData) new LocalPackMetaData()
+        LocalPackMetaData packMetaData = (LocalPackMetaData) new LocalPackMetaData(PackEventRequest.EventHandler.ignoreEvents)
                 .setName(modulePackFile.getName().replace(".jar", ""))
                 .setType(mainAttributes.getValue("Type"))
                 .setPackVersion(mainAttributes.getValue("PackVersion"))

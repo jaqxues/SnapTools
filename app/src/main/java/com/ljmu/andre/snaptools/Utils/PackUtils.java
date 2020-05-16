@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.Exceptions.NullObjectException;
 import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
@@ -37,6 +38,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
@@ -140,7 +142,7 @@ public class PackUtils {
 
             for (File file : jarFileList) {
                 try {
-                    LocalPackMetaData packMetaData = getPackMetaData(file);
+                    LocalPackMetaData packMetaData = getPackMetaData(file, PackEventRequest.EventHandler.ignoreEvents);
                     packMetaDataMap.put(packMetaData.getName(), packMetaData);
                 } catch (Throwable t) {
                     Timber.e(t);
@@ -158,8 +160,8 @@ public class PackUtils {
         return null;
     }
 
-    public static LocalPackMetaData getPackMetaData(File file) throws NullObjectException {
-        LocalPackMetaData packMetaData = new LocalPackMetaData();
+    public static LocalPackMetaData getPackMetaData(File file, PackEventRequest.EventHandler dispatcher) throws NullObjectException {
+        LocalPackMetaData packMetaData = new LocalPackMetaData(dispatcher);
         bindPackMetaData(packMetaData, file);
         return packMetaData;
     }
@@ -205,9 +207,9 @@ public class PackUtils {
             for (File file : jarFileList) {
                 LocalPackMetaData metaData;
                 try {
-                    metaData = getPackMetaData(file);
+                    metaData = getPackMetaData(file, PackEventRequest.EventHandler.ignoreEvents);
                 } catch (Throwable t) {
-                    metaData = (LocalPackMetaData) new FailedPackMetaData()
+                    metaData = (LocalPackMetaData) new FailedPackMetaData(PackEventRequest.EventHandler.ignoreEvents)
                             .setReason(t.getMessage())
                             .setName(file.getName().replace(".jar", ""))
                             .completedBinding();
@@ -220,7 +222,7 @@ public class PackUtils {
 
             for (String packName : selectedPacks) {
                 if (!packMetaDataMap.containsKey(packName)) {
-                    FailedPackMetaData metaData = (FailedPackMetaData) new FailedPackMetaData()
+                    FailedPackMetaData metaData = (FailedPackMetaData) new FailedPackMetaData(PackEventRequest.EventHandler.ignoreEvents)
                             .setReason("Pack is enabled but cannot be found in the installed list")
                             .setName(packName)
                             .completedBinding();

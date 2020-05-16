@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter;
 
@@ -25,6 +26,7 @@ public abstract class PackUpdateMetaData extends PackMetaData {
     private boolean hasUpdate;
 
     public PackUpdateMetaData(String name) {
+        super(PackEventRequest.EventHandler.ignoreEvents);
         setName(name);
     }
 

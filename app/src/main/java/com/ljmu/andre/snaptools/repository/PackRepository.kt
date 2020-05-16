@@ -35,19 +35,15 @@ class PackRepository {
 
     private val packDirectory = File(getPref(MODULES_PATH) as String)
 
-    fun fireFromMetadata(evt: PackEventRequest) {
-        _eventDispatcher.value = evt
-    }
-
-    fun refreshLocalMetadata() {
+    fun refreshLocalMetadata(evtHandler: PackEventRequest.EventHandler) {
         val jarFileList = packDirectory.listFiles { _, name -> name.endsWith(".jar") }
         if (jarFileList.isNullOrEmpty()) _localMetadata.postValue(emptyList())
 
         val packs = jarFileList.associate { file ->
             val metadata = try {
-                getPackMetaData(file)
+                getPackMetaData(file, evtHandler)
             } catch (t: Throwable) {
-                FailedPackMetaData().run {
+                FailedPackMetaData(evtHandler).run {
                     reason = t.message
                     name = file.name.replace(".jar", "")
                     completedBinding()
@@ -62,7 +58,7 @@ class PackRepository {
         getPref<Set<String>>(SELECTED_PACKS).forEach { packName ->
             if (packName in packs) return@forEach
 
-            val failedMetadata = FailedPackMetaData().run {
+            val failedMetadata = FailedPackMetaData(evtHandler).run {
                 reason = "Pack is enabled but cannot be found in the installed list"
                 name = packName
                 completedBinding()
@@ -98,7 +94,7 @@ class PackRepository {
     /**
      * Unloads, disables and deletes the pack
      */
-    fun deletePack(packName: String, activity: Activity): Result<String> {
+    fun deletePack(packName: String, activity: Activity, evtHandler: PackEventRequest.EventHandler): Result<String> {
         val result = disablePack(packName, activity)
         if (result is Result.Error)
             return result
@@ -110,7 +106,7 @@ class PackRepository {
             return Result.Error(e)
         }
         _eventDispatcher.value = PackDeleteEvent(packName)
-        refreshLocalMetadata()
+        refreshLocalMetadata(evtHandler)
         return Result.Success(packName)
     }
 

@@ -9,6 +9,7 @@ import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.EventBus.EventBus;
 import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent;
 import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent.DownloadState;
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.Exceptions.NullObjectException;
 import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
 import com.ljmu.andre.snaptools.Networking.Helpers.DownloadFile.DownloadListener;
@@ -98,7 +99,7 @@ public class DownloadModulePack implements DownloadListener {
 
         if (outputFile != null) {
             try {
-                metaData = PackUtils.getPackMetaData(outputFile);
+                metaData = PackUtils.getPackMetaData(outputFile, PackEventRequest.EventHandler.ignoreEvents);
             } catch (NullObjectException e) {
                 state = false;
                 message = e.getMessage();

@@ -20,6 +20,10 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter.Expa
 public class FailedPackMetaData extends LocalPackMetaData {
     private String reason;
 
+    public FailedPackMetaData(PackEventRequest.EventHandler dispatcher) {
+        super(dispatcher);
+    }
+
     @Override
     public String getDisplayName() {
         return getName();
@@ -44,7 +48,7 @@ public class FailedPackMetaData extends LocalPackMetaData {
         return this;
     }
 
-    public static class FailedPackToolbar extends ExpandableItemEntity {
+    public class FailedPackToolbar extends ExpandableItemEntity {
         public static final int layoutRes = R.layout.failed_pack_toolbar;
         public static final int type = 3;
         private FailedPackMetaData linkedMeta;
@@ -69,14 +73,15 @@ public class FailedPackMetaData extends LocalPackMetaData {
             ImageButton disableBtn = (ImageButton) holder.itemView.findViewById(R.id.btn_delete);
             disableBtn.setOnClickListener(
                     v -> {
-                        EventBus.getInstance().post(
+                        eventDispatcher.handleEvent(
                                 new PackEventRequest(
                                         EventRequest.UNLOAD,
                                         linkedMeta.getName()
                                 ));
 
-                        EventBus.getInstance().post(
-                                new PackDeleteEvent(
+                        eventDispatcher.handleEvent(
+                                new PackEventRequest(
+                                        EventRequest.DELETE,
                                         linkedMeta.getName()
                                 ));
                     }

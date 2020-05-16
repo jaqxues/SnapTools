@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.view.KeyEventDispatcher;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.gson.annotations.SerializedName;
 import com.ljmu.andre.snaptools.BuildConfig;
@@ -46,12 +47,12 @@ public class ServerPackMetaData extends PackMetaData {
     @SerializedName("is_purchased")
     private Boolean isPurchased;
 
-    public ServerPackMetaData(Function1<PackEventRequest, Void> dispatcher) {
+    public ServerPackMetaData(PackEventRequest.EventHandler dispatcher) {
         super(dispatcher);
     }
 
-    public static ServerPackMetaData getTutorialPack(String scVersion) {
-        return (ServerPackMetaData) new ServerPackMetaData(null)
+    public static ServerPackMetaData getTutorialPack(String scVersion, PackEventRequest.EventHandler dispatcher) {
+        return (ServerPackMetaData) new ServerPackMetaData(dispatcher)
                 .setPurchased(false)
                 .setDescription(htmlHighlight("Tutorial Item"))
                 .setHasUpdate(false)
@@ -241,7 +242,7 @@ public class ServerPackMetaData extends PackMetaData {
                 download.setImageTintList(ContextCompat.getColorStateList(holder.itemView.getContext(), R.color.textPrimary));
 
                 download.setOnClickListener(
-                        v -> eventDispatcher.invoke(
+                        v -> eventDispatcher.handleEvent(
                                 new PackEventRequest(
                                         eventType,
                                         linkedMeta.getName()
@@ -254,7 +255,7 @@ public class ServerPackMetaData extends PackMetaData {
 
             if (!linkedMeta.isTutorial()) {
                 rollback.setOnClickListener(
-                        v -> eventDispatcher.invoke(
+                        v -> eventDispatcher.handleEvent(
                                 new PackEventRequest(
                                         EventRequest.SHOW_ROLLBACK,
                                         linkedMeta.getName()
@@ -263,7 +264,7 @@ public class ServerPackMetaData extends PackMetaData {
                 );
 
                 changelog.setOnClickListener(
-                        v -> eventDispatcher.invoke(
+                        v -> eventDispatcher.handleEvent(
                                 new PackEventRequest(
                                         EventRequest.SHOW_CHANGELOG,
                                         linkedMeta.getName()

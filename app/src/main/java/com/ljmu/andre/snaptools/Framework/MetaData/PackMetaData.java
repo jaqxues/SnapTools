@@ -3,7 +3,6 @@ package com.ljmu.andre.snaptools.Framework.MetaData;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.g00fy2.versioncompare.Version;
@@ -21,8 +20,6 @@ import com.ljmu.andre.snaptools.UIComponents.Adapters.StatefulEListAdapter.State
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
-
-import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -40,9 +37,9 @@ import static com.ljmu.andre.snaptools.Utils.StringUtils.getFlavourText;
 public abstract class PackMetaData extends ExpandableItemEntity<MultiItemEntity> implements StatefulListable<String>, Comparable<PackMetaData> {
     public static final int layoutRes = R.layout.item_listable_head_stateful;
     public static final int type = 0;
-    protected final Function1<PackEventRequest, Void> eventDispatcher;
+    protected final PackEventRequest.EventHandler eventDispatcher;
 
-    public PackMetaData(Function1<PackEventRequest, Void> dispatcher) {
+    public PackMetaData(PackEventRequest.EventHandler dispatcher) {
         eventDispatcher = dispatcher;
     }
 

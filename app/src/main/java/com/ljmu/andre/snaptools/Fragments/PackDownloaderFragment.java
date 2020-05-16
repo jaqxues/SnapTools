@@ -262,7 +262,7 @@ public class PackDownloaderFragment
         List<ServerPackMetaData> tutorialDataList = new ArrayList<>(tutorialVersions.size());
 
         for (String tutorialVersion : tutorialVersions)
-            tutorialDataList.add(ServerPackMetaData.getTutorialPack(tutorialVersion));
+            tutorialDataList.add(ServerPackMetaData.getTutorialPack(tutorialVersion, PackEventRequest.EventHandler.ignoreEvents));
 
         setPacks(tutorialDataList);
     }

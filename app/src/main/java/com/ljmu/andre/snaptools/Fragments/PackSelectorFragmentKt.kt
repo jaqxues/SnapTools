@@ -40,6 +40,7 @@ class PackSelectorFragmentKt : FragmentHelper() {
             check(runningTutorial) { "Only allowing getting PackView for Tutorials" }
             return recycler_pack_selector
         }
+    private val evtHandler = PackEventRequest.EventHandler { handlePackActions(it) }
     private lateinit var viewModel: PackViewModel
 
     override fun getMenuId() = null
@@ -82,10 +83,9 @@ class PackSelectorFragmentKt : FragmentHelper() {
                 swipe_refresh_layout.isRefreshing = false
                 return@setOnRefreshListener
             }
-            viewModel.refreshLocalPacks()
+            viewModel.refreshLocalPacks(evtHandler)
         }
 
-        viewModel.eventDispatcher.addEventObserver(viewLifecycleOwner, this::handlePackStateEvents)
         return layoutContainer
     }
 
@@ -98,7 +98,7 @@ class PackSelectorFragmentKt : FragmentHelper() {
         super.onResume()
 
         if (runningTutorial) viewModel.setTutorialPacks()
-        else viewModel.refreshLocalPacks()
+        else viewModel.refreshLocalPacks(evtHandler)
     }
 
     private fun handlePackStateEvents(packEvents: Any) {
@@ -132,15 +132,26 @@ class PackSelectorFragmentKt : FragmentHelper() {
                 }
             }
             PackEventRequest.EventRequest.DELETE -> {
+                fun deletePack() {
+                    if (viewModel.deletePack(packRequest.packName, requireActivity(), evtHandler) is Result.Error) {
+                        SafeToast.show(activity, "Failed to disable Pack: ${packRequest.packName}", Toast.LENGTH_LONG)
+                    }
+                }
+                val pack = viewModel.localMetadata.value?.find { packRequest.packName == it.name }
+                        ?: throw IllegalStateException("Pack to delete was not found")
+
+                // If the Pack has failed to load, delete without confirmation
+                if (pack is FailedPackMetaData) {
+                    deletePack()
+                    return
+                }
                 DialogFactory.createConfirmation(
                         requireActivity(),
                         "Confirm Action",
                         "Are you sure you wish to delete this pack?",
                         object: ThemedDialog.ThemedClickListener() {
                             override fun clicked(themedDialog: ThemedDialog) {
-                                if (viewModel.deletePack(packRequest.packName, requireActivity()) is Result.Error) {
-                                    SafeToast.show(activity, "Failed to disable Pack: ${packRequest.packName}", Toast.LENGTH_LONG)
-                                }
+                                deletePack()
                                 themedDialog.dismiss()
                             }
                         }

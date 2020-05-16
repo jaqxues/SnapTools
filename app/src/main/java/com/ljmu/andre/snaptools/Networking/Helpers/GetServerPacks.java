@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.android.volley.Request.Method;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Databases.Tables.ServerPackObject;
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest;
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData;
 import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData;
@@ -205,7 +206,7 @@ public class GetServerPacks {
             if (packObject.development != STApplication.DEBUG)
                 continue;
 
-            ServerPackMetaData serverMetaData = new ServerPackMetaData();
+            ServerPackMetaData serverMetaData = new ServerPackMetaData(PackEventRequest.EventHandler.ignoreEvents);
             packObject.bindMetaData(serverMetaData);
 
             if (installedMetaData != null) {

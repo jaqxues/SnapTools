@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData
 import com.ljmu.andre.snaptools.Utils.Result
 import com.ljmu.andre.snaptools.repository.PackRepository
@@ -20,12 +21,10 @@ import timber.log.Timber
 class PackViewModel : ViewModel() {
     val localMetadata: LiveData<List<LocalPackMetaData>>
         get() = packRepo.localMetadata
-    val eventDispatcher: LiveData<Any>
-        get() = packRepo.eventDispatcher
 
-    fun refreshLocalPacks() {
+    fun refreshLocalPacks(eventHandler: PackEventRequest.EventHandler) {
         viewModelScope.launch(Dispatchers.IO) {
-            packRepo.refreshLocalMetadata()
+            packRepo.refreshLocalMetadata(eventHandler)
         }
     }
 
@@ -61,7 +60,7 @@ class PackViewModel : ViewModel() {
 
     fun unloadPack(packName: String, activity: Activity) = packRepo.unloadPack(packName, activity)
 
-    fun deletePack(packName: String, activity: Activity) = packRepo.deletePack(packName, activity)
+    fun deletePack(packName: String, activity: Activity, evtHandler: PackEventRequest.EventHandler) = packRepo.deletePack(packName, activity, evtHandler)
 
     fun downloadPack() {
         viewModelScope.launch(Dispatchers.IO) {

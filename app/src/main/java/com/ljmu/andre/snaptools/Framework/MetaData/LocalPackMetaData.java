@@ -28,7 +28,8 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PA
  * It and its contents are free to use by all
  */
 public class LocalPackMetaData extends PackMetaData {
-    public LocalPackMetaData(Function1<PackEventRequest, Void> dispatcher) {
+
+    public LocalPackMetaData(PackEventRequest.EventHandler dispatcher) {
         super(dispatcher);
     }
 
@@ -100,7 +101,7 @@ public class LocalPackMetaData extends PackMetaData {
                 .completedBinding();
     }
 
-    public LocalPackMetaData from(PackMetaData metaData, Function1<PackEventRequest, Void> dispatcher) {
+    public LocalPackMetaData from(PackMetaData metaData, PackEventRequest.EventHandler dispatcher) {
         LocalPackMetaData localMetaData = new LocalPackMetaData(dispatcher);
         localMetaData.setName(metaData.getName());
         localMetaData.setDevelopment(metaData.isDeveloper());
@@ -152,7 +153,7 @@ public class LocalPackMetaData extends PackMetaData {
             ));
 
             delete.setOnClickListener(
-                    v -> eventDispatcher.invoke(
+                    v -> eventDispatcher.handleEvent(
                             new PackEventRequest(
                                     EventRequest.DELETE,
                                     linkedMeta.getName()
@@ -168,7 +169,7 @@ public class LocalPackMetaData extends PackMetaData {
 
             toggle.setOnCheckedChangeListener(
 
-                    (buttonView, isChecked) -> eventDispatcher.invoke(
+                    (buttonView, isChecked) -> eventDispatcher.handleEvent(
                             new PackEventRequest(
                                     isChecked ? EventRequest.LOAD : EventRequest.UNLOAD,
                                     linkedMeta.getName()

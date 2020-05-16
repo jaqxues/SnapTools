@@ -1,6 +1,7 @@
 package com.ljmu.andre.snaptools.EventBus.Events;
 
 import com.google.common.base.MoreObjects;
+import timber.log.Timber;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -45,5 +46,11 @@ public class PackEventRequest {
 
     public enum EventRequest {
         UNLOAD, LOAD, DELETE, DOWNLOAD, DOWNLOAD_TUTORIAL, SHOW_ROLLBACK, SHOW_CHANGELOG
+    }
+
+    public interface EventHandler {
+        void handleEvent(PackEventRequest packEventRequest);
+
+        EventHandler ignoreEvents = packEventRequest -> Timber.d("Ignoring event #%d", packEventRequest.request.ordinal());
     }
 }

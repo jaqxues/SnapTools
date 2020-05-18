@@ -37,7 +37,10 @@ class PackRepository {
 
     fun refreshLocalMetadata(evtHandler: PackEventRequest.EventHandler) {
         val jarFileList = packDirectory.listFiles { _, name -> name.endsWith(".jar") }
-        if (jarFileList.isNullOrEmpty()) _localMetadata.postValue(emptyList())
+        if (jarFileList.isNullOrEmpty()) {
+            _localMetadata.postValue(emptyList())
+            return
+        }
 
         val packs = jarFileList.associate { file ->
             val metadata = try {

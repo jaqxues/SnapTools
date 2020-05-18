@@ -22,9 +22,11 @@ import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData
 import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData
 import com.ljmu.andre.snaptools.R
 import com.ljmu.andre.snaptools.UIComponents.Adapters.ExpandableItemAdapter
-import com.ljmu.andre.snaptools.Utils.*
+import com.ljmu.andre.snaptools.Utils.AnimationUtils
+import com.ljmu.andre.snaptools.Utils.Result
+import com.ljmu.andre.snaptools.Utils.SafeToast
+import com.ljmu.andre.snaptools.Utils.consumeResult
 import com.ljmu.andre.snaptools.viewmodel.PackViewModel
-import kotlinx.android.synthetic.main.frag_faq.*
 import kotlinx.android.synthetic.main.frag_pack_selector.*
 import timber.log.Timber
 
@@ -34,8 +36,14 @@ import timber.log.Timber
  * Date: 13.05.20 - Time 14:23.
  */
 
-class PackSelectorFragmentKt : FragmentHelper() {
-    val recycler: RecyclerView
+class PackSelectorFragment : FragmentHelper() {
+//    @Suppress("UNCHECKED_CAST")
+    val adapter: ExpandableItemAdapter<ExpandableItemAdapter.ExpandableItemEntity<Any>>
+        get() {
+            return recyclerView.adapter as? ExpandableItemAdapter<ExpandableItemAdapter.ExpandableItemEntity<Any>>
+                    ?: throw IllegalStateException("Could not be cast to expected type")
+        }
+    val recyclerView: RecyclerView
         get() {
             check(runningTutorial) { "Only allowing getting PackView for Tutorials" }
             return recycler_pack_selector
@@ -49,7 +57,13 @@ class PackSelectorFragmentKt : FragmentHelper() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layoutContainer = inflater.inflate(R.layout.frag_pack_selector, container, false)
-        viewModel = ViewModelProvider(this).get(PackViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(PackViewModel::class.java)
+
+        return layoutContainer
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         recycler_pack_selector.layoutManager = LinearLayoutManager(requireContext())
 
@@ -68,25 +82,24 @@ class PackSelectorFragmentKt : FragmentHelper() {
             // Animating
             recycler_pack_selector.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
+                    val recycler = recycler_pack_selector ?: return
                     //At this point the layout is complete and the
                     //dimensions of recyclerView and any child views are known.
-                    AnimationUtils.sequentGroup(recycler_pack_selector)
-                    recycler_pack_selector.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    AnimationUtils.sequentGroup(recycler)
+                    recycler.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
             adapter.setNewData(packs)
-            swipe_refresh_layout.isRefreshing = false
+            swipe_layout.isRefreshing = false
         })
 
-        swipe_refresh_layout.setOnRefreshListener {
+        swipe_layout.setOnRefreshListener {
             if (runningTutorial) {
-                swipe_refresh_layout.isRefreshing = false
+                swipe_layout.isRefreshing = false
                 return@setOnRefreshListener
             }
             viewModel.refreshLocalPacks(evtHandler)
         }
-
-        return layoutContainer
     }
 
     override fun onPause() {
@@ -176,6 +189,17 @@ class PackSelectorFragmentKt : FragmentHelper() {
                 adapter.notifyItemChanged(idx)
             else break
         }
+    }
+
+    override fun progressTutorial() {
+    }
+
+    fun generateTutorialData() {
+//        viewModel.setTutorialPacks()
+    }
+
+    fun generateMetaData() {
+//        viewModel.refreshLocalPacks(evtHandler)
     }
 
     companion object {

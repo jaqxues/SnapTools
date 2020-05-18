@@ -251,7 +251,7 @@ public class PackManagerFragment extends FragmentHelper {
 
     public static class PackSettingsPagerAdapter extends FragmentPagerAdapter {
         PackSettingsPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override

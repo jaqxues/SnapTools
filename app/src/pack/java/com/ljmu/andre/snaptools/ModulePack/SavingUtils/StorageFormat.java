@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
-import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
@@ -17,8 +16,10 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.TypeAllSna
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.TypeUsernameSnaps;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.UsernameSnaps;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormats.UsernameTypeSnaps;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 
 import java.io.File;
@@ -35,10 +36,9 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDIA_PATH;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORAGE_FORMAT;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill;
 
 /**
@@ -205,7 +205,7 @@ public abstract class StorageFormat {
             snapMetaData.getCurrentFile().renameTo(newSnapFile);
         }
 
-        File contentPath = Preferences.getCreateDir(CONTENT_PATH);
+        File contentPath = getCreateDir(PathProvider.getContentPath());
         File backupDirPath = new File(contentPath, "Media_Conversions");
         FileUtils.deleteEmptyFolders(backupDirPath);
 
@@ -220,8 +220,8 @@ public abstract class StorageFormat {
     protected List<SnapMetaData> buildSnapList(Progress progress) {
         List<SnapMetaData> metaDataList = new ArrayList<>();
 
-        File contentPath = Preferences.getCreateDir(CONTENT_PATH);
-        File mediaDirPath = new File((String) getPref(MEDIA_PATH));
+        File contentPath = getCreateDir(PathProvider.getContentPath());
+        File mediaDirPath = new File(PackPathProvider.getMediaPath());
         File backupDirPath = new File(contentPath, "Media_Conversions");
 
         if (!mediaDirPath.exists() || FileUtils.isDirEmpty(mediaDirPath))

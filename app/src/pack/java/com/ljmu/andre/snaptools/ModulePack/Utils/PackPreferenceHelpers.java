@@ -9,7 +9,7 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.Snaps.Snap.SnapType;
 import com.ljmu.andre.snaptools.ModulePack.Utils.SavingButton.ButtonLocation;
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SCALING_TYPE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FLING_VELOCITY;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_LOCATIONS;
@@ -112,7 +112,7 @@ public class PackPreferenceHelpers {
         } catch (Exception ignored) {
         }
 
-        return ImageView.ScaleType.valueOf(FILTER_SCALING_TYPE.getDefaultVal());
+        return ImageView.ScaleType.valueOf(FILTER_SCALING_TYPE.getDefault());
     }
 
     public static StealthPosition getStealthLocation() {

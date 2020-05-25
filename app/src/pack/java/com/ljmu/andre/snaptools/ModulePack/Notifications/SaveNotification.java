@@ -12,7 +12,7 @@ import com.ljmu.andre.snaptools.Utils.SafeToast;
 import timber.log.Timber;
 
 import static android.widget.Toast.LENGTH_LONG;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_NOTIFICATION_TYPE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.VIBRATE_ON_SAVE;
 

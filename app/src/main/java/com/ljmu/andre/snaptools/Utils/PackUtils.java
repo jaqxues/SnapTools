@@ -38,13 +38,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_PACKS;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS;
 import static com.ljmu.andre.snaptools.Utils.MiscUtils.calcTimeDiff;
 
@@ -124,7 +122,7 @@ public class PackUtils {
     @Nullable
     public static Map<String, LocalPackMetaData> getInstalledMetaData() {
         try {
-            File packDirectory = new File((String) getPref(MODULES_PATH));
+            File packDirectory = new File(PathProvider.getModulesPath());
 
             File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
 
@@ -195,7 +193,7 @@ public class PackUtils {
 
     public static Observable<Map<String, LocalPackMetaData>> getAllMetaData() {
         Callable<Map<String, LocalPackMetaData>> callable = () -> {
-            File packDirectory = new File((String) getPref(MODULES_PATH));
+            File packDirectory = new File(PathProvider.getModulesPath());
 
             File[] jarFileList = packDirectory.listFiles((file, s) -> s.endsWith(".jar"));
 
@@ -240,7 +238,7 @@ public class PackUtils {
     }
 
     public static Long timeSinceLastPackCheck() {
-        return System.currentTimeMillis() - (Long) getPref(LAST_CHECK_PACKS);
+        return System.currentTimeMillis() - getPref(LAST_CHECK_PACKS);
     }
 
     @Nullable
@@ -253,19 +251,19 @@ public class PackUtils {
         ExecutorService executor = Executors.newCachedThreadPool();
 
         for (String selectedPack : selectPackSet) {
-            Timber.d("Hashing Pack: " + selectedPack);
-            File packDir = getCreateDir(MODULES_PATH);
+            Timber.d("Hashing Pack: %s", selectedPack);
+            File packDir = getCreateDir(PathProvider.getModulesPath());
             File modulePackFile = new File(packDir, selectedPack + ".jar");
 
             if (!modulePackFile.exists()) {
-                Timber.d("Pack file doesn't exist: " + modulePackFile);
+                Timber.d("Pack file doesn't exist: %s", modulePackFile);
                 continue;
             }
 
             executor.execute(() -> {
                 try {
                     HashCode packHash = Files.hash(modulePackFile, Hashing.murmur3_128(6782590));
-                    Timber.d("Pack Hash: " + packHash);
+                    Timber.d("Pack Hash: %s", packHash);
 
                     synchronized (PACK_CHECKSUM_LOCK) {
                         packHashCodeList.add(

@@ -17,7 +17,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ljmu.andre.GsonPreferences.Preferences;
+import com.jaqxues.akrolyb.prefs.PrefManager;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.BuildConfig;
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInput;
@@ -35,14 +35,8 @@ import com.ljmu.andre.snaptools.R;
 import com.ljmu.andre.snaptools.Repackaging.RepackageManager;
 import com.ljmu.andre.snaptools.UIComponents.Adapters.CenteredArrayAdapter;
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
-import com.ljmu.andre.snaptools.Utils.BackupRestoreUtils;
+import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import com.ljmu.andre.snaptools.Utils.MiscUtils;
-import com.ljmu.andre.snaptools.Utils.PackUtils;
-import com.ljmu.andre.snaptools.Utils.SafeToast;
-import com.ljmu.andre.snaptools.Utils.ShellUtils;
-import com.ljmu.andre.snaptools.Utils.StringUtils;
-import com.ljmu.andre.snaptools.Utils.ThemeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,10 +50,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACKUP_PATH;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACK_OPENS_MENU;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_APK_UPDATES;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_PACK_UPDATES;
@@ -70,7 +63,6 @@ import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.NOTIFY_ON_L
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_TRANSITION_ANIMATIONS;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SYSTEM_ENABLED;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TRANSLATION_LOCALE;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
@@ -243,7 +235,7 @@ public class SettingsFragment extends FragmentHelper {
                                 CheckAPKUpdate.updateApk(
                                         getActivity(),
                                         "https://github.com/jaqxues/SnapTools_DataProvider/blob/master/Apks/Files/SnapTools-" + selection + ".apk?raw=true",
-                                        getPref(TEMP_PATH),
+                                        PathProvider.getTempPath(),
                                         "SnapTools_" + selection + ".apk",
                                         selectionResultListener
                                 );
@@ -419,7 +411,7 @@ public class SettingsFragment extends FragmentHelper {
         List<String> restoreValues = new ArrayList<>();
         restoreValues.add("Current");
 
-        File backupDir = getCreateDir(BACKUP_PATH);
+        File backupDir = getCreateDir(PathProvider.getBackupPath());
 
         /**
          * ===========================================================================
@@ -476,7 +468,7 @@ public class SettingsFragment extends FragmentHelper {
                                     return;
                                 }
 
-                                Preferences.loadPreferenceMap();
+                                PrefManager.INSTANCE.loadPrefMap();
 
                                 if (getPref(KILL_SC_ON_CHANGE))
                                     PackUtils.killSCService(getActivity());
@@ -709,7 +701,7 @@ public class SettingsFragment extends FragmentHelper {
                             return;
                         }
 
-                        Preferences.forceReset();
+                        PrefManager.forceReset();
                         SafeToast.show(
                                 getActivity(),
                                 "Settings reset, it is recommended to restart SnapTools.",

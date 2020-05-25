@@ -12,8 +12,10 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.MiscChangesViewProvider;
 import com.ljmu.andre.snaptools.ModulePack.MiscChanges;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result;
 
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -26,10 +28,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CURRENT_FONT;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FONTS_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
@@ -89,7 +90,7 @@ public class MiscChangesFragment extends FragmentHelper {
         fontList.clear();
         fontList.add("Default");
 
-        File fontFolder = getCreateDir(FONTS_PATH);
+        File fontFolder = getCreateDir(PackPathProvider.getFontsPath());
 
         if (fontFolder != null) {
             Timber.d("Searching for fonts in \"" + fontFolder.getPath() + "\"");
@@ -126,7 +127,7 @@ public class MiscChangesFragment extends FragmentHelper {
         switch (eventResult.getKey()) {
             case FONT_SELECTED:
                 String selectedFont = (String) eventResult.getValue();
-                Timber.d("Selected Font: " + selectedFont);
+                Timber.d("Selected Font: %s", selectedFont);
 
                 if (selectedFont.equalsIgnoreCase("Select font")) {
                     break;
@@ -146,13 +147,13 @@ public class MiscChangesFragment extends FragmentHelper {
 
     public static Typeface getTypefaceSafe(String filename) {
         if (!filename.equalsIgnoreCase("Default")) {
-            File fontsDir = getCreateDir(FONTS_PATH);
+            File fontsDir = getCreateDir(PackPathProvider.getFontsPath());
             File fontFile = new File(fontsDir, filename);
 
             if (fontFile.exists()) {
                 return MiscChanges.createTypefaceSafe(fontFile);
             } else
-                Timber.d("Font file doesn't exist: " + fontFile);
+                Timber.d("Font file doesn't exist: %s", fontFile);
         }
 
         return Typeface.DEFAULT;

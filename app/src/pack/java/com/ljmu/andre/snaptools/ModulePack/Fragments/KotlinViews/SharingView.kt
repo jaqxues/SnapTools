@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Gravity
 import android.widget.LinearLayout
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BATCHED_MEDIA_CAP
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHARING_AUTO_ROTATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SHARING_TUTORIAL
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.getLabelledSeekbar
 import com.ljmu.andre.snaptools.Utils.Constants
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_COMPRESSION_DIALOG
@@ -44,8 +46,8 @@ class SharingView {
                         text = "Display tutorial when sharing"
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_show_tutorial")
-                        isChecked = getPref(SHOW_SHARING_TUTORIAL)
-                        setOnCheckedChangeListener({ _, isChecked -> putAndKill(SHOW_SHARING_TUTORIAL, isChecked, activity) })
+                        isChecked = SHOW_SHARING_TUTORIAL.getPref()
+                        setOnCheckedChangeListener { _, isChecked -> putAndKill(SHOW_SHARING_TUTORIAL, isChecked, activity) }
                     }.lparams(width = matchParent, height = wrapContent) {
                         horizontalMargin = dip(15)
                     }
@@ -56,8 +58,8 @@ class SharingView {
                         id = getIdFromString("switch_sharing_show_compression_dialog")
 
                         if (Constants.getApkVersionCode() >= 65) {
-                            isChecked = getPref(SHOW_VIDEO_COMPRESSION_DIALOG)
-                            setOnCheckedChangeListener({ _, isChecked -> putAndKill(SHOW_VIDEO_COMPRESSION_DIALOG, isChecked, activity) })
+                            isChecked = SHOW_VIDEO_COMPRESSION_DIALOG.getPref()
+                            setOnCheckedChangeListener { _, isChecked -> putAndKill(SHOW_VIDEO_COMPRESSION_DIALOG, isChecked, activity) }
                         } else {
                             text = text as String + "\n(Apk Update Required)"
                             isEnabled = false
@@ -70,7 +72,7 @@ class SharingView {
                         text = "Fix Rotation Bug"
                         verticalPadding = dip(10)
                         id = getIdFromString("switch_sharing_auto_rotate")
-                        isChecked = getPref(SHARING_AUTO_ROTATE)
+                        isChecked = SHARING_AUTO_ROTATE.getPref()
                         setOnCheckedChangeListener { btn, isChecked ->
                             run {
                                 if (isChecked)
@@ -125,19 +127,18 @@ class SharingView {
                                     "%s Snaps",
                                     36,
                                     6,
-                                    getPref(BATCHED_MEDIA_CAP),
-                                    true,
-                                    { _, progress ->
-                                        putAndKill(BATCHED_MEDIA_CAP, progress, activity)
-                                        if (progress > 6) {
-                                            DialogFactory.createBasicMessage(
-                                                    activity,
-                                                    "Batched Media Warning",
-                                                    "6 is the default value of Snapchat and the only officially supported value, anything higher may cause the video to fail to send or Snapchat to crash"
-                                            ).show()
-                                        }
-                                    }
-                            )
+                                    BATCHED_MEDIA_CAP.getPref(),
+                                    true
+                            ) { _, progress ->
+                                putAndKill(BATCHED_MEDIA_CAP, progress, activity)
+                                if (progress > 6) {
+                                    DialogFactory.createBasicMessage(
+                                            activity,
+                                            "Batched Media Warning",
+                                            "6 is the default value of Snapchat and the only officially supported value, anything higher may cause the video to fail to send or Snapchat to crash"
+                                    ).show()
+                                }
+                            }
                     )
 
                     textView("(1 snap = 10 seconds)") {

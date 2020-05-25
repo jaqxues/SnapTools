@@ -19,6 +19,7 @@ import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.ColorPickerDialogExtension;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.FontPickerDialogExtension;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.MiscChangesFragment;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.ResourceMapper;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
@@ -27,9 +28,8 @@ import java.io.File;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAPCHAT_CAPTION_VIEW_CLASS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CAPTION_CREATE_HOOK;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.FONT_HOOK;
@@ -37,9 +37,9 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.COPY_BUTTON;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CURRENT_FONT;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CUT_BUTTON;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FONTS_PATH;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_MULTILINE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.PASTE_BUTTON;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 
 /*import com.flask.colorpicker.ColorPickerView.WHEEL_TYPE;
 import com.flask.colorpicker.OnColorChangedListener;
@@ -84,7 +84,7 @@ public class MiscChanges extends ModuleHelper {
 
                         String fontFilename = (String) param.args[0];
 
-                        File fontDir = getCreateDir(FONTS_PATH);
+                        File fontDir = getCreateDir(PackPathProvider.getFontsPath());
                         File replacementFontFile = new File(fontDir, currentFontFile);
 
                         if (replacementFontFile.exists()) {

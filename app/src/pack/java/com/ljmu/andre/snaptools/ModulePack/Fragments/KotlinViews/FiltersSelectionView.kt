@@ -13,12 +13,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
-import com.ljmu.andre.GsonPreferences.Preferences.putPref
+import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.akrolyb.prefs.putPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.customTabStrip
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_NOW_PLAYING_ENABLED
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SCALING_TYPE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SHOW_SAMPLE_BACKGROUND
 import com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFilterScaleType
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
@@ -139,10 +141,10 @@ class FiltersSelectionView {
 
                             val scalingTypeList: ArrayList<String> = ArrayList()
                             ImageView.ScaleType.values().mapTo(scalingTypeList) { it.name }
-                            var selectedScalingIndex: Int = scalingTypeList.indexOf(getPref(FILTER_SCALING_TYPE))
+                            var selectedScalingIndex: Int = scalingTypeList.indexOf(FILTER_SCALING_TYPE.getPref())
 
                             if (selectedScalingIndex == -1)
-                                selectedScalingIndex = scalingTypeList.indexOf(FILTER_SCALING_TYPE.getDefaultVal())
+                                selectedScalingIndex = scalingTypeList.indexOf(FILTER_SCALING_TYPE.default)
 
                             addView(ViewFactory.getLabelledSpinner(
                                     activity,
@@ -158,7 +160,7 @@ class FiltersSelectionView {
                             themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                                 id = getIdFromString("switch_show_sample")
                                 text = "Toggle Filter Background"
-                                isChecked = getPref(FILTER_SHOW_SAMPLE_BACKGROUND)
+                                isChecked = FILTER_SHOW_SAMPLE_BACKGROUND.getPref()
 
                                 verticalPadding = 10.toDp()
                             }
@@ -199,12 +201,12 @@ class FiltersSelectionView {
                             themedSwitchCompatX(getStyle(activity, "DefaultSwitch")) {
                                 id = getIdFromString("switch_now_playing_enabled")
                                 text = "Filter Enabled"
-                                isChecked = getPref(FILTER_NOW_PLAYING_ENABLED)
+                                isChecked = FILTER_NOW_PLAYING_ENABLED.getPref()
 
                                 verticalPadding = 10.toDp()
                                 setOnCheckedChangeListener { _, isChecked ->
-                                    if (isChecked != getPref<Boolean>(FILTER_NOW_PLAYING_ENABLED)) {
-                                        putPref(FILTER_NOW_PLAYING_ENABLED, isChecked)
+                                    if (isChecked != FILTER_NOW_PLAYING_ENABLED.getPref()) {
+                                        FILTER_NOW_PLAYING_ENABLED.putPref(isChecked)
                                     }
                                 }
                             }

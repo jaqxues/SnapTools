@@ -24,7 +24,7 @@ import java.util.List;
 import de.robv.android.xposed.XC_MethodReplacement;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_BATCHED_SNAP_POSITION;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.BATCHED_MEDIA_LIMITER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.CAMERA_IS_VISIBLE;

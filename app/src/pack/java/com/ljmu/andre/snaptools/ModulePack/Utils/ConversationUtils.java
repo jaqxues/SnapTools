@@ -28,8 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CHAT_EXPORT_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.yyyyMMddHHmmss;
 
 /**
@@ -60,7 +59,7 @@ public class ConversationUtils {
 
     public static void exportConversationAsJson(Activity activity, String filename, ConversationObject conversationObject) {
         Observable.fromCallable(() -> {
-            File exportDir = getCreateDir(CHAT_EXPORT_PATH);
+            File exportDir = getCreateDir(PackPathProvider.getChatExportPath());
 
             if (exportDir == null || !exportDir.exists()) {
                 Timber.w("Couldn't create ChatExportPath");
@@ -121,7 +120,7 @@ public class ConversationUtils {
 
     public static void exportConversationAsTxt(Activity activity, String filename, ConversationObject conversationObject) {
         Observable.fromCallable(() -> {
-            File exportDir = getCreateDir(CHAT_EXPORT_PATH);
+            File exportDir = getCreateDir(PackPathProvider.getChatExportPath());
 
             if (exportDir == null || !exportDir.exists()) {
                 Timber.w("Couldn't create ChatExportPath");

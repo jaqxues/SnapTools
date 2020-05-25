@@ -21,6 +21,7 @@ import com.ljmu.andre.snaptools.Utils.Callable;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 import com.ljmu.andre.snaptools.Utils.FileUtils;
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import com.ljmu.andre.snaptools.Utils.ShellUtils;
 
 import java.io.BufferedOutputStream;
@@ -45,8 +46,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -433,7 +433,7 @@ public class AccountManagerUtils {
     public static void backupCurrentAccount(Activity activity, File accountsDir, String identifier, String password,
                                             boolean shouldEncrypt,
                                             Callable<Result<Boolean, ?>> resultCallable) {
-        File tempDir = getCreateDir(TEMP_PATH);
+        File tempDir = getCreateDir(PathProvider.getTempPath());
 
         if (tempDir == null) {
             resultCallable.call(new Result<>(false, "Couldn't create Temp Directory"));

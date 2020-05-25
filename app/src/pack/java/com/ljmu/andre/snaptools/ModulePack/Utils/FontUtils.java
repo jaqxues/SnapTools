@@ -10,8 +10,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FONTS_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 
 /**
  * Created by ethan on 1/11/2018.
@@ -21,7 +20,7 @@ public class FontUtils {
 
     public static List<String> getInstalledFonts() {
         List<String> items = new ArrayList<>();
-        File fontFolder = getCreateDir(FONTS_PATH);
+        File fontFolder = getCreateDir(PackPathProvider.getFontsPath());
 
         if (fontFolder != null) {
             Timber.d("Searching for fonts in \"" + fontFolder.getPath() + "\"");

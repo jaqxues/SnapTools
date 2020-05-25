@@ -4,7 +4,8 @@ import android.app.Activity
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.Preference
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.EventBus.Events.PackDeleteEvent
 import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest
 import com.ljmu.andre.snaptools.EventBus.Events.PackUnloadEvent
@@ -12,14 +13,14 @@ import com.ljmu.andre.snaptools.Framework.FrameworkManager
 import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState
-import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS
 import com.ljmu.andre.snaptools.Utils.PackUtils.getPackMetaData
+import com.ljmu.andre.snaptools.Utils.PathProvider
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers
 import com.ljmu.andre.snaptools.Utils.Result
 import timber.log.Timber
 import java.io.File
-
+import java.util.HashSet
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnapTools.<br>
@@ -33,7 +34,7 @@ class PackRepository {
     val eventDispatcher: LiveData<Any> = _eventDispatcher
     val localMetadata: LiveData<List<LocalPackMetaData>> = _localMetadata
 
-    private val packDirectory = File(getPref(MODULES_PATH) as String)
+    private val packDirectory = File(PathProvider.getModulesPath())
 
     fun refreshLocalMetadata(evtHandler: PackEventRequest.EventHandler) {
         val jarFileList = packDirectory.listFiles { _, name -> name.endsWith(".jar") }
@@ -58,7 +59,7 @@ class PackRepository {
         val packsList = packs.values.toMutableList()
 
         // Selected Packs that have been deleted or cannot be found for some reason
-        getPref<Set<String>>(SELECTED_PACKS).forEach { packName ->
+        SELECTED_PACKS.getPref().forEach { packName ->
             if (packName in packs) return@forEach
 
             val failedMetadata = FailedPackMetaData(evtHandler).run {

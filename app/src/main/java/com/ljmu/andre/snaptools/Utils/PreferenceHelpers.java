@@ -3,14 +3,14 @@ package com.ljmu.andre.snaptools.Utils;
 import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.jaqxues.akrolyb.prefs.Preference;
 
-import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 
 import java.util.Collection;
 import java.util.Map;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE;
 
 /**
@@ -25,19 +25,14 @@ public class PreferenceHelpers {
         return newValue;
     }
 
-    public static void addToCollection(Preference preference, Object object) {
+    public static <T> void addToCollection(Preference<? extends Collection<T>> preference, T object) {
         addToCollection(preference, object, null);
     }
 
-    public static void addToCollection(Preference preference, Object object, @Nullable Activity shouldKill) {
-
-        Collection<Object> collection = getPref(preference);
-        if (collection == null)
-            collection = preference.getDefaultVal();
-
+    public static <T> void addToCollection(Preference<? extends Collection<T>> preference, T object, @Nullable Activity shouldKill) {
+        Collection<T> collection = getPref(preference);
 
         collection.add(object);
-
         update(preference, collection, shouldKill);
     }
 
@@ -48,34 +43,31 @@ public class PreferenceHelpers {
             putPref(preference, newObject);
     }
 
-    public static void putAndKill(Preference preference, Object object, Activity activity) {
+    public static <T> void putAndKill(Preference<T> preference, T object, Activity activity) {
         putPref(preference, object);
 
         if (getPref(KILL_SC_ON_CHANGE))
             PackUtils.killSCService(activity);
     }
 
-    public static void removeFromMap(Preference preference, Object key) {
+    public static <K, V> void removeFromMap(Preference<? extends Map<K, V>> preference, K key) {
         addToMap(preference, key, null);
     }
 
-    public static void addToMap(Preference preference, Object key, Object value) {
+    public static <K, V> void addToMap(Preference<? extends Map<K, V>> preference, K key, V value) {
         addToMap(preference, key, value, null);
     }
 
-    public static void addToMap(Preference preference, Object key, Object value, @Nullable Activity shouldKill) {
-        Map<Object, Object> map = getPref(preference);
-
-        if (map == null)
-            map = preference.getDefaultVal();
+    public static <K, V> void addToMap(Preference<? extends Map<K, V>> preference, K key, V value, @Nullable Activity shouldKill) {
+        Map<K, V> map = getPref(preference);
 
         map.put(key, value);
 
         update(preference, map, shouldKill);
     }
 
-    public static void removeFromMap(Preference preference, Object key, @Nullable Activity shouldKill) {
-        Map<Object, Object> map = getPref(preference);
+    public static <K, V> void removeFromMap(Preference<? extends Map<K, V>> preference, K key, @Nullable Activity shouldKill) {
+        Map<K, V> map = getPref(preference);
         if (map == null)
             return;
 
@@ -83,30 +75,30 @@ public class PreferenceHelpers {
         update(preference, map, shouldKill);
     }
 
-    public static boolean mapContainsKey(Preference preference, Object key) {
-        Map<Object, Object> map = getPref(preference);
+    public static <K, V> boolean mapContainsKey(Preference<? extends Map<K, V>> preference, K key) {
+        Map<K, V> map = getPref(preference);
         return map != null && map.containsKey(key);
     }
 
-    public static boolean mapContainsValue(Preference preference, Object key) {
-        Map<Object, Object> map = getPref(preference);
+    public static <K, V> boolean mapContainsValue(Preference<? extends Map<K, V>> preference, K key) {
+        Map<K, V> map = getPref(preference);
         return map != null && map.containsValue(key);
     }
 
-    public static <T> T getFromMap(Preference preference, Object key) {
-        Map<Object, Object> map = getPref(preference);
+    public static <K, V> V getFromMap(Preference<? extends Map<K, V>> preference, K key) {
+        Map<K, V> map = getPref(preference);
         if (map == null)
             return null;
 
-        return (T) map.get(key);
+        return map.get(key);
     }
 
-    public static void removeFromCollection(Preference preference, Object object) {
+    public static <T> void removeFromCollection(Preference<? extends Collection<T>> preference, T object) {
         removeFromCollection(preference, object, null);
     }
 
-    public static void removeFromCollection(Preference preference, Object object, @Nullable Activity shouldKill) {
-        Collection<Object> collection = getPref(preference);
+    public static <T> void removeFromCollection(Preference<? extends Collection<T>> preference, T object, @Nullable Activity shouldKill) {
+        Collection<T> collection = getPref(preference);
         if (collection == null)
             return;
 
@@ -114,8 +106,8 @@ public class PreferenceHelpers {
         update(preference, collection, shouldKill);
     }
 
-    public static boolean collectionContains(Preference preference, Object object) {
-        Collection<Object> collection = getPref(preference);
+    public static <T> boolean collectionContains(Preference<? extends Collection<T>> preference, T object) {
+        Collection<T> collection = getPref(preference);
         return collection != null && collection.contains(object);
     }
 }

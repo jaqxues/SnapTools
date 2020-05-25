@@ -7,12 +7,15 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInput
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCKED_STORIES
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_ADVERTS_BLOCKED
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_DISCOVER_BLOCKED
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORY_BLOCKER_SHOW_BUTTON
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.*
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
 import com.ljmu.andre.snaptools.Utils.ResourceUtils.*
@@ -47,7 +50,7 @@ class StoryBlockerViewProvider {
 
                     themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                         text = "Block Story Discover Snaps"
-                        isChecked = getPref(STORY_BLOCKER_DISCOVER_BLOCKED)
+                        isChecked = STORY_BLOCKER_DISCOVER_BLOCKED.getPref()
 
                         verticalPadding = dip(10)
                         setOnCheckedChangeListener { _, isChecked ->
@@ -57,7 +60,7 @@ class StoryBlockerViewProvider {
 
                     themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                         text = "Block Story Video Adverts"
-                        isChecked = getPref(STORY_BLOCKER_ADVERTS_BLOCKED)
+                        isChecked = STORY_BLOCKER_ADVERTS_BLOCKED.getPref()
 
                         verticalPadding = dip(10)
                         setOnCheckedChangeListener { _, isChecked ->
@@ -67,7 +70,7 @@ class StoryBlockerViewProvider {
 
                     themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                         text = "Show Block Stories button in Snapchat"
-                        isChecked = getPref(STORY_BLOCKER_SHOW_BUTTON)
+                        isChecked = STORY_BLOCKER_SHOW_BUTTON.getPref()
 
                         verticalPadding = dip(10)
                         setOnCheckedChangeListener { _, isChecked ->
@@ -140,10 +143,10 @@ class StoryBlockerViewProvider {
             }.view as T
 
     class BlockedUserAdapter(val activity: Activity) : BaseAdapter() {
-        private var blockedUserList: List<String> = ArrayList(getPref<HashSet<String>>(BLOCKED_STORIES))
+        private var blockedUserList = ArrayList(BLOCKED_STORIES.getPref())
 
         fun refreshUserList() {
-            blockedUserList = ArrayList(getPref<HashSet<String>>(BLOCKED_STORIES))
+            blockedUserList = ArrayList(BLOCKED_STORIES.getPref())
             notifyDataSetChanged()
         }
 

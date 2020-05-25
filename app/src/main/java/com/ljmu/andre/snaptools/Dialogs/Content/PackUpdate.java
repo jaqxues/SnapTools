@@ -15,7 +15,7 @@ import com.ljmu.andre.snaptools.Networking.Helpers.DownloadModulePack;
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.IGNORED_PACK_UPDATE_VERSION;
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;

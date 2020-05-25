@@ -19,8 +19,8 @@ import java.util.Objects;
 import io.reactivex.annotations.Nullable;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.IGNORED_UPDATE_VERSION_CODE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_APK_UPDATE_CHECK;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LATEST_APK_VERSION_CODE;

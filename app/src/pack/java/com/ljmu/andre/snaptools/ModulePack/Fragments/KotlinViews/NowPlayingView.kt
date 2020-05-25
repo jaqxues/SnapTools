@@ -10,9 +10,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
-import com.ljmu.andre.GsonPreferences.Preferences.putPref
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.akrolyb.prefs.putPref
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CURRENT_NOW_PLAYING_VIEW
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_NOW_PLAYING_HIDE_EMPTY_ART
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.NOW_PLAYING_BOTTOM_MARGIN
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.NOW_PLAYING_IMAGE_SIZE
 import com.ljmu.andre.snaptools.ModulePack.Utils.Provider
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.*
 import com.ljmu.andre.snaptools.Utils.Constants
@@ -64,7 +67,7 @@ class NowPlayingView {
             getPlayerView(activity, false)
 
     fun <T : ViewGroup> getPlayerView(activity: Activity, shouldIncrement: Boolean): T {
-        var currentPlayerIndex: Int = getPref(CURRENT_NOW_PLAYING_VIEW)
+        var currentPlayerIndex: Int = CURRENT_NOW_PLAYING_VIEW.getPref()
 
         if (shouldIncrement)
             currentPlayerIndex++
@@ -73,7 +76,7 @@ class NowPlayingView {
             currentPlayerIndex = 0
 
         if (shouldIncrement)
-            putPref(CURRENT_NOW_PLAYING_VIEW, currentPlayerIndex)
+            CURRENT_NOW_PLAYING_VIEW.putPref(currentPlayerIndex)
 
         return callableViewList[currentPlayerIndex].call(activity) as T
     }
@@ -91,7 +94,7 @@ class NowPlayingView {
                         if (isDark) ContextCompat.getColor(modContext, getColor(modContext, "textTertiary"))
                         else Color.parseColor("#414141")
 
-                val imageSize: Int = getPref(NOW_PLAYING_IMAGE_SIZE)
+                val imageSize = NOW_PLAYING_IMAGE_SIZE.getPref()
 
                 relativeLayout {
                     lparams(width = matchParent, height = matchParent)
@@ -113,7 +116,7 @@ class NowPlayingView {
                             imageView {
                                 id = getIdFromString("now_playing_art")
 
-                                if (!getPref<Boolean>(FILTER_NOW_PLAYING_HIDE_EMPTY_ART)) {
+                                if (!FILTER_NOW_PLAYING_HIDE_EMPTY_ART.getPref()) {
                                     backgroundResource = if (Constants.getApkVersionCode() >= 65) {
                                         getDrawable(modContext, "music_record_primary_dark")
                                     } else {
@@ -146,7 +149,7 @@ class NowPlayingView {
                     }.lparams(width = wrapContent, height = wrapContent) {
                         alignParentBottom()
                         centerHorizontally()
-                        bottomMargin = getPref<Int>(NOW_PLAYING_BOTTOM_MARGIN)
+                        bottomMargin = NOW_PLAYING_BOTTOM_MARGIN.getPref()
                     }
                 }
             }.view as T
@@ -163,7 +166,7 @@ class NowPlayingView {
                 val txtColor2: Int =
                         if (isDark) ContextCompat.getColor(modContext, getColor(modContext, "textTertiary"))
                         else Color.parseColor("#414141")
-                val imageSize: Int = getPref(NOW_PLAYING_IMAGE_SIZE)
+                val imageSize = NOW_PLAYING_IMAGE_SIZE.getPref()
 
                 relativeLayout {
                     lparams(width = matchParent, height = matchParent)
@@ -185,7 +188,7 @@ class NowPlayingView {
                             imageView {
                                 id = getIdFromString("now_playing_art")
 
-                                if (!getPref<Boolean>(FILTER_NOW_PLAYING_HIDE_EMPTY_ART)) {
+                                if (!FILTER_NOW_PLAYING_HIDE_EMPTY_ART.getPref()) {
                                     backgroundResource = if (Constants.getApkVersionCode() >= 65) {
                                         getDrawable(modContext, "music_record_primary_dark")
                                     } else {
@@ -226,7 +229,7 @@ class NowPlayingView {
                         alignParentBottom()
                         centerHorizontally()
                         margin = dip(10)
-                        bottomMargin = getPref<Int>(NOW_PLAYING_BOTTOM_MARGIN)
+                        bottomMargin = NOW_PLAYING_BOTTOM_MARGIN.getPref()
                     }
                 }
             }.view as T
@@ -242,7 +245,7 @@ class NowPlayingView {
                 val txtColor2: Int =
                         if (isDark) ContextCompat.getColor(modContext, getColor(modContext, "textTertiary"))
                         else Color.parseColor("#414141")
-                val imageSize: Int = getPref(NOW_PLAYING_IMAGE_SIZE)
+                val imageSize = NOW_PLAYING_IMAGE_SIZE.getPref()
 
                 relativeLayout {
                     lparams(width = matchParent, height = matchParent)
@@ -259,7 +262,7 @@ class NowPlayingView {
                             //background = getBorderedDrawable(null, Color.BLACK, dip(2))
                             id = getIdFromString("now_playing_art")
 
-                            if (!getPref<Boolean>(FILTER_NOW_PLAYING_HIDE_EMPTY_ART)) {
+                            if (!FILTER_NOW_PLAYING_HIDE_EMPTY_ART.getPref()) {
                                 backgroundResource = if (Constants.getApkVersionCode() >= 65) {
                                     getDrawable(modContext, "music_record_primary_dark")
                                 } else {
@@ -294,7 +297,7 @@ class NowPlayingView {
                     }.lparams(width = wrapContent, height = wrapContent) {
                         alignParentBottom()
                         centerHorizontally()
-                        bottomMargin = getPref<Int>(NOW_PLAYING_BOTTOM_MARGIN)
+                        bottomMargin = NOW_PLAYING_BOTTOM_MARGIN.getPref()
                     }
                 }
             }.view as T
@@ -311,7 +314,7 @@ class NowPlayingView {
                         if (isDark) ContextCompat.getColor(modContext, getColor(modContext, "textTertiary"))
                         else Color.parseColor("#414141")
 
-                val imageSize: Int = getPref(NOW_PLAYING_IMAGE_SIZE)
+                val imageSize = NOW_PLAYING_IMAGE_SIZE.getPref()
 
                 relativeLayout {
                     lparams(width = matchParent, height = matchParent)
@@ -325,7 +328,7 @@ class NowPlayingView {
                             imageView {
                                 id = getIdFromString("now_playing_art")
 
-                                if (!getPref<Boolean>(FILTER_NOW_PLAYING_HIDE_EMPTY_ART)) {
+                                if (!FILTER_NOW_PLAYING_HIDE_EMPTY_ART.getPref()) {
                                     backgroundResource = if (Constants.getApkVersionCode() >= 65) {
                                         getDrawable(modContext, "music_record_primary_dark")
                                     } else {
@@ -367,7 +370,7 @@ class NowPlayingView {
                     }.lparams(width = wrapContent, height = wrapContent) {
                         alignParentBottom()
                         centerHorizontally()
-                        bottomMargin = getPref<Int>(NOW_PLAYING_BOTTOM_MARGIN)
+                        bottomMargin = NOW_PLAYING_BOTTOM_MARGIN.getPref()
                     }
                 }
             }.view as T
@@ -383,7 +386,7 @@ class NowPlayingView {
                         if (isDark) ContextCompat.getColor(modContext, getColor(modContext, "textTertiary"))
                         else Color.parseColor("#414141")
 
-                val imageSize: Int = getPref(NOW_PLAYING_IMAGE_SIZE)
+                val imageSize = NOW_PLAYING_IMAGE_SIZE.getPref()
 
                 relativeLayout {
                     lparams(width = matchParent, height = matchParent)
@@ -428,7 +431,7 @@ class NowPlayingView {
                     }.lparams(width = wrapContent, height = wrapContent) {
                         alignParentBottom()
                         centerHorizontally()
-                        bottomMargin = getPref<Int>(NOW_PLAYING_BOTTOM_MARGIN)
+                        bottomMargin = NOW_PLAYING_BOTTOM_MARGIN.getPref()
                     }
                 }
             }.view as T
@@ -446,7 +449,7 @@ class NowPlayingView {
                         backgroundResource = lineColorId
                         id = getIdFromString("bottom_margin_line")
                         visibility = View.INVISIBLE
-                    }.lparams(width = dip(2), height = getPref<Int>(NOW_PLAYING_BOTTOM_MARGIN)) {
+                    }.lparams(width = dip(2), height = NOW_PLAYING_BOTTOM_MARGIN.getPref()) {
                         centerHorizontally()
                         alignParentBottom()
                     }
@@ -474,18 +477,18 @@ class NowPlayingView {
                                 below(getIdFromString("art_size_scrollbar"))
                                 centerHorizontally()
                             }
-                            artSizeText.text = getPref<Int>(NOW_PLAYING_IMAGE_SIZE).toString() + "px"
+                            artSizeText.text = NOW_PLAYING_IMAGE_SIZE.getPref().toString() + "px"
 
                             val artSizeSeekBar = getBasicSeekbar(
                                     modContext,
                                     600,
                                     0,
-                                    getPref(NOW_PLAYING_IMAGE_SIZE),
+                                    NOW_PLAYING_IMAGE_SIZE.getPref(),
                                     OnSeekBarResult { _, progress ->
-                                        putPref(NOW_PLAYING_IMAGE_SIZE, progress)
+                                        NOW_PLAYING_IMAGE_SIZE.putPref(progress)
                                     },
                                     onSeekBarProgress,
-                                    Pair<String, TextView>("%spx", artSizeText)
+                                    Pair("%spx", artSizeText)
                             ).lparams(width = matchParent, height = dip(40)) {
                             }
                             artSizeSeekBar.id = getIdFromString("art_size_scrollbar")

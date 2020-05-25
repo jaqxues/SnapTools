@@ -21,6 +21,7 @@ import com.ljmu.andre.snaptools.ModulePack.Fragments.Tutorials.AccountManagerTut
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.AccountManagerUtils;
 import com.ljmu.andre.snaptools.ModulePack.Utils.AccountManagerUtils.SnapchatAccountModel;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result;
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result.BadResult;
 import com.ljmu.andre.snaptools.Utils.AnimationUtils;
@@ -40,9 +41,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.AccountManagerUtils.loadSnapchatAccountModels;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.ACCOUNTS_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDrawable;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getIdFromString;
@@ -95,7 +95,7 @@ public class AccountManagerFragment extends FragmentHelper {
 
         tutorialDetails = AccountManagerTutorial.getTutorials();
 
-        accountsDir = getCreateDir(ACCOUNTS_PATH);
+        accountsDir = getCreateDir(PackPathProvider.getAccountsPath());
 
         if (accountsDir == null) {
             Timber.e("Couldn't find or create Accounts Directory");

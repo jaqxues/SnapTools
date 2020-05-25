@@ -7,7 +7,7 @@ import android.provider.Settings.Secure;
 
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import com.ljmu.andre.GsonPreferences.Preferences;
+import com.jaqxues.akrolyb.prefs.PrefManager;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
@@ -15,11 +15,13 @@ import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
 
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.Translation.Translator.translate;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.INSTALLATION_ID;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
@@ -296,12 +298,13 @@ public class DeviceIdManager {
      * Uses MurMurHash to attempt to further secure the ID
      * ===========================================================================
      */
+    @SuppressWarnings("UnstableApiUsage")
     private static String getDeviceIdOldMethod(Context context) {
 
         // Hash the ID to make it harder to spoof/guess ==============================
         Hasher hasher = Hashing.murmur3_128(8435809).newHasher();
-        if (Preferences.getIsInitialised().get())
-            hasher.putString(getPref(INSTALLATION_ID), Charset.defaultCharset());
+        if (PrefManager.isInitialized())
+            hasher.putString(getInstallationId(), Charset.defaultCharset());
 
         hasher.putString(
                 getAndroidId(context),
@@ -309,5 +312,14 @@ public class DeviceIdManager {
         );
 
         return cachedDeviceId = hasher.hash().toString();
+    }
+
+    public static String getInstallationId() {
+        String id = getPref(INSTALLATION_ID);
+        if (id == null || id.isEmpty()) {
+            id = UUID.randomUUID().toString();
+            putPref(INSTALLATION_ID, id);
+        }
+        return id;
     }
 }

@@ -2,14 +2,14 @@ package com.ljmu.andre.snaptools.ModulePack;
 
 import android.content.Context;
 
-import com.ljmu.andre.GsonPreferences.Preferences.Preference;
+import com.jaqxues.akrolyb.prefs.Preference;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_BOOLEAN;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_FLOAT;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.AB_TEST_CHECK_INT;
@@ -415,7 +415,7 @@ public class ForcedHooks extends ModuleHelper {
 //		);
     }
 
-    private String transformOtherString(Preference preference) {
+    private String transformOtherString(Preference<String> preference) {
         if (!miscChangesEnabled)
             return null;
 
@@ -428,7 +428,7 @@ public class ForcedHooks extends ModuleHelper {
         return preferenceValue;
     }
 
-    private Boolean transformBoolean(Preference preference) {
+    private Boolean transformBoolean(Preference<String> preference) {
         if (!miscChangesEnabled)
             return null;
 
@@ -445,7 +445,7 @@ public class ForcedHooks extends ModuleHelper {
         return null;
     }
 
-    private String transformOverwrite(Preference preference) {
+    private String transformOverwrite(Preference<String> preference) {
         if (!miscChangesEnabled)
             return null;
 
@@ -463,7 +463,7 @@ public class ForcedHooks extends ModuleHelper {
 
     }
 
-    private <T> T transformOtherOnOff(Preference preference, T on, T off, T def) {
+    private <T> T transformOtherOnOff(Preference<String> preference, T on, T off, T def) {
         if (!miscChangesEnabled)
             return null;
 

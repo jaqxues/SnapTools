@@ -11,10 +11,7 @@ import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.MainActivity;
 import com.ljmu.andre.snaptools.STApplication;
-import com.ljmu.andre.snaptools.Utils.Assert;
-import com.ljmu.andre.snaptools.Utils.CustomObservers;
-import com.ljmu.andre.snaptools.Utils.InstallUtils;
-import com.ljmu.andre.snaptools.Utils.SafeToast;
+import com.ljmu.andre.snaptools.Utils.*;
 import com.topjohnwu.superuser.Shell;
 import com.topjohnwu.superuser.io.SuFileOutputStream;
 
@@ -34,11 +31,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Repackaging.RepackageUtil.findAndPatch;
 import static com.ljmu.andre.snaptools.Utils.Constants.getApkVersionName;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.PLACE_HOLDER_UNINSTALL_REPKG;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.REPACKAGE_NAME;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
@@ -96,7 +91,7 @@ public class RepackageManager {
         String obfusPackageName = RepackageUtil.genPackageName("com.", Constants.ORIG_PACKAGE.length());
         Timber.d("Obfuscating package to: " + obfusPackageName);
 
-        File contentPath = Assert.notNull("Null content path for repackaging", getCreateDir(CONTENT_PATH));
+        File contentPath = Assert.notNull("Null content path for repackaging", new File(PathProvider.getContentPath()));
         File repackFile = new File(contentPath, "repack.apk");
         Timber.d("Repacking apk to file: " + repackFile);
         // ===========================================================================

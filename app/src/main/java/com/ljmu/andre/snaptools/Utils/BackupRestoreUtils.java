@@ -1,7 +1,6 @@
 package com.ljmu.andre.snaptools.Utils;
 
 import com.google.common.io.Files;
-import com.ljmu.andre.GsonPreferences.Preferences;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +8,7 @@ import java.util.Date;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.BACKUP_PATH;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CONTENT_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.yyyyMMddHHmmss;
 
 /**
@@ -30,7 +26,7 @@ public class BackupRestoreUtils {
     }
 
     public static boolean backupCurrentProfile(String profileName) {
-        File currentPrefFile = new File((String) getPref(CONTENT_PATH), Preferences.getPreferenceFilename());
+        File currentPrefFile = new File(PathProvider.getContentPath(), Common.PREF_FILE);
         if (!currentPrefFile.exists()) {
             Timber.w("Preference file doesn't exist?");
             return false;
@@ -55,7 +51,7 @@ public class BackupRestoreUtils {
     }
 
     private static File getBackupFile(String profileName) {
-        File backupDir = getCreateDir(BACKUP_PATH);
+        File backupDir = getCreateDir(PathProvider.getBackupPath());
         if (backupDir == null || !backupDir.exists()) {
             Timber.w("Backup dir not created");
             return null;
@@ -73,7 +69,7 @@ public class BackupRestoreUtils {
         }
 
 
-        File currentPrefFile = new File((String) getPref(CONTENT_PATH), Preferences.getPreferenceFilename());
+        File currentPrefFile = new File(PathProvider.getContentPath(), Common.PREF_FILE);
 
         try {
             if (!currentPrefFile.exists()) {

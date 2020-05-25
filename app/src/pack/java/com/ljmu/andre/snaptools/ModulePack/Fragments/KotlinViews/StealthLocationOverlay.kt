@@ -9,7 +9,7 @@ import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
@@ -60,7 +60,7 @@ class StealthLocationOverlay(private val activity: Activity) {
     private fun <T : ViewGroup> getOverlayContainer(): T =
             activity.UI {
                 val iconSize = 50
-                val selectedPosition = getPref<String>(STEALTH_SNAP_BUTTON_LOCATION)
+                val selectedPosition = STEALTH_SNAP_BUTTON_LOCATION.getPref()
 
                 frameLayout {
                     layoutParams = LinearLayout.LayoutParams(matchParent, context.resources?.displayMetrics?.heightPixels!!, 1f)

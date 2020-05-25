@@ -27,7 +27,7 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.CHAT_V10_BUILDER;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SNAP_STATUS;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.STORY_SNAP;
@@ -234,7 +234,7 @@ public class StealthViewing extends ModuleHelper {
                     protected void before(MethodHookParam param) throws Throwable {
                         String snapId = callHook(GET_SNAP_ID, param.args[1]);
 
-                        if (handleStealthCheck(snapId) && !(boolean) getPref(STEALTH_MARK_STORY_VIEWED))
+                        if (handleStealthCheck(snapId) && !getPref(STEALTH_MARK_STORY_VIEWED))
                             param.setResult(null);
                     }
                 }
@@ -257,7 +257,7 @@ public class StealthViewing extends ModuleHelper {
                             snapMap.remove(shouldntStealth);
                         }
 
-                        Timber.d("EntrySize: " + snapMap.size());
+                        Timber.d("EntrySize: %s", snapMap.size());
                     }
                 }
         );

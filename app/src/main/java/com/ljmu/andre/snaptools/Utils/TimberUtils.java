@@ -3,10 +3,7 @@ package com.ljmu.andre.snaptools.Utils;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.snaptools.STApplication;
-
-import java.util.HashSet;
 
 import de.robv.android.xposed.XposedBridge;
 import timber.log.Timber;
@@ -47,43 +44,6 @@ public class TimberUtils {
             }, "Debug");
         } else {
             plantCheck(new ReleaseTree(), "Release");
-            Timber.plant(new ReporterTree());
-        }
-    }
-
-    private static class ReporterTree extends ReleaseTree {
-        private static final HashSet<Integer> priorityWhitelist;
-
-        static {
-            priorityWhitelist = new HashSet<>();
-            priorityWhitelist.add(Log.WARN);
-            priorityWhitelist.add(Log.ERROR);
-            priorityWhitelist.add(Log.ASSERT);
-        }
-
-        @Override
-        protected boolean isLoggable(String tag, int priority) {
-            return priority >= Log.WARN;
-        }
-
-        @Override
-        protected void log(int priority, String tag, String message, Throwable t) {
-//			if (message != null && priority >= Log.INFO
-//					&& Fabric.isInitialized() && Crashlytics.getInstance() != null) {
-//				Crashlytics.doLog(priority, tag, message);
-//			}
-
-            if (isLoggable(tag, priority)) {
-                ErrorLogger errorLogger = ErrorLogger.getInstance();
-
-                if (message != null && errorLogger != null) {
-                    errorLogger.addError(priority, message);
-                }
-
-//				if (t != null && priority == Log.ERROR && Fabric.isInitialized() && Crashlytics.getInstance() != null) {
-//					Crashlytics.logException(t);
-//				}
-            }
         }
     }
 

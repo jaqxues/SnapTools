@@ -32,16 +32,12 @@ import com.isseiaoki.simplecropview.CropImageView.CropMode;
 import com.isseiaoki.simplecropview.CropImageView.RotateDegrees;
 import com.isseiaoki.simplecropview.callback.LoadCallback;
 import com.isseiaoki.simplecropview.callback.SaveCallback;
-import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.snaptools.Dialogs.Content.Progress;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
+import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import com.ljmu.andre.snaptools.Utils.FileUtils;
-import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
-import com.ljmu.andre.snaptools.Utils.SafeToast;
-import com.ljmu.andre.snaptools.Utils.SharedVideoFormatStrategy;
 
 import net.ypresto.androidtranscoder.MediaTranscoder;
 import net.ypresto.androidtranscoder.MediaTranscoder.Listener;
@@ -66,11 +62,10 @@ import io.reactivex.annotations.Nullable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.COMPRESSION_QUALITY;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LOCK_SHARING_RATIO;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.RESIZE_SHARING_IMAGE;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHARED_IMAGE_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_COMPRESSION_DIALOG;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_VIDEO_SHARING_ADVICE;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.htmlHighlight;
@@ -110,8 +105,7 @@ public class SharedImageActivity extends AppCompatActivity {
          * ===========================================================================
          */
         try {
-            Preferences.init(
-                    Preferences.getExternalPath() + "/" + STApplication.MODULE_TAG + "/");
+            Common.initPrefs();
         } catch (Exception e) {
 
             Timber.e(e);
@@ -258,7 +252,7 @@ public class SharedImageActivity extends AppCompatActivity {
     }
 
     private void refreshSharedMediaDir() {
-        String sharedMediaPath = getPref(SHARED_IMAGE_PATH);
+        String sharedMediaPath = PathProvider.getSharedImagePath();
         sharedMediaDir = new File(sharedMediaPath);
 
         if (sharedMediaDir.exists()) {

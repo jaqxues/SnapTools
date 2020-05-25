@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_SNAP_ADVANCE_MODES;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.RECEIVED_SNAP;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookDef.SNAP_COUNTDOWN_POSTER;

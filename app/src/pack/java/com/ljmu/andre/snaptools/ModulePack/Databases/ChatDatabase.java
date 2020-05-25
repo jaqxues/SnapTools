@@ -6,10 +6,8 @@ import com.ljmu.andre.CBIDatabase.CBIDatabaseCore;
 import com.ljmu.andre.CBIDatabase.CBIObject;
 import com.ljmu.andre.CBIDatabase.CBITable;
 
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import timber.log.Timber;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DATABASES_PATH;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -23,7 +21,7 @@ public class ChatDatabase {
 
     public static CBIDatabaseCore init(Context context) {
         if (databaseCore == null) {
-            String dbPath = getPref(DATABASES_PATH);
+            String dbPath = PathProvider.getDatabasesPath();
             databaseCore = new CBIDatabaseCore(context, dbPath + DB_NAME, VERSION);
         }
 

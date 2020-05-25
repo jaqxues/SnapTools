@@ -27,7 +27,7 @@ import com.ljmu.andre.snaptools.Utils.Constants;
 
 import java.util.List;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LAST_CHECK_KNOWN_BUGS;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.dp;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.getSpannedHtml;

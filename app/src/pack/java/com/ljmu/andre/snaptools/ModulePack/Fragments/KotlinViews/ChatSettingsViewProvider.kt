@@ -3,10 +3,12 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.ViewGroup
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCK_TYPING_NOTIFICATIONS
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_CHAT_IN_SC
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORE_CHAT_MESSAGES
 import com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill
 import com.ljmu.andre.snaptools.Utils.ResourceUtils
 import com.ljmu.andre.snaptools.Utils.themedSwitchCompatX
@@ -33,7 +35,7 @@ class ChatSettingsViewProvider {
                             verticalPadding = 5.toDp()
                             horizontalPadding = 10.toDp()
                             text = "Auto save messages in app"
-                            isChecked = getPref(SAVE_CHAT_IN_SC)
+                            isChecked = SAVE_CHAT_IN_SC.getPref()
 
                             setOnCheckedChangeListener { _, isChecked ->
                                 putAndKill(SAVE_CHAT_IN_SC, isChecked, activity)
@@ -44,7 +46,7 @@ class ChatSettingsViewProvider {
                             verticalPadding = 5.toDp()
                             horizontalPadding = 10.toDp()
                             text = "Store messages locally"
-                            isChecked = getPref(STORE_CHAT_MESSAGES)
+                            isChecked = STORE_CHAT_MESSAGES.getPref()
 
                             setOnCheckedChangeListener { _, isChecked ->
                                 putAndKill(STORE_CHAT_MESSAGES, isChecked, activity)
@@ -57,7 +59,7 @@ class ChatSettingsViewProvider {
                             verticalPadding = 5.toDp()
                             horizontalPadding = 10.toDp()
                             text = "Disable inbound 'X is typing' notifications"
-                            isChecked = getPref(BLOCK_TYPING_NOTIFICATIONS)
+                            isChecked = BLOCK_TYPING_NOTIFICATIONS.getPref()
 
                             setOnCheckedChangeListener { _, isChecked ->
                                 putAndKill(BLOCK_TYPING_NOTIFICATIONS, isChecked, activity)

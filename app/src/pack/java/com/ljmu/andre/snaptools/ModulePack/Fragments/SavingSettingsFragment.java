@@ -3,33 +3,31 @@ package com.ljmu.andre.snaptools.ModulePack.Fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Fragments.FragmentHelper;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.SavingViewProvider;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.Tutorials.SavingTutorial;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
 import com.ljmu.andre.snaptools.Utils.TutorialDetail;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.nononsenseapps.filepicker.Utils;
+import timber.log.Timber;
 
 import java.io.File;
 import java.util.List;
 
-import timber.log.Timber;
-
 import static android.app.Activity.RESULT_OK;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.MEDIA_PATH;
+import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CUSTOM_MEDIA_PATH;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill;
 
 /**
@@ -75,7 +73,7 @@ public class SavingSettingsFragment extends FragmentHelper {
                 return;
             }
 
-            String currentMediaPath = getPref(MEDIA_PATH);
+            String currentMediaPath = PackPathProvider.getMediaPath();
 
             if (currentMediaPath.equals(mediaDir.getAbsolutePath())) {
                 DialogFactory.createErrorDialog(
@@ -90,7 +88,7 @@ public class SavingSettingsFragment extends FragmentHelper {
             File currentMediaDir = new File(currentMediaPath);
 
             if (!currentMediaDir.exists()) {
-                putAndKill(MEDIA_PATH, mediaDir.getAbsolutePath(), getActivity());
+                putAndKill(CUSTOM_MEDIA_PATH, mediaDir.getAbsolutePath(), getActivity());
                 SafeToast.show(getActivity(), "Successfully changed Media folder", Toast.LENGTH_LONG);
                 return;
             }
@@ -112,13 +110,13 @@ public class SavingSettingsFragment extends FragmentHelper {
                                         new ThemedClickListener() {
                                             @Override
                                             public void clicked(ThemedDialog themedDialog) {
-                                                putAndKill(MEDIA_PATH, mediaDir.getAbsolutePath(), getActivity());
+                                                putAndKill(CUSTOM_MEDIA_PATH, mediaDir.getAbsolutePath(), getActivity());
                                                 themedDialog.dismiss();
                                             }
                                         }
                                 ).setDismissable(false).show();
                             } else {
-                                putAndKill(MEDIA_PATH, mediaDir.getAbsolutePath(), getActivity());
+                                putAndKill(CUSTOM_MEDIA_PATH, mediaDir.getAbsolutePath(), getActivity());
                                 SafeToast.show(getActivity(), "Successfully transferred Media folder", Toast.LENGTH_LONG);
                             }
 
@@ -158,7 +156,7 @@ public class SavingSettingsFragment extends FragmentHelper {
                     // You could specify a String like "/storage/emulated/0/", but that can
                     // dangerous. Always use Android's API calls to get paths to the SD-card or
                     // internal memory.
-                    i.putExtra(FilePickerActivity.EXTRA_START_PATH, (String) getPref(MEDIA_PATH));
+                    i.putExtra(FilePickerActivity.EXTRA_START_PATH, PackPathProvider.getMediaPath());
 
                     startActivityForResult(i, SELECT_MEDIA_DIR_REQUEST);
                 });

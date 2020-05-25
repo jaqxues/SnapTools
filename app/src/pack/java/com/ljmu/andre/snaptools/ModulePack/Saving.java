@@ -32,6 +32,7 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.SavingLayout;
 import com.ljmu.andre.snaptools.ModulePack.Utils.SavingViewPool;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
 import java.io.ByteArrayInputStream;
@@ -49,8 +50,7 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.RECEIVED_SNAP;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SENT_IMAGE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.SENT_VIDEO;
@@ -87,7 +87,7 @@ import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDe
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STORY_ADVANCER_METADATA;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookVariableDef.STREAM_TYPE_CHECK_BOOLEAN;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_SENT_SNAPS;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.XposedUtils.logEntireClass;
 import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
@@ -187,7 +187,7 @@ public class Saving extends ModuleHelper {
                                     if (!sourceMedia.exists() && !sourceMedia.createNewFile())
                                         Timber.w("Source tracked video doesn't exist and couldn't be created");
 
-                                    File tempDir = getCreateDir(TEMP_PATH);
+                                    File tempDir = getCreateDir(PathProvider.getTempPath());
                                     File targetMedia = new File(tempDir, "Batched_Sent_Snap.mp4");
 
                                     Files.copy(sourceMedia, targetMedia);
@@ -604,7 +604,7 @@ public class Saving extends ModuleHelper {
 
                         SaveState saveState = snap.finalDisplayEvent();
 
-                        Timber.d("Stream Save State: " + saveState);
+                        Timber.d("Stream Save State: %s", saveState);
 
                         if (saveState == null) {
                             Timber.d("Null savestate... Ignoring");
@@ -627,7 +627,7 @@ public class Saving extends ModuleHelper {
                                 toastType = SaveNotification.ToastType.GOOD;
                                 break;
                             default:
-                                Timber.e("Unhandled Save State: " + saveState);
+                                Timber.e("Unhandled Save State: %s", saveState);
                                 return;
                         }
 
@@ -794,16 +794,16 @@ public class Saving extends ModuleHelper {
 
             } else {
 
-                Timber.d("MediaHolder: " + mediaHolder.getClass());
+                Timber.d("MediaHolder: %s", mediaHolder.getClass());
                 // Copy the video file into our output stream ================================
                 Object batchHolder = getObjectField(SENT_MEDIA_BATCH_DATA, mediaHolder);
 
-                Timber.d("BatchHolder: " + batchHolder);
+                Timber.d("BatchHolder: %s", batchHolder);
                 logEntireClass(batchHolder, 2);
 
                 File videoFile;
                 if (batchHolder != null) {
-                    videoFile = new File(getCreateDir(TEMP_PATH), "Batched_Sent_Snap.mp4");
+                    videoFile = new File(getCreateDir(PathProvider.getTempPath()), "Batched_Sent_Snap.mp4");
                 } else {
                     Uri videoUri = getObjectField(SENT_MEDIA_VIDEO_URI, mediaHolder);
 

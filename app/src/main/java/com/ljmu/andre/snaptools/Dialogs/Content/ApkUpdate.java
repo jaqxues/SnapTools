@@ -12,11 +12,10 @@ import com.github.javiersantos.appupdater.objects.Update;
 import com.ljmu.andre.snaptools.BuildConfig;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckAPKUpdate;
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.IGNORED_UPDATE_VERSION_CODE;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
 import static com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSpannedHtml;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getId;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
@@ -67,7 +66,7 @@ public class ApkUpdate implements ThemedDialog.ThemedDialogExtension {
                     CheckAPKUpdate.updateApk(
                             activity,
                             update.getUrlToDownload().toString(),
-                            getPref(TEMP_PATH),
+                            PathProvider.getTempPath(),
                             "SnapTools_" + update.getLatestVersion() + ".apk"
                     );
                 }

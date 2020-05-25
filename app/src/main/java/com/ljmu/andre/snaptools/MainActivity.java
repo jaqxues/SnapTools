@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.Subscribe;
-import com.ljmu.andre.GsonPreferences.Preferences;
 import com.ljmu.andre.Translation.Translator;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
@@ -55,21 +54,14 @@ import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData;
 import com.ljmu.andre.snaptools.Framework.Module;
 import com.ljmu.andre.snaptools.Framework.ModulePack;
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
+import com.ljmu.andre.snaptools.Utils.Common;
 import com.ljmu.andre.snaptools.Networking.Helpers.CheckAPKUpdate;
 import com.ljmu.andre.snaptools.Repackaging.RepackageManager;
 import com.ljmu.andre.snaptools.UIComponents.CustomNavigation;
 import com.ljmu.andre.snaptools.UIComponents.CustomNavigation.NavigationFragmentListener;
 import com.ljmu.andre.snaptools.UIComponents.UITheme;
-import com.ljmu.andre.snaptools.Utils.Constants;
-import com.ljmu.andre.snaptools.Utils.ContextHelper;
+import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.ErrorObserver;
-import com.ljmu.andre.snaptools.Utils.MiscUtils;
-import com.ljmu.andre.snaptools.Utils.ModuleChecker;
-import com.ljmu.andre.snaptools.Utils.RemoteConfig;
-import com.ljmu.andre.snaptools.Utils.SafeToast;
-import com.ljmu.andre.snaptools.Utils.ShowcaseFactory;
-import com.ljmu.andre.snaptools.Utils.ThemeUtils;
-import com.ljmu.andre.snaptools.Utils.TranslationDef;
 
 import java.util.List;
 import java.util.Locale;
@@ -89,9 +81,8 @@ import timber.log.Timber;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.ljmu.andre.GsonPreferences.Preferences.getExternalPath;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.Translation.Translator.translate;
 import static com.ljmu.andre.snaptools.Utils.Constants.APK_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.Constants.REMIND_TUTORIAL_COOLDOWN;
@@ -269,9 +260,7 @@ public class MainActivity
          * ===========================================================================
          */
         try {
-            Preferences.init(
-                    getExternalPath() + "/" + STApplication.MODULE_TAG + "/"
-            );
+            Common.initPrefs();
         } catch (Exception e) {
             Timber.e(e);
 

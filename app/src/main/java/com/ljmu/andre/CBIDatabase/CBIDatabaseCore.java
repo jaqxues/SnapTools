@@ -3,18 +3,14 @@ package com.ljmu.andre.CBIDatabase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.ljmu.andre.CBIDatabase.Utils.SQLCommand;
 import com.ljmu.andre.CBIDatabase.Utils.TableVersionTable;
+import com.ljmu.andre.snaptools.Utils.PathProvider;
+import timber.log.Timber;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import timber.log.Timber;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DATABASES_PATH;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -156,6 +152,6 @@ public class CBIDatabaseCore extends SQLiteOpenHelper {
     }
 
     private static String getDBPath(String name) {
-        return getPref(DATABASES_PATH) + name + ".db";
+        return PathProvider.getDatabasesPath() + name + ".db";
     }
 }

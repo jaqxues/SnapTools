@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
 import com.ljmu.andre.snaptools.ModulePack.Fragments.MiscChangesFragment
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
@@ -63,7 +63,7 @@ class FontPickerDialogExtension(val activity: Activity, fontList: List<String>, 
 
     class FontListAdapter(val list: List<String>) : BaseAdapter() {
         private val typefaceCache = HashMap<String, Typeface>()
-        var currentFont: String = getPref<String>(CURRENT_FONT)
+        var currentFont: String = CURRENT_FONT.getPref()
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             return with(parent!!.context) {

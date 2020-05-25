@@ -19,11 +19,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_MERGE_ENABLE;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DATABASES_PATH;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -37,7 +37,7 @@ public class LensDatabase {
 
     public static CBIDatabaseCore init(Context context) {
         if (databaseCore == null) {
-            String dbPath = getPref(DATABASES_PATH);
+            String dbPath = PathProvider.getDatabasesPath();
             databaseCore = new CBIDatabaseCore(context, dbPath + DB_NAME, VERSION);
         }
 

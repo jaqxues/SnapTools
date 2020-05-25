@@ -48,7 +48,7 @@ import java.util.Set;
 import de.robv.android.xposed.XposedHelpers;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_LENS_ACTIVATOR_TYPE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.ENUM_LENS_TYPE;
 import static com.ljmu.andre.snaptools.ModulePack.HookDefinitions.HookClassDef.LENS_APPLICATION_CONTEXT_ENUM;

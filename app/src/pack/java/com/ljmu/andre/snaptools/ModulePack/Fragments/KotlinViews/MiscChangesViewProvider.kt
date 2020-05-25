@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.customTabStrip
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.label
@@ -20,7 +20,21 @@ import com.ljmu.andre.snaptools.ModulePack.Fragments.MiscChangesFragment
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
 import com.ljmu.andre.snaptools.ModulePack.Utils.ListedViewPageAdapter
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.COPY_BUTTON
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CURRENT_FONT
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CUT_BUTTON
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_ANIMATED_CONTENT_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAMERA2_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CAPTIONV2_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_CHAT_VIDEO_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_EMOJIBRUSH_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_FPS_OVERLAY_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_GIPHY_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_HANDSFREEREC_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_INSIGHTS_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_MULTILINE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FORCE_SKYFILTERS_STATE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.PASTE_BUTTON
 import com.ljmu.andre.snaptools.ModulePack.Utils.Result
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
 import com.ljmu.andre.snaptools.Utils.Callable
@@ -122,7 +136,7 @@ class MiscChangesViewProvider(
                                                     fontSpinnerAdapter.currentFont = newItem
                                                     fontSpinnerAdapter.notifyDataSetChanged()
                                                 },
-                                                { getPref(CURRENT_FONT) }
+                                                { CURRENT_FONT.getPref() }
                                         )
                                 )
                             }.lparams(matchParent) {
@@ -135,8 +149,8 @@ class MiscChangesViewProvider(
                             text = "Force Caption Multi-Line"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_force_multiline")
-                            isChecked = getPref(FORCE_MULTILINE)
-                            setOnCheckedChangeListener({ _, isChecked -> putAndKill(FORCE_MULTILINE, isChecked, activity) })
+                            isChecked = FORCE_MULTILINE.getPref()
+                            setOnCheckedChangeListener { _, isChecked -> putAndKill(FORCE_MULTILINE, isChecked, activity) }
                         }.lparams(matchParent)
 
                         header("Caption Menu Settings")
@@ -145,24 +159,24 @@ class MiscChangesViewProvider(
                             text = "Cut Button"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_context_cut")
-                            isChecked = getPref(CUT_BUTTON)
-                            setOnCheckedChangeListener({ _, isChecked -> putAndKill(CUT_BUTTON, isChecked, activity) })
+                            isChecked = CUT_BUTTON.getPref()
+                            setOnCheckedChangeListener { _, isChecked -> putAndKill(CUT_BUTTON, isChecked, activity) }
                         }.lparams(matchParent)
 
                         themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             text = "Copy Option"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_context_copy")
-                            isChecked = getPref(COPY_BUTTON)
-                            setOnCheckedChangeListener({ _, isChecked -> putAndKill(COPY_BUTTON, isChecked, activity) })
+                            isChecked = COPY_BUTTON.getPref()
+                            setOnCheckedChangeListener { _, isChecked -> putAndKill(COPY_BUTTON, isChecked, activity) }
                         }.lparams(matchParent)
 
                         themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             text = "Paste Button"
                             verticalPadding = dip(10)
                             id = ResourceUtils.getIdFromString("switch_misc_context_paste")
-                            isChecked = getPref(PASTE_BUTTON)
-                            setOnCheckedChangeListener({ _, isChecked -> putAndKill(PASTE_BUTTON, isChecked, activity) })
+                            isChecked = PASTE_BUTTON.getPref()
+                            setOnCheckedChangeListener { _, isChecked -> putAndKill(PASTE_BUTTON, isChecked, activity) }
                         }.lparams(matchParent)
 
                         generalUICallable.call(this)
@@ -212,122 +226,122 @@ class MiscChangesViewProvider(
 
                         labelledSpinner(
                                 label = "Insights: ",
-                                initialItem = getPref<String>(FORCE_INSIGHTS_STATE),
+                                initialItem = FORCE_INSIGHTS_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_insights",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_INSIGHTS_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_INSIGHTS_STATE) }
+                                        { FORCE_INSIGHTS_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Video Chat: ",
-                                initialItem = getPref<String>(FORCE_CHAT_VIDEO_STATE),
+                                initialItem = FORCE_CHAT_VIDEO_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_videochat",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_CHAT_VIDEO_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_CHAT_VIDEO_STATE) }
+                                        { FORCE_CHAT_VIDEO_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Animated Content: ",
-                                initialItem = getPref<String>(FORCE_ANIMATED_CONTENT_STATE),
+                                initialItem = FORCE_ANIMATED_CONTENT_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_animatedcontent",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_ANIMATED_CONTENT_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_ANIMATED_CONTENT_STATE) }
+                                        { FORCE_ANIMATED_CONTENT_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Giphy Stickers: ",
-                                initialItem = getPref<String>(FORCE_GIPHY_STATE),
+                                initialItem = FORCE_GIPHY_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_giphy",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_GIPHY_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_GIPHY_STATE) }
+                                        { FORCE_GIPHY_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Captions V2: ",
-                                initialItem = getPref<String>(FORCE_CAPTIONV2_STATE),
+                                initialItem = FORCE_CAPTIONV2_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_captionsv2",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_CAPTIONV2_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_CAPTIONV2_STATE) }
+                                        { FORCE_CAPTIONV2_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Camera2: ",
-                                initialItem = getPref<String>(FORCE_CAMERA2_STATE),
+                                initialItem = FORCE_CAMERA2_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_camera2",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_CAMERA2_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_CAMERA2_STATE) }
+                                        { FORCE_CAMERA2_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Hands Free Recording: ",
-                                initialItem = getPref<String>(FORCE_HANDSFREEREC_STATE),
+                                initialItem = FORCE_HANDSFREEREC_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_handsfree",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_HANDSFREEREC_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_HANDSFREEREC_STATE) }
+                                        { FORCE_HANDSFREEREC_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "FPS Overlay: ",
-                                initialItem = getPref<String>(FORCE_FPS_OVERLAY_STATE),
+                                initialItem = FORCE_FPS_OVERLAY_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_fpsoverlay",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_FPS_OVERLAY_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_FPS_OVERLAY_STATE) }
+                                        { FORCE_FPS_OVERLAY_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Skyfilters: ",
-                                initialItem = getPref<String>(FORCE_SKYFILTERS_STATE),
+                                initialItem = FORCE_SKYFILTERS_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_skyfilters",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_SKYFILTERS_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_SKYFILTERS_STATE) }
+                                        { FORCE_SKYFILTERS_STATE.getPref() }
                                 ))
 
                         labelledSpinner(
                                 label = "Emoji Brush: ",
-                                initialItem = getPref<String>(FORCE_EMOJIBRUSH_STATE),
+                                initialItem = FORCE_EMOJIBRUSH_STATE.getPref(),
                                 items = onOffDefaultList,
                                 id = "spinner_emojibrush",
-                                itemSelectedListener = ViewFactory.OnItemChangedProvider<String>(
+                                itemSelectedListener = ViewFactory.OnItemChangedProvider(
                                         { newItem, _, _ ->
                                             putAndKill(FORCE_EMOJIBRUSH_STATE, newItem, activity)
                                         },
-                                        { getPref<String>(FORCE_EMOJIBRUSH_STATE) }
+                                        { FORCE_EMOJIBRUSH_STATE.getPref() }
                                 ))
 
                         experiemtnsUICallable.call(this)
@@ -341,7 +355,7 @@ class MiscChangesViewProvider(
 
     class FontSpinnerAdapter(val list: List<String>) : BaseAdapter() {
         private val typefaceCache = HashMap<String, Typeface>()
-        var currentFont: String = getPref<String>(CURRENT_FONT)
+        var currentFont: String = CURRENT_FONT.getPref()
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             return with(parent!!.context) {

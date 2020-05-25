@@ -13,8 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
-import com.ljmu.andre.GsonPreferences.Preferences
-import com.ljmu.andre.GsonPreferences.Preferences.*
+import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.akrolyb.prefs.putPref
 import com.ljmu.andre.snaptools.Dialogs.Content.TextInput
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
@@ -30,9 +30,12 @@ import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
 import com.ljmu.andre.snaptools.ModulePack.Utils.LensProfileUtils
 import com.ljmu.andre.snaptools.ModulePack.Utils.ListedViewPageAdapter
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_AUTO_ENABLE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.LENS_MERGE_ENABLE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_LENS_NAMES
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
 import com.ljmu.andre.snaptools.Utils.*
+import com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LENS_SELECTOR_SPAN
 import com.ljmu.andre.snaptools.Utils.FrameworkViewFactory.getSelectableBackgroundId
@@ -166,10 +169,10 @@ class LensViewProvider(
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Show Lens Names"
-                                isChecked = Preferences.getPref(SHOW_LENS_NAMES)
+                                isChecked = SHOW_LENS_NAMES.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
-                                    putPref(SHOW_LENS_NAMES, isChecked)
+                                    SHOW_LENS_NAMES.putPref(isChecked)
                                     lensUIEventCallable.call(LensUIEvent.SHOW_LENS_NAMES)
                                 }
                             }
@@ -190,11 +193,11 @@ class LensViewProvider(
 
                             seekbar.id = "seek_lens_span".toId()
                             seekbar.max = 9
-                            seekbar.progress = getPref<Int>(LENS_SELECTOR_SPAN) - 1
+                            seekbar.progress = LENS_SELECTOR_SPAN.getPref() - 1
                             seekbar.verticalPadding = 10.toDp()
                             seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                                    putPref(LENS_SELECTOR_SPAN, progress + 1)
+                                    LENS_SELECTOR_SPAN.putPref(progress + 1)
                                     lensUIEventCallable.call(LensUIEvent.UPDATE_LENS_SPAN)
                                 }
 
@@ -330,7 +333,7 @@ class LensViewProvider(
                         themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             padding = 10.toDp()
                             text = "Enable lens when collected"
-                            isChecked = Preferences.getPref(LENS_AUTO_ENABLE)
+                            isChecked = LENS_AUTO_ENABLE.getPref()
 
                             setOnCheckedChangeListener { _, isChecked ->
                                 putAndKill(LENS_AUTO_ENABLE, isChecked, activity)
@@ -342,7 +345,7 @@ class LensViewProvider(
                         themedSwitchCompatX(ResourceUtils.getStyle(activity, "DefaultSwitch")) {
                             padding = 10.toDp()
                             text = "Enable new merged lenses"
-                            isChecked = Preferences.getPref(LENS_MERGE_ENABLE)
+                            isChecked = LENS_MERGE_ENABLE.getPref()
 
                             setOnCheckedChangeListener { _, isChecked ->
                                 putAndKill(LENS_MERGE_ENABLE, isChecked, activity)
@@ -374,7 +377,7 @@ class LensViewProvider(
                         val restoreValues = java.util.ArrayList<String>()
                         restoreValues.add("Current")
 
-                        val profilesPath = getCreateDir(BACKUPS_PATH)
+                        val profilesPath = getCreateDir(PathProvider.getBackupPath())
                         val profilesExists: Boolean = profilesPath != null && profilesPath.exists()
 
                         /**
@@ -391,7 +394,7 @@ class LensViewProvider(
                             }.lparams(width = matchParent, height = wrapContent)
                         } else {
                             // ===========================================================================
-                            profilesPath!!.listFiles({ _, s -> s.startsWith("LensProfile_") })
+                            profilesPath!!.listFiles { _, s -> s.startsWith("LensProfile_") }
                                     ?.mapTo(restoreValues) {
                                         it.name.replace("LensProfile_", "")
                                                 .replace(".json", "")
@@ -442,7 +445,7 @@ class LensViewProvider(
                                                             if (!restoreResult.key)
                                                                 return
 
-                                                            if (getPref(KILL_SC_ON_CHANGE))
+                                                            if (KILL_SC_ON_CHANGE.getPref())
                                                                 PackUtils.killSCService(activity)
 
                                                             lensUIEventCallable.call(LensUIEvent.RELOAD_LENSES)

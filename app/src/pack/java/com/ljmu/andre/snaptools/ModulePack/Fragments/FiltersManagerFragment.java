@@ -45,14 +45,10 @@ import com.ljmu.andre.snaptools.ModulePack.Databases.Tables.FilterObject;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.FiltersSelectionView;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.SafeToastAdapter;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ListedViewPageAdapter;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.EditTextListener;
-import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import com.ljmu.andre.snaptools.Utils.Constants;
+import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.CustomObservers.SimpleObserver;
-import com.ljmu.andre.snaptools.Utils.FileUtils;
-import com.ljmu.andre.snaptools.Utils.GlideApp;
-import com.ljmu.andre.snaptools.Utils.PackUtils;
-import com.ljmu.andre.snaptools.Utils.ResourceUtils;
 import com.nononsenseapps.filepicker.Utils;
 
 import java.io.File;
@@ -68,15 +64,14 @@ import timber.log.Timber;
 import static android.app.Activity.RESULT_OK;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTERS_PATH;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_BACKGROUND_SAMPLE_PATH;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SCALING_TYPE;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTER_SHOW_SAMPLE_BACKGROUND;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getFilterScaleType;
 import static com.ljmu.andre.snaptools.Utils.FileUtils.createReadme;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.putAndKill;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getColor;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
@@ -135,7 +130,7 @@ public class FiltersManagerFragment extends FragmentHelper {
                             getDSLView(previewContainerView, "preview_sample_background")
                     );
 
-                    File filterDir = getCreateDir(FILTERS_PATH);
+                    File filterDir = getCreateDir(PackPathProvider.getFiltersPath());
                     File filterFile = new File(filterDir, filterObject.getFileName());
                     ImageView previewImageView = ResourceUtils.getDSLView(previewContainerView, "preview_imageview");
                     loadFilterIntoView(filterFile, previewImageView);
@@ -275,7 +270,7 @@ public class FiltersManagerFragment extends FragmentHelper {
 
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
-        File filterDir = getCreateDir(FILTERS_PATH);
+        File filterDir = getCreateDir(PackPathProvider.getFiltersPath());
         if (filterDir == null) {
             setAreFiltersEmpty(true);
             return filterMainContainer;
@@ -411,7 +406,7 @@ public class FiltersManagerFragment extends FragmentHelper {
          */
         ResourceUtils.<SwitchCompat>getDSLView(settingsContainer, "switch_show_sample").setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
-                    if (isChecked != (boolean) getPref(FILTER_SHOW_SAMPLE_BACKGROUND)) {
+                    if (isChecked != getPref(FILTER_SHOW_SAMPLE_BACKGROUND)) {
                         putPref(FILTER_SHOW_SAMPLE_BACKGROUND, isChecked);
                         filterAdapter.notifyDataSetChanged();
                     }
@@ -534,7 +529,7 @@ public class FiltersManagerFragment extends FragmentHelper {
     }
 
     private void generateFilterData() {
-        File filtersDir = getCreateDir(FILTERS_PATH);
+        File filtersDir = getCreateDir(PackPathProvider.getFiltersPath());
 
         if (filtersDir == null || !filtersDir.exists()) {
             Timber.w("Couldn't create Filters folder");

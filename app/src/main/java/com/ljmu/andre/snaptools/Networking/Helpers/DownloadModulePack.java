@@ -16,11 +16,9 @@ import com.ljmu.andre.snaptools.Networking.Helpers.DownloadFile.DownloadListener
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.PackUtils;
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 
 import java.io.File;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -77,7 +75,7 @@ public class DownloadModulePack implements DownloadListener {
                 .setMethod(Request.Method.GET)
                 .setContext(activity)
                 .setVolleyTag(VOLLEY_TAG)
-                .setDirectory(getPref(MODULES_PATH))
+                .setDirectory(PathProvider.getModulesPath())
                 .setFilename(packName + ".jar")
                 // ===========================================================================
                 .addDownloadListener(this)

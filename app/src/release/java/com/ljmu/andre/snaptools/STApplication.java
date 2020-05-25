@@ -1,12 +1,10 @@
 package com.ljmu.andre.snaptools;
 
 import android.app.Application;
-
-import com.ljmu.andre.ErrorLogger.ErrorLogger;
 import com.ljmu.andre.snaptools.Networking.VolleyHandler;
+import com.ljmu.andre.snaptools.Utils.Common;
 import com.ljmu.andre.snaptools.Utils.ContextHelper;
 import com.ljmu.andre.snaptools.Utils.TimberUtils;
-
 import timber.log.Timber;
 
 
@@ -30,7 +28,7 @@ public class STApplication extends Application {
         ContextHelper.set(getApplicationContext());
 
         VolleyHandler.init(getApplicationContext());
-        ErrorLogger.init();
+        Common.plantFileLogger();
 
         Timber.d("Initialising Activities");
         super.onCreate();
@@ -38,7 +36,7 @@ public class STApplication extends Application {
     }
 
     public static synchronized STApplication getInstance() {
-        Timber.d("Instance: " + mInstance);
+        Timber.d("Instance: %s", mInstance);
         return mInstance;
     }
 }

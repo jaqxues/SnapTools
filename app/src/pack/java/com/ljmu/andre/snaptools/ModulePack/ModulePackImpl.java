@@ -16,6 +16,7 @@ import com.ljmu.andre.snaptools.ModulePack.Caching.SnapDiskCache;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.GeneralSettingsFragment;
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KnownBugsFragment;
 import com.ljmu.andre.snaptools.ModulePack.ModulesDef.Modules;
+import com.ljmu.andre.snaptools.ModulePack.Utils.PackPathProvider;
 import com.ljmu.andre.snaptools.Utils.Constants;
 
 import java.lang.reflect.Constructor;
@@ -27,9 +28,8 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FILTERS_PATH;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.DISABLED_MODULES;
 import static com.ljmu.andre.snaptools.Utils.PreferenceHelpers.collectionContains;
 
@@ -94,7 +94,7 @@ public class ModulePackImpl extends ModulePack {
      */
     @Override
     public Map<String, ModuleLoadState> loadModules() {
-        getCreateDir(FILTERS_PATH);
+        getCreateDir(PackPathProvider.getFiltersPath());
 
         Map<String, ModuleLoadState> moduleLoadStates = new LinkedHashMap<>();
         HashSet<String> disabledModules = getPref(DISABLED_MODULES);

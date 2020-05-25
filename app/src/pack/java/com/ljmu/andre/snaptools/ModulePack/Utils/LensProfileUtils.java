@@ -20,10 +20,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getCreateDir;
-import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BACKUPS_PATH;
+import static com.ljmu.andre.snaptools.Utils.FileUtils.getCreateDir;
 import static com.ljmu.andre.snaptools.Utils.StringUtils.yyyyMMddHHmmss;
 
 /**
@@ -48,7 +48,7 @@ public class LensProfileUtils {
     }
 
     private static File getProfileFile(String profileName) {
-        File profileDir = getCreateDir(BACKUPS_PATH);
+        File profileDir = getCreateDir(PathProvider.getBackupPath());
         if (profileDir == null || !profileDir.exists()) {
             Timber.w("Lens Profile dir not created");
             return null;

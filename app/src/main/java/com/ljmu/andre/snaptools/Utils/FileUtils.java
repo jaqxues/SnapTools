@@ -34,9 +34,6 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
-
 /**
  * This class was created by Andre R M (SID: 701439)
  * It and its contents are free to use by all
@@ -255,7 +252,7 @@ public class FileUtils {
     }
 
     public static void deletePack(@Nullable Activity activity, String name) {
-        File packFile = new File((String) getPref(MODULES_PATH), name + ".jar");
+        File packFile = new File(PathProvider.getModulesPath(), name + ".jar");
         if (packFile.exists())
             Timber.d("Deleted ModulePack JAR: " + packFile.delete());
 
@@ -416,6 +413,18 @@ public class FileUtils {
         }
 
         return false;
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Nullable
+    public static File getCreateDir(String path) {
+        File dir = new File(path);
+        dir.mkdirs();
+
+        if (!dir.exists())
+            return null;
+
+        return dir;
     }
 
     public static boolean streamCopy(ByteArrayOutputStream byteOutput, OutputStream targetStream) {

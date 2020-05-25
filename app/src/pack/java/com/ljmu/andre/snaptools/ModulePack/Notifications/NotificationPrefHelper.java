@@ -3,7 +3,7 @@ package com.ljmu.andre.snaptools.ModulePack.Notifications;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.DotNotification.DotLocation;
 import com.ljmu.andre.snaptools.ModulePack.Notifications.StackingDotNotification.StackingOrientation;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DOT_LOCATION;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STACKED_ORIENTATION;
 

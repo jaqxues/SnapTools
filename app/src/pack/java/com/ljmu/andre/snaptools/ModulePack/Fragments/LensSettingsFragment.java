@@ -60,8 +60,8 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.KILL_SC_ON_CHANGE;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LENS_SELECTOR_SPAN;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getDSLView;
@@ -241,7 +241,7 @@ public class LensSettingsFragment extends FragmentHelper {
         swipeRefreshLayout.setOnRefreshListener(this::generateMetaData);
 
         // Statement to block invalid span sizes =====================================
-        if ((Integer) getPref(LENS_SELECTOR_SPAN) <= 0)
+        if (getPref(LENS_SELECTOR_SPAN) <= 0)
             putPref(LENS_SELECTOR_SPAN, 1);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getPref(LENS_SELECTOR_SPAN)));

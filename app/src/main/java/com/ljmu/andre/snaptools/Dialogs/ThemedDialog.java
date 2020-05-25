@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ljmu.andre.GsonPreferences.Preferences.Preference;
+import com.jaqxues.akrolyb.prefs.Preference;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.RequiresFramework;
 import com.ljmu.andre.snaptools.Utils.SafeToast;
@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.ContextHelper.getModuleContext;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getLayout;
 import static com.ljmu.andre.snaptools.Utils.ResourceUtils.getStyle;

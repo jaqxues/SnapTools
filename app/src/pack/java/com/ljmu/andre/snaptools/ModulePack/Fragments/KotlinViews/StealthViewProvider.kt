@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import androidx.core.content.ContextCompat
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -13,9 +12,10 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
-import com.ljmu.andre.GsonPreferences.Preferences
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
-import com.ljmu.andre.GsonPreferences.Preferences.putPref
+import androidx.core.content.ContextCompat
+import com.jaqxues.akrolyb.prefs.getPref
+import com.jaqxues.akrolyb.prefs.putPref
+import com.jaqxues.akrolyb.prefs.toggle
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.header
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.labelledSeekBar
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.labelledSpinner
@@ -23,7 +23,20 @@ import com.ljmu.andre.snaptools.ModulePack.StealthViewing
 import com.ljmu.andre.snaptools.ModulePack.StealthViewing.bypassNextStealthView
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.BLOCK_OUTGOING_TYPING_NOTIFICATION
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DEFAULT_CHAT_STEALTH
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DEFAULT_SNAP_STEALTH
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_CHAT_STEALTH_BUTTON
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_CHAT_STEALTH_MESSAGE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SNAP_STEALTH_BUTTON
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SHOW_SNAP_STEALTH_MESSAGE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_CHAT_BUTTON_ALPHA
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_CHAT_BUTTON_LEFT
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_CHAT_BUTTON_PADDING
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_MARK_STORY_VIEWED
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_SNAP_BUTTON_ALPHA
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_SNAP_BUTTON_MARGIN
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STEALTH_SNAP_BUTTON_SIZE
 import com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.getStealthLocation
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.getSelectableBorderedDrawable
@@ -55,7 +68,7 @@ class StealthViewProvider {
                             id = "chat_stealth_container".toId()
 
                             header("Chat Stealth Button")
-                            val isLeftSelected = getPref<Boolean>(STEALTH_CHAT_BUTTON_LEFT)
+                            val isLeftSelected = STEALTH_CHAT_BUTTON_LEFT.getPref()
                             val chatButtonLocations = ArrayList<String>()
                             chatButtonLocations.add("Left")
                             chatButtonLocations.add("Right")
@@ -67,7 +80,7 @@ class StealthViewProvider {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Show chat stealth button"
-                                isChecked = Preferences.getPref(SHOW_CHAT_STEALTH_BUTTON)
+                                isChecked = SHOW_CHAT_STEALTH_BUTTON.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
                                     putAndKill(SHOW_CHAT_STEALTH_BUTTON, isChecked, activity)
@@ -80,7 +93,7 @@ class StealthViewProvider {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Hide '... is typing' Notification"
-                                isChecked = Preferences.getPref(BLOCK_OUTGOING_TYPING_NOTIFICATION)
+                                isChecked = BLOCK_OUTGOING_TYPING_NOTIFICATION.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
                                     putAndKill(BLOCK_OUTGOING_TYPING_NOTIFICATION, isChecked, activity)
@@ -93,10 +106,10 @@ class StealthViewProvider {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Show Chat Stealth Message"
-                                isChecked = Preferences.getPref(SHOW_CHAT_STEALTH_MESSAGE)
+                                isChecked = SHOW_CHAT_STEALTH_MESSAGE.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
-                                    putPref(SHOW_CHAT_STEALTH_MESSAGE, isChecked)
+                                    SHOW_CHAT_STEALTH_MESSAGE.putPref(isChecked)
                                 }
                             }
 
@@ -113,7 +126,7 @@ class StealthViewProvider {
                                                     val layoutParams = RelativeLayout.LayoutParams(48.toDp(), MATCH_PARENT)
 
                                                     layoutParams.addRule(
-                                                            if (getPref(STEALTH_CHAT_BUTTON_LEFT))
+                                                            if (STEALTH_CHAT_BUTTON_LEFT.getPref())
                                                                 RelativeLayout.ALIGN_PARENT_LEFT
                                                             else
                                                                 RelativeLayout.ALIGN_PARENT_RIGHT
@@ -121,7 +134,7 @@ class StealthViewProvider {
 
                                                     activity.find<ImageView>("active_chat_stealth_image".toId()).layoutParams = layoutParams
                                                 },
-                                                { if (getPref<Boolean>(STEALTH_CHAT_BUTTON_LEFT)) "Left" else "Right" }
+                                                { if (STEALTH_CHAT_BUTTON_LEFT.getPref()) "Left" else "Right" }
                                         )
                                 )
                             }.lparams(matchParent)
@@ -129,7 +142,7 @@ class StealthViewProvider {
                             labelledSeekBar(
                                     id = "seek_chat_stealth_opacity",
                                     text = "Opacity (%s%%)",
-                                    progress = getPref(STEALTH_CHAT_BUTTON_ALPHA),
+                                    progress = STEALTH_CHAT_BUTTON_ALPHA.getPref(),
                                     max = 100,
                                     resultListener = ViewFactory.OnSeekBarResult { _, progress ->
                                         putAndKill(STEALTH_CHAT_BUTTON_ALPHA, progress, activity)
@@ -142,7 +155,7 @@ class StealthViewProvider {
                             labelledSeekBar(
                                     id = "seek_chat_stealth_padding",
                                     text = "Padding (%spx)",
-                                    progress = getPref(STEALTH_CHAT_BUTTON_PADDING),
+                                    progress = STEALTH_CHAT_BUTTON_PADDING.getPref(),
                                     max = 50,
                                     resultListener = ViewFactory.OnSeekBarResult { _, progress ->
                                         putAndKill(STEALTH_CHAT_BUTTON_PADDING, progress, activity)
@@ -167,16 +180,16 @@ class StealthViewProvider {
 
                                 imageView(getDrawable(activity, "visibility_open")) {
                                     id = "active_chat_stealth_image".toId()
-                                    alpha = getPref<Int>(STEALTH_CHAT_BUTTON_ALPHA).toFloat() / 100
-                                    val pad = getPref<Int>(STEALTH_CHAT_BUTTON_PADDING)
+                                    alpha = STEALTH_CHAT_BUTTON_ALPHA.getPref().toFloat() / 100
+                                    val pad = STEALTH_CHAT_BUTTON_PADDING.getPref()
                                     setPadding(pad, pad, pad, pad)
 
-                                    //val rule = if (getPref(STEALTH_CHAT_BUTTON_LEFT)) RelativeLayout.LEFT_OF else RelativeLayout.RIGHT_OF
+                                    //val rule = if (STEALTH_CHAT_BUTTON_LEFT).getPref() RelativeLayout.LEFT_OF else RelativeLayout.RIGHT_OF
                                     val layoutParams = RelativeLayout.LayoutParams(48.toDp(), MATCH_PARENT)
                                     //layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
 
                                     layoutParams.addRule(
-                                            if (getPref(STEALTH_CHAT_BUTTON_LEFT))
+                                            if (STEALTH_CHAT_BUTTON_LEFT.getPref())
                                                 RelativeLayout.ALIGN_PARENT_LEFT
                                             else
                                                 RelativeLayout.ALIGN_PARENT_RIGHT
@@ -198,7 +211,7 @@ class StealthViewProvider {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Show snap stealth button"
-                                isChecked = getPref(SHOW_SNAP_STEALTH_BUTTON)
+                                isChecked = SHOW_SNAP_STEALTH_BUTTON.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
                                     putAndKill(SHOW_SNAP_STEALTH_BUTTON, isChecked, activity)
@@ -211,10 +224,10 @@ class StealthViewProvider {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Show snap stealth message"
-                                isChecked = getPref(SHOW_SNAP_STEALTH_MESSAGE)
+                                isChecked = SHOW_SNAP_STEALTH_MESSAGE.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
-                                    putPref(SHOW_SNAP_STEALTH_MESSAGE, isChecked)
+                                    SHOW_SNAP_STEALTH_MESSAGE.putPref(isChecked)
                                 }
                             }
 
@@ -224,17 +237,17 @@ class StealthViewProvider {
                                 verticalPadding = 5.toDp()
                                 horizontalPadding = 10.toDp()
                                 text = "Mark stories as viewed client side"
-                                isChecked = getPref(STEALTH_MARK_STORY_VIEWED)
+                                isChecked = STEALTH_MARK_STORY_VIEWED.getPref()
 
                                 setOnCheckedChangeListener { _, isChecked ->
-                                    putPref(STEALTH_MARK_STORY_VIEWED, isChecked)
+                                    STEALTH_MARK_STORY_VIEWED.putPref(isChecked)
                                 }
                             }
 
                             labelledSeekBar(
                                     id = "seek_stealth_snap_size",
                                     text = "Size (%sdp)",
-                                    progress = getPref(STEALTH_SNAP_BUTTON_SIZE),
+                                    progress = STEALTH_SNAP_BUTTON_SIZE.getPref(),
                                     max = 300,
                                     resultListener = ViewFactory.OnSeekBarResult { _, progress ->
                                         putAndKill(STEALTH_SNAP_BUTTON_SIZE, progress, activity)
@@ -251,7 +264,7 @@ class StealthViewProvider {
                             labelledSeekBar(
                                     id = "seek_stealth_snap_opacity",
                                     text = "Opacity (%s%%)",
-                                    progress = getPref(STEALTH_SNAP_BUTTON_ALPHA),
+                                    progress = STEALTH_SNAP_BUTTON_ALPHA.getPref(),
                                     max = 100,
                                     resultListener = ViewFactory.OnSeekBarResult { _, progress ->
                                         putAndKill(STEALTH_SNAP_BUTTON_ALPHA, progress, activity)
@@ -264,7 +277,7 @@ class StealthViewProvider {
                             labelledSeekBar(
                                     id = "seek_stealth_snap_margin",
                                     text = "Margin (%spx)",
-                                    progress = getPref(STEALTH_SNAP_BUTTON_MARGIN),
+                                    progress = STEALTH_SNAP_BUTTON_MARGIN.getPref(),
                                     max = 200,
                                     resultListener = ViewFactory.OnSeekBarResult { _, progress ->
                                         putAndKill(STEALTH_SNAP_BUTTON_MARGIN, progress, activity)
@@ -284,13 +297,13 @@ class StealthViewProvider {
                             }
 
                             frameLayout {
-                                val size = getPref<Int>(STEALTH_SNAP_BUTTON_SIZE)
+                                val size = STEALTH_SNAP_BUTTON_SIZE.getPref()
                                 imageView(getDrawable(activity, "visibility_open")) {
                                     id = "active_snap_stealth_image".toId()
-                                    alpha = getPref<Int>(STEALTH_CHAT_BUTTON_ALPHA).toFloat() / 100
+                                    alpha = STEALTH_CHAT_BUTTON_ALPHA.getPref().toFloat() / 100
                                 }.lparams(size.toDp(), size.toDp()) {
                                     gravity = Gravity.CENTER
-                                    margin = getPref<Int>(STEALTH_SNAP_BUTTON_MARGIN)
+                                    margin = STEALTH_SNAP_BUTTON_MARGIN.getPref()
                                 }
                             }.lparams(matchParent)
                         }.lparams(matchParent)
@@ -320,7 +333,7 @@ class StealthViewProvider {
                         horizontalPadding = 30.toDp()
                         verticalPadding = 5.toDp()
 
-                        imageView(if (getPref(DEFAULT_CHAT_STEALTH)) closedEyeId else openEyeId) {
+                        imageView(if (DEFAULT_CHAT_STEALTH.getPref()) closedEyeId else openEyeId) {
                             id = "chat_stealth_image".toId()
                         }.lparams(dip(30), dip(30)) {
                             gravity = Gravity.CENTER
@@ -347,7 +360,7 @@ class StealthViewProvider {
                         setOnClickListener {
                             val chatStealth = togglePreference(DEFAULT_CHAT_STEALTH)
 
-                            if (getPref(SHOW_CHAT_STEALTH_MESSAGE)) {
+                            if (SHOW_CHAT_STEALTH_MESSAGE.getPref()) {
                                 SafeToast.show(
                                         snapActivity,
                                         "Global Chat Stealth: " + if (chatStealth) "Active" else "Inactive",
@@ -372,7 +385,7 @@ class StealthViewProvider {
                         horizontalPadding = 30.toDp()
                         verticalPadding = 5.toDp()
 
-                        imageView(if (getPref(DEFAULT_SNAP_STEALTH)) closedEyeId else openEyeId) {
+                        imageView(if (DEFAULT_SNAP_STEALTH.getPref()) closedEyeId else openEyeId) {
                             id = "snap_stealth_image".toId()
                         }.lparams(dip(30), dip(30)) {
                             gravity = Gravity.CENTER
@@ -400,7 +413,7 @@ class StealthViewProvider {
                             val snapStealth = togglePreference(DEFAULT_SNAP_STEALTH)
                             StealthViewing.bypassNextStealthView = !snapStealth
 
-                            if (getPref(SHOW_SNAP_STEALTH_MESSAGE)) {
+                            if (SHOW_SNAP_STEALTH_MESSAGE.getPref()) {
                                 SafeToast.show(
                                         snapActivity,
                                         "Default Snap Stealth: " + if (snapStealth) "Active" else "Inactive",
@@ -431,18 +444,18 @@ class StealthViewProvider {
 
                     val openEyeId = getDrawable(moduleContext, "visibility_open")
                     val closedEyeId = getDrawable(moduleContext, "visibility_closed")
-                    val size = getPref<Int>(STEALTH_SNAP_BUTTON_SIZE)
+                    val size = STEALTH_SNAP_BUTTON_SIZE.getPref()
 
-                    imageView(if (getPref(DEFAULT_SNAP_STEALTH)) closedEyeId else openEyeId) {
+                    imageView(if (DEFAULT_SNAP_STEALTH.getPref()) closedEyeId else openEyeId) {
                         id = "active_snap_stealth_image".toId()
                         backgroundResource = getSelectableBackgroundId(moduleContext)
-                        alpha = getPref<Int>(STEALTH_SNAP_BUTTON_ALPHA).toFloat() / 100
+                        alpha = STEALTH_SNAP_BUTTON_ALPHA.getPref().toFloat() / 100
 
                         setOnClickListener {
                             bypassNextStealthView = !bypassNextStealthView
                             setImageResource(if (!bypassNextStealthView) closedEyeId else openEyeId)
 
-                            if (getPref(SHOW_SNAP_STEALTH_MESSAGE)) {
+                            if (SHOW_SNAP_STEALTH_MESSAGE.getPref()) {
                                 SafeToast.show(
                                         snapActivity,
                                         "Current Snap Stealth: " + if (!bypassNextStealthView) "Active" else "Inactive",
@@ -452,7 +465,7 @@ class StealthViewProvider {
                         }
                     }.lparams(size.toDp(), size.toDp()) {
                         gravity = getStealthLocation().gravity
-                        margin = getPref<Int>(STEALTH_SNAP_BUTTON_MARGIN)
+                        margin = STEALTH_SNAP_BUTTON_MARGIN.getPref()
                     }
                 }
             }.view as T
@@ -462,17 +475,17 @@ class StealthViewProvider {
                 val openEyeId = getDrawable(moduleContext, "visibility_open")
                 val closedEyeId = getDrawable(moduleContext, "visibility_closed")
 
-                imageView(if (getPref(DEFAULT_CHAT_STEALTH)) closedEyeId else openEyeId) {
+                imageView(if (DEFAULT_CHAT_STEALTH.getPref()) closedEyeId else openEyeId) {
                     id = "active_chat_stealth_image".toId()
-                    alpha = getPref<Int>(STEALTH_CHAT_BUTTON_ALPHA).toFloat() / 100
-                    val pad = getPref<Int>(STEALTH_CHAT_BUTTON_PADDING)
+                    alpha = STEALTH_CHAT_BUTTON_ALPHA.getPref().toFloat() / 100
+                    val pad = STEALTH_CHAT_BUTTON_PADDING.getPref()
                     setPadding(0, pad, 0, pad)
 
                     setOnClickListener {
-                        val chatStealth = togglePreference(DEFAULT_CHAT_STEALTH)
+                        val chatStealth = DEFAULT_CHAT_STEALTH.toggle()
                         setImageResource(if (chatStealth) closedEyeId else openEyeId)
 
-                        if (getPref(SHOW_CHAT_STEALTH_MESSAGE)) {
+                        if (SHOW_CHAT_STEALTH_MESSAGE.getPref()) {
                             SafeToast.show(
                                     snapActivity,
                                     "Global Chat Stealth: " + if (chatStealth) "Active" else "Inactive",
@@ -481,7 +494,7 @@ class StealthViewProvider {
                         }
                     }
 
-                    val leftAlign = getPref<Boolean>(STEALTH_CHAT_BUTTON_LEFT)
+                    val leftAlign = STEALTH_CHAT_BUTTON_LEFT.getPref()
                     val layoutParams: RelativeLayout.LayoutParams
 
                     //layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)

@@ -6,9 +6,9 @@ import android.media.MediaScannerConnection;
 import androidx.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
+import com.jaqxues.akrolyb.prefs.Preference;
 import com.ljmu.andre.ConstantDefiner.Constant;
 import com.ljmu.andre.ConstantDefiner.ConstantDefiner;
-import com.ljmu.andre.GsonPreferences.Preferences.Preference;
 import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormat;
 import com.ljmu.andre.snaptools.Utils.Assert;
 import com.ljmu.andre.snaptools.Utils.StringUtils;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.CHAT_FOLDER_NAME;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.GROUP_FOLDER_NAME;
 import static com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.RECEIVED_FOLDER_NAME;
@@ -239,14 +239,14 @@ public abstract class Snap {
     }
 
     public static class SnapType extends Constant {
-        private Preference dirPreference;
+        private final Preference<String> dirPreference;
 
-        public SnapType(int index, String name, Preference dirPreference) {
+        public SnapType(int index, String name, Preference<String> dirPreference) {
             super(index, name);
             this.dirPreference = dirPreference;
         }
 
-        public Preference getPreference() {
+        public Preference<String> getPreference() {
             return dirPreference;
         }
 

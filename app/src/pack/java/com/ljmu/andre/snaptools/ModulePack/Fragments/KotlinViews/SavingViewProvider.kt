@@ -1,6 +1,5 @@
 package com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews
 
-import android.R
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.text.Editable
@@ -10,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.google.common.io.Files
-import com.ljmu.andre.GsonPreferences.Preferences.getPref
+import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog
 import com.ljmu.andre.snaptools.ModulePack.Fragments.KotlinViews.CustomViews.Companion.customTabStrip
@@ -32,7 +31,18 @@ import com.ljmu.andre.snaptools.ModulePack.SavingUtils.StorageFormat
 import com.ljmu.andre.snaptools.ModulePack.Utils.*
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toDp
 import com.ljmu.andre.snaptools.ModulePack.Utils.KotlinUtils.Companion.toId
-import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.*
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.DOT_LOCATION
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.FLING_VELOCITY
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_LOCATIONS
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_OPACITIES
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_RELATIVE_HEIGHTS
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_BUTTON_WIDTHS
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_NOTIFICATION_TYPE
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVE_SENT_SNAPS
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.SAVING_MODES
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STACKED_ORIENTATION
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.STORAGE_FORMAT
+import com.ljmu.andre.snaptools.ModulePack.Utils.ModulePreferenceDef.VIBRATE_ON_SAVE
 import com.ljmu.andre.snaptools.ModulePack.Utils.PackPreferenceHelpers.*
 import com.ljmu.andre.snaptools.ModulePack.Utils.ViewFactory.assignItemChangedProvider
 import com.ljmu.andre.snaptools.Utils.*
@@ -135,7 +145,7 @@ class SavingViewProvider(val activity: Activity) {
                     verticalPadding = 26.toDp()
                     horizontalPadding = 26.toDp()
                     text = "Save Sent Snaps"
-                    isChecked = getPref(SAVE_SENT_SNAPS)
+                    isChecked = SAVE_SENT_SNAPS.getPref()
 
                     setOnCheckedChangeListener { _, isChecked ->
                         putAndKill(SAVE_SENT_SNAPS, isChecked, activity)
@@ -165,7 +175,7 @@ class SavingViewProvider(val activity: Activity) {
                         }
 
                         themedSpinner {
-                            adapter = ArrayAdapter<String>(context,
+                            adapter = ArrayAdapter(context,
                                     android.R.layout.simple_spinner_dropdown_item, savingModes)
                             setSelection(currentIndex, false)
 
@@ -200,7 +210,7 @@ class SavingViewProvider(val activity: Activity) {
 
                     verticalLayout {
                         id = getIdFromString("saving_mode_container_" + snapType.name)
-                        Timber.d("Set ID to: " + id)
+                        Timber.d("Set ID to: $id")
                         settingsView(snapType, currentType)
                     }.lparams(width = matchParent)
                 }
@@ -360,11 +370,11 @@ class SavingViewProvider(val activity: Activity) {
 
                 headerNoUnderline("Save Notification Settings", Gravity.CENTER)
 
-                val initialType: String = getPref(SAVE_NOTIFICATION_TYPE)
+                val initialType = SAVE_NOTIFICATION_TYPE.getPref()
                 val types: ArrayList<String> = SaveNotification.NotificationType.values().mapTo(ArrayList()) { it.displayText }
 
                 labelledSpinner("Notification Type: ", initialType, types,
-                        ViewFactory.OnItemChangedProvider<String>(
+                        ViewFactory.OnItemChangedProvider(
                                 { newItem, _, _ ->
                                     putAndKill(SAVE_NOTIFICATION_TYPE, newItem, activity)
                                     val container = activity.find<ViewGroup>("container_notification_settings".toId())
@@ -374,7 +384,7 @@ class SavingViewProvider(val activity: Activity) {
                                     if (newItem == SaveNotification.NotificationType.LED.displayText)
                                         showLEDNotificationWarning()
                                 },
-                                { getPref(SAVE_NOTIFICATION_TYPE) }
+                                { SAVE_NOTIFICATION_TYPE.getPref() }
                         ))
 
                 verticalLayout {
@@ -404,7 +414,7 @@ class SavingViewProvider(val activity: Activity) {
                 themedSwitchCompatX(getStyle(context, "DefaultSwitch")) {
                     padding = 10.toDp()
                     text = "Vibrate On Save"
-                    isChecked = getPref(VIBRATE_ON_SAVE)
+                    isChecked = VIBRATE_ON_SAVE.getPref()
 
                     setOnCheckedChangeListener { _, isChecked ->
                         putAndKill(VIBRATE_ON_SAVE, isChecked, activity)
@@ -413,7 +423,7 @@ class SavingViewProvider(val activity: Activity) {
             }
 
     private fun ViewGroup.refreshNotificationSettings() {
-        val currentType = getPref<String>(SAVE_NOTIFICATION_TYPE)
+        val currentType = SAVE_NOTIFICATION_TYPE.getPref()
 
         when (currentType) {
             SaveNotification.NotificationType.DOT.displayText -> getDotSettings()
@@ -424,26 +434,26 @@ class SavingViewProvider(val activity: Activity) {
     }
 
     private fun ViewGroup.getDotSettings() {
-        val initialLocation: String = getPref(DOT_LOCATION)
+        val initialLocation = DOT_LOCATION.getPref()
         val locations: ArrayList<String> = DotNotification.DotLocation.values().mapTo(ArrayList()) { it.displayText }
 
         labelledSpinner("Location: ", initialLocation, locations,
-                ViewFactory.OnItemChangedProvider<String>(
+                ViewFactory.OnItemChangedProvider(
                         { newItem, _, _ -> putAndKill(DOT_LOCATION, newItem, activity) },
-                        { getPref(DOT_LOCATION) }
+                        { DOT_LOCATION.getPref() }
                 ))
     }
 
     private fun ViewGroup.getStackedDotSettings() {
         getDotSettings()
 
-        val initialOrientation: String = getPref(STACKED_ORIENTATION)
+        val initialOrientation = STACKED_ORIENTATION.getPref()
         val orientations: ArrayList<String> = StackingDotNotification.StackingOrientation.values().mapTo(ArrayList()) { it.displayText }
 
         labelledSpinner("Orientation: ", initialOrientation, orientations,
-                ViewFactory.OnItemChangedProvider<String>(
+                ViewFactory.OnItemChangedProvider(
                         { newItem, _, _ -> putAndKill(STACKED_ORIENTATION, newItem, activity) },
-                        { getPref(STACKED_ORIENTATION) }
+                        { STACKED_ORIENTATION.getPref() }
                 ))
     }
 
@@ -508,7 +518,7 @@ class SavingViewProvider(val activity: Activity) {
 
                 headerNoUnderline("Media Storage Format", Gravity.CENTER)
 
-                val initialType: String = getPref(STORAGE_FORMAT)
+                val initialType: String = STORAGE_FORMAT.getPref()
                 val types: ArrayList<String> = ArrayList(StorageFormat.getMapTypes())
                 val currentIndex = types.indexOf(initialType)
 
@@ -517,8 +527,8 @@ class SavingViewProvider(val activity: Activity) {
 
                     var isInternalCall = false
 
-                    adapter = ArrayAdapter<String>(context,
-                            R.layout.simple_spinner_dropdown_item, types)
+                    adapter = ArrayAdapter(context,
+                            android.R.layout.simple_spinner_dropdown_item, types)
                     setSelection(currentIndex, false)
 
                     assignItemChangedProvider(
@@ -549,7 +559,7 @@ class SavingViewProvider(val activity: Activity) {
                                                 object : ThemedDialog.ThemedClickListener() {
                                                     override fun clicked(themedDialog: ThemedDialog) {
                                                         //noinspection SuspiciousMethodCalls
-                                                        val oldIndex: Int = types.indexOf(getPref(STORAGE_FORMAT))
+                                                        val oldIndex: Int = types.indexOf(STORAGE_FORMAT.getPref())
 
                                                         // As setSelection will cause this entire method to re-run
                                                         // We set a boolean to ignore the next event
@@ -561,7 +571,7 @@ class SavingViewProvider(val activity: Activity) {
                                                 }
                                         ).setDismissable(false).show()
                                     },
-                                    { getPref(STORAGE_FORMAT) }
+                                    { STORAGE_FORMAT.getPref() }
                             )
                     )
                 }.lparams(width = matchParent, weight = 1f) {

@@ -24,12 +24,10 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.ljmu.andre.snaptools.Utils.PathProvider;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.TEMP_PATH;
 
 /**
  * This class was created by Andre R M (SID: 701439)
@@ -75,7 +73,7 @@ public class SnapDiskCache {
     }
 
     private File getOrCreateTempDir() throws IOException {
-        String tempDirPath = getPref(TEMP_PATH);
+        String tempDirPath = PathProvider.getTempPath();
         File tempDir = new File(tempDirPath);
 
         if (!tempDir.exists()) {

@@ -1,7 +1,7 @@
 package com.ljmu.andre.snaptools.Networking.Helpers;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.Constants.FEATURES_CHECK_COOLDOWN;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.LAST_CHECK_FEATURES;
 import static com.ljmu.andre.snaptools.Utils.MiscUtils.calcTimeDiff;

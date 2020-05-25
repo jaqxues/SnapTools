@@ -18,7 +18,7 @@ import com.ljmu.andre.snaptools.R;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SHOW_TRANSITION_ANIMATIONS;
 
 /**
@@ -40,7 +40,7 @@ public class AnimationUtils {
     }
 
     public static void sequentGroup(Context context, ViewGroup viewGroup, int duration, int offset, int delay) {
-        if (!(boolean) getPref(SHOW_TRANSITION_ANIMATIONS))
+        if (!getPref(SHOW_TRANSITION_ANIMATIONS))
             return;
 
         Sequent.origin(viewGroup)

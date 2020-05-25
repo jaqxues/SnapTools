@@ -15,11 +15,7 @@ import com.ljmu.andre.snaptools.Exceptions.ModulePackNotFound;
 import com.ljmu.andre.snaptools.Framework.Utils.LoadState.State;
 import com.ljmu.andre.snaptools.Framework.Utils.ModuleLoadState;
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
-import com.ljmu.andre.snaptools.Utils.AnimationUtils;
-import com.ljmu.andre.snaptools.Utils.ContextHelper;
-import com.ljmu.andre.snaptools.Utils.FileUtils;
-import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef;
-import com.ljmu.andre.snaptools.Utils.PreferenceHelpers;
+import com.ljmu.andre.snaptools.Utils.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,8 +27,7 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.MODULES_PATH;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS;
 
 /**
@@ -236,7 +231,7 @@ public class FrameworkManager {
                                             PackLoadState packLoadState)
             throws ModuleCertificateException, ModulePackFatalError, ModulePackNotFound, ModulePackLoadAborted {
         // Get an instance of ModulePackImpl from within the .jar file ===============
-        File modulePackFile = new File((String) getPref(MODULES_PATH), packname + ".jar");
+        File modulePackFile = new File(PathProvider.getModulesPath(), packname + ".jar");
         ModulePack modulePack = ModulePack.getInstance(context, modulePackFile, packLoadState);
 
         synchronized (INSERT_PACK_LOCK) {

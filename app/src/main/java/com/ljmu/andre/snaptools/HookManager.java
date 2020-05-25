@@ -9,8 +9,7 @@ import android.os.Bundle;
 import android.os.Process;
 import android.view.ContextThemeWrapper;
 
-import com.ljmu.andre.ErrorLogger.ErrorLogger;
-import com.ljmu.andre.GsonPreferences.Preferences;
+import com.jaqxues.akrolyb.logger.FileLogger;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
@@ -18,13 +17,12 @@ import com.ljmu.andre.snaptools.Dialogs.ThemedDialog;
 import com.ljmu.andre.snaptools.Dialogs.ThemedDialog.ThemedClickListener;
 import com.ljmu.andre.snaptools.Framework.FrameworkManager;
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState;
+import com.ljmu.andre.snaptools.Utils.Common;
 import com.ljmu.andre.snaptools.Networking.VolleyHandler;
-import com.ljmu.andre.snaptools.Utils.ContextHelper;
-import com.ljmu.andre.snaptools.Utils.ModuleChecker;
-import com.ljmu.andre.snaptools.Utils.TimberUtils;
-import com.ljmu.andre.snaptools.Utils.UnhookManager;
+import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,9 +31,8 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import timber.log.Timber;
-
-import static com.ljmu.andre.GsonPreferences.Preferences.getPref;
-import static com.ljmu.andre.GsonPreferences.Preferences.putPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.getPref;
+import static com.jaqxues.akrolyb.prefs.PrefManagerKt.putPref;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.ACCEPTED_TOS;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.CHECK_PACK_UPDATES_SC;
 import static com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.NOTIFY_ON_LOAD;
@@ -111,14 +108,11 @@ public class HookManager implements IXposedHookLoadPackage {
 
         Timber.d("PID: %s", Process.myPid());
 
-        ErrorLogger.init();
-
         Timber.d("Loading preferences");
-        Preferences.init(
-                Preferences.getExternalPath() + "/" + STApplication.MODULE_TAG + "/"
-        );
+        Common.initPrefs();
+        Common.plantFileLogger();
 
-        if (!(boolean) getPref(SYSTEM_ENABLED)) {
+        if (!getPref(SYSTEM_ENABLED)) {
             Timber.w("System Disabled... Aborting initialisation");
             return;
         }

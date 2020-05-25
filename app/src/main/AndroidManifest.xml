@@ -59,13 +59,6 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.ljmu.andre.snaptools.HangErrorActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
 
 
         <activity

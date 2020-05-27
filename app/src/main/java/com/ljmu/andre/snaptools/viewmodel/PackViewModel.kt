@@ -5,8 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jaqxues.akrolyb.pack.PackMetadata
 import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData
+import com.ljmu.andre.snaptools.Framework.MetaData.PackMetaData
+import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData
+import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket
+import com.ljmu.andre.snaptools.Utils.Request
 import com.ljmu.andre.snaptools.Utils.Result
 import com.ljmu.andre.snaptools.repository.PackRepository
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +24,9 @@ import timber.log.Timber
  * Date: 13.05.20 - Time 10:40.
  */
 class PackViewModel : ViewModel() {
-    val localMetadata: LiveData<List<LocalPackMetaData>>
-        get() = packRepo.localMetadata
+    val localMetadata get() = packRepo.localMetadata
+    val eventDispatcher get() = packRepo.eventDispatcher
+    val remoteMetadata get() = packRepo.remoteMetadata
 
     fun refreshLocalPacks(eventHandler: PackEventRequest.EventHandler) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -28,19 +34,48 @@ class PackViewModel : ViewModel() {
         }
     }
 
+    fun refreshRemotePacks(eventHandler: PackEventRequest.EventHandler, activity: Activity, invalidateCache: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            packRepo.refreshRemoteMetadata(eventHandler, activity, invalidateCache)
+        }
+    }
+
     fun setTutorialPacks() {
         packRepo.setTutorialPacks()
     }
 
-    fun clearPacks() {
-        packRepo.clear()
+    fun clearRemotePacks() {
+        packRepo.clearRemote()
     }
 
-    fun getInfoFromName(packName: String): Pair<LocalPackMetaData, Int>? {
-        val packs = localMetadata.value
+    fun clearLocalPacks() {
+        packRepo.clearLocal()
+    }
+
+    fun <T: PackMetaData> getInfoFromName(packName: String, packs: List<T>?): Pair<T, Int>? {
         return packs?.find { it.name == packName }?.let {
             it to packs.indexOf(it)
         }
+    }
+
+    fun getServerPack(packName: String): ServerPackMetaData? {
+        val req = remoteMetadata.value
+
+        if (!(req is Request.Loaded && req.result is Result.Success)) {
+            Timber.w("Packs have not been loaded successfully")
+            return null
+        }
+
+        return getInfoFromName(packName, req.result.data)?.first
+    }
+
+    fun requestChangeLog(activity: Activity, pack: ServerPackMetaData): LiveData<Request<PackDataPacket>> {
+        val liveData = MutableLiveData<Request<PackDataPacket>>()
+        liveData.value = Request.Pending
+        viewModelScope.launch(Dispatchers.IO) {
+            packRepo.getChangelog(activity, pack, liveData)
+        }
+        return liveData
     }
 
     fun enablePack(packName: String, activity: Activity): LiveData<Result<String>> {

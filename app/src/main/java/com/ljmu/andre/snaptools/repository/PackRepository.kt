@@ -4,23 +4,25 @@ import android.app.Activity
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jaqxues.akrolyb.prefs.Preference
 import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.EventBus.Events.PackDeleteEvent
 import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest
 import com.ljmu.andre.snaptools.EventBus.Events.PackUnloadEvent
+import com.ljmu.andre.snaptools.Exceptions.PacketResultException
 import com.ljmu.andre.snaptools.Framework.FrameworkManager
 import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData
+import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState
+import com.ljmu.andre.snaptools.Networking.Helpers.GetPackChangelog
+import com.ljmu.andre.snaptools.Networking.Helpers.GetServerPacks
+import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket
+import com.ljmu.andre.snaptools.Networking.WebResponse
+import com.ljmu.andre.snaptools.Utils.*
 import com.ljmu.andre.snaptools.Utils.FrameworkPreferencesDef.SELECTED_PACKS
 import com.ljmu.andre.snaptools.Utils.PackUtils.getPackMetaData
-import com.ljmu.andre.snaptools.Utils.PathProvider
-import com.ljmu.andre.snaptools.Utils.PreferenceHelpers
-import com.ljmu.andre.snaptools.Utils.Result
 import timber.log.Timber
 import java.io.File
-import java.util.HashSet
 
 /**
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnapTools.<br>
@@ -30,9 +32,11 @@ class PackRepository {
     // Private Mutable LiveData
     private val _eventDispatcher = MutableLiveData<Any>()
     private val _localMetadata = MutableLiveData<List<LocalPackMetaData>>()
+    private val _remoteMetadata = MutableLiveData<Request<List<ServerPackMetaData>>>()
     // Exposed public LiveData
     val eventDispatcher: LiveData<Any> = _eventDispatcher
     val localMetadata: LiveData<List<LocalPackMetaData>> = _localMetadata
+    val remoteMetadata: LiveData<Request<List<ServerPackMetaData>>> = _remoteMetadata
 
     private val packDirectory = File(PathProvider.getModulesPath())
 
@@ -71,6 +75,25 @@ class PackRepository {
         }
 
         _localMetadata.postValue(packsList.sorted())
+    }
+
+    @WorkerThread
+    fun refreshRemoteMetadata(eventHandler: PackEventRequest.EventHandler, activity: Activity, invalidateCache: Boolean) {
+        _remoteMetadata.postValue(Request.Pending)
+        GetServerPacks.getServerPacks(activity, invalidateCache, object : WebResponse.ServerListResultListener<ServerPackMetaData> {
+            override fun success(list: MutableList<ServerPackMetaData>?) {
+                if (list == null) {
+                    error("There was an unhandled error while fetching Packs", null, -1)
+                    return
+                }
+                _remoteMetadata.postValue(Request.Loaded(Result.Success(list.filter { it.flavour == Constants.getApkFlavor() })))
+            }
+
+            override fun error(message: String, t: Throwable?, errorCode: Int) {
+                Timber.e(t, message)
+                _remoteMetadata.postValue(Request.Loaded(Result.Error(PacketResultException("Error fetching Server Packs", message, errorCode))))
+            }
+        })
     }
 
     fun unloadPack(packName: String, activity: Activity): Result<String> {
@@ -121,14 +144,23 @@ class PackRepository {
     }
 
     fun setTutorialPacks() {
+        val versionList = listOf("10.0.0.0", "10.1.0.1", "10.12.1.0", "10.16.0.0")
         _localMetadata.value =
-                listOf("10.0.0.0", "10.1.0.1", "10.12.1.0", "10.16.0.0").map {
+                versionList.map {
                     LocalPackMetaData.getTutorialPack(it)
                 }
+        _remoteMetadata.value =
+                Request.Loaded(Result.Success(versionList.map {
+                    ServerPackMetaData.getTutorialPack(it)
+                }))
     }
 
-    fun clear() {
+    fun clearLocal() {
         _localMetadata.value = emptyList()
+    }
+
+    fun clearRemote() {
+        _remoteMetadata.value = Request.Loaded(Result.Success(emptyList()))
     }
 
     @WorkerThread
@@ -136,5 +168,30 @@ class PackRepository {
         PreferenceHelpers.addToCollection(SELECTED_PACKS, packName, activity)
         val packLoadEvent = FrameworkManager.loadModPack(activity, packName, PackLoadState(packName))
         _eventDispatcher.postValue(packLoadEvent)
+    }
+
+    @WorkerThread
+    fun getChangelog(activity: Activity, pack: ServerPackMetaData, liveData: MutableLiveData<Request<PackDataPacket>>) {
+        liveData.postValue(Request.Pending)
+        GetPackChangelog.performCheck(
+                activity,
+                pack.type,
+                pack.scVersion,
+                pack.flavour,
+                object: WebResponse.PacketResultListener<PackDataPacket> {
+                    override fun success(message: String, packet: PackDataPacket) {
+                        Timber.d(message)
+                        liveData.postValue(Request.Loaded(Result.Success(packet)))
+                    }
+
+                    override fun error(message: String, t: Throwable?, errorCode: Int) {
+                        Timber.e(t, message)
+                        liveData.postValue(Request.Loaded(Result.Error(PacketResultException(
+                                "Issue Getting Changelog",
+                                message, errorCode
+                        ))))
+                    }
+                }
+        )
     }
 }

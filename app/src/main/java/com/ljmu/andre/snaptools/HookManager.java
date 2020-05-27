@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Process;
 import android.view.ContextThemeWrapper;
 
-import com.jaqxues.akrolyb.logger.FileLogger;
 import com.ljmu.andre.snaptools.Databases.CacheDatabase;
 import com.ljmu.andre.snaptools.Dialogs.Content.FrameworkLoadError;
 import com.ljmu.andre.snaptools.Dialogs.DialogFactory;
@@ -22,7 +21,6 @@ import com.ljmu.andre.snaptools.Networking.VolleyHandler;
 import com.ljmu.andre.snaptools.Utils.*;
 import com.ljmu.andre.snaptools.Utils.XposedUtils.ST_MethodHook;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -110,7 +108,6 @@ public class HookManager implements IXposedHookLoadPackage {
 
         Timber.d("Loading preferences");
         Common.initPrefs();
-        Common.plantFileLogger();
 
         if (!getPref(SYSTEM_ENABLED)) {
             Timber.w("System Disabled... Aborting initialisation");

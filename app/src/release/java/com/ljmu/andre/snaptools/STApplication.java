@@ -28,7 +28,6 @@ public class STApplication extends Application {
         ContextHelper.set(getApplicationContext());
 
         VolleyHandler.init(getApplicationContext());
-        Common.plantFileLogger();
 
         Timber.d("Initialising Activities");
         super.onCreate();

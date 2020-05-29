@@ -97,9 +97,9 @@ class PackViewModel : ViewModel() {
 
     fun deletePack(packName: String, activity: Activity, evtHandler: PackEventRequest.EventHandler) = packRepo.deletePack(packName, activity, evtHandler)
 
-    fun downloadPack() {
+    fun downloadPack(activity: Activity, metadata: ServerPackMetaData) {
         viewModelScope.launch(Dispatchers.IO) {
-            packRepo.downloadPack()
+            packRepo.downloadPack(activity, metadata)
         }
     }
 

@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jaqxues.akrolyb.prefs.getPref
 import com.ljmu.andre.snaptools.EventBus.Events.PackDeleteEvent
+import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent
+import com.ljmu.andre.snaptools.EventBus.Events.PackDownloadEvent.DownloadState
 import com.ljmu.andre.snaptools.EventBus.Events.PackEventRequest
 import com.ljmu.andre.snaptools.EventBus.Events.PackUnloadEvent
 import com.ljmu.andre.snaptools.Exceptions.PacketResultException
@@ -14,6 +16,7 @@ import com.ljmu.andre.snaptools.Framework.MetaData.FailedPackMetaData
 import com.ljmu.andre.snaptools.Framework.MetaData.LocalPackMetaData
 import com.ljmu.andre.snaptools.Framework.MetaData.ServerPackMetaData
 import com.ljmu.andre.snaptools.Framework.Utils.PackLoadState
+import com.ljmu.andre.snaptools.Networking.Helpers.DownloadModulePack
 import com.ljmu.andre.snaptools.Networking.Helpers.GetPackChangelog
 import com.ljmu.andre.snaptools.Networking.Helpers.GetServerPacks
 import com.ljmu.andre.snaptools.Networking.Packets.PackDataPacket
@@ -33,6 +36,7 @@ class PackRepository {
     private val _eventDispatcher = MutableLiveData<Any>()
     private val _localMetadata = MutableLiveData<List<LocalPackMetaData>>()
     private val _remoteMetadata = MutableLiveData<Request<List<ServerPackMetaData>>>()
+
     // Exposed public LiveData
     val eventDispatcher: LiveData<Any> = _eventDispatcher
     val localMetadata: LiveData<List<LocalPackMetaData>> = _localMetadata
@@ -140,7 +144,23 @@ class PackRepository {
     /**
      * Download Pack and update LiveData
      */
-    fun downloadPack() {
+    fun downloadPack(activity: Activity, metaData: ServerPackMetaData) {
+        val download = metaData.run {
+            DownloadModulePack(
+                    activity,
+                    name, scVersion, type, isDeveloper, packVersion, flavour
+            )
+        }
+        download.download { state, message, outputFile, responseCode ->
+            _eventDispatcher.postValue(
+                    PackDownloadEvent()
+                            .setState(if (state) DownloadState.SUCCESS else DownloadState.FAIL)
+                            .setMessage(message)
+                            .setMetaData(metaData)
+                            .setOutputFile(outputFile)
+                            .setResponseCode(responseCode)
+            )
+        }
     }
 
     fun setTutorialPacks() {
@@ -178,7 +198,7 @@ class PackRepository {
                 pack.type,
                 pack.scVersion,
                 pack.flavour,
-                object: WebResponse.PacketResultListener<PackDataPacket> {
+                object : WebResponse.PacketResultListener<PackDataPacket> {
                     override fun success(message: String, packet: PackDataPacket) {
                         Timber.d(message)
                         liveData.postValue(Request.Loaded(Result.Success(packet)))

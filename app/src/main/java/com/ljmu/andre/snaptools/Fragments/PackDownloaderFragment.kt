@@ -199,12 +199,7 @@ class PackDownloaderFragment : FragmentHelper(), BaseQuickAdapter.OnItemChildCli
                                 val metadata = viewModel.getServerPack(evt.packName)
                                         ?: throw IllegalStateException("Pack not found, but packs loaded")
 
-                                metadata.run {
-                                    DownloadModulePack(
-                                            activity,
-                                            name, scVersion, type, isDeveloper, packVersion, flavour
-                                    ).download()
-                                }
+                                viewModel.downloadPack(requireActivity(), metadata)
                                 themedDialog.dismiss()
                             }
                         },

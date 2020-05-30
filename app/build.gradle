@@ -180,6 +180,7 @@ dependencies {
     implementation('com.github.topjohnwu:libsu:1.1.1') {
         exclude group: 'android.support.annotation'
     }
+    implementation 'com.github.jaqxues:Akrolyb:master-SNAPSHOT'
 }
 
 /*task exportModulePackClasses(type: JavaExec) {

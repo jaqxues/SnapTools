@@ -1,7 +1,14 @@
 package com.ljmu.andre.snaptools.UIComponents.Adapters
 
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
+import com.ljmu.andre.snaptools.R
+import com.ljmu.andre.snaptools.Utils.layoutInflater
+import com.ljmu.andre.snaptools.data.PackMetadata
+import kotlinx.android.synthetic.main.item_listable_msg.view.*
 import java.util.*
 
 
@@ -9,7 +16,7 @@ import java.util.*
  * This file was created by Jacques Hoffmann (jaqxues) in the Project SnapTools.<br>
  * Date: 31.05.20 - Time 13:17.
  */
-abstract class ExpandableAdapter<T: Any>(dataset: List<T>): RecyclerView.Adapter<RecyclerView.ViewHolder>(), ExpandableListener<T> {
+abstract class ExpandableAdapter<T: Any>(dataset: List<T>): RecyclerView.Adapter<RecyclerView.ViewHolder>(), ExpandableListener<T, RecyclerView.ViewHolder> {
     var dataset: List<T> = dataset
         set(value) {
             field = value
@@ -18,8 +25,9 @@ abstract class ExpandableAdapter<T: Any>(dataset: List<T>): RecyclerView.Adapter
             }
             notifyDataSetChanged()
         }
-    private val expandedItems = mutableMapOf<T, IntArray>()
-    private val viewTypes = Vector<ViewType<T>>()
+    protected abstract val parentViewItemType: ParentViewItemType<T, in RecyclerView.ViewHolder>
+    private val expandedItems = mutableMapOf<T, List<ViewItem<T, in RecyclerView.ViewHolder>>>()
+    private val viewTypes = Vector<ViewType<T, out RecyclerView.ViewHolder>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return viewTypes[viewType].createViewType(parent, this)
@@ -29,16 +37,29 @@ abstract class ExpandableAdapter<T: Any>(dataset: List<T>): RecyclerView.Adapter
     override fun getItemCount() = dataset.size + expandedItems.values.sumBy { it.size }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val type = viewTypes[holder.itemViewType] ?: throw IllegalArgumentException("Unknown ViewType")
-        type.bindViewType(holder, getItemAtPosition(position))
+        var idx = -1
+        for (value in dataset) {
+            if (++idx == position) {
+                parentViewItemType.bindViewType(holder, value, this)
+                return
+            }
+            if (value in expandedItems) {
+                for (subItem in expandedItems[value]!!) {
+                    if (++idx == position) {
+                        subItem.bindViewType(holder, value, this)
+                        return
+                    }
+                }
+            }
+        }
     }
 
-    fun registerViewType(type: ViewType<T>) = viewTypes.add(type)
+    fun <VH: RecyclerView.ViewHolder> registerViewType(type: ViewType<T, VH>) = viewTypes.add(type)
 
-    override fun expandItem(obj: T, items: List<ViewType<T>>) {
+    override fun expandItem(obj: T, items: List<ViewItem<T, RecyclerView.ViewHolder>>) {
         if (obj in expandedItems)
             throw IllegalArgumentException("Item already expanded")
-        expandedItems[obj] = IntArray(items.size) { viewTypes.indexOf(items[it]) }
+        expandedItems[obj] = items
         notifyItemRangeInserted(getPositionOfItem(obj) + 1, items.size)
     }
 
@@ -54,23 +75,11 @@ abstract class ExpandableAdapter<T: Any>(dataset: List<T>): RecyclerView.Adapter
             if (++idx == position) return 0
             if (value in expandedItems) {
                 for (subViewType in expandedItems[value]!!) {
-                    if (++idx == position) return subViewType
+                    if (++idx == position) return viewTypes.indexOf(subViewType.viewType)
                 }
             }
         }
         throw IllegalArgumentException("Data integrity not preserved: did not find item $position in Recycler")
-    }
-
-    private fun getItemAtPosition(position: Int): T {
-        var idx = -1
-        for (value in dataset) {
-            if (++idx == position) return value
-            if (value in expandedItems) {
-                idx += expandedItems[value]!!.size
-                if (idx >= position) return value
-            }
-        }
-        throw IllegalStateException("Could not find appropriate item at position $position")
     }
 
     private fun getPositionOfItem(obj: T): Int {
@@ -86,12 +95,29 @@ abstract class ExpandableAdapter<T: Any>(dataset: List<T>): RecyclerView.Adapter
     }
 }
 
-interface ExpandableListener<T: Any> {
-    fun expandItem(obj: T, items: List<ViewType<T>>)
+interface ExpandableListener<T: Any, VH: RecyclerView.ViewHolder> {
+    fun expandItem(obj: T, items: List<ViewItem<T, out VH>>)
     fun shrinkItem(obj: T)
 }
 
-interface ViewType<T: Any> {
-    fun createViewType(parent: ViewGroup, expandable: ExpandableListener<T>): RecyclerView.ViewHolder
-    fun bindViewType(holder: RecyclerView.ViewHolder, obj: T)
+interface ViewType<T: Any, VH: RecyclerView.ViewHolder> {
+    fun createViewType(parent: ViewGroup, expandable: ExpandableListener<T, VH>): VH
 }
+
+interface ViewItem<T: Any, VH: RecyclerView.ViewHolder> {
+    val viewType: ViewType<T, VH>
+    fun bindViewType(holder: VH, obj: T, expandable: ExpandableListener<T, VH>)
+}
+
+interface ParentViewItemType<T: Any, VH: RecyclerView.ViewHolder> : ViewType<T, VH>, ViewItem<T, VH> {
+    override val viewType get() = this
+}
+
+inline fun <T: Any, VH: RecyclerView.ViewHolder> ViewType<T, VH>.generateViewItem(crossinline bindView: (holder: VH, obj: T, expandable: ExpandableListener<T, VH>) -> Unit) =
+        object: ViewItem<T, VH> {
+            override val viewType get() = this@generateViewItem
+
+            override fun bindViewType(holder: VH, obj: T, expandable: ExpandableListener<T, VH>) {
+                bindView(holder, obj, expandable)
+            }
+        }

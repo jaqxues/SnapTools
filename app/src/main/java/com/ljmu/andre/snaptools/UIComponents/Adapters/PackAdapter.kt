@@ -26,6 +26,21 @@ class TextViewHolder(mView: View): RecyclerView.ViewHolder(mView) {
 }
 
 class PackAdapter(list: List<PackMetadata>): ExpandableAdapter<PackMetadata>(list) {
+    val textViewType = TextViewType<PackMetadata>()
+
+    init {
+        registerViewType(textViewType)
+    }
+
+    fun expand(idx: Int) {
+        expandItem(dataset[idx], listOf(
+                textViewType.generateViewItem { holder, _, _ -> holder.textView.text = "Pack Type: Premium" },
+                textViewType.generateViewItem { holder, obj, _ -> holder.textView.text = "Snapchat Version: ${obj.scVersion}" },
+                textViewType.generateViewItem { holder, obj, _ -> holder.textView.text = "Pack Version: ${obj.packVersion}" },
+                textViewType.generateViewItem { holder, obj, _ -> holder.textView.text = "Flavour: ${obj.flavour}" }
+        ))
+    }
+
     override val parentViewItemType = object: ParentViewItemType<PackMetadata, TextViewHolder> {
         override fun createViewType(parent: ViewGroup, expandable: ExpandableListener<PackMetadata, TextViewHolder>) =
                 TextViewHolder(parent.context.layoutInflater.inflate(R.layout.item_listable_head_stateful, parent, false))
@@ -34,12 +49,4 @@ class PackAdapter(list: List<PackMetadata>): ExpandableAdapter<PackMetadata>(lis
             holder.textView.text = obj.displayName
         }
     }
-}
-
-fun main(args: Array<String>) {
-    val x = TextViewType<PackMetadata>().apply {
-        generateViewItem { holder, obj, expandable ->
-        }
-    }
-    PackAdapter(emptyList()).registerViewType(x)
 }

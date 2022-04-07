@@ -1,4 +1,9 @@
+# IMPORTANT
+This is not the original repository. The [original repo](https://github.com/Andrerm124/SnapTools_OpenSource) can be found on the original creator [Andrerm124](https://github.com/Andrerm124/) GitHub.
+
 # SnapTools
+
+
 A reupload of the SnapTools Private Repository. Unfortunately a fresh repository is required as there were many commits with private information such as developer keys and certificates.
 
 Check out the [SnapTools Website](https://snaptools.io) for a brief rundown of the project!
